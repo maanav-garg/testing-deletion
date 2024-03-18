@@ -1,0 +1,4 @@
+MessageID;Data;Cycle Time;Cycle Count;Delay Time;Count;Trigger;Comment;Multi Message
+13;00 55 00 11 00 55 44 33;55;1;0;1;1;1;FALSE
+-;Multi Messages;x;x;x;x;x;Text;
+13;00 55 00 11 00 55 44 33;55;1;0;1;1;1;TRUE
