@@ -102,15 +102,65 @@ namespace AutosarBCM.Config
         public abstract string Print();
     }
 
-    public class PL_DID_Byte_Activate_Inactivate : Payload
+    public class PL_DID_Byte_Enable_Disable : Payload
     {
-        public PL_DID_Byte_Activate_Inactivate(string name, byte[] data) : base(name, data) { }
+        public PL_DID_Byte_Enable_Disable(string name, byte[] data) : base(name, data) { }
 
         public override string Print()
         {
             if (this.Data[0] == 0) return "Activate";
             else if (this.Data[0] == 1) return "Inactivate";
             else if (this.Data[0] == 2) return "Null - No Control Active";
+            return string.Empty;
+        }
+    }
+
+    public class PL_DID_DE00_0 : Payload
+    {
+        public PL_DID_DE00_0(string name, byte[] data) : base(name, data) { }
+
+        public override string Print()
+        {
+            if (this.Data[0] == 0) return "AMT";
+            else if (this.Data[0] == 1) return "Manual Transmission";
+            return string.Empty;
+        }
+    }
+
+    public class PL_DID_DE00_4 : Payload
+    {
+        public PL_DID_DE00_4(string name, byte[] data) : base(name, data) { }
+
+        public override string Print()
+        {
+            if (this.Data[0] == 0) return "Euro 3";
+            else if (this.Data[0] == 1) return "Euro 5";
+            else if (this.Data[0] == 2) return "Euro 6";
+            else if (this.Data[0] == 3) return "Euro 7";
+            return string.Empty;
+        }
+    }
+
+    public class PL_DID_Byte_Present_notPresent : Payload
+    {
+        public PL_DID_Byte_Present_notPresent(string name, byte[] data) : base(name, data) { }
+
+        public override string Print()
+        {
+            if (this.Data[0] == 0) return "Not Present";
+            else if (this.Data[0] == 1) return "Present";
+            return string.Empty;
+        }
+    }
+
+    public class PL_DID_Byte_Activate_Inactivate : Payload
+    {
+        public PL_DID_Byte_Activate_Inactivate(string name, byte[] data) : base(name, data) { }
+
+        public override string Print()
+        {
+            if (this.Data[0] == 0) return "Disable";
+            else if (this.Data[0] == 1) return "Enable";
             return string.Empty;
         }
     }
@@ -193,10 +243,12 @@ namespace AutosarBCM.Config
     {
         ReadDataByIdentifier = 0x22,
         InputOutputControlByIdentifier = 0x2F,
+        WriteDataByIdentifier = 0x2E,
     }
 
     public enum ControlName
     {
+        DEOO,
         ACCutOffSupply,
         AirHornActivateSupply,
         Ajar_On_Off_Control,
