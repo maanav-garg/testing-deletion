@@ -141,6 +141,27 @@ namespace AutosarBCM.Config
                 .ToString();
         }
     }
+    public class PL_DID_DE02_7 : Payload
+    {
+        public PL_DID_DE02_7(string name, byte[] data) : base(name, data) { }
+        public override string Print()
+        {
+            if (this.Data[0] == 0) return "Non-Construciton Vehicle";
+            else if (this.Data[0] == 1) return "Construction Vehicle";
+            return string.Empty;
+        }
+    }
+    public class PL_DID_DE03_0 : Payload
+    {
+        public PL_DID_DE03_0(string name, byte[] data) : base(name, data) { }
+        public override string Print()
+        {
+            if (this.Data[0] == 0) return "H625";
+            else if (this.Data[0] == 1) return "H476";
+            else if (this.Data[0] == 2) return "H566";
+            return string.Empty;
+        }
+    }
 
     public enum DID_Byte_Activate_Inactivate : byte
     {
@@ -197,6 +218,9 @@ namespace AutosarBCM.Config
 
     public enum ControlName
     {
+        DEOO,
+        DE02,
+        DE03,
         ACCutOffSupply,
         AirHornActivateSupply,
         Ajar_On_Off_Control,
