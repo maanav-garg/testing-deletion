@@ -8,6 +8,10 @@
 			<ID>2F</ID>
 			<Name>InputOutputControlByIdentifier</Name>
 		</Service>
+		<Service>
+			<ID>2E</ID>
+			<Name>WriteDataByIdentifier</Name>
+		</Service>
 	</Services>
 	<Sessions>
 		<Session>
@@ -32,6 +36,26 @@
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="ACCutOffSupply">PL_DID_Byte_Activate_Inactivate</Payload>
+				</Response>
+				<Response serviceId="6F">
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>DE00</Address>
+			<Name>DE00</Name>
+			<Type></Type>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Transmission">PL_DID_DE00_0</Payload>
+					<Payload name="Auto CAB Tilt">PL_DID_Byte_Enable_Disable</Payload>
+					<Payload name="Differential Lock">PL_DID_Byte_Enable_Disable</Payload>
+					<Payload name="Water Pump">PL_DID_Byte_Present_notPresent</Payload>
+					<Payload name="Emission Level">PL_DID_DE00_4</Payload>
+					<Payload name="PTO_AMT">PL_DID_Byte_Enable_Disable</Payload>
+					<Payload name="A/C Compressor Control">PL_DID_Byte_Enable_Disable</Payload>
+					<Payload name="Low Liner">PL_DID_Byte_Enable_Disable</Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
