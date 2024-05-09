@@ -159,6 +159,8 @@ namespace AutosarBCM
         /// </summary>
         internal static bool EMCMonitoring;
 
+        internal static List<IReceiver> Receivers = new List<IReceiver>();
+
         /// <summary>
         /// Gets the selected test type
         /// </summary>
@@ -182,6 +184,8 @@ namespace AutosarBCM
                 return cp;
             }
         }
+
+        internal ASApp app = new ASApp();
 
         #endregion
 
@@ -209,6 +213,8 @@ namespace AutosarBCM
             cycleLogMessageTimer.Interval = 1000;
             cycleLogMessageTimer.Elapsed += CycleLogOnTimedEvent;
             cycleLogMessageTimer.Start();
+
+            Receivers.Add(formMonitorGenericInput);
 
         }
 
@@ -566,8 +572,8 @@ namespace AutosarBCM
                 return;
             }
 
-            if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput input)
-                input.SetDefaultStatus(((ToolStripMenuItem)sender).Text == "Ground" ? (byte)0 : (byte)1);
+            //if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput input)
+            //    input.SetDefaultStatus(((ToolStripMenuItem)sender).Text == "Ground" ? (byte)0 : (byte)1);
         }
 
         /// <summary>
@@ -740,16 +746,18 @@ namespace AutosarBCM
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var filePath = openFileDialog.FileName;
-                Configuration = MonitorConfigManager.GetConfig(filePath).Configuration;
-                if (Configuration == null)
+                ASApp.ParseConfiguration(filePath);
+                LoadSessions();
+                var configuration = ASApp.Configuration;
+                if (configuration == null)
                     return;
                 else
                     tspFilterTxb.Enabled = true;
 
                 if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
                 {
-                    genericInput.LoadConfiguration(Configuration);
-                    ((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                    genericInput.LoadConfiguration(configuration);
+                    //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
                 }
                 else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
                 {
@@ -862,7 +870,7 @@ namespace AutosarBCM
 
             if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
             {
-                genericInput.LoadConfiguration(Configuration);
+                genericInput.LoadConfiguration(ASApp.Configuration);
                 ((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
             }
             else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
@@ -1134,7 +1142,29 @@ namespace AutosarBCM
             f.ShowDialog(); // modal dialog
         }
 
-        #endregion
+        private void LoadSessions()
+        {
+            tsbSession.DropDownItems.Clear();
+            foreach (var session in ASApp.Configuration.Sessions)
+                tsbSession.DropDownItems.Add(new ToolStripMenuItem(session.Name, null, new EventHandler(tsbSession_Click)) { Tag = session });
 
+            if (tsbSession.DropDownItems.Count > 0)
+                tsbSession_Click(tsbSession.DropDownItems[0], EventArgs.Empty);
+        }
+
+        private void tsbSession_Click(object sender, EventArgs e)
+        {
+            var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
+            new DiagnosticSessionControl().Transmit(sessionInfo);
+            ASApp.CurrentSession = sessionInfo;
+            tsbSession.Text = $"Session: {sessionInfo.Name}";
+        }
+
+        private void tsbToggle_Click(object sender, EventArgs e)
+        {
+            formMonitorGenericInput.ToggleSidebar();
+        }
+
+        #endregion
     }
 }

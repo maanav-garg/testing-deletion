@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutosarBCM.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,10 +35,17 @@ namespace AutosarBCM.Config
         }
     }
 
+    public class PayloadInfo
+    {
+        public int Index { get; set; }
+        public string Name { get; set; }
+        public string TypeName { get; set; }
+    }
+
     public class ResponseInfo
     {
         public byte ServiceID { get; set; }
-        public Dictionary<string, string> Payloads { get; set; }
+        public List<PayloadInfo> Payloads { get; set; }
     }
 
     public class ConfigurationInfo
@@ -52,12 +60,9 @@ namespace AutosarBCM.Config
         public static SessionInfo CurrentSession { get; set; }
         public static ConfigurationInfo Configuration { get; set; }
 
-        public ASApp()
-        {
-            CurrentSession = new SessionInfo { ID = 1 };
-        }
+        public ASApp() { }
 
-        private static ConfigurationInfo ParseConfiguration(string filePath)
+        internal static ConfigurationInfo ParseConfiguration(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
 
@@ -66,11 +71,11 @@ namespace AutosarBCM.Config
                 {
                     ID = Convert.ToByte(s.Element("ID").Value, 16),
                     Name = s.Element("Name").Value,
-                    Sessions = s.Element("Session") != null ? s.Element("Session").Value.Split(';').Select(byte.Parse).ToList() : new List<byte>()
+                    Sessions = s.Element("Sessions") != null ? s.Element("Sessions").Value.Split(';').Select(byte.Parse).ToList() : new List<byte>()
                 })
                 .ToList();
 
-            var sessions = doc.Descendants("Session")
+            var sessions = doc.Descendants("Sessions").Descendants("Session")
                 .Select(s => new SessionInfo
                 {
                     ID = Convert.ToByte(s.Element("ID").Value, 16),
@@ -90,13 +95,16 @@ namespace AutosarBCM.Config
                             new ResponseInfo
                             {
                                 ServiceID = Convert.ToByte(x.Attribute("serviceId").Value, 16),
-                                Payloads = x.Elements("Payload").ToDictionary(
-                                    y => y.Attribute("name").Value,
-                                    y => y.Value)
+                                Payloads = x.Elements("Payload") != null ? x.Elements("Payload").Select((y, i) => new PayloadInfo
+                                {
+                                    Index = i + 4,
+                                    Name = y.Attribute("name").Value,
+                                    TypeName = y.Value
+                                }).ToList() : new List<PayloadInfo>(),
                             }).ToList() : new List<ResponseInfo>(),
                 }).ToList();
 
-            return new ConfigurationInfo
+            return Configuration = new ConfigurationInfo
             {
                 Services = services,
                 Sessions = sessions,

@@ -14,7 +14,7 @@ namespace AutosarBCM.Forms.Monitor
     /// <summary>
     /// Implements the FormMonitorGenericInput form.
     /// </summary>
-    public partial class FormMonitorGenericInput : DockContent, IPeriodicTest
+    public partial class FormMonitorGenericInput : DockContent, IPeriodicTest, IReceiver
     {
         #region Variables
 
@@ -37,7 +37,9 @@ namespace AutosarBCM.Forms.Monitor
         /// List of read-only input items.
         /// </summary>
         private List<InputMonitorItem> inputMonitorItems = new List<InputMonitorItem>();
-        
+
+        private List<UCItem> uCItems = new List<UCItem>();
+
         /// <summary>
         /// Maps item types to visibility states for upper, lower, and coefficient labels.
         /// </summary>
@@ -48,7 +50,7 @@ namespace AutosarBCM.Forms.Monitor
             { "Resistive", (true, true, true) },
             { "Frequency", (true, true, false) }
         };
-       
+
         #endregion
 
         #region Constructor
@@ -73,37 +75,23 @@ namespace AutosarBCM.Forms.Monitor
         /// Load page with configuration
         /// </summary>
         /// <param name="config">Monitor config object</param>
-        public void LoadConfiguration(AutosarBcmConfiguration config)
+        public void LoadConfiguration(ConfigurationInfo config)
         {
             if (monitorConfig != null)
                 pnlMonitorInput.Controls.Clear();
 
-            foreach (var group in config.GenericMonitorConfiguration.InputSection.Groups)
+            var flowPanel = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
+            flowPanel.Paint += pnlMonitorInput_Paint;
+
+            foreach (var ctrl in config.Controls)
             {
-                monitorConfig = config;
-                pnlMonitorInput.Controls.Add(new Label { Font = new Font(Label.DefaultFont, FontStyle.Bold), Text = group.Name, AutoSize = true, Margin = new Padding(5) });
-
-                var flowPanel = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
-                flowPanel.Paint += pnlMonitorInput_Paint;
-
-                var items = group.InputItemList.OrderBy(x => x.Name).ToList();
-                foreach (var item in items)
-                {
-                    var ucItem = new UCItem(item,monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig);
-                    ucItem.MessageID = item.MessageIdOrDefault;
-                    if (!string.IsNullOrEmpty(item.MessageID))
-                    {
-                        ucItem.MessageID = item.MessageID;
-                    }
-                    ucItem.GroupName = group.Name;
-                    ucItem.Name = $"uc_{item.Name}_{item.RegisterAddress}";
-                    ucItem.Click += UcItem_Click;
-                    flowPanel.Controls.Add(ucItem);
-                }
-
-                pnlMonitorInput.Controls.Add(flowPanel);
+                var ucItem = new UCItem(ctrl);
+                uCItems.Add(ucItem);
+                ucItem.Click += UcItem_Click;
+                flowPanel.Controls.Add(ucItem);
             }
-            inputMonitorItems = monitorConfig.GenericMonitorConfiguration.InputSection.Groups.SelectMany(i => i.InputItemList).ToList();
+
+            pnlMonitorInput.Controls.Add(flowPanel);
         }
 
         /// <summary>
@@ -134,7 +122,7 @@ namespace AutosarBCM.Forms.Monitor
             if (uc == null)
                 return false;
 
-            ((UCItem)uc).ChangeStatus(item, response, messageDirection);
+            //((UCItem)uc).ChangeStatus(item, response, messageDirection);
             return true;
         }
 
@@ -235,13 +223,15 @@ namespace AutosarBCM.Forms.Monitor
         {
             var uc = (UCItem)sender;
             uc.Focus();
-            UpdateLabelVisibility(uc.Item.ItemType);
+            //UpdateLabelVisibility(uc.Item.ItemType);
 
-            lblItemName.Text = $"{uc.GroupName}-{uc.Item.Name}";
-            lblUpperLimit.Text = uc.Item.UpperLimit.ToString();
-            lblLowerLimit.Text = uc.Item.LowerLimit.ToString();
-            lblCoefficient.Text = uc.Item.Coefficient.ToString();
-            lblData.Text = BitConverter.ToString(uc.Item.Data);
+            lblItemName.Text = $"{uc.GroupName}-{uc.ControlInfo.Name}";
+            lblName.Text = uc.ControlInfo.Name;
+            lblAddress.Text = BitConverter.ToString(BitConverter.GetBytes(uc.ControlInfo.Address).Reverse().ToArray());
+            //lblUpperLimit.Text = uc.Item.UpperLimit.ToString();
+            //lblLowerLimit.Text = uc.Item.LowerLimit.ToString();
+            //lblCoefficient.Text = uc.Item.Coefficient.ToString();
+            //lblData.Text = BitConverter.ToString(uc.Item.Data);
         }
 
         /// <summary>
@@ -291,16 +281,20 @@ namespace AutosarBCM.Forms.Monitor
             ControlPaint.DrawBorder(e.Graphics, ((FlowLayoutPanel)sender).ClientRectangle, Color.LightGray, ButtonBorderStyle.Solid);
         }
 
-        /// <summary>
-        /// Sets a default status for all digital input monitor items.
-        /// </summary>
-        /// <param name="status">The status byte to set for each digital item.</param>
-        internal void SetDefaultStatus(byte status)
+        public bool Receive(ASResponse response)
         {
-            Enabled = false;
-            foreach (var item in inputMonitorItems.Where(x => x.ItemType == "Digital"))
-                ((UCItem)FindUIControl(item.Name, item.RegisterAddress)).SetStatus(status, true);
-            Enabled = true;
+            foreach (var ucItem in uCItems)
+                if (ucItem.ControlInfo.Address == response.ControlInfo.Address)
+                {
+                    ucItem.ChangeStatus(response);
+                    return true;
+                }
+            return false;
+        }
+
+        internal void ToggleSidebar()
+        {
+            splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
         }
 
         #endregion
