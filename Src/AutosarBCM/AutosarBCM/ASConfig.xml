@@ -61,6 +61,46 @@
 				</Response>
 			</Responses>
 		</Control>
+    <Control>
+      <Address>DE02</Address>
+      <Name>DE02</Name>
+      <Type></Type>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Era Glonass">PL_DID_Byte_Present_notPresent</Payload>
+          <Payload name="One Touch Up/Global Open-Close">PL_DID_Byte_Enable_Disable</Payload>
+          <Payload name="Heated Mirror">PL_DID_Byte_Present_notPresent</Payload>
+          <Payload name="Power Mirror">PL_DID_Byte_Present_notPresent</Payload>
+          <Payload name="Remote Door Control">PL_DID_Byte_Enable_Disable</Payload>
+          <Payload name="Ambiance Light">PL_HexDump</Payload>
+          <Payload name="Autolock">PL_DID_Byte_Enable_Disable</Payload>
+          <Payload name="Vehicle Type">PL_DID_DE02_7</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE03</Address>
+      <Name>DE03</Name>
+      <Type></Type>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Vehicle Line">PL_DID_DE03_0</Payload>
+          <Payload name="Trailer Tag Axle Lifting">PL_DID_Byte_Enable_Disable</Payload>
+          <Payload name="SVO Garbage Truck">PL_DID_Byte_Enable_Disable</Payload>
+          <Payload name="SVO Concrete Pump">PL_DID_Byte_Enable_Disable</Payload>
+          <Payload name="SVO Fire Truck">PL_DID_Byte_Enable_Disable</Payload>
+          <Payload name="SVO Damper">PL_DID_Byte_Enable_Disable</Payload>
+          <Payload name="Extra High Roof">PL_DID_Byte_Present_notPresent</Payload>
+          <Payload name="Rain Sensor">PL_DID_Byte_Present_notPresent</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
 		<Control>
 			<Address>DF51</Address>
 			<Name>AirHornActivateSupply</Name>
