@@ -72,6 +72,7 @@ namespace AutosarBCM
             this.dockMonitor = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
             this.tsbMonitorLoad = new System.Windows.Forms.ToolStripButton();
+            this.tsbSession = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsbECUReset = new System.Windows.Forms.ToolStripButton();
             this.tsbActivateDiagSession = new System.Windows.Forms.ToolStripButton();
             this.btnStart = new System.Windows.Forms.ToolStripButton();
@@ -88,6 +89,8 @@ namespace AutosarBCM
             this.btnSetBattery = new System.Windows.Forms.ToolStripMenuItem();
             this.btnShowEmbSwVer = new System.Windows.Forms.ToolStripButton();
             this.lblEmbSwVer = new System.Windows.Forms.ToolStripLabel();
+            this.tsbToggle = new System.Windows.Forms.ToolStripButton();
+            this.nullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -183,7 +186,7 @@ namespace AutosarBCM
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(1008, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1417, 27);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -293,7 +296,7 @@ namespace AutosarBCM
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.splitter1.Location = new System.Drawing.Point(0, 794);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(1008, 3);
+            this.splitter1.Size = new System.Drawing.Size(1417, 3);
             this.splitter1.TabIndex = 5;
             this.splitter1.TabStop = false;
             // 
@@ -307,7 +310,7 @@ namespace AutosarBCM
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1008, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1417, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -384,7 +387,7 @@ namespace AutosarBCM
             this.tabPage2.Location = new System.Drawing.Point(4, 23);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(1000, 271);
+            this.tabPage2.Size = new System.Drawing.Size(1409, 716);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Trace";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -396,7 +399,7 @@ namespace AutosarBCM
             this.txtTrace.Margin = new System.Windows.Forms.Padding(2);
             this.txtTrace.Name = "txtTrace";
             this.txtTrace.ReadOnly = true;
-            this.txtTrace.Size = new System.Drawing.Size(996, 240);
+            this.txtTrace.Size = new System.Drawing.Size(1405, 685);
             this.txtTrace.TabIndex = 10;
             this.txtTrace.Text = "";
             // 
@@ -407,7 +410,7 @@ namespace AutosarBCM
             this.tsbClearLog});
             this.toolStrip2.Location = new System.Drawing.Point(2, 2);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(996, 27);
+            this.toolStrip2.Size = new System.Drawing.Size(1405, 27);
             this.toolStrip2.TabIndex = 11;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -431,7 +434,7 @@ namespace AutosarBCM
             this.tabControl1.Location = new System.Drawing.Point(0, 51);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1008, 743);
+            this.tabControl1.Size = new System.Drawing.Size(1417, 743);
             this.tabControl1.TabIndex = 15;
             // 
             // tabPage3
@@ -441,7 +444,7 @@ namespace AutosarBCM
             this.tabPage3.ImageIndex = 5;
             this.tabPage3.Location = new System.Drawing.Point(4, 23);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1000, 716);
+            this.tabPage3.Size = new System.Drawing.Size(1409, 716);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Monitor";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -455,7 +458,7 @@ namespace AutosarBCM
             this.dockMonitor.Name = "dockMonitor";
             this.dockMonitor.Padding = new System.Windows.Forms.Padding(6);
             this.dockMonitor.ShowAutoHideContentOnHover = false;
-            this.dockMonitor.Size = new System.Drawing.Size(1000, 689);
+            this.dockMonitor.Size = new System.Drawing.Size(1409, 689);
             this.dockMonitor.TabIndex = 2;
             this.dockMonitor.Theme = this.vS2015LightTheme1;
             this.dockMonitor.ActiveDocumentChanged += new System.EventHandler(this.dockMonitor_ActiveDocumentChanged);
@@ -465,6 +468,7 @@ namespace AutosarBCM
             this.toolStrip3.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbMonitorLoad,
+            this.tsbSession,
             this.tsbECUReset,
             this.tsbActivateDiagSession,
             this.btnStart,
@@ -478,10 +482,11 @@ namespace AutosarBCM
             this.toolStripSeparator5,
             this.toolStripDropDownButton1,
             this.btnShowEmbSwVer,
-            this.lblEmbSwVer});
+            this.lblEmbSwVer,
+            this.tsbToggle});
             this.toolStrip3.Location = new System.Drawing.Point(0, 0);
             this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Size = new System.Drawing.Size(1000, 27);
+            this.toolStrip3.Size = new System.Drawing.Size(1409, 27);
             this.toolStrip3.TabIndex = 1;
             this.toolStrip3.Text = "toolStrip3";
             // 
@@ -493,6 +498,16 @@ namespace AutosarBCM
             this.tsbMonitorLoad.Size = new System.Drawing.Size(67, 24);
             this.tsbMonitorLoad.Text = "Import";
             this.tsbMonitorLoad.Click += new System.EventHandler(this.tsbMonitorLoad_Click);
+            // 
+            // tsbSession
+            // 
+            this.tsbSession.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nullToolStripMenuItem});
+            this.tsbSession.Image = global::AutosarBCM.Properties.Resources.pass;
+            this.tsbSession.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSession.Name = "tsbSession";
+            this.tsbSession.Size = new System.Drawing.Size(107, 24);
+            this.tsbSession.Text = "Session: N/A";
             // 
             // tsbECUReset
             // 
@@ -619,13 +634,30 @@ namespace AutosarBCM
             this.lblEmbSwVer.Name = "lblEmbSwVer";
             this.lblEmbSwVer.Size = new System.Drawing.Size(0, 24);
             // 
+            // tsbToggle
+            // 
+            this.tsbToggle.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbToggle.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbToggle.Image = global::AutosarBCM.Properties.Resources.msg_28364812;
+            this.tsbToggle.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbToggle.Name = "tsbToggle";
+            this.tsbToggle.Size = new System.Drawing.Size(24, 24);
+            this.tsbToggle.Text = "toolStripButton1";
+            this.tsbToggle.Click += new System.EventHandler(this.tsbToggle_Click);
+            // 
+            // nullToolStripMenuItem
+            // 
+            this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
+            this.nullToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.nullToolStripMenuItem.Text = "N/A";
+            // 
             // FormMain
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1008, 797);
+            this.ClientSize = new System.Drawing.Size(1417, 797);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.toolStrip1);
@@ -719,6 +751,9 @@ namespace AutosarBCM
         private ToolStripLabel tslDiff;
         private ToolStripMenuItem testLogToolStripMenuItem;
         private ToolStripMenuItem tsmiCheck;
+        private ToolStripButton tsbToggle;
+        private ToolStripDropDownButton tsbSession;
+        private ToolStripMenuItem nullToolStripMenuItem;
     }
 }
 

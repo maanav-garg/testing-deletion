@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutosarBCM.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,10 @@ namespace AutosarBCM.Config
     {
         protected ServiceInfo serviceInfo;
 
-        public Service() { }
+        public Service(ServiceName serviceName)
+        {
+            serviceInfo = ASApp.Configuration.Services.Where(x => x.ID == (byte)serviceName).FirstOrDefault();
+        }
 
         public static void Transmit(ServiceName serviceName, ControlName controlName)
         {
@@ -21,28 +25,32 @@ namespace AutosarBCM.Config
 
     public class ReadDataByIdenService : Service
     {
-        public ReadDataByIdenService()
-        {
-            serviceInfo = ASApp.Configuration.Services.Where(x => x.ID == (byte)ServiceName.ReadDataByIdentifier).FirstOrDefault();
-        }
+        public ReadDataByIdenService() : base(ServiceName.ReadDataByIdentifier) { }
 
         public void Transmit(ControlInfo controlInfo)
         {
-            var request = new ASRequest(serviceInfo, controlInfo, $"03-{serviceInfo.ID}-{BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray())}-00-00-00-00");
+            var request = new ASRequest(serviceInfo, controlInfo, $"03-{serviceInfo.ID.ToString("X")}-{BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray())}-00-00-00-00");
             request.Execute();
         }
     }
 
     public class IOCtrlByIdenService : Service
     {
-        public IOCtrlByIdenService()
-        {
-            serviceInfo = ASApp.Configuration.Services.Where(x => x.ID == (byte)ServiceName.InputOutputControlByIdentifier).FirstOrDefault();
-        }
+        public IOCtrlByIdenService() : base(ServiceName.InputOutputControlByIdentifier) { }
 
         public void Transmit(ControlInfo controlInfo)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public class DiagnosticSessionControl : Service
+    {
+        public DiagnosticSessionControl() : base(ServiceName.DiagnosticSessionControl) { }
+
+        public void Transmit(SessionInfo sessionInfo)
+        {
+            ConnectionUtil.TransmitData(0x0726, new byte[] { serviceInfo.ID, sessionInfo.ID, 0, 0, 0, 0, 0, 0 });
         }
     }
 
@@ -75,144 +83,178 @@ namespace AutosarBCM.Config
 
     public class ASResponse
     {
-        public byte[] Data { get; set; }
-        public List<Payload> Payloads { get; set; } = new List<Payload>();
+        public byte[] Data { get; private set; }
+        public ControlInfo ControlInfo { get; private set; }
+        public List<Payload> Payloads { get; private set; } = new List<Payload>();
 
         public ASResponse(byte[] data)
         {
             Data = data;
 
-            var controlInfo = ASApp.Configuration.Controls.Where(x => x.Address == BitConverter.ToUInt16(data.Skip(2).Take(2).Reverse().ToArray(), 0)).FirstOrDefault();
-            foreach (var pInfo in controlInfo.Responses.Where(a => a.ServiceID == data[1]).First().Payloads)
-                Payloads.Add((Payload)Activator.CreateInstance(Type.GetType($"AutosarBCM.Config.{pInfo.Value}"), new object[] { pInfo.Key, data }));
+            ControlInfo = ASApp.Configuration.Controls.Where(x => x.Address == BitConverter.ToUInt16(data.Skip(2).Take(2).Reverse().ToArray(), 0)).FirstOrDefault();
+            foreach (var pInfo in ControlInfo.Responses.Where(a => a.ServiceID == data[1]).First().Payloads)
+                Payloads.Add((Payload)Activator.CreateInstance(Type.GetType($"AutosarBCM.Config.{pInfo.TypeName}"), new object[] { pInfo, data }));
         }
     }
 
     public abstract class Payload
     {
         protected byte[] Data;
-        public string Name { get; set; }
+        public PayloadInfo PayloadInfo { get; set; }
 
-        public Payload(string name, byte[] data)
+        public Payload(PayloadInfo payloadInfo, byte[] data)
         {
-            Name = name;
+            PayloadInfo = payloadInfo;
             Data = data;
         }
 
         public abstract string Print();
     }
 
-    public class PL_DID_Byte_Enable_Disable : Payload
+    public class DID_Byte_Enable_Disable : Payload
     {
-        public PL_DID_Byte_Enable_Disable(string name, byte[] data) : base(name, data) { }
+        public DID_Byte_Enable_Disable(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
         public override string Print()
         {
-            if (this.Data[0] == 0) return "Activate";
-            else if (this.Data[0] == 1) return "Inactivate";
-            else if (this.Data[0] == 2) return "Null - No Control Active";
-            return string.Empty;
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Disable";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Enable";
+
+            return $"{PayloadInfo.Name,-40}{result}";
         }
     }
 
-    public class PL_DID_DE00_0 : Payload
+    public class DID_Byte_Activate_Inactivate : Payload
     {
-        public PL_DID_DE00_0(string name, byte[] data) : base(name, data) { }
+        public DID_Byte_Activate_Inactivate(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
         public override string Print()
         {
-            if (this.Data[0] == 0) return "AMT";
-            else if (this.Data[0] == 1) return "Manual Transmission";
-            return string.Empty;
+            var result = string.Empty;
+            if (Data[PayloadInfo.Index] == 0) result = "Activate";
+            else if (Data[PayloadInfo.Index] == 1) result = "Inactivate";
+            else if (Data[PayloadInfo.Index] == 2) result = "Null - No Control Active";
+
+            return $"{PayloadInfo.Name,-40}{result}";
         }
     }
 
-    public class PL_DID_DE00_4 : Payload
+    public class DID_Bytes_High_Low : Payload
     {
-        public PL_DID_DE00_4(string name, byte[] data) : base(name, data) { }
+        public DID_Bytes_High_Low(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
         public override string Print()
         {
-            if (this.Data[0] == 0) return "Euro 3";
-            else if (this.Data[0] == 1) return "Euro 5";
-            else if (this.Data[0] == 2) return "Euro 6";
-            else if (this.Data[0] == 3) return "Euro 7";
-            return string.Empty;
+            var result = string.Empty;
+            if (Data[PayloadInfo.Index] == 0) result = "Low";
+            else if (Data[PayloadInfo.Index] == 1) result = "High";
+
+            return $"{PayloadInfo.Name,-40}{result}";
         }
     }
 
-    public class PL_DID_Byte_Present_notPresent : Payload
+    public class DID_DE00_0 : Payload
     {
-        public PL_DID_Byte_Present_notPresent(string name, byte[] data) : base(name, data) { }
+        public DID_DE00_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
         public override string Print()
         {
-            if (this.Data[0] == 0) return "Not Present";
-            else if (this.Data[0] == 1) return "Present";
-            return string.Empty;
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "AMT";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Manual Transmission";
+
+            return $"{PayloadInfo.Name,-40}{result}";
         }
     }
 
-    public class PL_DID_Byte_Activate_Inactivate : Payload
+    public class DID_DE00_4 : Payload
     {
-        public PL_DID_Byte_Activate_Inactivate(string name, byte[] data) : base(name, data) { }
+        public DID_DE00_4(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
         public override string Print()
         {
-            if (this.Data[0] == 0) return "Disable";
-            else if (this.Data[0] == 1) return "Enable";
-            return string.Empty;
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Euro 3";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Euro 5";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Euro 6";
+            else if (this.Data[PayloadInfo.Index] == 3) result = "Euro 7";
+
+            return $"{PayloadInfo.Name,-40}{result}";
         }
     }
 
-    public class PL_OnOffState : Payload
+    public class DID_Byte_Present_notPresent : Payload
     {
-        public PL_OnOffState(string name, byte[] data) : base(name, data) { }
+        public DID_Byte_Present_notPresent(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
         public override string Print()
         {
-            if (this.Data[0] == 0) return "On";
-            else if (this.Data[0] == 1) return "Off";
-            return string.Empty;
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Not Present";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Present";
+
+            return $"{PayloadInfo.Name,-40}{result}";
         }
     }
 
-    public class PL_HexDump : Payload
+    public class OnOffState : Payload
     {
-        public PL_HexDump(string name, byte[] data) : base(name, data) { }
+        public OnOffState(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
         public override string Print()
         {
-            return new StringBuilder()
-                .AppendLine($"Door Unlock Relay - Passenger's Side: {(DID_Bits_On_Off)Data[4]}")
-                .AppendLine($"Door Unlock Relay - Driver's Side: {(DID_Bits_On_Off)Data[5]}")
-                .AppendLine($"Passanger Door Lock Relay: {(DID_Bits_On_Off)Data[6]}")
-                .AppendLine($"Driver Door Lock Relay: {(DID_Bits_On_Off)Data[7]}")
-                .ToString();
-        }
-    }
-    public class PL_DID_DE02_7 : Payload
-    {
-        public PL_DID_DE02_7(string name, byte[] data) : base(name, data) { }
-        public override string Print()
-        {
-            if (this.Data[0] == 0) return "Non-Construciton Vehicle";
-            else if (this.Data[0] == 1) return "Construction Vehicle";
-            return string.Empty;
-        }
-    }
-    public class PL_DID_DE03_0 : Payload
-    {
-        public PL_DID_DE03_0(string name, byte[] data) : base(name, data) { }
-        public override string Print()
-        {
-            if (this.Data[0] == 0) return "H625";
-            else if (this.Data[0] == 1) return "H476";
-            else if (this.Data[0] == 2) return "H566";
-            return string.Empty;
+            var result = string.Empty;
+            if (Data[PayloadInfo.Index] == 0) result = "On";
+            else if (Data[PayloadInfo.Index] == 1) result = "Off";
+
+            return $"{PayloadInfo.Name,-40}{result}";
         }
     }
 
+    public class HexDump : Payload
+    {
+        public HexDump(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+
+        public override string Print()
+        {
+            return $"{PayloadInfo.Name,-40}: {Data[PayloadInfo.Index]}";
+        }
+    }
+    public class DID_DE02_7 : Payload
+    {
+        public DID_DE02_7(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Non-Construciton Vehicle";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Construction Vehicle";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_DE03_0 : Payload
+    {
+        public DID_DE03_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "H625";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "H476";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "H566";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+
+    internal interface IReceiver
+    {
+        bool Receive(ASResponse response);
+    }
+}
+
+namespace AutosarBCM.Enums
+{
     public enum DID_Byte_Activate_Inactivate : byte
     {
         Activate = 0,
@@ -262,6 +304,7 @@ namespace AutosarBCM.Config
 
     public enum ServiceName : byte
     {
+        DiagnosticSessionControl = 0x10,
         ReadDataByIdentifier = 0x22,
         InputOutputControlByIdentifier = 0x2F,
         WriteDataByIdentifier = 0x2E,
@@ -279,6 +322,77 @@ namespace AutosarBCM.Config
         All_Doors_Lock_and_Ajar_Output_Signal,
         Ambient_Light_LED_Power_Supply,
         Battery_Saver_System_Output_Signals,
-        BedAreaLightingSupply
+        BedAreaLightingSupply,
+        Blower_Control_Relay_Supply,
+        Blower_Switch,
+        BrakeLightRelaySupply,
+        CabinTiltValveSupply,
+        Cruise_control_switches,
+        Daytime_Running_Light_Output,
+        Differential_Control_Input,
+        DifferentialLockValve1Supply,
+        DomeLightSupply,
+        DoorLockIndicatorSupply,
+        Driver_Power_Window_Motor,
+        EngineBrakeSupply,
+        FrontParkingLightSupply,
+        Hall_Sensor_Supply,
+        Hazard_Warning_Switch,
+        Headlamp_High_Beam_Output_Control,
+        HeatedMirrorSupply,
+        HeatedWindshieldSupply,
+        Horn_Output_Control,
+        Horn_Switch,
+        Input_Switches,
+        InterLockValveSupply,
+        Interior12VLightDimmingSupply,
+        InteriorLightDimmingSupply,
+        Key_Switch_System_Input_Signal,
+        LED_Outputs,
+        LIN_PWS_and_HLS_Switch,
+        Left_Front_Fog_Lamps_Output,
+        Left_Front_Low_Beam_Output_Contro,
+        Left_Front_Low_Beam_Output,
+        Left_Front_Turn_Lamp_Outage_Feedback,
+        Left_Rear_Turn_Lamp_LED_Outage_Feedback,
+        Left_Rear_Turn_Signal_Lamp_Control,
+        LowLinerFrontSideLiftedValveSupply,
+        Main_ECU_Voltage_Supply,
+        Map_Lamp_PWM_Supply,
+        NOS_Message_Database,
+        PTO_Switches,
+        PTO_Valve_Supply,
+        PWM_StartStopIllimunation12VLED,
+        Passenger_Power_Window_Motor,
+        Power_Mirror_Control,
+        Power_Window_Switch_Input,
+        Rear_Fog_Lamps_Output,
+        Rear_Park_Lamps_Output,
+        ReverseGearSupply,
+        Right_Front_Fog_Lamps_Output,
+        Right_Front_Low_Beam_Output_Control,
+        Right_Front_Low_Beam_Output,
+        Right_Front_Turn_Lamp_Outage_Feedback,
+        Right_Rear_Turn_Lamp_LED_Outage_Feedback,
+        Right_Rear_Turn_Signal_Lamp_Control,
+        Spare_Analog_Input,
+        Spare_Digital_Outputs,
+        Spare_PWM_Inputs,
+        Spare_Switch,
+        Start_Stop_Switches,
+        SteeringColumnSwitchIlluminationSupply,
+        StepLightsSupply,
+        Stowage_Box_Reminder,
+        Sunroof_Motor,
+        Sunroof_Switch,
+        TCCM_Input,
+        TrailerTagAxleLifting1Supply,
+        Turn_Indicator_Switch_Input,
+        Vehicle_Battery_Voltage,
+        WCInhibit,
+        Washer_Pump_Front_Relay,
+        WaterPumpSupply,
+        Windscreen_Wipers_System_Output_Signal,
+        WiperParkPositionSwitch
     }
 }

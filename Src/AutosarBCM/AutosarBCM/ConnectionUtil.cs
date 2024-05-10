@@ -109,7 +109,7 @@ namespace AutosarBCM
                         serialHardware.Transmit("FFFFFFFFFB01");
                     }
                 }
-           
+
                 return true;
             }
             catch (Exception ex)
@@ -390,56 +390,64 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="sender">A reference to the Hardware instance.</param>
         /// <param name="e">A reference to the FrameRead event's arguments.</param>
-        private void Hardware_FrameRead(object sender, CanFrameEventArgs e)
+        internal void Hardware_FrameRead(object sender, CanFrameEventArgs e)
         {
-            //if (e.Data.Length % 8 != 0)
+            if (e.Data[1] == 0x62 || e.Data[1] == 0x6F)
+            {
+                var response = new Config.ASResponse(e.Data);
+                foreach (var receiver in FormMain.Receivers)
+                    if (receiver.Receive(response)) return;
+            }
+
+
+            ////if (e.Data.Length % 8 != 0)
+            ////    return;
+
+            //// TODO: Refactor Data Check
+            //// When connecting to the NeoVI Fire3 Device, it causes an error because we get long responses.
+            //if (e.Data.Length > 8)
             //    return;
 
-            // TODO: Refactor Data Check
-            // When connecting to the NeoVI Fire3 Device, it causes an error because we get long responses.
-            if (e.Data.Length > 8)
-                return;
+            //FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
 
-            FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-            
-            // TODO: Refactor Data Check
-            // Replace hardcoded byte value checks with a more flexible method, such as a configuration object or dictionary.
-            // DoorCap signals that we only receive Rx are not included in the success average.
-            if (e.Data[0] != 0x03 || e.Data[1] != 0xef || e.Data[2] != 0x05)
-                formMain.SetCounter(0, 1);
-            var bytes = new byte[10];
-            var messageId = Helper.StringToByteArray(e.CanId.ToString("X4"));
+            //// TODO: Refactor Data Check
+            //// Replace hardcoded byte value checks with a more flexible method, such as a configuration object or dictionary.
+            //// DoorCap signals that we only receive Rx are not included in the success average.
+            //if (e.Data[0] != 0x03 || e.Data[1] != 0xef || e.Data[2] != 0x05)
+            //    formMain.SetCounter(0, 1);
+            //var bytes = new byte[10];
+            //var messageId = Helper.StringToByteArray(e.CanId.ToString("X4"));
 
-            //If the read data isn't structured
-            if (e.Data.Length < 8)
-                Array.Copy(new byte[2] {0 , 0}, bytes, 2);
-            else
-                Array.Copy(messageId, bytes, messageId.Length);
+            ////If the read data isn't structured
+            //if (e.Data.Length < 8)
+            //    Array.Copy(new byte[2] {0 , 0}, bytes, 2);
+            //else
+            //    Array.Copy(messageId, bytes, messageId.Length);
 
-            Array.Copy(e.Data, 0, bytes, 2, e.Data.Length);
+            //Array.Copy(e.Data, 0, bytes, 2, e.Data.Length);
 
             var rxRead = "Rx " + e.CanId.ToString("X") + " " + BitConverter.ToString(e.Data);
             var time = new DateTime(e.Timestamp);
 
-            //if (FormMain.ControlChecker)
-            //{
-            //    AppendTrace(rxRead, time);
-            //    Program.FormControlChecker?.HandleResponse(bytes);
-            //    return;
-            //}
+            ////if (FormMain.ControlChecker)
+            ////{
+            ////    AppendTrace(rxRead, time);
+            ////    Program.FormControlChecker?.HandleResponse(bytes);
+            ////    return;
+            ////}
 
-            //if (formMain.UpdateOutputMonitorControls(bytes, MessageDirection.RX))
-            //{
-            //    AppendTrace(rxRead, time);
-            //    return;
-            //}
-            //if (formMain.UpdateInputMonitorControls(bytes, MessageDirection.RX))
-            //{
-            //    if (!FormMain.IsTestRunning) AppendTrace(rxRead, time);
-            //    return;
-            //}
+            ////if (formMain.UpdateOutputMonitorControls(bytes, MessageDirection.RX))
+            ////{
+            ////    AppendTrace(rxRead, time);
+            ////    return;
+            ////}
+            ////if (formMain.UpdateInputMonitorControls(bytes, MessageDirection.RX))
+            ////{
+            ////    if (!FormMain.IsTestRunning) AppendTrace(rxRead, time);
+            ////    return;
+            ////}
 
-            //HandleGeneralMessages(bytes);
+            ////HandleGeneralMessages(bytes);
 
             AppendTrace(rxRead, time);
             AppendTraceRx(rxRead, time);
@@ -521,7 +529,7 @@ namespace AutosarBCM
         /// checks received message
         /// </summary>
         /// <param name="data">A byte array represents the data of the received message.</param>
-        private void HandleGeneralMessages(byte[] data) 
+        private void HandleGeneralMessages(byte[] data)
         {
             if (data[2] == 0x06 && data[3] == 0x6F && data[4] == 0x61 && data[5] == 0x99)
             {
