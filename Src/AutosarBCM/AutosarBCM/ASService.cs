@@ -132,9 +132,9 @@ namespace AutosarBCM.Config
         public override string Print()
         {
             var result = string.Empty;
-            if (Data[PayloadInfo.Index] == 0) result = "Activate";
-            else if (Data[PayloadInfo.Index] == 1) result = "Inactivate";
-            else if (Data[PayloadInfo.Index] == 2) result = "Null - No Control Active";
+            if (Data[PayloadInfo.Index] == 0) result = "Null - No Control Active";
+            else if (Data[PayloadInfo.Index] == 1) result = "Activate";
+            else if (Data[PayloadInfo.Index] == 2) result = "Inactivate";
 
             return $"{PayloadInfo.Name,-40}{result}";
         }
@@ -213,13 +213,195 @@ namespace AutosarBCM.Config
         }
     }
 
-    public class HexDump : Payload
+
+
+    //public class HexDump : Payload
+    //{
+    //    public HexDump(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+
+    //    public override string Print()
+    //    {
+    //        return $"{PayloadInfo.Name,-40}: {Data[PayloadInfo.Index]}";
+    //    }
+    //}
+    public class Unsigned_1Byte : Payload
     {
-        public HexDump(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public Unsigned_1Byte(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
         public override string Print()
         {
             return $"{PayloadInfo.Name,-40}: {Data[PayloadInfo.Index]}";
+        }
+    }
+    public class DID_Lamp_Status : Payload
+    {
+        public DID_Lamp_Status(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Null - Not Configured for LED Outage Detection";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Lamp On";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Lamp Off";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_Byte_Lamp_Control : Payload
+    {
+        public DID_Byte_Lamp_Control(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Null - No Control Active";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Active";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Inactive";
+            else if (this.Data[PayloadInfo.Index] == 3) result = "Flash";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_4253_0 : Payload
+    {
+        public DID_4253_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Off - No Request";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Left Turn Request";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Right Turn Request";
+            else if (this.Data[PayloadInfo.Index] == 3) result = "Fault";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_F166_0 : Payload
+    {
+        public DID_F166_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            return $"{PayloadInfo.Name,-40}{BitConverter.ToInt32(Data, PayloadInfo.Index)}";
+        }
+    }
+    public class DID_42A0_0 : Payload
+    {
+        public DID_42A0_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 1) result = "Active";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Inactive";
+            else if (this.Data[PayloadInfo.Index] == 3) result = "Null - No Control Active";
+            else if (this.Data[PayloadInfo.Index] == 4) result = "On";
+            else if (this.Data[PayloadInfo.Index] == 5) result = "Off";
+            else if (this.Data[PayloadInfo.Index] == 6) result = "Daytime Running Lamp";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_40E8_0 : Payload
+    {
+        public DID_40E8_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 1) result = "Active";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Inactive";
+            else if (this.Data[PayloadInfo.Index] == 3) result = "VREG - The Right Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation";
+            else if (this.Data[PayloadInfo.Index] == 4) result = "Daytime Running Light (DRL) - The Right Front Low Beam Circuit Is Pulse Width Modulating For DRL";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+
+    public class DID_40E7_0 : Payload
+    {
+        public DID_40E7_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 1) result = "Active";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Inactive";
+            else if (this.Data[PayloadInfo.Index] == 3) result = "VREG - The Left Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation";
+            else if (this.Data[PayloadInfo.Index] == 4) result = "Daytime Running Light (DRL) - The Left Front Low Beam Circuit Is Pulse Width Modulating For DRL";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_4255_Daytime_Running_Light : Payload
+    {
+        public DID_4255_Daytime_Running_Light(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Null";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "On / Set On";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Off / Set Off";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_41EF_0 : Payload
+    {
+        public DID_41EF_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Null - No Control Active";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Active";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Inactive";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class Internal_Version : Payload
+    {
+        public Internal_Version(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            return $"{PayloadInfo.Name,-40}{BitConverter.ToInt32(Data, PayloadInfo.Index)}";
+        }
+    }
+    public class DID_41F1_0 : Payload
+    {
+        public DID_41F1_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Null - No Control Active";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Active";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Inactive";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_41EC_0 : Payload
+    {
+        public DID_41EC_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Null - No Control Active";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Active";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Inactive";
+            else if (this.Data[PayloadInfo.Index] == 3) result = "Ramping";
+            else if (this.Data[PayloadInfo.Index] == 4) result = "Flash";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_41F3_0 : Payload
+    {
+        public DID_41F3_0(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Null - No Control Active";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Active";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Inactive";
+            else if (this.Data[PayloadInfo.Index] == 3) result = "Ramping";
+            else if (this.Data[PayloadInfo.Index] == 4) result = "Flash";
+
+            return $"{PayloadInfo.Name,-40}{result}";
         }
     }
     public class DID_DE02_7 : Payload
@@ -272,6 +454,27 @@ namespace AutosarBCM.Config
             else if (this.Data[PayloadInfo.Index] == 1) result = "Dry Type";
             else if (this.Data[PayloadInfo.Index] == 2) result = "Wet Type";
             else if (this.Data[PayloadInfo.Index] == 3) result = "Dry&Wet Type";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_PWM : Payload
+    {
+        public DID_PWM(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            return $"{BitConverter.ToSingle(Data, 0)} %";
+        }
+    }
+    public class DID_Byte_On_Off : Payload
+    {
+        public DID_Byte_On_Off(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Off";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "On";
 
             return $"{PayloadInfo.Name,-40}{result}";
         }
