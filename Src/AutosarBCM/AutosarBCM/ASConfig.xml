@@ -1,60 +1,79 @@
 ﻿<Configuration>
-  <Services>
-    <Service>
-      <ID>10</ID>
-      <Name>DiagnosticSessionControl</Name>
-    </Service>
-    <Service>
-      <ID>22</ID>
-      <Name>ReadDataByIdentifier</Name>
-      <Sessions>01</Sessions>
-    </Service>
-    <Service>
-      <ID>2F</ID>
-      <Name>InputOutputControlByIdentifier</Name>
-    </Service>
-    <Service>
-      <ID>2E</ID>
-      <Name>WriteDataByIdentifier</Name>
-    </Service>
-  </Services>
-  <Sessions>
-    <Session>
-      <ID>01</ID>
-      <Name>Default Session</Name>
-    </Session>
-    <Session>
-      <ID>02</ID>
-      <Name>Programming Session</Name>
-    </Session>
-    <Session>
-      <ID>03</ID>
-      <Name>Extended Diagnostic Session</Name>
-    </Session>
-  </Sessions>
-  <Controls>
-
-    <Control>
-      <Address>DE00</Address>
-      <Name>DE00</Name>
-      <Type></Type>
-      <Group>ECU-DID</Group>
-      <Services>22;2E</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="Transmission">DID_DE00_0</Payload>
-          <Payload name="Auto CAB Tilt">DID_Byte_Enable_Disable</Payload>
-          <Payload name="Differential Lock">DID_Byte_Enable_Disable</Payload>
-          <Payload name="Water Pump">DID_Byte_Present_notPresent</Payload>
-          <Payload name="Emission Level">DID_DE00_4</Payload>
-          <Payload name="PTO_AMT">DID_Byte_Enable_Disable</Payload>
-          <Payload name="A/C Compressor Control">DID_Byte_Enable_Disable</Payload>
-          <Payload name="Low Liner">DID_Byte_Enable_Disable</Payload>
-        </Response>
-        <Response serviceId="6F">
-        </Response>
-      </Responses>
-    </Control>
+    <Services>
+        <Service>
+            <ID>10</ID>
+            <Name>DiagnosticSessionControl</Name>
+        </Service>
+        <Service>
+            <ID>22</ID>
+            <Name>ReadDataByIdentifier</Name>
+            <Sessions>01</Sessions>
+        </Service>
+        <Service>
+            <ID>2F</ID>
+            <Name>InputOutputControlByIdentifier</Name>
+        </Service>
+		<Service>
+			<ID>2E</ID>
+			<Name>WriteDataByIdentifier</Name>
+		</Service>
+    </Services>
+    <Sessions>
+        <Session>
+            <ID>01</ID>
+            <Name>Default Session</Name>
+        </Session>
+        <Session>
+            <ID>02</ID>
+            <Name>Programming Session</Name>
+        </Session>
+        <Session>
+            <ID>03</ID>
+            <Name>Extended Diagnostic Session</Name>
+        </Session>
+    </Sessions>
+    <Controls>
+		<Control>
+			<Address>DE00</Address>
+			<Name>DE00</Name>
+			<Type></Type>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Transmission">DID_DE00_0</Payload>
+					<Payload name="Auto CAB Tilt">DID_Byte_Enable_Disable</Payload>
+					<Payload name="Differential Lock">DID_Byte_Enable_Disable</Payload>
+					<Payload name="Water Pump">DID_Byte_Present_notPresent</Payload>
+					<Payload name="Emission Level">DID_DE00_4</Payload>
+					<Payload name="PTO_AMT">DID_Byte_Enable_Disable</Payload>
+					<Payload name="A/C Compressor Control">DID_Byte_Enable_Disable</Payload>
+					<Payload name="Low Liner">DID_Byte_Enable_Disable</Payload>
+				</Response>
+				<Response serviceId="6E">
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>DE01</Address>
+			<Name>DE01</Name>
+			<Type></Type>
+			<Group>ECU DID</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Heated Windshield">DID_Byte_Present_notPresent</Payload>
+					<Payload name="Front Fog Lamps">DID_Byte_Present_notPresent</Payload>
+					<Payload name="Corner Lighting">DID_Byte_Enable_Disable</Payload>
+					<Payload name="Liter of Engine">DID_DE01_3</Payload>
+					<Payload name="Auxiliary Heater">DID_DE01_4</Payload>
+					<Payload name="C6AS_Truck">DID_Byte_Enable_Disable</Payload>
+					<Payload name="DPF Systems">DID_Byte_Enable_Disable</Payload>
+					<Payload name="F-Sight">DID_Byte_Present_notPresent</Payload>
+				</Response>
+				<Response serviceId="6E">
+				</Response>
+			</Responses>
+		</Control>
     <Control>
       <Address>DE02</Address>
       <Name>DE02</Name>
@@ -72,7 +91,7 @@
           <Payload name="Autolock">DID_Byte_Enable_Disable</Payload>
           <Payload name="Vehicle Type">DID_DE02_7</Payload>
         </Response>
-        <Response serviceId="6F">
+        <Response serviceId="6E">
         </Response>
       </Responses>
     </Control>

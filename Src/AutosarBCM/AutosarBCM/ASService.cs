@@ -184,6 +184,7 @@ namespace AutosarBCM.Config
         }
     }
 
+
     public class DID_Byte_Present_notPresent : Payload
     {
         public DID_Byte_Present_notPresent(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
@@ -428,6 +429,35 @@ namespace AutosarBCM.Config
             return $"{PayloadInfo.Name,-40}{result}";
         }
     }
+    public class DID_DE01_3 : Payload
+    {
+        public DID_DE01_3(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "9 Liter";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "13 Liter";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+
+    public class DID_DE01_4 : Payload
+    {
+        public DID_DE01_4(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Disable";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Dry Type";
+            else if (this.Data[PayloadInfo.Index] == 2) result = "Wet Type";
+            else if (this.Data[PayloadInfo.Index] == 3) result = "Dry&Wet Type";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
     public class DID_PWM : Payload
     {
         public DID_PWM(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
@@ -516,6 +546,7 @@ namespace AutosarBCM.Enums
     public enum ControlName
     {
         DEOO,
+        DEO1,
         DE02,
         DE03,
         ACCutOffSupply,
