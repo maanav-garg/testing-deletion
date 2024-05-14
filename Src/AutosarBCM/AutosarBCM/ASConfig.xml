@@ -1,75 +1,65 @@
 ﻿<Configuration>
-    <Services>
-        <Service>
-            <ID>10</ID>
-            <Name>DiagnosticSessionControl</Name>
-        </Service>
-        <Service>
-            <ID>22</ID>
-            <Name>ReadDataByIdentifier</Name>
-            <Sessions>01</Sessions>
-        </Service>
-        <Service>
-            <ID>2F</ID>
-            <Name>InputOutputControlByIdentifier</Name>
-        </Service>
-		<Service>
-			<ID>2E</ID>
-			<Name>WriteDataByIdentifier</Name>
-		</Service>
-    </Services>
-    <Sessions>
-        <Session>
-            <ID>01</ID>
-            <Name>Default Session</Name>
-        </Session>
-        <Session>
-            <ID>02</ID>
-            <Name>Programming Session</Name>
-        </Session>
-        <Session>
-            <ID>03</ID>
-            <Name>Extended Diagnostic Session</Name>
-        </Session>
-    </Sessions>
-    <Controls>
-        <Control>
-            <Address>099B</Address>
-            <Name>ACCutOffSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62">
-                    <Payload name="ACCutOffSupply">DID_Byte_Activate_Inactivate</Payload>
-				</Response>
-				<Response serviceId="6F">
-				</Response>
-			</Responses>
-		</Control>
-		<Control>
-			<Address>DE00</Address>
-			<Name>DE00</Name>
-			<Type></Type>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Transmission">DID_DE00_0</Payload>
-					<Payload name="Auto CAB Tilt">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Differential Lock">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Water Pump">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Emission Level">DID_DE00_4</Payload>
-					<Payload name="PTO_AMT">DID_Byte_Enable_Disable</Payload>
-					<Payload name="A/C Compressor Control">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Low Liner">DID_Byte_Enable_Disable</Payload>
-				</Response>
-				<Response serviceId="6F">
-				</Response>
-			</Responses>
-		</Control>
+  <Services>
+    <Service>
+      <ID>10</ID>
+      <Name>DiagnosticSessionControl</Name>
+    </Service>
+    <Service>
+      <ID>22</ID>
+      <Name>ReadDataByIdentifier</Name>
+      <Sessions>01</Sessions>
+    </Service>
+    <Service>
+      <ID>2F</ID>
+      <Name>InputOutputControlByIdentifier</Name>
+    </Service>
+    <Service>
+      <ID>2E</ID>
+      <Name>WriteDataByIdentifier</Name>
+    </Service>
+  </Services>
+  <Sessions>
+    <Session>
+      <ID>01</ID>
+      <Name>Default Session</Name>
+    </Session>
+    <Session>
+      <ID>02</ID>
+      <Name>Programming Session</Name>
+    </Session>
+    <Session>
+      <ID>03</ID>
+      <Name>Extended Diagnostic Session</Name>
+    </Session>
+  </Sessions>
+  <Controls>
+
+    <Control>
+      <Address>DE00</Address>
+      <Name>DE00</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Transmission">DID_DE00_0</Payload>
+          <Payload name="Auto CAB Tilt">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Differential Lock">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Water Pump">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Emission Level">DID_DE00_4</Payload>
+          <Payload name="PTO_AMT">DID_Byte_Enable_Disable</Payload>
+          <Payload name="A/C Compressor Control">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Low Liner">DID_Byte_Enable_Disable</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
     <Control>
       <Address>DE02</Address>
       <Name>DE02</Name>
       <Type></Type>
+      <Group>ECU-DID</Group>
       <Services>22;2E</Services>
       <Responses>
         <Response serviceId="62">
@@ -101,744 +91,1109 @@
           <Payload name="SVO Damper">DID_Byte_Enable_Disable</Payload>
           <Payload name="Extra High Roof">DID_Byte_Present_notPresent</Payload>
           <Payload name="Rain Sensor">DID_Byte_Present_notPresent</Payload>
-                </Response>
-                <Response serviceId="6F">
-                </Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF51</Address>
-            <Name>AirHornActivateSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62">
-					<Payload name="AirHornActivateSupply">DID_Byte_Activate_Inactivate</Payload>
-				</Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>7160</Address>
-            <Name>Ajar_On_Off_Control</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62">
-					<Payload name="Ajar On Off Control">DID_Byte_On_Off</Payload>
-				</Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>C150</Address>
-            <Name>All_Doors_Lock_and_Ajar_Input_Signal</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62">
-					<Payload name="All Doors Lock and Ajar Input Signal">HexDump</Payload>
-				</Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>C151</Address>
-            <Name>All_Doors_Lock_and_Ajar_Output_Signal</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-            <Responses>
-                <Response serviceId="62">
-					<Payload name="All Doors Lock and Ajar Output Signal Status">HexDump</Payload>
-				</Response>
-                <Response serviceId="6F">HexDump</Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>41DA</Address>
-            <Name>Ambient_Light_LED_Power_Supply</Name>
-            <Type></Type>;
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>A195</Address>
-            <Name>Battery_Saver_System_Output_Signals</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF34</Address>
-            <Name>BedAreaLightingSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>99A2</Address>
-            <Name>Blower_Control_Relay_Supply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62">
-                    <Payload name="Blower Control Relay Supply">DID_Byte_Activate_Inactivate</Payload>
-                </Response>
-                <Response serviceId="6F">
-                </Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>9857</Address>
-            <Name>Blower_Switch</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF5F</Address>
-            <Name>BrakeLightRelaySupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF59</Address>
-            <Name>CabinTiltValveSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>4128</Address>
-            <Name>Cruise_control_switches</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>4255</Address>
-            <Name>Daytime_Running_Light_Output</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF00</Address>
-            <Name>Differential_Control_Input</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF53</Address>
-            <Name>DifferentialLockValve1Supply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF14</Address>
-            <Name>DomeLightSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF4C</Address>
-            <Name>DoorLockIndicatorSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>41C7</Address>
-            <Name>Driver_Power_Window_Motor</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF54</Address>
-            <Name>EngineBrakeSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF2F</Address>
-            <Name>FrontParkingLightSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF60</Address>
-            <Name>Hall_Sensor_Supply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>7150</Address>
-            <Name>Hazard_Warning_Switch</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>42A0</Address>
-            <Name>Headlamp_High_Beam_Output_Control</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF5A</Address>
-            <Name>HeatedMirrorSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF5B</Address>
-            <Name>HeatedWindshieldSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>40ED</Address>
-            <Name>Horn_Output_Control</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62">
-                    <Payload name="Horn Output Control">HexDump</Payload>
-                </Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>4129</Address>
-            <Name>Horn_Switch</Name>
-            <Type></Type>
-            <Services>22</Services>
-            <Responses>
-                <Response serviceId="62">
-                    <Payload name="Horn Switch">DID_Byte_Activate_Inactivate</Payload>
-                </Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF46</Address>
-            <Name>Input_Switches</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF55</Address>
-            <Name>InterLockValveSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF31</Address>
-            <Name>Interior12VLightDimmingSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF63</Address>
-            <Name>InteriorLightDimmingSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>A45F</Address>
-            <Name>Key_Switch_System_Input_Signal</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF4E</Address>
-            <Name>LED_Outputs</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF47</Address>
-            <Name>LIN_PWS_and_HLS_Switch</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>41EC</Address>
-            <Name>Left_Front_Fog_Lamps_Output</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>40E7</Address>
-            <Name>Left_Front_Low_Beam_Output_Contro</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>42C0</Address>
-            <Name>Left_Front_Low_Beam_Output</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>41E1</Address>
-            <Name>Left_Front_Turn_Lamp_Outage_Feedback</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>40C7</Address>
-            <Name>Left_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>40E2</Address>
-            <Name>Left_Rear_Turn_Signal_Lamp_Control</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF56</Address>
-            <Name>LowLinerFrontSideLiftedValveSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DD02</Address>
-            <Name>Main_ECU_Voltage_Supply</Name>
-            <Type></Type>
-            <Services>22</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF64</Address>
-            <Name>Map_Lamp_PWM_Supply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>F166</Address>
-            <Name>NOS_Message_Database</Name>
-            <Type></Type>
-            <Services>22</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF48</Address>
-            <Name>PTO_Switches</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF57</Address>
-            <Name>PTO_Valve_Supply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF4B</Address>
-            <Name>PWM_StartStopIllimunation12VLED</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>41C9</Address>
-            <Name>Passenger_Power_Window_Motor</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF12</Address>
-            <Name>Power_Mirror_Control</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62">
-					<Payload name="MainRightMirrorUpCtrl">DID_Byte_Present_notPresent</Payload>
-					<Payload name="MainRightMirrorRightCtrl">DID_Byte_Present_notPresent</Payload>
-					<Payload name="MainRightMirrorDownLeftCtrl">DID_Byte_Present_notPresent</Payload>
-					<Payload name="MainLeftMirrorUpCtrl">DID_Byte_Present_notPresent</Payload>
-					<Payload name="MainLeftMirrorRightCtrl">DID_Byte_Present_notPresent</Payload>
-					<Payload name="MainLeftMirrorDownLeftCtrl">DID_Byte_Present_notPresent</Payload>
-				</Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF06</Address>
-            <Name>Power_Window_Switch_Input</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>41F1</Address>
-            <Name>Rear_Fog_Lamps_Output</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>41EF</Address>
-            <Name>Rear_Park_Lamps_Output</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF5C</Address>
-            <Name>ReverseGearSupply</Name>
-            <Type></Type>
-            <Services>22</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>41F3</Address>
-            <Name>Right_Front_Fog_Lamps_Output</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>40E8</Address>
-            <Name>Right_Front_Low_Beam_Output_Control</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>42C1</Address>
-            <Name>Right_Front_Low_Beam_Output</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>41E3</Address>
-            <Name>Right_Front_Turn_Lamp_Outage_Feedback</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>40C6</Address>
-            <Name>Right_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>40E0</Address>
-            <Name>Right_Rear_Turn_Signal_Lamp_Control</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF43</Address>
-            <Name>Spare_Analog_Input</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF44</Address>
-            <Name>Spare_Digital_Outputs</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF07</Address>
-            <Name>Spare_PWM_Inputs</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF50</Address>
-            <Name>Spare_Switch</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF49</Address>
-            <Name>Start_Stop_Switches</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF30</Address>
-            <Name>SteeringColumnSwitchIlluminationSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF5D</Address>
-            <Name>StepLightsSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF65</Address>
-            <Name>Stowage_Box_Reminder</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>A493</Address>
-            <Name>Sunroof_Motor</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>A492</Address>
-            <Name>Sunroof_Switch</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>1983</Address>
-            <Name>TCCM_Input</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62">
-                    <Payload name="KL15Relay1">DID_Bytes_High_Low</Payload>
-					<Payload name="KL15Relay2">DID_Bytes_High_Low</Payload>
-					<Payload name="KL50Output">DID_Bytes_High_Low</Payload>
-					<Payload name="KL75Relay1">DID_Bytes_High_Low</Payload>
-                </Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF62</Address>
-            <Name>TrailerTagAxleLifting1Supply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>4253</Address>
-            <Name>Turn_Indicator_Switch_Input</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>402A</Address>
-            <Name>Vehicle_Battery_Voltage</Name>
-            <Type></Type>
-            <Services>22</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF4D</Address>
-            <Name>WCInhibit</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>A463</Address>
-            <Name>Washer_Pump_Front_Relay</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>DF5E</Address>
-            <Name>WaterPumpSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>A461</Address>
-            <Name>Windscreen_Wipers_System_Output_Signal</Name>
-            <Type></Type>
-            <Services>22</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-        <Control>
-            <Address>A460</Address>
-            <Name>WiperParkPositionSwitch</Name>
-            <Type></Type>
-            <Services>22</Services>
-            <Responses>
-                <Response serviceId="62"></Response>
-            </Responses>
-        </Control>
-    </Controls>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>099B</Address>
+      <Name>ACCutOffSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="ACCutOffSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>1983</Address>
+      <Name>TCCM_Input</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="KL15Relay1">DID_Bytes_High_Low</Payload>
+          <Payload name="KL15Relay2">DID_Bytes_High_Low</Payload>
+          <Payload name="KL50Output">DID_Bytes_High_Low</Payload>
+          <Payload name="KL75Relay1">DID_Bytes_High_Low</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>40ED</Address>
+      <Name>Horn_Output_Control</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Horn Output Control">HexDump</Payload>
+        </Response>
+        <Response serviceId ="6F"> </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>4129</Address>
+      <Name>Horn_Switch</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Horn Switch">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>41DA</Address>
+      <Name>Ambient_Light_LED_Power_Supply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Ambient Light LED Power Supply">DID_PWM</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>41E1</Address>
+      <Name>Left_Front_Turn_Lamp_Outage_Feedback</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name=" Left Front Turn Lamp Outage Feedback">DID_Byte_On_Off</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>41E3</Address>
+      <Name>Right_Front_Turn_Lamp_Outage_Feedback</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Right Front Turn Lamp Outage Feedback">DID_Byte_On_Off</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>7160</Address>
+      <Name>Ajar_On_Off_Control</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Ajar On Off Control">DID_Byte_On_Off</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>7150</Address>
+      <Name>Hazard_Warning_Switch</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Hazar Warning Switch">DID_Bytes_On_Off</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>9857</Address>
+      <Name>Blower_Switch</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Blower Switch">DID_Byte_On_Off</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>99A2</Address>
+      <Name>Blower_Control_Relay_Supply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Blower Control Relay Supply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>A195</Address>
+      <Name>Battery_Saver_System_Output_Signals</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Battery Saver Set Control">DID_Byte_On_Off</Payload>
+          <Payload name="Battery Saver Reset Control">DID_Byte_On_Off</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>A45F</Address>
+      <Name>Key_Switch_System_Input_Signal</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Ignition/Crank">DID_Byte_On_Off</Payload>
+          <Payload name="Ignition Switch">DID_Byte_On_Off</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>A460</Address>
+      <Name>WiperParkPositionSwitch</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="WiperParkPositionSwitch">DID_Byte_On_Off</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>A461</Address>
+      <Name>Windscreen_Wipers_System_Output_Signal</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Wiper Low Relay">DID_Byte_On_Off</Payload>
+          <Payload name="Wiper High Relay">DID_Byte_On_Off</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>A463</Address>
+      <Name>Washer_Pump_Front_Relay</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Washer Pump Front Relay">DID_Byte_On_Off</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>A492</Address>
+      <Name>Sunroof_Switch</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Sunroof Close Switch">DID_Byte_On_Off</Payload>
+          <Payload name="Sunroof Open Switch">DID_Byte_On_Off</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>A493</Address>
+      <Name>Sunroof_Motor</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="MOT-B">DID_Byte_On_Off</Payload>
+          <Payload name="MOT-A">DID_Byte_On_Off</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>C150</Address>
+      <Name>All_Doors_Lock_and_Ajar_Input_Signal</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="All Doors Lock and Ajar Input Signal">HexDump</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>C151</Address>
+      <Name>All_Doors_Lock_and_Ajar_Output_Signal</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="All Doors Lock and Ajar Output Signal Status">HexDump</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF00</Address>
+      <Name>Differential_Control_Input</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="DiffLock1DriverRequestSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="DiffLock1FeedbackSwitch">DID_Byte_Present_notPresent</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF06</Address>
+      <Name>Power_Window_Switch_Input</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="PowerWindowPASSDownSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="PowerWindowPASSUpSwitch">DID_Byte_Present_notPresent</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF07</Address>
+      <Name>Spare_PWM_Inputs</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="SparePWM3">DID_PWM</Payload>
+          <Payload name="SparePWM4">DID_PWM</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF12</Address>
+      <Name>Power_Mirror_Control</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="MainRightMirrorUpCtrl">DID_Byte_Present_notPresent</Payload>
+          <Payload name="MainRightMirrorRightCtrl">DID_Byte_Present_notPresent</Payload>
+          <Payload name="MainRightMirrorDownLeftCtrl">DID_Byte_Present_notPresent</Payload>
+          <Payload name="MainLeftMirrorUpCtrl">DID_Byte_Present_notPresent</Payload>
+          <Payload name="MainLeftMirrorRightCtrl">DID_Byte_Present_notPresent</Payload>
+          <Payload name="MainLeftMirrorDownLeftCtrl">DID_Byte_Present_notPresent</Payload>
+        </Response>
+        <Response serviceId ="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF14</Address>
+      <Name>DomeLightSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="DomeLightSupply">DID_PWM</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF2F</Address>
+      <Name>FrontParkingLightSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="FrontParkingLightSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF30</Address>
+      <Name>SteeringColumnSwitchIlluminationSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="SteeringColumnSwitchIlluminationSupply">DID_PWM</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF31</Address>
+      <Name>Interior12VLightDimmingSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Interior12VLightDimmingSupply">DID_PWM</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF34</Address>
+      <Name>BedAreaLightingSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="BedAreaLightingSupply">DID_PWM</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF43</Address>
+      <Name>Spare_Analog_Input</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="SpareAnalogInput2">HexDump</Payload>
+          <Payload name="SpareAnalogInput1">HexDump</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF44</Address>
+      <Name>Spare_Digital_Outputs</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="SpareDigitalOutput2">HexDump</Payload>
+          <Payload name="SpareDigitalOutput3">HexDump</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF46</Address>
+      <Name>Input_Switches</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="HornTypeSelectionSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="AxleLifting1Switch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="LowLinerSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="RockingSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="TrailerTagAxleLifting">DID_Byte_Present_notPresent</Payload>
+          <Payload name="CabinTiltSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="InteriorLampOffSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="TrailerDetectionSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="DamperConnectionSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="EraglonassGlobalMute">DID_Byte_Present_notPresent</Payload>
+          <Payload name="AlternatorChargingStatus">DID_Byte_Present_notPresent</Payload>
+          <Payload name="EHPASInput">DID_Byte_Present_notPresent</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF48</Address>
+      <Name>PTO_Switches</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="MainPTOAckSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="PTO1AcknowledgementSwitch">DID_Byte_Present_notPresent</Payload>
+          <Payload name="PTO2AcknowledgementSwitch">DID_Byte_Present_notPresent</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF49</Address>
+      <Name>Start_Stop_Switches</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Start Stop Switch 3">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Start Stop Switch 2">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Start Stop Switch 1">DID_Byte_Present_notPresent</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF4B</Address>
+      <Name>PWM_StartStopIllimunation12VLED</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="PWM_StartStopIllimunation12VLED">DID_PWM</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF4C</Address>
+      <Name>DoorLockIndicatorSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="DoorLockIndicatorSupply">DID_PWM</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF4D</Address>
+      <Name>WCInhibit</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="WCInhibit">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF4E</Address>
+      <Name>LED_Outputs</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="BlendingFuncIlluminationLED">DID_Byte_Activate_Inactivate</Payload>
+          <Payload name="ESPOffOutputLED">DID_Byte_Activate_Inactivate</Payload>
+          <Payload name="LDWSFuncIlluminationLED">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF50</Address>
+      <Name>Spare_Switch</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Spare Switch 29">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 28">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 27">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 25">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 24">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 22">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 21">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 19">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 18">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 17">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 16">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 15">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 14">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 12">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 11">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 10">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 9">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 7">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 6">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 5">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 4">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 3">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare Switch 1">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Spare1 Config Switch">DID_Byte_Present_notPresent</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF51</Address>
+      <Name>AirHornActivateSupply</Name>
+      <Type></Type>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="AirHornActivateSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF53</Address>
+      <Name>DifferentialLockValve1Supply</Name>
+      <Type></Type>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="DifferentialLockValve1Supply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF54</Address>
+      <Name>EngineBrakeSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="EngineBrakeSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF55</Address>
+      <Name>InterLockValveSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="InterLockValveSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF56</Address>
+      <Name>LowLinerFrontSideLiftedValveSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="LowLinerFrontSideLiftedValveSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF57</Address>
+      <Name>PTO_Valve_Supply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="PTO1ValveSupply">DID_Byte_Activate_Inactivate</Payload>
+          <Payload name="PTO2ValveSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF59</Address>
+      <Name>CabinTiltValveSupply</Name>
+      <Type></Type>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="CabinTiltValveSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF5A</Address>
+      <Name>HeatedMirrorSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="HeatedMirrorSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF5B</Address>
+      <Name>HeatedWindshieldSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="HeatedWindshieldSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF5C</Address>
+      <Name>ReverseGearSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="ReverseGearSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF5D</Address>
+      <Name>StepLightsSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="StepLightsSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF5E</Address>
+      <Name>WaterPumpSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="WaterPumpSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF5F</Address>
+      <Name>BrakeLightRelaySupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="BraleLightRelaySupply"></Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF60</Address>
+      <Name>Hall_Sensor_Supply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="HallSensorLeftSupply">DID_Byte_Activate_Inactivate</Payload>
+          <Payload name="HallSensorRightSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF62</Address>
+      <Name>TrailerTagAxleLifting1Supply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="TrailerTagAxleLifting1Supply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF63</Address>
+      <Name>InteriorLightDimmingSupply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="InteriorLightDimmingSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF64</Address>
+      <Name>Map_Lamp_PWM_Supply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="MapLampDriverPWMSupply">DID_Byte_Activate_Inactivate</Payload>
+          <Payload name="MapLampPassengerPWMSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF65</Address>
+      <Name>Stowage_Box_Reminder</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Left Side Stowage Box">HexDump_1Byte</Payload>
+          <Payload name="Right Side Stowage Box">HexDump_1Byte</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DFFF</Address>
+      <Name>Test_Data</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Test_Data">HexDump_4Bytes</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>402A</Address>
+      <Name>Vehicle_Battery_Voltage</Name>
+      <Type></Type>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Vehicle Battery Voltage">Unsigned_1Byte</Payload>
+          <Payload name="VehicleConverter12VRKESupply">Unsigned_1Byte</Payload>
+          <Payload name="Vbat24VSupply#1_1">Unsigned_1Byte</Payload>
+          <Payload name="Vbat24VSupply#1_2">Unsigned_1Byte</Payload>
+          <Payload name="Vbat24VSupply#2_1">Unsigned_1Byte</Payload>
+          <Payload name="Vbat24VSupply#2_2">Unsigned_1Byte</Payload>
+          <Payload name="Vbat24VSupply#3_1">Unsigned_1Byte</Payload>
+          <Payload name="Vbat24VSupply#3_2">Unsigned_1Byte</Payload>
+          <Payload name="Vbat24VSupply#4_1">Unsigned_1Byte</Payload>
+          <Payload name="Vbat24VSupply#4_2">Unsigned_1Byte</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>40C6</Address>
+      <Name>Right_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Right Rear Turn Lamp/LED Outage Feedback">DID_Lamp_Status</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>40C7</Address>
+      <Name>Left_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Left Rear Turn Lamp/LED Outage Feedback">DID_Lamp_Status</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>40E2</Address>
+      <Name>Left_Rear_Turn_Signal_Lamp_Control</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Left Rear Turn Signal Lamp Control">DID_Byte_Lamp_Control</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>40E0</Address>
+      <Name>Right_Rear_Turn_Signal_Lamp_Control</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Right Rear Turn Signal Lamp Control">DID_Byte_Lamp_Control</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>4128</Address>
+      <Name>Cruise_Control_Switches</Name>
+      <Type></Type>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Cruise Set + Switch">DID_Byte_On_Off</Payload>
+          <Payload name="Cruise Resume Switch">DID_Byte_On_Off</Payload>
+          <Payload name="Cruise Off Switch">DID_Byte_On_Off</Payload>
+          <Payload name="Cruise Time Gap minus Switch">DID_Byte_On_Off</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>41C7</Address>
+      <Name>Driver_Power_Window_Motor</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Driver Power Window Motor Up">DID_PWM</Payload>
+          <Payload name="Driver Power Window Motor Down">DID_PWM</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>41C9</Address>
+      <Name>Passenger_Power_Window_Motor</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Passenger Power Window Motor Up">DID_PWM</Payload>
+          <Payload name="Passenger Power Window Motor Down">DID_PWM</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>41EC</Address>
+      <Name>Left_Front_Fog_Lamps_Output</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Left Front Fog Lamps Output">DID_41EC_0</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>41EF</Address>
+      <Name>Rear_Park_Lamps_Output</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="RearParkingLightLeftSupply">DID_41EF_0</Payload>
+          <Payload name="RearParkingLightRightSupply">DID_41EF_0</Payload>
+          <Payload name="RearParkingLightTrailerSupply">DID_41EF_0</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>41F1</Address>
+      <Name>Rear_Fog_Lamps_Output</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Rear Fog Lamps Output">DID_41F1_0</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>41F3</Address>
+      <Name>Right_Front_Fog_Lamps_Output</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Right Front Log Lamps Output">DID_41F3_0</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>4253</Address>
+      <Name>Turn_Indicator_Switch_Input</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Turn Indicator Switch Input">DID_4253_0</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>4255</Address>
+      <Name>Daytime_Running_Light_Output</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="DDRLSupplyLeft">DID_4255_Daytime_Running_Light</Payload>
+          <Payload name="DDRLSupplyRight">DID_4255_Daytime_Running_Light</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>42A0</Address>
+      <Name>Headlamp_High_Beam_Output_Control</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="High Beam Left">DID_42A0_0</Payload>
+          <Payload name="High Beam Left">DID_42A0_0</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DD02</Address>
+      <Name>Main_ECU_Voltage_Supply</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Main Ecu Voltage Supply">HexDump_1Byte</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>F166</Address>
+      <Name>NOS_Message_Database</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="NOS Message Database #1 Version Number">DID_F166_0</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>40E8</Address>
+      <Name>Right_Front_Low_Beam_Output_Control</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Right Front Low Beam Output Control">DID_40E8_0</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>40E7</Address>
+      <Name>Left_Front_Low_Beam_Output_Contro</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Left Front Low Beam Output Control">DID_40E7_0</Payload>
+        </Response>
+        <Response serviceId="6F"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>F1F0</Address>
+      <Name>Vestel_Internal_Software_Version</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Vestel Internal Software Version">Internal Version</Payload>
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF47</Address>
+      <Name>LIN_PWS_and_HLS_Switch</Name>
+      <Type></Type>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>42C0</Address>
+      <Name>Left_Front_Low_Beam_Output</Name>
+      <Type></Type>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>42C1</Address>
+      <Name>Right_Front_Low_Beam_Output</Name>
+      <Type></Type>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62"></Response>
+      </Responses>
+    </Control>
+  </Controls>
 </Configuration>
