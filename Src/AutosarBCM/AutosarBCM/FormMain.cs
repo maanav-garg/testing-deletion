@@ -534,7 +534,8 @@ namespace AutosarBCM
             {
                 case MonitorTestType.Generic:
                     formMonitorGenericInput.Show(dockMonitor, DockState.Document);
-                    formMonitorGenericOutput.Show(dockMonitor, DockState.Document);
+                    // visibility settings for generic output tab
+                    //formMonitorGenericOutput.Show(dockMonitor, DockState.Document);
                     break;
                 case MonitorTestType.Environmental:
                     formMonitorEnvInput.Show(dockMonitor, DockState.Document);
@@ -1166,5 +1167,10 @@ namespace AutosarBCM
         }
 
         #endregion
+
+        private void dockMonitor_ActiveContentChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

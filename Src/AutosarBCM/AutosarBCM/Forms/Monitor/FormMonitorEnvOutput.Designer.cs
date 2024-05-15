@@ -46,6 +46,7 @@
             this.pnlMonitorOutput.Size = new System.Drawing.Size(800, 425);
             this.pnlMonitorOutput.TabIndex = 0;
             this.pnlMonitorOutput.WrapContents = false;
+            this.pnlMonitorOutput.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMonitorOutput_Paint);
             // 
             // lblData
             // 
