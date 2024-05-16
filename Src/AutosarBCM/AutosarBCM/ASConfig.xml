@@ -115,6 +115,27 @@
         </Response>
       </Responses>
     </Control>
+		<Control>
+			<Address>DE04</Address>
+			<Name>DE04</Name>
+			<Type></Type>
+			<Group>ECU DID</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Active Emergency Breaking System">DID_Byte_Enable_Disable</Payload>
+					<Payload name="Active Emergency Breaking System">DID_Byte_Enable_Disable</Payload>
+					<Payload name="Trailer Detection">DID_Byte_Enable_Disable</Payload>
+					<Payload name="Sunroof">DID_Byte_Present_notPresent</Payload>
+					<Payload name="Climate Control Module">DID_Byte_Present_notPresent</Payload>
+					<Payload name="Multimedia">DID_Byte_Present_notPresent</Payload>
+					<Payload name="Intarder">DID_Byte_Present_notPresent</Payload>
+					<Payload name="Brake System">DID_DE04_7</Payload>
+				</Response>
+				<Response serviceId="6E">
+				</Response>
+			</Responses>
+		</Control>
     <Control>
       <Address>099B</Address>
       <Name>ACCutOffSupply</Name>
