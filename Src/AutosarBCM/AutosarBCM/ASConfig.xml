@@ -111,7 +111,7 @@
           <Payload name="Extra High Roof">DID_Byte_Present_notPresent</Payload>
           <Payload name="Rain Sensor">DID_Byte_Present_notPresent</Payload>
         </Response>
-        <Response serviceId="6F">
+        <Response serviceId="6E">
         </Response>
       </Responses>
     </Control>
