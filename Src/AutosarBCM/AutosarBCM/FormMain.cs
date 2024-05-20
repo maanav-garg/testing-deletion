@@ -1167,10 +1167,5 @@ namespace AutosarBCM
         }
 
         #endregion
-
-        private void dockMonitor_ActiveContentChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

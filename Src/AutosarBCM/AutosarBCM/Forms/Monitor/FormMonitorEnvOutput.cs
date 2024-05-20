@@ -557,9 +557,5 @@ namespace AutosarBCM.Forms.Monitor
 
         #endregion
 
-        private void pnlMonitorOutput_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }
