@@ -36,7 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblDiff = new System.Windows.Forms.Label();
             this.btnRead = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lbResponse = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // lblName
@@ -118,20 +118,24 @@
             this.btnRead.UseVisualStyleBackColor = true;
             this.btnRead.Click += new System.EventHandler(this.btnRead_Click);
             // 
-            // listBox1
+            // lbResponse
             // 
-            this.listBox1.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(6, 39);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(343, 69);
-            this.listBox1.TabIndex = 0;
+            this.lbResponse.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.lbResponse.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lbResponse.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbResponse.FormattingEnabled = true;
+            this.lbResponse.ItemHeight = 15;
+            this.lbResponse.Location = new System.Drawing.Point(6, 39);
+            this.lbResponse.Name = "lbResponse";
+            this.lbResponse.Size = new System.Drawing.Size(343, 64);
+            this.lbResponse.TabIndex = 0;
+            this.lbResponse.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbResponse_DrawItem);
             // 
             // UCItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.lbResponse);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnRead);
             this.Controls.Add(this.lblDiff);
@@ -157,6 +161,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblDiff;
         private System.Windows.Forms.Button btnRead;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox lbResponse;
     }
 }

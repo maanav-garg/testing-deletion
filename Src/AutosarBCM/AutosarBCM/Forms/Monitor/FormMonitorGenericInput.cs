@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Config;
+using AutosarBCM.Core;
 
 namespace AutosarBCM.Forms.Monitor
 {

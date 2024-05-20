@@ -18,6 +18,7 @@ using AutosarBCM.Properties;
 using AutosarBCM.UserControls.Monitor;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Forms;
+using AutosarBCM.Core;
 
 namespace AutosarBCM
 {
@@ -185,7 +186,7 @@ namespace AutosarBCM
             }
         }
 
-        internal ASApp app = new ASApp();
+        internal ASContext ASContext = new ASContext(null);
 
         #endregion
 
@@ -746,9 +747,9 @@ namespace AutosarBCM
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var filePath = openFileDialog.FileName;
-                ASApp.ParseConfiguration(filePath);
+                ASContext = new ASContext(filePath);
                 LoadSessions();
-                var configuration = ASApp.Configuration;
+                var configuration = ASContext.Configuration;
                 if (configuration == null)
                     return;
                 else
@@ -870,7 +871,7 @@ namespace AutosarBCM
 
             if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
             {
-                genericInput.LoadConfiguration(ASApp.Configuration);
+                genericInput.LoadConfiguration(ASContext.Configuration);
                 ((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
             }
             else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
@@ -1145,7 +1146,7 @@ namespace AutosarBCM
         private void LoadSessions()
         {
             tsbSession.DropDownItems.Clear();
-            foreach (var session in ASApp.Configuration.Sessions)
+            foreach (var session in ASContext.Configuration.Sessions)
                 tsbSession.DropDownItems.Add(new ToolStripMenuItem(session.Name, null, new EventHandler(tsbSession_Click)) { Tag = session });
 
             if (tsbSession.DropDownItems.Count > 0)
@@ -1156,7 +1157,7 @@ namespace AutosarBCM
         {
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
-            ASApp.CurrentSession = sessionInfo;
+            ASContext.CurrentSession = sessionInfo;
             tsbSession.Text = $"Session: {sessionInfo.Name}";
         }
 

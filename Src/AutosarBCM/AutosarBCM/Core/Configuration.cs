@@ -1,24 +1,28 @@
-﻿using AutosarBCM.Enums;
+﻿using AutosarBCM.Core.Enums;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace AutosarBCM.Config
+namespace AutosarBCM.Core
 {
-    public class ServiceInfo
-    {
-        public byte ID { get; set; }
-        public string Name { get; set; }
-        public List<byte> Sessions { get; set; }
-    }
-
     public class SessionInfo
     {
         public byte ID { get; set; }
         public string Name { get; set; }
+    }
+
+    public class ServiceInfo
+    {
+        public byte RequestID { get; set; }
+        public byte ResponseID { get; set; }
+        public string Name { get; set; }
+        public int ResponseIndex { get; set; }
+        public List<byte> Sessions { get; set; }
     }
 
     public class ControlInfo
@@ -33,6 +37,11 @@ namespace AutosarBCM.Config
         {
             if (serviceName == ServiceName.ReadDataByIdentifier) new ReadDataByIdenService().Transmit(this);
         }
+
+        internal IEnumerable<PayloadInfo> GetPayloads(byte serviceID)
+        {
+            return Responses.Where(a => a.ServiceID == serviceID).First()?.Payloads;
+        }
     }
 
     public class PayloadInfo
@@ -40,6 +49,13 @@ namespace AutosarBCM.Config
         public int Index { get; set; }
         public string Name { get; set; }
         public string TypeName { get; set; }
+        public int Length { get; set; }
+        public Dictionary<byte, string> ResponseColors { get; set; }
+
+        internal string GetColor(byte key)
+        {
+            return ResponseColors.Where(k => k.Key == key).First().Value;
+        }
     }
 
     public class ResponseInfo
@@ -50,27 +66,28 @@ namespace AutosarBCM.Config
 
     public class ConfigurationInfo
     {
+        public Dictionary<string, string> Settings { get; set; }
         public List<ServiceInfo> Services { get; set; }
         public List<SessionInfo> Sessions { get; set; }
         public List<ControlInfo> Controls { get; set; }
-    }
+        public List<PayloadInfo> Payloads { get; set; }
 
-    public class ASApp
-    {
-        public static SessionInfo CurrentSession { get; set; }
-        public static ConfigurationInfo Configuration { get; set; }
-
-        public ASApp() { }
-
-        internal static ConfigurationInfo ParseConfiguration(string filePath)
+        internal static ConfigurationInfo Parse(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
+
+            var settings = doc.Descendants("Settings").Descendants("Entry")
+                .ToDictionary(
+                    k => k.Attribute("key").Value,
+                    v => v.Attribute("value").Value);
 
             var services = doc.Descendants("Service")
                 .Select(s => new ServiceInfo
                 {
-                    ID = Convert.ToByte(s.Element("ID").Value, 16),
+                    RequestID = s.Attribute("requestID") != null ? Convert.ToByte(s.Attribute("requestID").Value, 16) : (byte)0,
+                    ResponseID = s.Attribute("responseID") != null ? Convert.ToByte(s.Attribute("responseID").Value, 16) : (byte)0,
                     Name = s.Element("Name").Value,
+                    ResponseIndex = s.Element("ResponseIndex") != null ? int.Parse(s.Element("ResponseIndex").Value) : 0,
                     Sessions = s.Element("Sessions") != null ? s.Element("Sessions").Value.Split(';').Select(byte.Parse).ToList() : new List<byte>()
                 })
                 .ToList();
@@ -104,12 +121,54 @@ namespace AutosarBCM.Config
                             }).ToList() : new List<ResponseInfo>(),
                 }).ToList();
 
-            return Configuration = new ConfigurationInfo
+            var payloads = doc.Descendants("Payloads").Descendants("Payload")
+                .Select(s => new PayloadInfo
+                {
+                    Length = int.Parse(s.Attribute("length").Value),
+                    TypeName = s.Attribute("typeName").Value,
+                    ResponseColors = s.Element("ResponseColors") != null ? s.Elements("ResponseColors").Elements("Color")
+                        .ToDictionary(
+                            k => Convert.ToByte(k.Attribute("value").Value, 16),
+                            v => v.Value)
+                        : new Dictionary<byte, string>()
+                })
+                .ToList();
+
+            return new ConfigurationInfo
             {
+                Settings = settings,
                 Services = services,
                 Sessions = sessions,
-                Controls = controls
+                Controls = controls,
+                Payloads = payloads,
             };
+        }
+
+        internal ServiceInfo GetServiceByID(byte serviceID)
+        {
+            return Services.Where(x => x.ResponseID == serviceID).FirstOrDefault();
+        }
+
+        internal ControlInfo GetControlByAddress(ushort controlAddress)
+        {
+            return Controls.Where(x => x.Address == controlAddress).FirstOrDefault();
+        }
+
+        internal PayloadInfo GetPayloadInfoByType(string typeName)
+        {
+            return Payloads.FirstOrDefault(x => x.TypeName == typeName);
+        }
+    }
+
+    public class ASContext
+    {
+        public static SessionInfo CurrentSession { get; set; }
+        public static ConfigurationInfo Configuration { get; set; }
+
+        public ASContext(string configFile)
+        {
+            if (configFile != null)
+                Configuration = ConfigurationInfo.Parse(configFile);
         }
     }
 }

@@ -14,6 +14,7 @@ using Connection.Hardware.SP;
 using AutosarBCM.Common;
 using AutosarBCM.Message;
 using AutosarBCM.Properties;
+using AutosarBCM.Core;
 
 namespace AutosarBCM
 {
@@ -394,7 +395,7 @@ namespace AutosarBCM
         {
             if (e.Data[1] == 0x62 || e.Data[1] == 0x6F)
             {
-                var response = new Config.ASResponse(e.Data);
+                var response = ASResponse.Parse(e.Data);
                 foreach (var receiver in FormMain.Receivers)
                     if (receiver.Receive(response)) return;
             }

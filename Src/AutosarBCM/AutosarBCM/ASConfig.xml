@@ -1,20 +1,20 @@
 ﻿<Configuration>
+    <Settings>
+        <Entry key="namesPadding" value="30" />
+    </Settings>
     <Services>
-        <Service>
-            <ID>10</ID>
+        <Service requestID="10">
             <Name>DiagnosticSessionControl</Name>
         </Service>
-        <Service>
-            <ID>22</ID>
+        <Service requestID="22" responseID="62">
             <Name>ReadDataByIdentifier</Name>
             <Sessions>01</Sessions>
+            <ResponseIndex>4</ResponseIndex>
         </Service>
-        <Service>
-            <ID>2F</ID>
+        <Service requestID="2F">
             <Name>InputOutputControlByIdentifier</Name>
         </Service>
-		<Service>
-			<ID>2E</ID>
+		<Service requestID="2E">
 			<Name>WriteDataByIdentifier</Name>
 		</Service>
     </Services>
@@ -1215,4 +1215,18 @@
       </Responses>
     </Control>
   </Controls>
+  <Payloads>
+        <Payload length="1" typeName="DID_Byte_Enable_Disable"></Payload>
+        <Payload length="1" typeName="DID_Byte_Enable_Disable"></Payload>
+        <Payload length="1" typeName="DID_Byte_Present_notPresent">
+            <ResponseColors>
+                <Color value="00">Red</Color>
+                <Color value="01">Green</Color>
+            </ResponseColors>
+        </Payload>
+        <Payload length="1" typeName="DID_DE00_4"></Payload>
+        <Payload length="1" typeName="DID_Byte_Enable_Disable"></Payload>
+        <Payload length="1" typeName="DID_Byte_Enable_Disable"></Payload>
+        <Payload length="1" typeName="DID_Byte_Enable_Disable"></Payload>
+    </Payloads>
 </Configuration>
