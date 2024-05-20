@@ -523,6 +523,7 @@ namespace AutosarBCM
         {
             if (IsTestRunning)
             {
+                //Test
                 Helper.ShowWarningMessageBox("There is an already running test. Please stop it first");
                 return;
             }
@@ -534,7 +535,8 @@ namespace AutosarBCM
             {
                 case MonitorTestType.Generic:
                     formMonitorGenericInput.Show(dockMonitor, DockState.Document);
-                    formMonitorGenericOutput.Show(dockMonitor, DockState.Document);
+                    // visibility settings for generic output tab
+                    //formMonitorGenericOutput.Show(dockMonitor, DockState.Document);
                     break;
                 case MonitorTestType.Environmental:
                     formMonitorEnvInput.Show(dockMonitor, DockState.Document);

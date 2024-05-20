@@ -58,10 +58,10 @@
             this.lblData});
             this.statusStrip1.Location = new System.Drawing.Point(0, 426);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1067, 29);
+            this.statusStrip1.Size = new System.Drawing.Size(800, 24);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.Visible = false;
             // 
             // lblItemName
             // 
@@ -116,14 +116,14 @@
             this.lblCoefficient.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblCoefficient.ForeColor = System.Drawing.SystemColors.GrayText;
             this.lblCoefficient.Name = "lblCoefficient";
-            this.lblCoefficient.Size = new System.Drawing.Size(17, 23);
+            this.lblCoefficient.Size = new System.Drawing.Size(15, 19);
             this.lblCoefficient.Text = "-";
             // 
             // toolStripStatusLabel8
             // 
             this.toolStripStatusLabel8.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.toolStripStatusLabel8.Name = "toolStripStatusLabel8";
-            this.toolStripStatusLabel8.Size = new System.Drawing.Size(46, 23);
+            this.toolStripStatusLabel8.Size = new System.Drawing.Size(38, 19);
             this.toolStripStatusLabel8.Text = "Data";
             // 
             // lblData
@@ -131,7 +131,7 @@
             this.lblData.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblData.ForeColor = System.Drawing.SystemColors.GrayText;
             this.lblData.Name = "lblData";
-            this.lblData.Size = new System.Drawing.Size(17, 23);
+            this.lblData.Size = new System.Drawing.Size(15, 19);
             this.lblData.Text = "-";
             // 
             // pnlMonitorInput
@@ -139,20 +139,22 @@
             this.pnlMonitorInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMonitorInput.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlMonitorInput.Location = new System.Drawing.Point(0, 0);
+            this.pnlMonitorInput.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlMonitorInput.Name = "pnlMonitorInput";
-            this.pnlMonitorInput.Size = new System.Drawing.Size(1067, 525);
+            this.pnlMonitorInput.Size = new System.Drawing.Size(800, 450);
             this.pnlMonitorInput.TabIndex = 2;
             this.pnlMonitorInput.WrapContents = false;
             // 
             // FormMonitorEnvInput
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.CloseButton = false;
             this.CloseButtonVisible = false;
             this.Controls.Add(this.pnlMonitorInput);
             this.Controls.Add(this.statusStrip1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FormMonitorEnvInput";
             this.Text = "Input";
             this.statusStrip1.ResumeLayout(false);
