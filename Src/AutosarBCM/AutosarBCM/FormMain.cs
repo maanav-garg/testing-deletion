@@ -523,6 +523,7 @@ namespace AutosarBCM
         {
             if (IsTestRunning)
             {
+                //Test
                 Helper.ShowWarningMessageBox("There is an already running test. Please stop it first");
                 return;
             }
