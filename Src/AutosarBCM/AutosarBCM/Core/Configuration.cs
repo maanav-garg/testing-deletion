@@ -114,7 +114,7 @@ namespace AutosarBCM.Core
                                 ServiceID = Convert.ToByte(x.Attribute("serviceId").Value, 16),
                                 Payloads = x.Elements("Payload") != null ? x.Elements("Payload").Select((y, i) => new PayloadInfo
                                 {
-                                    Index = i + 4,
+                                    Index = i + 3,
                                     Name = y.Attribute("name").Value,
                                     TypeName = y.Value
                                 }).ToList() : new List<PayloadInfo>(),
