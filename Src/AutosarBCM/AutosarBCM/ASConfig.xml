@@ -9,7 +9,7 @@
         <Service requestID="22" responseID="62">
             <Name>ReadDataByIdentifier</Name>
             <Sessions>01</Sessions>
-            <ResponseIndex>4</ResponseIndex>
+            <ResponseIndex>3</ResponseIndex>
         </Service>
         <Service requestID="2F">
             <Name>InputOutputControlByIdentifier</Name>
@@ -1225,8 +1225,8 @@
             </ResponseColors>
         </Payload>
         <Payload length="1" typeName="DID_DE00_4"></Payload>
-        <Payload length="1" typeName="DID_Byte_Enable_Disable"></Payload>
-        <Payload length="1" typeName="DID_Byte_Enable_Disable"></Payload>
+        <Payload length="1" typeName="DID_Byte_Activate_Inactivate"></Payload>
+        <Payload length="1" typeName="DID_Bytes_On_Off"></Payload>
         <Payload length="1" typeName="DID_Byte_Enable_Disable"></Payload>
     </Payloads>
 </Configuration>

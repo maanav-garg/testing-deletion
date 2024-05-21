@@ -29,7 +29,7 @@ namespace AutosarBCM.Core
 
         public void Transmit(ControlInfo controlInfo)
         {
-            var request = new ASRequest(serviceInfo, controlInfo, $"03-{serviceInfo.RequestID.ToString("X")}-{BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray())}-00-00-00-00");
+            var request = new ASRequest(serviceInfo, controlInfo, $"{serviceInfo.RequestID.ToString("X")}-{BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray())}-00-00-00-00");
             request.Execute();
         }
     }

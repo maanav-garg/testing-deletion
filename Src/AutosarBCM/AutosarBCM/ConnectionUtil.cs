@@ -33,8 +33,7 @@ namespace AutosarBCM
         /// <summary>
         /// A reference to the selected device.
         /// </summary>
-        public static IHardware hardware = null;
-        private static Iso15765 transportProtocol = null;
+        private static Iso15765 TransportProtocol = null;
         /// <summary>
         /// A textual representation indicating the current state of the connection.
         /// </summary>
@@ -64,7 +63,7 @@ namespace AutosarBCM
                 Helper.ShowWarningMessageBox("No device found!");
                 return false;
             }
-            hardware = SelectHardware(hardwareList);
+            var hardware = SelectHardware(hardwareList);
 
             if (hardware == null)
                 return false;
@@ -83,10 +82,6 @@ namespace AutosarBCM
                 formMain.lblConnection.ForeColor = Color.Green;
                 if (hardware is CanHardware canHardware)
                 {
-                    //canHardware.FrameRead += Hardware_FrameRead;
-                    //canHardware.FrameWritten += Hardware_FrameWritten;
-                    //canHardware.CanError += Hardware_CanError;
-
                     if (canHardware is IntrepidCsCan && (canHardware.BitRate > 0))
                     {
                         canHardware.SetBitRate((int)canHardware.BitRate, (int)canHardware.NetworkID);
@@ -100,26 +95,23 @@ namespace AutosarBCM
                         canHardware.SetBitRate((int)canHardware.BitRate, 0);
                     }
 
-                    transportProtocol = new Iso15765();
-                    transportProtocol.Config.PhysicalAddr.TxId = 0x726;
-                    transportProtocol.Config.PhysicalAddr.RxId = 0x72E;
-                    transportProtocol.Config.BlockSize = 0;
-                    transportProtocol.Config.PaddingByte = 0;
-                    transportProtocol.Config.StMin = 0x10;
-                    transportProtocol.Hardware = hardware;
+                    TransportProtocol = new Iso15765();
+                    TransportProtocol.Config.PhysicalAddr.TxId = 0x726;
+                    TransportProtocol.Config.PhysicalAddr.RxId = 0x72E;
+                    TransportProtocol.Config.BlockSize = 0;
+                    TransportProtocol.Config.PaddingByte = 0;
+                    TransportProtocol.Config.StMin = 0x10;
+                    TransportProtocol.Hardware = hardware;
 
-                    transportProtocol.MessageReceived += TransportProtocol_MessageReceived;
-                    transportProtocol.MessageSent += TransportProtocol_MessageSent;
-                    transportProtocol.ReceiveError += TransportProtocol_ReceiveError;
-
-
-
+                    TransportProtocol.MessageReceived += TransportProtocol_MessageReceived;
+                    TransportProtocol.MessageSent += TransportProtocol_MessageSent;
+                    TransportProtocol.ReceiveError += TransportProtocol_ReceiveError;
                 }
                 else if (hardware is SerialPortHardware serialHardware)
                 {
-                    serialHardware.FrameRead += SerialHardware_FrameRead;
-                    serialHardware.FrameWritten += SerialHardware_FrameWritten;
-                    serialHardware.ErrorAccured += SerialHardware_ErrorAccured;
+                    //serialHardware.FrameRead += SerialHardware_FrameRead;
+                    //serialHardware.FrameWritten += SerialHardware_FrameWritten;
+                    //serialHardware.ErrorAccured += SerialHardware_ErrorAccured;
                     if (serialHardware.SerialPortType == SerialPortType.UT146)
                     {
                         serialHardware.Transmit("FFFFFFFFFE06");
@@ -153,7 +145,7 @@ namespace AutosarBCM
         {
             if (e.Data[0] == 0x62 || e.Data[0] == 0x6F)
             {
-                var response = new Config.ASResponse(e.Data);
+                var response = ASResponse.Parse(e.Data);
                 foreach (var receiver in FormMain.Receivers)
                     if (receiver.Receive(response)) break;
             }
@@ -164,7 +156,6 @@ namespace AutosarBCM
             ////HandleGeneralMessages(bytes);
 
             AppendTrace(rxRead, time);
-            AppendTraceRx(rxRead, time);
         }
 
         /// <summary>
@@ -173,7 +164,7 @@ namespace AutosarBCM
         /// <returns>true if the connection is established and in an open state; otherwise, false.</returns>
         public static bool CheckConnection()
         {
-            if (ConnectionUtil.hardware == null)
+            if (ConnectionUtil.TransportProtocol?.Hardware == null)
             {
                 Helper.ShowWarningMessageBox("No device connected!");
                 return false;
@@ -208,14 +199,16 @@ namespace AutosarBCM
             {
                 try
                 {
-                    if (hardware is CanHardware canHardware)
-                    {
-                        canHardware.Transmit(canId, dataBytes);
-                    }
-                    else if (hardware is SerialPortHardware serialHardware)
-                    {
-                        serialHardware.Transmit(canId, dataBytes);
-                    }
+                    TransportProtocol.SendBytes(dataBytes);
+
+                    //if (hardware is CanHardware canHardware)
+                    //{
+                    //    canHardware.Transmit(canId, dataBytes);
+                    //}
+                    //else if (hardware is SerialPortHardware serialHardware)
+                    //{
+                    //    serialHardware.Transmit(canId, dataBytes);
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -231,9 +224,8 @@ namespace AutosarBCM
         {
             try
             {
-                transportProtocol?.Hardware?.Disconnect();
-                //hardware?.Disconnect();
-                transportProtocol.Hardware = null;
+                TransportProtocol?.Hardware?.Disconnect();
+                TransportProtocol.Hardware = null;
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 if (formMain.InvokeRequired)
                     formMain.Invoke(new Action(() => UpdateStartButton(formMain)));
@@ -271,47 +263,47 @@ namespace AutosarBCM
         /// <param name="e">A reference to the FrameRead event's arguments.</param>
         private void SerialHardware_FrameRead(object sender, SerialPortEventArgs e)
         {
-            if (e.Data.Length % 24 != 0)
-                return;
+            //if (e.Data.Length % 24 != 0)
+            //    return;
 
-            for (int i = 0; i < e.Data.Length; i += 24)
-            {
-                var dataArr = e.Data.ToList().Skip(i).Take(24).ToArray();
-                var asciiHex = System.Text.Encoding.ASCII.GetString(dataArr).Trim();
-                var byteHexText = $"{asciiHex.Substring(0, 4)}{asciiHex.Substring(6)}";
+            //for (int i = 0; i < e.Data.Length; i += 24)
+            //{
+            //    var dataArr = e.Data.ToList().Skip(i).Take(24).ToArray();
+            //    var asciiHex = System.Text.Encoding.ASCII.GetString(dataArr).Trim();
+            //    var byteHexText = $"{asciiHex.Substring(0, 4)}{asciiHex.Substring(6)}";
 
-                FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                formMain.SetCounter(0, 1);
+            //    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+            //    formMain.SetCounter(0, 1);
 
-                if (hardware is SerialPortHardware hwSp && hwSp.SerialPortType == SerialPortType.UT146)
-                {
-                    var rxRead = "Rx " + uint.Parse(asciiHex.Substring(0, 4), NumberStyles.HexNumber).ToString("X") + " " + asciiHex.Substring(6);
-                    var time = DateTime.Now;
+            //    if (hardware is SerialPortHardware hwSp && hwSp.SerialPortType == SerialPortType.UT146)
+            //    {
+            //        var rxRead = "Rx " + uint.Parse(asciiHex.Substring(0, 4), NumberStyles.HexNumber).ToString("X") + " " + asciiHex.Substring(6);
+            //        var time = DateTime.Now;
 
-                    var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
-                    //if (FormMain.ControlChecker)
-                    //{
-                    //    AppendTrace(rxRead, time);
-                    //    Program.FormControlChecker.HandleResponse(data);
-                    //    continue;
-                    //}
-                    //if (formMain.UpdateOutputMonitorControls(data, MessageDirection.RX))
-                    //{
-                    //    AppendTrace(rxRead, time);
-                    //    continue;
-                    //}
-                    //if (formMain.UpdateInputMonitorControls(data, MessageDirection.RX))
-                    //{
-                    //    if (!FormMain.IsTestRunning) AppendTrace(rxRead, time);
-                    //    return;
-                    //}
+            //        var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
+            //        //if (FormMain.ControlChecker)
+            //        //{
+            //        //    AppendTrace(rxRead, time);
+            //        //    Program.FormControlChecker.HandleResponse(data);
+            //        //    continue;
+            //        //}
+            //        //if (formMain.UpdateOutputMonitorControls(data, MessageDirection.RX))
+            //        //{
+            //        //    AppendTrace(rxRead, time);
+            //        //    continue;
+            //        //}
+            //        //if (formMain.UpdateInputMonitorControls(data, MessageDirection.RX))
+            //        //{
+            //        //    if (!FormMain.IsTestRunning) AppendTrace(rxRead, time);
+            //        //    return;
+            //        //}
 
-                    HandleGeneralMessages(data);
+            //        HandleGeneralMessages(data);
 
-                    AppendTrace(rxRead, time);
-                    AppendTraceRx(rxRead, time);
-                }
-            }
+            //        AppendTrace(rxRead, time);
+            //        AppendTraceRx(rxRead, time);
+            //    }
+            //}
         }
 
         /// <summary>
@@ -338,52 +330,6 @@ namespace AutosarBCM
                 if (form.ShowDialog() == DialogResult.OK)
                     return (IHardware)list[form.SelectedIndex];
             return null;
-        }
-
-        /// <summary>
-        /// Checks the received message, increases the counter if it already exists, or adds it as a new row.
-        /// </summary>
-        /// <param name="text">A string represents the received message.</param>
-        /// <param name="time">The timestamp when the message was received.</param>
-        /// <param name="color">Specifies the foreground color of the output.</param>
-        private void AppendTraceRx(string text, DateTime time, Color? color = null)
-        {
-            FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-
-            //if (formReceive.dgvReceives.InvokeRequired)
-            //{
-            //    formReceive.dgvReceives.Invoke(new Action(delegate ()
-            //    {
-            //        var receivePattern = @"(?:Tx|Rx)\s?(\w+)\s?(.*)";
-            //        RegexOptions options = RegexOptions.Singleline;
-            //        var matchedItem = Regex.Matches(text, receivePattern, options)[0];
-            //        var messageID = matchedItem.Groups[1].Value.ToString();
-            //        var dataBytes = matchedItem.Groups[2].Value.ToString().Replace("-", " ");
-            //        if (!dataBytes.Contains(" "))
-            //        {
-            //            dataBytes = String.Join(" ", Enumerable.Range(0, dataBytes.Length / 2).Select(x => dataBytes.Substring(x * 2, 2)));
-            //        }
-
-            //        var messageCheck = formReceive.dgvReceives.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.Cells[0].Value.ToString() == messageID && r.Cells[3].Value.ToString() == dataBytes);
-
-            //        if (messageCheck != null && messageID != "0")
-            //        {
-            //            var rowIndex = messageCheck.Index;
-            //            ((CanMessage)messageCheck.DataBoundItem).SetData(dataBytes);
-            //            ((CanMessage)messageCheck.DataBoundItem).IncreaseCounter();
-            //            ((CanMessage)messageCheck.DataBoundItem).SetResponse();
-            //            formReceive.ResetAndApplyFilterWithSelectionRestore();
-            //            formReceive.dgvReceives.Rows[rowIndex].DefaultCellStyle.ForeColor = formReceive.dgvReceives.Rows[rowIndex].DefaultCellStyle.SelectionForeColor = dataBytes.Contains("7F") ? Color.Red : Color.Green;
-            //        }
-            //        else if (!messageID.Equals("0"))
-            //        {
-            //            formReceive.AddMessage(new CanMessage(messageID, dataBytes) { Count = 1, Timestamp = time });
-            //            var rowIndex = formReceive.dgvReceives.Rows.Count - 1;
-            //            ((CanMessage)formReceive.dgvReceives.Rows[rowIndex].DataBoundItem).SetResponse();
-            //            formReceive.dgvReceives.Rows[rowIndex].DefaultCellStyle.ForeColor = formReceive.dgvReceives.Rows[rowIndex].DefaultCellStyle.SelectionForeColor = dataBytes.Contains("7F") ? Color.Red : Color.Green;
-            //        }
-            //    }));
-            //}
         }
 
         /// <summary>
@@ -496,7 +442,6 @@ namespace AutosarBCM
             ////HandleGeneralMessages(bytes);
 
             AppendTrace(rxRead, time);
-            AppendTraceRx(rxRead, time);
         }
 
         /// <summary>
