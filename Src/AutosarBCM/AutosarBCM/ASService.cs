@@ -213,17 +213,25 @@ namespace AutosarBCM.Config
         }
     }
 
+    public class HexDump_1Byte : Payload
+    {
+        public HexDump_1Byte(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
+        public override string Print()
+        {
+            return $"{PayloadInfo.Name,-40}: {Data[PayloadInfo.Index]}";
+        }
+    }
+    public class HexDump_2Bytes : Payload
+    {
+        public HexDump_2Bytes(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
-    //public class HexDump : Payload
-    //{
-    //    public HexDump(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            return $"{PayloadInfo.Name,-40}: {BitConverter.ToUInt16(Data, PayloadInfo.Index)}";
+        }
+    }
 
-    //    public override string Print()
-    //    {
-    //        return $"{PayloadInfo.Name,-40}: {Data[PayloadInfo.Index]}";
-    //    }
-    //}
     public class Unsigned_1Byte : Payload
     {
         public Unsigned_1Byte(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
@@ -404,6 +412,28 @@ namespace AutosarBCM.Config
             return $"{PayloadInfo.Name,-40}{result}";
         }
     }
+    public class DID_Byte_Kmph : Payload
+    {
+        public DID_Byte_Kmph(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0x05) result = "5 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0x0A) result = "10 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0x0F) result = "15 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0x14) result = "20 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0x19) result = "25 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0x1E) result = "30 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0x23) result = "35 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0x28) result = "40 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0x2D) result = "45 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0x32) result = "50 kmph";
+            else if (this.Data[PayloadInfo.Index] == 0xFF) result = "Not used";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
     public class DID_DE02_7 : Payload
     {
         public DID_DE02_7(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
@@ -427,6 +457,68 @@ namespace AutosarBCM.Config
             else if (this.Data[PayloadInfo.Index] == 2) result = "H566";
 
             return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_DE04_7 : Payload
+    {
+        public DID_DE04_7(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "ABS";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "EBS";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_DE06_1 : Payload
+    {
+        public DID_DE06_1(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0X00) result = "No Flash";
+            else if (this.Data[PayloadInfo.Index] == 0x05) result = "5 Time Flash";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_DE06_3 : Payload
+    {
+        public DID_DE06_3(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0) result = "Not Changed";
+            else if (this.Data[PayloadInfo.Index] == 1) result = "Changed";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_DE08_7 : Payload
+    {
+        public DID_DE08_7(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+
+        public override string Print()
+        {
+            var result = string.Empty;
+            if (this.Data[PayloadInfo.Index] == 0x00) result = "Tractor";
+            else if (this.Data[PayloadInfo.Index] == 0x01) result = "Mixer";
+            else if (this.Data[PayloadInfo.Index] == 0x02) result = "Tipper";
+            else if (this.Data[PayloadInfo.Index] == 0x03) result = "Road";
+            else if (this.Data[PayloadInfo.Index] == 0x04) result = "Full Trailer";
+            else if (this.Data[PayloadInfo.Index] == 0x05) result = "Concrete Pump";
+
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
+    public class DID_DE0B_1 : Payload
+    {
+        public DID_DE0B_1(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+
+        public override string Print()
+        {
+            return $"{Data[PayloadInfo.Index]} %";
         }
     }
     public class DID_DE01_3 : Payload
@@ -458,6 +550,18 @@ namespace AutosarBCM.Config
             return $"{PayloadInfo.Name,-40}{result}";
         }
     }
+    public class Unsigned_1Byte : Payload
+    {
+        public Unsigned_1Byte(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+
+        public override string Print()
+        {
+            var result = string.Empty;
+            byte[] singleByteArray = new byte[] { Data[PayloadInfo.Index] };
+            result = BitConverter.ToString(singleByteArray);
+            return $"{PayloadInfo.Name,-40}{result}";
+        }
+    }
     public class DID_PWM : Payload
     {
         public DID_PWM(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
@@ -479,6 +583,7 @@ namespace AutosarBCM.Config
             return $"{PayloadInfo.Name,-40}{result}";
         }
     }
+
 
     internal interface IReceiver
     {
@@ -549,6 +654,13 @@ namespace AutosarBCM.Enums
         DEO1,
         DE02,
         DE03,
+        DE04,
+        VIN,
+        DE06,
+        DE07,
+        DE08,
+        DE09,
+        DE0B,
         ACCutOffSupply,
         AirHornActivateSupply,
         Ajar_On_Off_Control,
