@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Config;
+using AutosarBCM.Core;
 
 namespace AutosarBCM.Forms.Monitor
 {
@@ -77,7 +78,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="config">Monitor config object</param>
         public void LoadConfiguration(ConfigurationInfo config)
         {
-            if (monitorConfig != null)
+            if (config != null)
                 pnlMonitorInput.Controls.Clear();
 
             var flowPanel = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };

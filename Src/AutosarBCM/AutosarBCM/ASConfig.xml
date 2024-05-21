@@ -1,24 +1,23 @@
 ﻿<Configuration>
+    <Settings>
+        <Entry key="namesPadding" value="30" />
+    </Settings>
     <Services>
-        <Service>
-            <ID>10</ID>
+        <Service requestID="10">
             <Name>DiagnosticSessionControl</Name>
         </Service>
-        <Service>
-            <ID>22</ID>
+        <Service requestID="22" responseID="62">
             <Name>ReadDataByIdentifier</Name>
             <Sessions>01</Sessions>
+            <ResponseIndex>4</ResponseIndex>
         </Service>
-        <Service>
-            <ID>2F</ID>
+        <Service requestID="2F">
             <Name>InputOutputControlByIdentifier</Name>
         </Service>
-		<Service>
-			<ID>2E</ID>
+		<Service requestID="2E">
 			<Name>WriteDataByIdentifier</Name>
 		</Service>
-        <Service>
-            <ID>3E</ID>
+		<Service requestID="3E" responseID="7E">
             <Name>TesterPresent</Name>
         </Service>
     </Services>
@@ -91,7 +90,7 @@
           <Payload name="Heated Mirror">DID_Byte_Present_notPresent</Payload>
           <Payload name="Power Mirror">DID_Byte_Present_notPresent</Payload>
           <Payload name="Remote Door Control">DID_Byte_Enable_Disable</Payload>
-          <Payload name="Ambiance Light">HexDump</Payload>
+          <Payload name="Ambiance Light">HexDump_1Byte</Payload>
           <Payload name="Autolock">DID_Byte_Enable_Disable</Payload>
           <Payload name="Vehicle Type">DID_DE02_7</Payload>
         </Response>
@@ -157,7 +156,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Horn Output Control">HexDump</Payload>
+          <Payload name="Horn Output Control">HexDump_1Byte</Payload>
         </Response>
         <Response serviceId ="6F"> </Response>
       </Responses>
@@ -237,7 +236,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Hazar Warning Switch">DID_Bytes_On_Off</Payload>
+          <Payload name="Hazar Warning Switch">DID_Byte_On_Off</Payload>
         </Response>
         <Response serviceId="6F">
         </Response>
@@ -372,7 +371,7 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="All Doors Lock and Ajar Input Signal">HexDump</Payload>
+          <Payload name="All Doors Lock and Ajar Input Signal">HexDump_1Byte</Payload>
         </Response>
       </Responses>
     </Control>
@@ -384,7 +383,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="All Doors Lock and Ajar Output Signal Status">HexDump</Payload>
+          <Payload name="All Doors Lock and Ajar Output Signal Status">HexDump_1Byte</Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -520,8 +519,8 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="SpareAnalogInput2">HexDump</Payload>
-          <Payload name="SpareAnalogInput1">HexDump</Payload>
+          <Payload name="SpareAnalogInput2">HexDump_1Byte</Payload>
+          <Payload name="SpareAnalogInput1">HexDump_1Byte</Payload>
         </Response>
       </Responses>
     </Control>
@@ -533,8 +532,8 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="SpareDigitalOutput2">HexDump</Payload>
-          <Payload name="SpareDigitalOutput3">HexDump</Payload>
+          <Payload name="SpareDigitalOutput2">HexDump_1Byte</Payload>
+          <Payload name="SpareDigitalOutput3">HexDump_1Byte</Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1187,7 +1186,7 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Vestel Internal Software Version">Internal Version</Payload>
+          <Payload name="Vestel Internal Software Version">Internal_Version</Payload>
         </Response>
       </Responses>
     </Control>
@@ -1219,4 +1218,132 @@
       </Responses>
     </Control>
   </Controls>
+  <Payloads>
+        <Payload length="1" typeName="DID_Byte_Enable_Disable">
+            <Value value="0">Disable</Value>
+            <Value value="1">Enable</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_Byte_Activate_Inactivate">
+            <Value value="0">Null - No Control Active</Value>
+            <Value value="1" color="Green">Activate</Value>
+            <Value value="2">Inactivate</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_Bytes_High_Low">
+            <Value value="0">Low</Value>
+            <Value value="1">High</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_DE00_0">
+            <Value value="0">AMT</Value>
+            <Value value="1">Manual Transmission</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_DE00_4">
+            <Value value="0">Euro 3</Value>
+            <Value value="1">Euro 5</Value>
+            <Value value="2">Euro 6</Value>
+            <Value value="3">Euro 7</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_Byte_Present_notPresent">
+            <Value value="0" color="Red">Not Present</Value>
+            <Value value="1" color="Green">Present</Value>
+        </Payload>
+        <Payload length="1" typeName="OnOffState">
+            <Value value="0">On</Value>
+            <Value value="1">Off</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_Lamp_Status">
+            <Value value="0">Null - Not Configured for LED Outage Detection</Value>
+            <Value value="1">Lamp On</Value>
+            <Value value="2">Lamp Off</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_Byte_Lamp_Control">
+            <Value value="0">Null - No Control Active</Value>
+            <Value value="1">Active</Value>
+            <Value value="2">Inactive</Value>
+            <Value value="3">Flash</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_4253_0">
+            <Value value="0">Off - No Request</Value>
+            <Value value="1">Left Turn Request</Value>
+            <Value value="2">Right Turn Request</Value>
+            <Value value="3">Fault</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_42A0_0">
+            <Value value="1">Active</Value>
+            <Value value="2">Inactive</Value>
+            <Value value="3">Null - No Control Active</Value>
+            <Value value="4">On</Value>
+            <Value value="5">Off</Value>
+            <Value value="6">Daytime Running Lamp</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_40E8_0">
+            <Value value="1">Active</Value>
+            <Value value="2">Inactive</Value>
+            <Value value="3">VREG - The Right Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation</Value>
+            <Value value="4">Daytime Running Light (DRL) - The Right Front Low Beam Circuit Is Pulse Width Modulating For DRL</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_40E7_0">
+            <Value value="1">Active</Value>
+            <Value value="2">Inactive</Value>
+            <Value value="3">VREG - The Left Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation</Value>
+            <Value value="4">Daytime Running Light (DRL) - The Left Front Low Beam Circuit Is Pulse Width Modulating For DRL</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_4255_Daytime_Running_Light">
+            <Value value="0">Null</Value>
+            <Value value="1">On / Set On</Value>
+            <Value value="2">Off / Set Off</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_41EF_0">
+            <Value value="0">Null - No Control Active</Value>
+            <Value value="1">Active</Value>
+            <Value value="2">Inactive</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_41F1_0">
+            <Value value="0">Null - No Control Active</Value>
+            <Value value="1">Active</Value>
+            <Value value="2">Inactive</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_41EC_0">
+            <Value value="0">Null - No Control Active</Value>
+            <Value value="1">Active</Value>
+            <Value value="2">Inactive</Value>
+            <Value value="3">Ramping</Value>
+            <Value value="4">Flash</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_41F3_0">
+            <Value value="0">Null - No Control Active</Value>
+            <Value value="1" color="Green">Active</Value>
+            <Value value="2">Inactive</Value>
+            <Value value="3">Ramping</Value>
+            <Value value="4">Flash</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_DE02_7">
+            <Value value="0">Non-Construciton Vehicle</Value>
+            <Value value="1">Construction Vehicle</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_DE03_0">
+            <Value value="0">H625</Value>
+            <Value value="1">H476</Value>
+            <Value value="2">H566</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_DE01_3">
+            <Value value="0">9 Liter</Value>
+            <Value value="1">13 Liter</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_DE01_4">
+            <Value value="0">Disable</Value>
+            <Value value="1">Dry Type</Value>
+            <Value value="2">Wet Type</Value>
+            <Value value="3">Dry_Wet Type</Value>
+        </Payload>
+        <Payload length="1" typeName="DID_Byte_On_Off">
+            <Value value="0" color="Red">Off</Value>
+            <Value value="1" color="Green">On</Value>
+        </Payload>
+        <Payload length="1" typeName="Unsigned_1Byte" />
+        <Payload length="4" typeName="DID_F166_0" />
+        <Payload length="4" typeName="Internal_Version" />
+        <Payload length="2" typeName="DID_PWM" />
+        <Payload length="1" typeName="HexDump_1Byte" />
+        <Payload length="4" typeName="HexDump_4Bytes" />
+    </Payloads>
 </Configuration>
