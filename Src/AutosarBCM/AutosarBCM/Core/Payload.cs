@@ -91,4 +91,8 @@ namespace AutosarBCM.Core
     {
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Data, PayloadInfo.Index);
     }
+    public class DID_DE26 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Data, PayloadInfo.Index);
+    }
 }

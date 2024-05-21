@@ -1,79 +1,79 @@
 ﻿<Configuration>
-    <Settings>
-        <Entry key="namesPadding" value="30" />
-    </Settings>
-    <Services>
-        <Service requestID="10">
-            <Name>DiagnosticSessionControl</Name>
-        </Service>
-        <Service requestID="22" responseID="62">
-            <Name>ReadDataByIdentifier</Name>
-            <Sessions>01</Sessions>
-            <ResponseIndex>4</ResponseIndex>
-        </Service>
-        <Service requestID="2F">
-            <Name>InputOutputControlByIdentifier</Name>
-        </Service>
-		<Service requestID="2E">
-			<Name>WriteDataByIdentifier</Name>
-		</Service>
-    </Services>
-    <Sessions>
-        <Session>
-            <ID>01</ID>
-            <Name>Default Session</Name>
-        </Session>
-        <Session>
-            <ID>02</ID>
-            <Name>Programming Session</Name>
-        </Session>
-        <Session>
-            <ID>03</ID>
-            <Name>Extended Diagnostic Session</Name>
-        </Session>
-    </Sessions>
-    <Controls>
-		<Control>
-			<Address>DE00</Address>
-			<Name>DE00</Name>
-			<Type></Type>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Transmission">DID_DE00_0</Payload>
-					<Payload name="Auto CAB Tilt">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Differential Lock">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Water Pump">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Emission Level">DID_DE00_4</Payload>
-					<Payload name="PTO_AMT">DID_Byte_Enable_Disable</Payload>
-					<Payload name="A/C Compressor Control">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Low Liner">DID_Byte_Enable_Disable</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
-		<Control>
-			<Address>DE01</Address>
-			<Name>DE01</Name>
-			<Type></Type>
-			<Group>ECU DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Heated Windshield">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Front Fog Lamps">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Corner Lighting">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Liter of Engine">DID_DE01_3</Payload>
-					<Payload name="Auxiliary Heater">DID_DE01_4</Payload>
-					<Payload name="C6AS_Truck">DID_Byte_Enable_Disable</Payload>
-					<Payload name="DPF Systems">DID_Byte_Enable_Disable</Payload>
-					<Payload name="F-Sight">DID_Byte_Present_notPresent</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
+  <Settings>
+    <Entry key="namesPadding" value="30" />
+  </Settings>
+  <Services>
+    <Service requestID="10">
+      <Name>DiagnosticSessionControl</Name>
+    </Service>
+    <Service requestID="22" responseID="62">
+      <Name>ReadDataByIdentifier</Name>
+      <Sessions>01</Sessions>
+      <ResponseIndex>4</ResponseIndex>
+    </Service>
+    <Service requestID="2F">
+      <Name>InputOutputControlByIdentifier</Name>
+    </Service>
+    <Service requestID="2E">
+      <Name>WriteDataByIdentifier</Name>
+    </Service>
+  </Services>
+  <Sessions>
+    <Session>
+      <ID>01</ID>
+      <Name>Default Session</Name>
+    </Session>
+    <Session>
+      <ID>02</ID>
+      <Name>Programming Session</Name>
+    </Session>
+    <Session>
+      <ID>03</ID>
+      <Name>Extended Diagnostic Session</Name>
+    </Session>
+  </Sessions>
+  <Controls>
+    <Control>
+      <Address>DE00</Address>
+      <Name>DE00</Name>
+      <Type></Type>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Transmission">DID_DE00_0</Payload>
+          <Payload name="Auto CAB Tilt">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Differential Lock">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Water Pump">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Emission Level">DID_DE00_4</Payload>
+          <Payload name="PTO_AMT">DID_Byte_Enable_Disable</Payload>
+          <Payload name="A/C Compressor Control">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Low Liner">DID_Byte_Enable_Disable</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE01</Address>
+      <Name>DE01</Name>
+      <Type></Type>
+      <Group>ECU DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Heated Windshield">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Front Fog Lamps">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Corner Lighting">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Liter of Engine">DID_DE01_3</Payload>
+          <Payload name="Auxiliary Heater">DID_DE01_4</Payload>
+          <Payload name="C6AS_Truck">DID_Byte_Enable_Disable</Payload>
+          <Payload name="DPF Systems">DID_Byte_Enable_Disable</Payload>
+          <Payload name="F-Sight">DID_Byte_Present_notPresent</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
     <Control>
       <Address>DE02</Address>
       <Name>DE02</Name>
@@ -1216,131 +1216,132 @@
     </Control>
   </Controls>
   <Payloads>
-        <Payload length="1" typeName="DID_Byte_Enable_Disable">
-            <Value value="0">Disable</Value>
-            <Value value="1">Enable</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_Byte_Activate_Inactivate">
-            <Value value="0">Null - No Control Active</Value>
-            <Value value="1" color="Green">Activate</Value>
-            <Value value="2">Inactivate</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_Bytes_High_Low">
-            <Value value="0">Low</Value>
-            <Value value="1">High</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_DE00_0">
-            <Value value="0">AMT</Value>
-            <Value value="1">Manual Transmission</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_DE00_4">
-            <Value value="0">Euro 3</Value>
-            <Value value="1">Euro 5</Value>
-            <Value value="2">Euro 6</Value>
-            <Value value="3">Euro 7</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_Byte_Present_notPresent">
-            <Value value="0" color="Red">Not Present</Value>
-            <Value value="1" color="Green">Present</Value>
-        </Payload>
-        <Payload length="1" typeName="OnOffState">
-            <Value value="0">On</Value>
-            <Value value="1">Off</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_Lamp_Status">
-            <Value value="0">Null - Not Configured for LED Outage Detection</Value>
-            <Value value="1">Lamp On</Value>
-            <Value value="2">Lamp Off</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_Byte_Lamp_Control">
-            <Value value="0">Null - No Control Active</Value>
-            <Value value="1">Active</Value>
-            <Value value="2">Inactive</Value>
-            <Value value="3">Flash</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_4253_0">
-            <Value value="0">Off - No Request</Value>
-            <Value value="1">Left Turn Request</Value>
-            <Value value="2">Right Turn Request</Value>
-            <Value value="3">Fault</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_42A0_0">
-            <Value value="1">Active</Value>
-            <Value value="2">Inactive</Value>
-            <Value value="3">Null - No Control Active</Value>
-            <Value value="4">On</Value>
-            <Value value="5">Off</Value>
-            <Value value="6">Daytime Running Lamp</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_40E8_0">
-            <Value value="1">Active</Value>
-            <Value value="2">Inactive</Value>
-            <Value value="3">VREG - The Right Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation</Value>
-            <Value value="4">Daytime Running Light (DRL) - The Right Front Low Beam Circuit Is Pulse Width Modulating For DRL</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_40E7_0">
-            <Value value="1">Active</Value>
-            <Value value="2">Inactive</Value>
-            <Value value="3">VREG - The Left Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation</Value>
-            <Value value="4">Daytime Running Light (DRL) - The Left Front Low Beam Circuit Is Pulse Width Modulating For DRL</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_4255_Daytime_Running_Light">
-            <Value value="0">Null</Value>
-            <Value value="1">On / Set On</Value>
-            <Value value="2">Off / Set Off</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_41EF_0">
-            <Value value="0">Null - No Control Active</Value>
-            <Value value="1">Active</Value>
-            <Value value="2">Inactive</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_41F1_0">
-            <Value value="0">Null - No Control Active</Value>
-            <Value value="1">Active</Value>
-            <Value value="2">Inactive</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_41EC_0">
-            <Value value="0">Null - No Control Active</Value>
-            <Value value="1">Active</Value>
-            <Value value="2">Inactive</Value>
-            <Value value="3">Ramping</Value>
-            <Value value="4">Flash</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_41F3_0">
-            <Value value="0">Null - No Control Active</Value>
-            <Value value="1" color="Green">Active</Value>
-            <Value value="2">Inactive</Value>
-            <Value value="3">Ramping</Value>
-            <Value value="4">Flash</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_DE02_7">
-            <Value value="0">Non-Construciton Vehicle</Value>
-            <Value value="1">Construction Vehicle</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_DE03_0">
-            <Value value="0">H625</Value>
-            <Value value="1">H476</Value>
-            <Value value="2">H566</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_DE01_3">
-            <Value value="0">9 Liter</Value>
-            <Value value="1">13 Liter</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_DE01_4">
-            <Value value="0">Disable</Value>
-            <Value value="1">Dry Type</Value>
-            <Value value="2">Wet Type</Value>
-            <Value value="3">Dry_Wet Type</Value>
-        </Payload>
-        <Payload length="1" typeName="DID_Byte_On_Off">
-            <Value value="0" color="Red">Off</Value>
-            <Value value="1" color="Green">On</Value>
-        </Payload>
-        <Payload length="1" typeName="Unsigned_1Byte" />
-        <Payload length="4" typeName="DID_F166_0" />
-        <Payload length="4" typeName="Internal_Version" />
-        <Payload length="2" typeName="DID_PWM" />
-        <Payload length="1" typeName="HexDump_1Byte" />
-        <Payload length="4" typeName="HexDump_4Bytes" />
-    </Payloads>
+    <Payload length="1" typeName="DID_Byte_Enable_Disable">
+      <Value value="0">Disable</Value>
+      <Value value="1">Enable</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_Byte_Activate_Inactivate">
+      <Value value="0">Null - No Control Active</Value>
+      <Value value="1" color="Green">Activate</Value>
+      <Value value="2">Inactivate</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_Bytes_High_Low">
+      <Value value="0">Low</Value>
+      <Value value="1">High</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_DE00_0">
+      <Value value="0">AMT</Value>
+      <Value value="1">Manual Transmission</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_DE00_4">
+      <Value value="0">Euro 3</Value>
+      <Value value="1">Euro 5</Value>
+      <Value value="2">Euro 6</Value>
+      <Value value="3">Euro 7</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_Byte_Present_notPresent">
+      <Value value="0" color="Red">Not Present</Value>
+      <Value value="1" color="Green">Present</Value>
+    </Payload>
+    <Payload length="1" typeName="OnOffState">
+      <Value value="0">On</Value>
+      <Value value="1">Off</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_Lamp_Status">
+      <Value value="0">Null - Not Configured for LED Outage Detection</Value>
+      <Value value="1">Lamp On</Value>
+      <Value value="2">Lamp Off</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_Byte_Lamp_Control">
+      <Value value="0">Null - No Control Active</Value>
+      <Value value="1">Active</Value>
+      <Value value="2">Inactive</Value>
+      <Value value="3">Flash</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_4253_0">
+      <Value value="0">Off - No Request</Value>
+      <Value value="1">Left Turn Request</Value>
+      <Value value="2">Right Turn Request</Value>
+      <Value value="3">Fault</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_42A0_0">
+      <Value value="1">Active</Value>
+      <Value value="2">Inactive</Value>
+      <Value value="3">Null - No Control Active</Value>
+      <Value value="4">On</Value>
+      <Value value="5">Off</Value>
+      <Value value="6">Daytime Running Lamp</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_40E8_0">
+      <Value value="1">Active</Value>
+      <Value value="2">Inactive</Value>
+      <Value value="3">VREG - The Right Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation</Value>
+      <Value value="4">Daytime Running Light (DRL) - The Right Front Low Beam Circuit Is Pulse Width Modulating For DRL</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_40E7_0">
+      <Value value="1">Active</Value>
+      <Value value="2">Inactive</Value>
+      <Value value="3">VREG - The Left Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation</Value>
+      <Value value="4">Daytime Running Light (DRL) - The Left Front Low Beam Circuit Is Pulse Width Modulating For DRL</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_4255_Daytime_Running_Light">
+      <Value value="0">Null</Value>
+      <Value value="1">On / Set On</Value>
+      <Value value="2">Off / Set Off</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_41EF_0">
+      <Value value="0">Null - No Control Active</Value>
+      <Value value="1">Active</Value>
+      <Value value="2">Inactive</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_41F1_0">
+      <Value value="0">Null - No Control Active</Value>
+      <Value value="1">Active</Value>
+      <Value value="2">Inactive</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_41EC_0">
+      <Value value="0">Null - No Control Active</Value>
+      <Value value="1">Active</Value>
+      <Value value="2">Inactive</Value>
+      <Value value="3">Ramping</Value>
+      <Value value="4">Flash</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_41F3_0">
+      <Value value="0">Null - No Control Active</Value>
+      <Value value="1" color="Green">Active</Value>
+      <Value value="2">Inactive</Value>
+      <Value value="3">Ramping</Value>
+      <Value value="4">Flash</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_DE02_7">
+      <Value value="0">Non-Construciton Vehicle</Value>
+      <Value value="1">Construction Vehicle</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_DE03_0">
+      <Value value="0">H625</Value>
+      <Value value="1">H476</Value>
+      <Value value="2">H566</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_DE01_3">
+      <Value value="0">9 Liter</Value>
+      <Value value="1">13 Liter</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_DE01_4">
+      <Value value="0">Disable</Value>
+      <Value value="1">Dry Type</Value>
+      <Value value="2">Wet Type</Value>
+      <Value value="3">Dry_Wet Type</Value>
+    </Payload>
+    <Payload length="1" typeName="DID_Byte_On_Off">
+      <Value value="0" color="Red">Off</Value>
+      <Value value="1" color="Green">On</Value>
+    </Payload>
+    <Payload length="1" typeName="Unsigned_1Byte" />
+    <Payload length="4" typeName="DID_F166_0" />
+    <Payload length="4" typeName="Internal_Version" />
+    <Payload length="2" typeName="DID_PWM" />
+    <Payload length="1" typeName="HexDump_1Byte" />
+    <Payload length="4" typeName="HexDump_4Bytes" />
+    <Payload length="16" typeName="DID_DE26" />
+  </Payloads>
 </Configuration>
