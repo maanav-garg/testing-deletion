@@ -17,6 +17,10 @@
 			<ID>2E</ID>
 			<Name>WriteDataByIdentifier</Name>
 		</Service>
+        <Service>
+            <ID>3E</ID>
+            <Name>TesterPresent</Name>
+        </Service>
     </Services>
     <Sessions>
         <Session>

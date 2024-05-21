@@ -54,6 +54,16 @@ namespace AutosarBCM.Config
         }
     }
 
+    public class TesterPresent : Service
+    {
+        public TesterPresent() : base(ServiceName.TesterPresent) { }
+
+        public void Transmit()
+        {
+            ConnectionUtil.TransmitData(0x0726, new byte[] { serviceInfo.ID, 0, 0, 0, 0, 0, 0, 0 });
+        }
+    }
+
     public class ASRequest
     {
         private ServiceInfo ServiceInfo;
@@ -541,6 +551,7 @@ namespace AutosarBCM.Enums
         ReadDataByIdentifier = 0x22,
         InputOutputControlByIdentifier = 0x2F,
         WriteDataByIdentifier = 0x2E,
+        TesterPresent = 0x3E
     }
 
     public enum ControlName
