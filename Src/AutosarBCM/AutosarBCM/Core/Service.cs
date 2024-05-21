@@ -14,7 +14,8 @@ namespace AutosarBCM.Core
 
         public Service(ServiceName serviceName)
         {
-            serviceInfo = ASContext.Configuration.Services.Where(x => x.RequestID == (byte)serviceName).FirstOrDefault();
+            serviceInfo = ASContext.Configuration?.Services.Where(x => x.RequestID == (byte)serviceName).FirstOrDefault()
+                ?? new ServiceInfo { Name = serviceName.ToString(), RequestID = (byte)serviceName };
         }
 
         public static void Transmit(ServiceName serviceName, ControlName controlName)
@@ -51,6 +52,16 @@ namespace AutosarBCM.Core
         public void Transmit(SessionInfo sessionInfo)
         {
             ConnectionUtil.TransmitData(0x0726, new byte[] { serviceInfo.RequestID, sessionInfo.ID, 0, 0, 0, 0, 0, 0 });
+        }
+    }
+
+    public class TesterPresent : Service
+    {
+        public TesterPresent() : base(ServiceName.TesterPresent) { }
+
+        public void Transmit()
+        {
+            ConnectionUtil.TransmitData(0x0726, new byte[] { serviceInfo.RequestID, 0, 0, 0, 0, 0, 0, 0 });
         }
     }
 }

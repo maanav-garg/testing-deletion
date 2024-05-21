@@ -161,6 +161,9 @@ namespace AutosarBCM
 
         internal static List<IReceiver> Receivers = new List<IReceiver>();
 
+        private TesterPresent TesterPresent;
+        private System.Timers.Timer TesterPresentTimer;
+
         /// <summary>
         /// Gets the selected test type
         /// </summary>
@@ -708,12 +711,15 @@ namespace AutosarBCM
                 {
                     if (!ConnectionUtil.BaseConnection())
                         return;
+
+                    StartTesterPresent();
                 }
                 else if (openConnection.Text == "Stop Connection")
                 {
                     if (IsTestRunning)
                         btnStart_Click(null, null);
                     ConnectionUtil.Disconnect();
+                    StopTesterPresent();
                 }
             }
             catch (Exception ex)
@@ -721,6 +727,19 @@ namespace AutosarBCM
                 AppendTrace(ex.ToString(), Color.Red);
                 MessageBox.Show("Please check the logs", "Error", MessageBoxButtons.OK);
             }
+        }
+
+        private void StartTesterPresent()
+        {
+            TesterPresent = new TesterPresent();
+            TesterPresentTimer = new System.Timers.Timer(5000) { AutoReset = true };
+            TesterPresentTimer.Elapsed += (s, e) => TesterPresent.Transmit();
+            TesterPresentTimer.Start();
+        }
+
+        private void StopTesterPresent()
+        {
+            TesterPresentTimer?.Stop();
         }
 
         /// <summary>

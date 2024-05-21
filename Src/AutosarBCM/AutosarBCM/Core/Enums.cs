@@ -59,6 +59,7 @@ namespace AutosarBCM.Core.Enums
         ReadDataByIdentifier = 0x22,
         InputOutputControlByIdentifier = 0x2F,
         WriteDataByIdentifier = 0x2E,
+        TesterPresent = 0x3E
     }
 
     public enum ControlName
