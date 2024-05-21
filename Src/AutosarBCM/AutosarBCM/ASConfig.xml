@@ -37,6 +37,7 @@
       <Address>DE00</Address>
       <Name>DE00</Name>
       <Type></Type>
+      <Group>ECU-DID</Group>
       <Services>22;2E</Services>
       <Responses>
         <Response serviceId="62">
@@ -57,7 +58,7 @@
       <Address>DE01</Address>
       <Name>DE01</Name>
       <Type></Type>
-      <Group>ECU DID</Group>
+      <Group>ECU-DID</Group>
       <Services>22;2E</Services>
       <Responses>
         <Response serviceId="62">
@@ -116,7 +117,6 @@
         </Response>
       </Responses>
     </Control>
-    // Eklenen
     <Control>
       <Address>DE04</Address>
       <Name>DE04</Name>
@@ -787,34 +787,6 @@
       </Responses>
     </Control>
 
-    // Ekleme Bitiş
-
-    <Control>
-      <Address>099B</Address>
-      <Name>ACCutOffSupply</Name>
-      <Type></Type>
-      <Services>22;2F</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="ACCutOffSupply">DID_Byte_Activate_Inactivate</Payload>
-        </Response>
-        <Response serviceId="6F">
-        </Response>
-      </Responses>
-    </Control>
-    <Control>
-      <Address>DF51</Address>
-      <Name>AirHornActivateSupply</Name>
-      <Type></Type>
-      <Services>22;2F</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="AirHornActivateSupply">DID_Byte_Activate_Inactivate</Payload>
-        </Response>
-        <Response serviceId="6E">
-        </Response>
-      </Responses>
-    </Control>
     <Control>
       <Address>099B</Address>
       <Name>ACCutOffSupply</Name>
@@ -1379,6 +1351,7 @@
       <Address>DF51</Address>
       <Name>AirHornActivateSupply</Name>
       <Type></Type>
+      <Group>DID</Group>
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
@@ -1390,6 +1363,7 @@
       <Address>DF53</Address>
       <Name>DifferentialLockValve1Supply</Name>
       <Type></Type>
+      <Group>DID</Group>
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
@@ -1454,6 +1428,7 @@
       <Address>DF59</Address>
       <Name>CabinTiltValveSupply</Name>
       <Type></Type>
+      <Group>DID</Group>
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
@@ -1623,6 +1598,7 @@
       <Address>402A</Address>
       <Name>Vehicle_Battery_Voltage</Name>
       <Type></Type>
+      <Group>DID</Group>
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
@@ -1693,6 +1669,7 @@
       <Address>4128</Address>
       <Name>Cruise_Control_Switches</Name>
       <Type></Type>
+      <Group>DID</Group>
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
@@ -1887,6 +1864,10 @@
         </Response>
       </Responses>
     </Control>
+    
+    
+    
+    
     <Control>
       <Address>DF47</Address>
       <Name>LIN_PWS_and_HLS_Switch</Name>
