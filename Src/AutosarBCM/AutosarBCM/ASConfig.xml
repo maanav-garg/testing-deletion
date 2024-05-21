@@ -1345,5 +1345,6 @@
         <Payload length="2" typeName="DID_PWM" />
         <Payload length="1" typeName="HexDump_1Byte" />
         <Payload length="4" typeName="HexDump_4Bytes" />
+		<Payload length="16" typeName="DID_DE26" />
     </Payloads>
 </Configuration>

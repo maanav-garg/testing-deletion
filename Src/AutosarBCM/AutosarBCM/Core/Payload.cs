@@ -60,6 +60,7 @@ namespace AutosarBCM.Core
     public class DID_DE03_0 : Payload { }
     public class DID_DE01_3 : Payload { }
     public class DID_DE01_4 : Payload { }
+
     public class DID_Byte_On_Off : Payload { }
 
     public class HexDump_1Byte : Payload
@@ -91,4 +92,9 @@ namespace AutosarBCM.Core
     {
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Data, PayloadInfo.Index);
     }
+    public class DID_DE26 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Data, PayloadInfo.Index);
+    }
+
 }
