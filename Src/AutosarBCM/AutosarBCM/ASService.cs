@@ -241,7 +241,7 @@ namespace AutosarBCM.Config
         }
     }
 
-   
+
     public class Unsigned_1Byte : Payload
     {
         public Unsigned_1Byte(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
@@ -671,6 +671,33 @@ namespace AutosarBCM.Enums
         DE08,
         DE09,
         DE0B,
+        DE0C,
+        DE0D,
+        Spare_DID_2,
+        Spare_DID_3,
+        DE10,
+        DE11,
+        DE12,
+        DE13,
+        DE14,
+        DE15,
+        Total_Distance_SS_Axle_Lifted,
+        Total_Distance_TA_Axle_Lifted,
+        Total_Distance_SS_TA_Axle_Lifted,
+        Spare_DID_7,
+        DE20,
+        DE21,
+        Spare_DID_4,
+        Keyfob_Battery_Status,
+        DTC_Configuration,
+        DE25,
+        DE26,
+        DE27,
+        DE28,
+        DE3A,
+        DE3B,
+        DE3C, 
+        DE3D,
         ACCutOffSupply,
         AirHornActivateSupply,
         Ajar_On_Off_Control,

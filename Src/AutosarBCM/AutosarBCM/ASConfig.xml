@@ -302,7 +302,7 @@
     </Control>
     <Control>
       <Address>DE0E</Address>
-      <Name>Spare DID 2</Name>
+      <Name>Spare_DID_2</Name>
       <Type></Type>
       <Group>ECU-DID</Group>
       <Services>22;2E</Services>
@@ -316,7 +316,7 @@
     </Control>
     <Control>
       <Address>DE0F</Address>
-      <Name>Spare DID 3</Name>
+      <Name>Spare_DID_3</Name>
       <Type></Type>
       <Group>ECU-DID</Group>
       <Services>22;2E</Services>
@@ -514,7 +514,7 @@
     </Control>
     <Control>
       <Address>DE19</Address>
-      <Name>Spare DID 7</Name>
+      <Name>Spare_DID_7</Name>
       <Type></Type>
       <Group>ECU-DID</Group>
       <Services>22;2E</Services>
@@ -577,7 +577,7 @@
     </Control>
     <Control>
       <Address>DE22</Address>
-      <Name>Spare DID 4</Name>
+      <Name>Spare_DID_4</Name>
       <Type></Type>
       <Group>ECU-DID</Group>
       <Services>22;2E</Services>
@@ -591,7 +591,7 @@
     </Control>
     <Control>
       <Address>DE24</Address>
-      <Name>Keyfob Battery Status</Name>
+      <Name>Keyfob_Battery_Status</Name>
       <Type></Type>
       <Group>ECU-DID</Group>
       <Services>22;2E</Services>
