@@ -46,8 +46,8 @@ namespace AutosarBCM.Core
         public ControlInfo ControlInfo { get; private set; }
         public List<Payload> Payloads { get; private set; } = new List<Payload>();
 
-        public byte ServiceID => Data[1];
-        public ushort ControlAddress => BitConverter.ToUInt16(Data.Skip(2).Take(2).Reverse().ToArray(), 0);
+        public byte ServiceID => Data[0];
+        public ushort ControlAddress => BitConverter.ToUInt16(Data.Skip(1).Take(2).Reverse().ToArray(), 0);
 
         private ASResponse() { }
 

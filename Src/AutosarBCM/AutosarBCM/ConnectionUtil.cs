@@ -15,6 +15,7 @@ using AutosarBCM.Common;
 using AutosarBCM.Message;
 using AutosarBCM.Properties;
 using AutosarBCM.Core;
+using Connection.Protocol.Uds;
 
 namespace AutosarBCM
 {
@@ -33,6 +34,7 @@ namespace AutosarBCM
         /// A reference to the selected device.
         /// </summary>
         public static IHardware hardware = null;
+        private static Iso15765 transportProtocol = null;
         /// <summary>
         /// A textual representation indicating the current state of the connection.
         /// </summary>
@@ -70,7 +72,7 @@ namespace AutosarBCM
             try
             {
                 InitHardware(hardware);
-
+                
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 formMain.txtTrace.ForeColor = Color.Blue;
                 formMain.openConnection.Text = "Stop Connection";
@@ -81,9 +83,9 @@ namespace AutosarBCM
                 formMain.lblConnection.ForeColor = Color.Green;
                 if (hardware is CanHardware canHardware)
                 {
-                    canHardware.FrameRead += Hardware_FrameRead;
-                    canHardware.FrameWritten += Hardware_FrameWritten;
-                    canHardware.CanError += Hardware_CanError;
+                    //canHardware.FrameRead += Hardware_FrameRead;
+                    //canHardware.FrameWritten += Hardware_FrameWritten;
+                    //canHardware.CanError += Hardware_CanError;
 
                     if (canHardware is IntrepidCsCan && (canHardware.BitRate > 0))
                     {
@@ -97,6 +99,21 @@ namespace AutosarBCM
                     {
                         canHardware.SetBitRate((int)canHardware.BitRate, 0);
                     }
+
+                    transportProtocol = new Iso15765();
+                    transportProtocol.Config.PhysicalAddr.TxId = 0x726;
+                    transportProtocol.Config.PhysicalAddr.RxId = 0x72E;
+                    transportProtocol.Config.BlockSize = 0;
+                    transportProtocol.Config.PaddingByte = 0;
+                    transportProtocol.Config.StMin = 0x10;
+                    transportProtocol.Hardware = hardware;
+
+                    transportProtocol.MessageReceived += TransportProtocol_MessageReceived;
+                    transportProtocol.MessageSent += TransportProtocol_MessageSent;
+                    transportProtocol.ReceiveError += TransportProtocol_ReceiveError;
+
+
+
                 }
                 else if (hardware is SerialPortHardware serialHardware)
                 {
@@ -118,6 +135,36 @@ namespace AutosarBCM
                 MessageBox.Show(ex.ToString());
                 return false;
             }
+        }
+
+        private void TransportProtocol_ReceiveError(object sender, Connection.Protocol.TransportErrorEventArs e)
+        {
+            Helper.ShowErrorMessageBox(e.Message);
+            //if (e. == CanHardware_ErrorStatus.Disconnect)
+            //    Disconnect();
+        }
+
+        private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
+        {
+            if (e.Data[0] == 0x62 || e.Data[0] == 0x6F)
+            {
+                var response = ASResponse.Parse(e.Data);
+                foreach (var receiver in FormMain.Receivers)
+                    if (receiver.Receive(response)) break;
+            }
+
+            var rxRead = "Rx 72E " + BitConverter.ToString(e.Data);
+            var time = new DateTime((long)e.Timestamp);
+
+            ////HandleGeneralMessages(bytes);
+
+            AppendTrace(rxRead, time);
+            AppendTraceRx(rxRead, time);
         }
 
         /// <summary>
@@ -184,16 +231,14 @@ namespace AutosarBCM
         {
             try
             {
-                hardware?.Disconnect();
-                hardware = null;
+                transportProtocol?.Hardware?.Disconnect();
+                //hardware?.Disconnect();
+                transportProtocol.Hardware = null;
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 if (formMain.InvokeRequired)
                     formMain.Invoke(new Action(() => UpdateStartButton(formMain)));
-
                 else
                     UpdateStartButton(formMain);
-
-
             }
             catch (Exception ex)
             {
