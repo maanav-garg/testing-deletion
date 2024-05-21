@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using AutosarBCM.Config;
 using AutosarBCM.Forms.Monitor;
-using AutosarBCM.Message;
 
 namespace AutosarBCM.UserControls.Monitor
 {
@@ -210,7 +209,7 @@ namespace AutosarBCM.UserControls.Monitor
 
             var data = item.PEPSData;
             keyfobID.CopyTo(data, 3);
-            new UdsMessage { Id = item.MessageIdOrDefault, Data = data }.Transmit();
+            //new UdsMessage { Id = item.MessageIdOrDefault, Data = data }.Transmit();
             this.InvokeOnClick(this, new EventArgs());
         }
 
@@ -240,7 +239,7 @@ namespace AutosarBCM.UserControls.Monitor
             else
                 FormMain.TestClickCounter++;
 
-            new UdsMessage { Id = item.MessageIdOrDefault, Data = item.PEPSData }.Transmit();
+            //new UdsMessage { Id = item.MessageIdOrDefault, Data = item.PEPSData }.Transmit();
         }
 
         /// <summary>
@@ -293,7 +292,7 @@ namespace AutosarBCM.UserControls.Monitor
             item.PEPSData[6] = (byte)((NCK2910_GPIO_LevelValues)cmbPIN.SelectedItem);
 
             FormMain.TestClickCounter++;
-            new UdsMessage { Id = item.MessageIdOrDefault, Data = item.PEPSData }.Transmit();
+            //new UdsMessage { Id = item.MessageIdOrDefault, Data = item.PEPSData }.Transmit();
 
         }
         #endregion

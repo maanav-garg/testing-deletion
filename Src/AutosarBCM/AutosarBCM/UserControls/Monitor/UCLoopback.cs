@@ -1,5 +1,4 @@
 ﻿using AutosarBCM.Config;
-using AutosarBCM.Message;
 using System;
 
 namespace AutosarBCM.UserControls.Monitor
@@ -79,7 +78,7 @@ namespace AutosarBCM.UserControls.Monitor
 
             FormMain.TestClickCounter++;
             lblResponse.Text = "0";
-            new UdsMessage() { Id = item.MessageIdOrDefault, Data = item.Loopback.Pair1Data }.Transmit();
+            //new UdsMessage() { Id = item.MessageIdOrDefault, Data = item.Loopback.Pair1Data }.Transmit();
             this.InvokeOnClick(this, new EventArgs());
         }
 
@@ -95,7 +94,7 @@ namespace AutosarBCM.UserControls.Monitor
 
             FormMain.TestClickCounter++;
             lblResponse.Text = "0";
-            new UdsMessage() { Id = item.MessageIdOrDefault, Data = item.Loopback.Pair2Data }.Transmit();
+            //new UdsMessage() { Id = item.MessageIdOrDefault, Data = item.Loopback.Pair2Data }.Transmit();
             this.InvokeOnClick(this, new EventArgs());
         }
 
@@ -113,7 +112,7 @@ namespace AutosarBCM.UserControls.Monitor
             lblPair2Response.Text = "0";
 
             FormMain.TestClickCounter++;
-            new UdsMessage() { Id = item.MessageIdOrDefault, Data = item.Loopback.Verification }.Transmit();
+            //new UdsMessage() { Id = item.MessageIdOrDefault, Data = item.Loopback.Verification }.Transmit();
             this.InvokeOnClick(this, new EventArgs());
         }
 

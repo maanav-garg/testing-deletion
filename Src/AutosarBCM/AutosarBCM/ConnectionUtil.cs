@@ -12,7 +12,6 @@ using Connection.Hardware;
 using Connection.Hardware.Can;
 using Connection.Hardware.SP;
 using AutosarBCM.Common;
-using AutosarBCM.Message;
 using AutosarBCM.Properties;
 using AutosarBCM.Core;
 using Connection.Protocol.Uds;

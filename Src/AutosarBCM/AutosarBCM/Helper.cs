@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using log4net;
 using AutosarBCM.Properties;
 using System.Linq;
-using AutosarBCM.Message;
 using AutosarBCM.Config;
 
 namespace AutosarBCM
@@ -1054,146 +1053,11 @@ namespace AutosarBCM
             saveFileDialog.Title = "Save a Csv template.";
         }
 
-        /// <summary>
-        /// Imports a CSV file and parses it based on the specified protocol.
-        /// </summary>
-        /// <param name="protocol">The communication protocol to use for parsing.</param>
-        /// <returns>A list of parsed messages or null if the operation fails.</returns>
-        public static object ImportCsvFİle(TransmitProtocol protocol)
-        {
-            try
-            {
-                using (openFileDialog)
-                {
-                    if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    
-                    {
-                        switch (protocol)
-                        {
-                            case TransmitProtocol.Can:
-                                return CanMessageCsvParser(File.ReadAllLines(openFileDialog.FileName)
-                                               .Skip(1)
-                                               .ToList());
-                            case TransmitProtocol.Uds:
-                                return UdsMessageCsvParser(File.ReadAllLines(openFileDialog.FileName)
-                                               .Skip(1)
-                                               .ToList());
-                            default: return null;
-                        }
-                    }
-                    else
-                    { 
-                        return null;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Helper.ShowWarningMessageBox("Unexpected CSV File.\nPlease check CSV File.");
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Downloads a CSV template based on the specified protocol.
-        /// </summary>
-        /// <param name="protocol">The communication protocol for the CSV template.</param>
-        public static void DownloadCsvTemplate(TransmitProtocol protocol)
-        {
-            using (saveFileDialog)
-            {
-                saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    switch (protocol)
-                    {
-                        case TransmitProtocol.Can:
-                            File.WriteAllText(saveFileDialog.FileName, Resources.Can_CSV_Template);
-                            break;
-                        case TransmitProtocol.Uds:
-                            File.WriteAllText(saveFileDialog.FileName, Resources.Uds_CSV_Template);
-                            break;
-                    }
-                }
-            }
-        }
-
         #endregion
 
         #region Private Methods
 
-        /// <summary>
-        /// Parses CSV lines into a list of CanMessage objects.
-        /// </summary>
-        /// <param name="lines">The lines of the CSV file.</param>
-        /// <returns>A list of CanMessage objects.</returns>
-        private static List<CanMessage> CanMessageCsvParser(List<string> lines)
-        {
-            var result = new List<CanMessage>();
-            for(int i = 0; i < lines.Count; i++)
-            {
-                var line = lines[i].Replace("\",\"", ";").Split(';');
-                if (line[0] == "-")
-                {
-                    var subMesages = new List<BaseMessage>();
-                    for (int j = i + 1; j < lines.Count; j++,i = j - 1)
-                    {
-                        var subLine = lines[j].Replace("\",\"", ";").Split(';');
-                        if (string.IsNullOrWhiteSpace(subLine[8]) ? false : bool.Parse(subLine[8]))
-                        {
-                            subLine[8] = "FALSE";
-                            subMesages.Add(CanMessage.SetCanMessage(subLine));
-                        }
-                        else
-                            break;
-                    }
-                    result.Add(new CanMessage() { Id = line[0], Multi = true, Comment = line[7], SubMessages = subMesages });
-                }
-                else
-                {
-                    result.Add(CanMessage.SetCanMessage(line));
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Parses CSV lines into a list of UdsMessage objects.
-        /// </summary>
-        /// <param name="lines">The lines of the CSV file.</param>
-        /// <returns>A list of UdsMessage objects.</returns>
-        private static List<UdsMessage> UdsMessageCsvParser(List<string> lines)
-        {
-            var result = new List<UdsMessage>();
-            for(int i = 0; i < lines.Count; i++)
-            {
-                var line = lines[i].Replace("\",\"", ";").Split(';');
-                if (line[0] == "-")
-                {
-                    var subMesages = new List<BaseMessage>();
-                    for (int j = i + 1; j < lines.Count; j++,i = j - 1)
-                    {
-                        var subLine = lines[j].Replace("\",\"", ";").Split(';');
-                        if (string.IsNullOrWhiteSpace(subLine[8]) ? false : bool.Parse(subLine[8]))
-                        {
-                            subLine[8] = "FALSE";
-                            subMesages.Add(UdsMessage.SetUdsMessage(subLine));
-                        }
-                        else
-                            break;
-                    }
-
-                    result.Add(new UdsMessage() { Id = line[0],Multi = true, Comment = line[7], SubMessages = subMesages });
-                }
-                else
-                {
-                    result.Add(UdsMessage.SetUdsMessage(line));
-                }
-            }
-
-            return result;
-        }
+        
 
         #endregion
     }

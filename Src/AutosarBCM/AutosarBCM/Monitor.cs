@@ -1,5 +1,4 @@
 using AutosarBCM.Config;
-using AutosarBCM.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,17 +76,17 @@ namespace AutosarBCM
         /// </summary>
         private static DateTime StartTime { get; set; }
 
-        /// <summary>
-        /// UDS messages used in environmental monitoring.
-        /// </summary>
-        private static Dictionary<string, UdsMessage> RssiDictionary = new Dictionary<string, UdsMessage>()
-        {
-            { Constants.PEPS_Get_RSSI_Measurement, null},
-            { Constants.PEPS_Immobilizer,null},
-            { Constants.PEPS_Read_Keyfob,null},
-            { Constants.PEPS_Get_Key_List, null},
-            { Constants.PEPS_Temperature_Measurement, null}
-        };
+        ///// <summary>
+        ///// UDS messages used in environmental monitoring.
+        ///// </summary>
+        //private static Dictionary<string, UdsMessage> RssiDictionary = new Dictionary<string, UdsMessage>()
+        //{
+        //    { Constants.PEPS_Get_RSSI_Measurement, null},
+        //    { Constants.PEPS_Immobilizer,null},
+        //    { Constants.PEPS_Read_Keyfob,null},
+        //    { Constants.PEPS_Get_Key_List, null},
+        //    { Constants.PEPS_Temperature_Measurement, null}
+        //};
 
         /// <summary>
         /// Array of bytes representing key list used in environmental monitoring.
@@ -122,11 +121,11 @@ namespace AutosarBCM
             Task.Run(() =>
             {
                 System.Timers.Timer testerPresentTimer = null;
-                var testerPresentObject = new UdsMessage(monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.MessageID, monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.TesterPresentMessage);
+                //var testerPresentObject = new UdsMessage(monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.MessageID, monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.TesterPresentMessage);
                 try
                 {
                     testerPresentTimer = new System.Timers.Timer(1000) { AutoReset = true };
-                    testerPresentTimer.Elapsed += (s, e) => { testerPresentObject.Transmit(); };
+                    //testerPresentTimer.Elapsed += (s, e) => { testerPresentObject.Transmit(); };
                     testerPresentTimer.Start();
 
                     if (monitorTestType == MonitorTestType.Generic)
@@ -207,7 +206,7 @@ namespace AutosarBCM
                 if (rssiMesurement == null)
                     return;
                 KeyList.CopyTo(rssiMesurement.PEPSData, 3);
-                RssiDictionary[Constants.PEPS_Get_RSSI_Measurement] = new UdsMessage { Id = rssiMesurement.MessageIdOrDefault, Data = rssiMesurement.PEPSData };
+                //RssiDictionary[Constants.PEPS_Get_RSSI_Measurement] = new UdsMessage { Id = rssiMesurement.MessageIdOrDefault, Data = rssiMesurement.PEPSData };
             }
         }
 
@@ -392,14 +391,14 @@ namespace AutosarBCM
 
                 if (ouputItem.ItemType == Constants.PEPS)
                 {
-                    if(RssiDictionary.TryGetValue(ouputItem.Name, out var udsMessage))
-                    {
-                        if(udsMessage != null)
-                        {
-                            udsMessage.Transmit();
-                            Helper.WriteCycleMessageToLogFile(ouputItem.Name, ouputItem.ItemType, Constants.PEPS);
-                        }
-                    }
+                    //if(RssiDictionary.TryGetValue(ouputItem.Name, out var udsMessage))
+                    //{
+                    //    if(udsMessage != null)
+                    //    {
+                    //        udsMessage.Transmit();
+                    //        Helper.WriteCycleMessageToLogFile(ouputItem.Name, ouputItem.ItemType, Constants.PEPS);
+                    //    }
+                    //}
                 }
             }
         }
@@ -499,33 +498,33 @@ namespace AutosarBCM
             var getKeyList = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Get_Key_List).FirstOrDefault();
             if (getKeyList == null)
                 return;
-            RssiDictionary[Constants.PEPS_Get_Key_List] = new UdsMessage { Id = getKeyList.MessageIdOrDefault, Data = getKeyList.PEPSData };
+            //RssiDictionary[Constants.PEPS_Get_Key_List] = new UdsMessage { Id = getKeyList.MessageIdOrDefault, Data = getKeyList.PEPSData };
 
-            var immobilizer = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Immobilizer).FirstOrDefault();
-            if (immobilizer != null)
-                RssiDictionary[Constants.PEPS_Immobilizer] = new UdsMessage { Id = immobilizer.MessageIdOrDefault, Data = immobilizer.PEPSData };
+            //var immobilizer = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Immobilizer).FirstOrDefault();
+            //if (immobilizer != null)
+            //    RssiDictionary[Constants.PEPS_Immobilizer] = new UdsMessage { Id = immobilizer.MessageIdOrDefault, Data = immobilizer.PEPSData };
 
-            var readKeyfob = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Read_Keyfob).FirstOrDefault();
-            if (readKeyfob != null)
-                RssiDictionary[Constants.PEPS_Read_Keyfob] = new UdsMessage { Id = readKeyfob.MessageIdOrDefault, Data = readKeyfob.PEPSData };
+            //var readKeyfob = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Read_Keyfob).FirstOrDefault();
+            //if (readKeyfob != null)
+            //    RssiDictionary[Constants.PEPS_Read_Keyfob] = new UdsMessage { Id = readKeyfob.MessageIdOrDefault, Data = readKeyfob.PEPSData };
 
-            var temperature = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Temperature_Measurement).FirstOrDefault();
-            if (temperature != null)
-                RssiDictionary[Constants.PEPS_Temperature_Measurement] = new UdsMessage { Id = temperature.MessageIdOrDefault, Data = temperature.PEPSData };
+            //var temperature = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Temperature_Measurement).FirstOrDefault();
+            //if (temperature != null)
+            //    RssiDictionary[Constants.PEPS_Temperature_Measurement] = new UdsMessage { Id = temperature.MessageIdOrDefault, Data = temperature.PEPSData };
 
-            var rssiMesurement = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Get_RSSI_Measurement).FirstOrDefault();
-            if (rssiMesurement == null) 
-                return;
+            //var rssiMesurement = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Get_RSSI_Measurement).FirstOrDefault();
+            //if (rssiMesurement == null) 
+            //    return;
 
-            RssiDictionary[Constants.PEPS_Get_Key_List].Transmit();
+            //RssiDictionary[Constants.PEPS_Get_Key_List].Transmit();
 
             Thread.Sleep(5000);
             if (KeyList == null) 
                 return;
 
-            var data = rssiMesurement.PEPSData;
-            KeyList.CopyTo(data, 3);
-            RssiDictionary[Constants.PEPS_Get_RSSI_Measurement] = new UdsMessage { Id = rssiMesurement.MessageIdOrDefault, Data = data };
+            //var data = rssiMesurement.PEPSData;
+            //KeyList.CopyTo(data, 3);
+            //RssiDictionary[Constants.PEPS_Get_RSSI_Measurement] = new UdsMessage { Id = rssiMesurement.MessageIdOrDefault, Data = data };
         }
 
         /// <summary>

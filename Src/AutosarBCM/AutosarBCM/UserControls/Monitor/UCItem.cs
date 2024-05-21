@@ -1,7 +1,6 @@
 ﻿using AutosarBCM.Config;
 using AutosarBCM.Core;
 using AutosarBCM.Core.Enums;
-using AutosarBCM.Message;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

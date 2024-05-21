@@ -1,5 +1,4 @@
 ﻿using AutosarBCM.Config;
-using AutosarBCM.Message;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -100,10 +99,10 @@ namespace AutosarBCM.UserControls.Monitor
 
             FormMain.TestClickCounter++;
             this.InvokeOnClick(this, new EventArgs());
-            if (CurrentStatus == WiperStatus.Low)
-                new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.LowStop }.Transmit();
-            else if (CurrentStatus == WiperStatus.High)
-                new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.HighStop }.Transmit();
+            //if (CurrentStatus == WiperStatus.Low)
+            //    new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.LowStop }.Transmit();
+            //else if (CurrentStatus == WiperStatus.High)
+            //    new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.HighStop }.Transmit();
         }
 
         /// <summary>
@@ -118,10 +117,10 @@ namespace AutosarBCM.UserControls.Monitor
             FormMain.TestClickCounter++;
             this.InvokeOnClick(this, new EventArgs());
 
-            if (CurrentStatus == WiperStatus.Stop)
-                new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.StopLow }.Transmit();
-            else if (CurrentStatus == WiperStatus.High)
-                new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.HighLow }.Transmit();
+            //if (CurrentStatus == WiperStatus.Stop)
+            //    new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.StopLow }.Transmit();
+            //else if (CurrentStatus == WiperStatus.High)
+            //    new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.HighLow }.Transmit();
         }
 
         /// <summary>
@@ -137,10 +136,10 @@ namespace AutosarBCM.UserControls.Monitor
             FormMain.TestClickCounter++;
             this.InvokeOnClick(this, new EventArgs());
 
-            if(CurrentStatus == WiperStatus.Stop)
-                new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.StopHigh }.Transmit();
-            else if(CurrentStatus == WiperStatus.Low)
-                new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.LowHigh }.Transmit();
+            //if(CurrentStatus == WiperStatus.Stop)
+            //    new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.StopHigh }.Transmit();
+            //else if(CurrentStatus == WiperStatus.Low)
+            //    new UdsMessage() { Id = Item.MessageIdOrDefault, Data = Item.WiperCase.LowHigh }.Transmit();
         }
 
         /// <summary>
@@ -154,7 +153,7 @@ namespace AutosarBCM.UserControls.Monitor
             lblADC.Text = string.Empty;
             FormMain.TestClickCounter++;
             this.InvokeOnClick(this, new EventArgs());
-            new UdsMessage { Id = Item.MessageIdOrDefault, Data = Item.ReadADCData }.Transmit();
+            //new UdsMessage { Id = Item.MessageIdOrDefault, Data = Item.ReadADCData }.Transmit();
         }
 
         /// <summary>
@@ -168,7 +167,7 @@ namespace AutosarBCM.UserControls.Monitor
             lblCurrent.Text = string.Empty;
             FormMain.TestClickCounter++;
             this.InvokeOnClick(this, new EventArgs());
-            new UdsMessage { Id = Item.MessageIdOrDefault, Data = Item.ReadCurrentData }.Transmit();
+            //new UdsMessage { Id = Item.MessageIdOrDefault, Data = Item.ReadCurrentData }.Transmit();
         }
 
         /// <summary>
@@ -182,7 +181,7 @@ namespace AutosarBCM.UserControls.Monitor
             lblDIAG.Text = string.Empty;
             FormMain.TestClickCounter++;
             this.InvokeOnClick(this, new EventArgs());
-            new UdsMessage { Id = Item.MessageIdOrDefault, Data = Item.ReadDiagData }.Transmit();
+            //new UdsMessage { Id = Item.MessageIdOrDefault, Data = Item.ReadDiagData }.Transmit();
         }
 
         /// <summary>

@@ -13,7 +13,6 @@ using System.Windows.Forms;
 using AutosarBCM.Common;
 using AutosarBCM.Config;
 using AutosarBCM.Forms.Monitor;
-using AutosarBCM.Message;
 using AutosarBCM.Properties;
 using AutosarBCM.UserControls.Monitor;
 using WeifenLuo.WinFormsUI.Docking;
@@ -839,11 +838,11 @@ namespace AutosarBCM
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            new CanMessage("07E0", "0210610000000000").Transmit();
-            Thread.Sleep(10);
-            new CanMessage("07E0", "0427010000000000").Transmit();
-            Thread.Sleep(10);
-            new CanMessage("07E0", "0427020000000000").Transmit();
+            //new CanMessage("07E0", "0210610000000000").Transmit();
+            //Thread.Sleep(10);
+            //new CanMessage("07E0", "0427010000000000").Transmit();
+            //Thread.Sleep(10);
+            //new CanMessage("07E0", "0427020000000000").Transmit();
         }
 
         /// <summary>
@@ -856,7 +855,7 @@ namespace AutosarBCM
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            new CanMessage("07E0", "0211030000000000").Transmit();
+            //new CanMessage("07E0", "0211030000000000").Transmit();
         }
 
         /// <summary>
@@ -896,7 +895,7 @@ namespace AutosarBCM
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            new CanMessage("07E0", "072F619900000000").Transmit();
+            //new CanMessage("07E0", "072F619900000000").Transmit();
             Thread.Sleep(10);
         }
 
