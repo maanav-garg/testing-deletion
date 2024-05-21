@@ -1,7 +1,9 @@
 ﻿using AutosarBCM.Config;
-using AutosarBCM.Enums;
+using AutosarBCM.Core;
+using AutosarBCM.Core.Enums;
 using AutosarBCM.Message;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -27,7 +29,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         public string MessageID { get; set; }
 
-        public Config.ControlInfo ControlInfo { get; set; }
+        public Core.ControlInfo ControlInfo { get; set; }
 
         /// <summary>
         /// Gets or sets the group name associated with the control.
@@ -65,7 +67,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="item">The InputMonitorItem associated with this control.</param>
         /// <param name="commonConfig">The CommonConfig object used for configuration (optional).</param>
         //public UCItem(InputMonitorItem item, CommonConfig commonConfig = null)
-        public UCItem(Config.ControlInfo controlInfo)
+        public UCItem(Core.ControlInfo controlInfo)
         {
             InitializeComponent();
 
@@ -75,8 +77,7 @@ namespace AutosarBCM.UserControls.Monitor
             else
                 lblName.Text = controlInfo.Name;
 
-            foreach (var payload in controlInfo.Responses.Where(x => x.ServiceID == 0x62).FirstOrDefault()?.Payloads)
-                listBox1.Items.Add(payload.Name);
+            lbResponse.Items.AddRange(controlInfo.Responses.Where(x => x.ServiceID == 0x62).FirstOrDefault()?.Payloads?.ToArray());
         }
 
         public UCItem(InputMonitorItem item, CommonConfig commonConfig)
@@ -103,9 +104,8 @@ namespace AutosarBCM.UserControls.Monitor
 
             lblStatus.BeginInvoke((MethodInvoker)delegate ()
             {
-                listBox1.Items.Clear();
-                foreach (var payload in response.Payloads)
-                    listBox1.Items.Add(payload.Print());
+                lbResponse.Items.Clear();
+                lbResponse.Items.AddRange(response.Payloads.ToArray());
             });
         }
 
@@ -153,7 +153,21 @@ namespace AutosarBCM.UserControls.Monitor
 
         private void lblStatus_Click(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void lbResponse_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            e.DrawFocusRectangle();
+
+            if (e.Index < 0) return;
+
+            var item = lbResponse.Items[e.Index];
+            if (item is PayloadInfo pInfo)
+                e.Graphics.DrawString(pInfo.Name, e.Font, new SolidBrush(ListBox.DefaultForeColor), e.Bounds);
+            else if (item is Payload payload)
+                e.Graphics.DrawString($"{payload.PayloadInfo.Name,-30} {payload.FormattedValue}", e.Font, new SolidBrush(Color.FromName(payload.Color ?? "Black")), e.Bounds);
         }
     }
 
