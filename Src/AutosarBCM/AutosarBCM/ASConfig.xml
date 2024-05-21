@@ -1,79 +1,79 @@
 ﻿<Configuration>
-    <Services>
-        <Service>
-            <ID>10</ID>
-            <Name>DiagnosticSessionControl</Name>
-        </Service>
-        <Service>
-            <ID>22</ID>
-            <Name>ReadDataByIdentifier</Name>
-            <Sessions>01</Sessions>
-        </Service>
-        <Service>
-            <ID>2F</ID>
-            <Name>InputOutputControlByIdentifier</Name>
-        </Service>
-		<Service>
-			<ID>2E</ID>
-			<Name>WriteDataByIdentifier</Name>
-		</Service>
-    </Services>
-    <Sessions>
-        <Session>
-            <ID>01</ID>
-            <Name>Default Session</Name>
-        </Session>
-        <Session>
-            <ID>02</ID>
-            <Name>Programming Session</Name>
-        </Session>
-        <Session>
-            <ID>03</ID>
-            <Name>Extended Diagnostic Session</Name>
-        </Session>
-    </Sessions>
-    <Controls>
-		<Control>
-			<Address>DE00</Address>
-			<Name>DE00</Name>
-			<Type></Type>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Transmission">DID_DE00_0</Payload>
-					<Payload name="Auto CAB Tilt">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Differential Lock">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Water Pump">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Emission Level">DID_DE00_4</Payload>
-					<Payload name="PTO_AMT">DID_Byte_Enable_Disable</Payload>
-					<Payload name="A/C Compressor Control">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Low Liner">DID_Byte_Enable_Disable</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
-		<Control>
-			<Address>DE01</Address>
-			<Name>DE01</Name>
-			<Type></Type>
-			<Group>ECU DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Heated Windshield">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Front Fog Lamps">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Corner Lighting">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Liter of Engine">DID_DE01_3</Payload>
-					<Payload name="Auxiliary Heater">DID_DE01_4</Payload>
-					<Payload name="C6AS_Truck">DID_Byte_Enable_Disable</Payload>
-					<Payload name="DPF Systems">DID_Byte_Enable_Disable</Payload>
-					<Payload name="F-Sight">DID_Byte_Present_notPresent</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
+  <Services>
+    <Service>
+      <ID>10</ID>
+      <Name>DiagnosticSessionControl</Name>
+    </Service>
+    <Service>
+      <ID>22</ID>
+      <Name>ReadDataByIdentifier</Name>
+      <Sessions>01</Sessions>
+    </Service>
+    <Service>
+      <ID>2F</ID>
+      <Name>InputOutputControlByIdentifier</Name>
+    </Service>
+    <Service>
+      <ID>2E</ID>
+      <Name>WriteDataByIdentifier</Name>
+    </Service>
+  </Services>
+  <Sessions>
+    <Session>
+      <ID>01</ID>
+      <Name>Default Session</Name>
+    </Session>
+    <Session>
+      <ID>02</ID>
+      <Name>Programming Session</Name>
+    </Session>
+    <Session>
+      <ID>03</ID>
+      <Name>Extended Diagnostic Session</Name>
+    </Session>
+  </Sessions>
+  <Controls>
+    <Control>
+      <Address>DE00</Address>
+      <Name>DE00</Name>
+      <Type></Type>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Transmission">DID_DE00_0</Payload>
+          <Payload name="Auto CAB Tilt">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Differential Lock">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Water Pump">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Emission Level">DID_DE00_4</Payload>
+          <Payload name="PTO_AMT">DID_Byte_Enable_Disable</Payload>
+          <Payload name="A/C Compressor Control">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Low Liner">DID_Byte_Enable_Disable</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE01</Address>
+      <Name>DE01</Name>
+      <Type></Type>
+      <Group>ECU DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Heated Windshield">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Front Fog Lamps">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Corner Lighting">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Liter of Engine">DID_DE01_3</Payload>
+          <Payload name="Auxiliary Heater">DID_DE01_4</Payload>
+          <Payload name="C6AS_Truck">DID_Byte_Enable_Disable</Payload>
+          <Payload name="DPF Systems">DID_Byte_Enable_Disable</Payload>
+          <Payload name="F-Sight">DID_Byte_Present_notPresent</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
     <Control>
       <Address>DE02</Address>
       <Name>DE02</Name>
@@ -99,7 +99,7 @@
       <Address>DE03</Address>
       <Name>DE03</Name>
       <Type></Type>
-	  <Group>ECU-DID</Group>
+      <Group>ECU-DID</Group>
       <Services>22;2E</Services>
       <Responses>
         <Response serviceId="62">
@@ -114,242 +114,707 @@
         </Response>
         <Response serviceId="6E">
         </Response>
-            </Responses>
-        </Control>
-		// Eklenen
-		<Control>
-			<Address>DE04</Address>
-			<Name>DE04</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Active Emergency Breaking System">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Active Emergency Breaking System">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Trailer Detection">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Sunroof">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Climate Control Module">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Multimedia">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Intarder">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Brake System">DID_DE04_7</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
-		
-		<Control>
-			<Address>VIN</Address>
-			<Name>VIN</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="VIN">Unsigned_1Byte</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
+      </Responses>
+    </Control>
+    // Eklenen
+    <Control>
+      <Address>DE04</Address>
+      <Name>DE04</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Active Emergency Breaking System">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Active Emergency Breaking System">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Trailer Detection">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Sunroof">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Climate Control Module">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Multimedia">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Intarder">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Brake System">DID_DE04_7</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
 
-		<Control>
-			<Address>DE06</Address>
-			<Name>DE06</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">					
-					<Payload name="ADR Vehicle">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Momentary Turn Signal Flash Count">DID_DE06_1</Payload>
-					<Payload name="Adaptive Cruise Control">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Battery Change">DID_DE06_3</Payload>
-					<Payload name="Battery U0 Min">Unsigned_1Byte</Payload>
-					<Payload name="Battery U0 Max">Unsigned_1Byte</Payload>
-					<Payload name="Battery C Nominal">Unsigned_1Byte</Payload>
-					<Payload name="Battery CCA Nominal">Unsigned_1Byte</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
+    <Control>
+      <Address>DE05</Address>
+      <Name>VIN</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="VIN">Unsigned_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
 
-		<Control>
-			<Address>DE07</Address>
-			<Name>DE07</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Battery Technology Range">HexDump_1Byte</Payload>
-					<Payload name="BMS Availability">DID_Byte_Present_notPresent</Payload>
-					<Payload name="Turn Signal On Time">HexDump_2Bytes</Payload>
-					<Payload name="Turn Signal Off Time">HexDump_2Bytes</Payload>
-					<Payload name="Dimming Usr TransTime">HexDump_1Byte</Payload>
-					<Payload name="Dimming Amb Up TransTime">HexDump_1Byte</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
-		
-		<Control>
-			<Address>DE08</Address>
-			<Name>DE08</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Gateway for CAN Lines">HexDump_1Byte</Payload>
-					<Payload name="Headlamp Switch Type">HexDump_1Byte</Payload>
-					<Payload name="Disc/Drum Brake">HexDump_1Byte</Payload>
-					<Payload name="Apu Pressure Switch">HexDump_1Byte</Payload>
-					<Payload name="PTO Activation Trial Count">HexDump_1Byte</Payload>
-					<Payload name="Regen Inhibition Button Press Time">HexDump_1Byte</Payload>
-					<Payload name="Truck Type">DID_DE08_7</Payload>
-					<Payload name="Vehicle Speed">HexDump_1Byte</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
+    <Control>
+      <Address>DE06</Address>
+      <Name>DE06</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="ADR Vehicle">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Momentary Turn Signal Flash Count">DID_DE06_1</Payload>
+          <Payload name="Adaptive Cruise Control">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Battery Change">DID_DE06_3</Payload>
+          <Payload name="Battery U0 Min">Unsigned_1Byte</Payload>
+          <Payload name="Battery U0 Max">Unsigned_1Byte</Payload>
+          <Payload name="Battery C Nominal">Unsigned_1Byte</Payload>
+          <Payload name="Battery CCA Nominal">Unsigned_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
 
-		<Control>
-			<Address>DE09</Address>
-			<Name>DE09</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="FARID_BrakeValve_Active">HexDump_1Byte</Payload>
-					<Payload name="Window Motor On Time">HexDump_1Byte</Payload>
-					<Payload name="Window Motor Inhibition Time">HexDump_1Byte</Payload>
-					<Payload name="Window Motor On Counter">HexDump_1Byte</Payload>
-					<Payload name="Vehicle Horn">HexDump_1Byte</Payload>
-					<Payload name="Passive Start">HexDump_1Byte</Payload>
-					<Payload name="Vehicle Speed for Corner Lights">DID_Byte_Kmph</Payload>
-					<Payload name="Vehicle Speed for Garbage Truck">DID_Byte_Kmph</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
+    <Control>
+      <Address>DE07</Address>
+      <Name>DE07</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Battery Technology Range">HexDump_1Byte</Payload>
+          <Payload name="BMS Availability">DID_Byte_Present_notPresent</Payload>
+          <Payload name="Turn Signal On Time">HexDump_2Bytes</Payload>
+          <Payload name="Turn Signal Off Time">HexDump_2Bytes</Payload>
+          <Payload name="Dimming Usr TransTime">HexDump_1Byte</Payload>
+          <Payload name="Dimming Amb Up TransTime">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
 
-		<Control>
-			<Address>DE0B</Address>
-			<Name>DE0B</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Configurable % of IRC for PowerwindowLeft_Threshold">DID_DE0B_1</Payload>
-					<Payload name="Configurable % of IRC for PowerwindowRight_Threshold">DID_DE0B_1</Payload>
-					<Payload name="Configurable % of IRC for SunroofMotor_Threshold">DID_DE0B_1</Payload>
-					<Payload name="Configurable Detection time for PowerWindowLeft">HexDump_2Bytes</Payload>
-					<Payload name="Configurable Detection time for PowerWindowRight">HexDump_2Bytes</Payload>
-					<Payload name="Configurable Detection time for SunroofMotor">HexDump_2Bytes</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
+    <Control>
+      <Address>DE08</Address>
+      <Name>DE08</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Gateway for CAN Lines">HexDump_1Byte</Payload>
+          <Payload name="Headlamp Switch Type">HexDump_1Byte</Payload>
+          <Payload name="Disc/Drum Brake">HexDump_1Byte</Payload>
+          <Payload name="Apu Pressure Switch">HexDump_1Byte</Payload>
+          <Payload name="PTO Activation Trial Count">HexDump_1Byte</Payload>
+          <Payload name="Regen Inhibition Button Press Time">HexDump_1Byte</Payload>
+          <Payload name="Truck Type">DID_DE08_7</Payload>
+          <Payload name="Vehicle Speed">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
 
-		<Control>
-			<Address>DE0C</Address>
-			<Name>DE0C</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Vehicle Speed for Differential Lock">DID_Byte_Kmph</Payload>
-					<Payload name="Vehicle Speed for Low Liner">DID_Byte_Kmph</Payload>
-					<Payload name="Vehicle Speed for PTO">DID_Byte_Kmph</Payload>
-					<Payload name="Vehicle Speed for Damper">DID_Byte_Kmph</Payload>
-					<Payload name="ECAS Vehicle Type">HexDump_1Byte</Payload>
-					<Payload name="Spare DID 8">DID_Byte_Enable_Disable</Payload>
-					<Payload name="Spare DID 9">HexDump_1Byte</Payload>
-					<Payload name="Adjustable Speed Limiter">DID_Byte_Enable_Disable</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
-		
-		<Control>
-			<Address>DE0D</Address>
-			<Name>DE0D</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Spare DID 10">HexDump_2Bytes</Payload>
-					<Payload name="FARID_Speed_S1">HexDump_1Byte</Payload>
-					<Payload name="FARID_Speed_S2">HexDump_1Byte</Payload>
-					<Payload name="Headlamp Selection">HexDump_1Byte</Payload>
-					<Payload name="Battery Spare Byte1">HexDump_1Byte</Payload>
-					<Payload name="Battery Spare Byte2">HexDump_1Byte</Payload>					
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
-		
-		<Control>
-			<Address>DE0D</Address>
-			<Name>DE0D</Name>
-			<Type></Type>
-			<Group>ECU-DID</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Spare DID 10">HexDump_2Bytes</Payload>
-					<Payload name="FARID_Speed_S1">HexDump_1Byte</Payload>
-					<Payload name="FARID_Speed_S2">HexDump_1Byte</Payload>
-					<Payload name="Headlamp Selection">HexDump_1Byte</Payload>
-					<Payload name="Battery Spare Byte1">HexDump_1Byte</Payload>
-					<Payload name="Battery Spare Byte2">HexDump_1Byte</Payload>					
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
-		
-		// Ekleme Bitiş
+    <Control>
+      <Address>DE09</Address>
+      <Name>DE09</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="FARID_BrakeValve_Active">HexDump_1Byte</Payload>
+          <Payload name="Window Motor On Time">HexDump_1Byte</Payload>
+          <Payload name="Window Motor Inhibition Time">HexDump_1Byte</Payload>
+          <Payload name="Window Motor On Counter">HexDump_1Byte</Payload>
+          <Payload name="Vehicle Horn">HexDump_1Byte</Payload>
+          <Payload name="Passive Start">HexDump_1Byte</Payload>
+          <Payload name="Vehicle Speed for Corner Lights">DID_Byte_Kmph</Payload>
+          <Payload name="Vehicle Speed for Garbage Truck">DID_Byte_Kmph</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
 
-		<Control>
-			<Address>099B</Address>
-			<Name>ACCutOffSupply</Name>
-			<Type></Type>
-			<Services>22;2F</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="ACCutOffSupply">DID_Byte_Activate_Inactivate</Payload>
-				</Response>
-				<Response serviceId="6F">
-				</Response>
-			</Responses>
-		</Control>
-        <Control>
-            <Address>DF51</Address>
-            <Name>AirHornActivateSupply</Name>
-            <Type></Type>
-            <Services>22;2F</Services>
-            <Responses>
-                <Response serviceId="62">
-					<Payload name="AirHornActivateSupply">DID_Byte_Activate_Inactivate</Payload>
-				</Response>
-				<Response serviceId="6E">
-				</Response>
-			</Responses>
-		</Control>
+    <Control>
+      <Address>DE0B</Address>
+      <Name>DE0B</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Configurable % of IRC for PowerwindowLeft_Threshold">DID_DE0B_1</Payload>
+          <Payload name="Configurable % of IRC for PowerwindowRight_Threshold">DID_DE0B_1</Payload>
+          <Payload name="Configurable % of IRC for SunroofMotor_Threshold">DID_DE0B_1</Payload>
+          <Payload name="Configurable Detection time for PowerWindowLeft">HexDump_2Bytes</Payload>
+          <Payload name="Configurable Detection time for PowerWindowRight">HexDump_2Bytes</Payload>
+          <Payload name="Configurable Detection time for SunroofMotor">HexDump_2Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+
+    <Control>
+      <Address>DE0C</Address>
+      <Name>DE0C</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Vehicle Speed for Differential Lock">DID_Byte_Kmph</Payload>
+          <Payload name="Vehicle Speed for Low Liner">DID_Byte_Kmph</Payload>
+          <Payload name="Vehicle Speed for PTO">DID_Byte_Kmph</Payload>
+          <Payload name="Vehicle Speed for Damper">DID_Byte_Kmph</Payload>
+          <Payload name="ECAS Vehicle Type">HexDump_1Byte</Payload>
+          <Payload name="Spare DID 8">DID_Byte_Enable_Disable</Payload>
+          <Payload name="Spare DID 9">HexDump_1Byte</Payload>
+          <Payload name="Adjustable Speed Limiter">DID_Byte_Enable_Disable</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE0D</Address>
+      <Name>DE0D</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Spare DID 10">HexDump_2Bytes</Payload>
+          <Payload name="FARID_Speed_S1">HexDump_1Byte</Payload>
+          <Payload name="FARID_Speed_S2">HexDump_1Byte</Payload>
+          <Payload name="Headlamp Selection">HexDump_1Byte</Payload>
+          <Payload name="Battery Spare Byte1">HexDump_1Byte</Payload>
+          <Payload name="Battery Spare Byte2">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE0E</Address>
+      <Name>Spare DID 2</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Spare DID 2">HexDump_16Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE0F</Address>
+      <Name>Spare DID 3</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Spare DID 3">HexDump_16Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE10</Address>
+      <Name>DE10</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="RearL_bNL_a1">HexDump_4Bytes</Payload>
+          <Payload name="RearL_bNL_b1">HexDump_4Bytes</Payload>
+          <Payload name="RearL_aNL_a1">HexDump_4Bytes</Payload>
+          <Payload name="RearL_aNL_b1">HexDump_4Bytes</Payload>
+          <Payload name="RearR_bNL_a1">HexDump_4Bytes</Payload>
+          <Payload name="RearR_bNL_b1">HexDump_4Bytes</Payload>
+          <Payload name="RearR_aNL_a1">HexDump_4Bytes</Payload>
+          <Payload name="RearR_aNL_b1">HexDump_4Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE11</Address>
+      <Name>DE11</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Rear_Load_uplimit">HexDump_4Bytes</Payload>
+          <Payload name="Rear_Load_lowlimit">HexDump_4Bytes</Payload>
+          <Payload name="Rear_Load_corrfactor_bNL">HexDump_4Bytes</Payload>
+          <Payload name="Rear_Load_corrfactor_aNL">HexDump_4Bytes</Payload>
+          <Payload name="Rear_Load_a1">HexDump_4Bytes</Payload>
+          <Payload name="Rear_Load_b1">HexDump_4Bytes</Payload>
+          <Payload name="Rear_height_uplevel_limit">HexDump_4Bytes</Payload>
+          <Payload name="Rear_height_lowlevel_limit">HexDump_4Bytes</Payload>
+          <Payload name="SAS_configured">HexDump_1Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE12</Address>
+      <Name>DE12</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Rear_height_M1_level">HexDump_4Bytes</Payload>
+          <Payload name="Rear_height_M2_level">HexDump_4Bytes</Payload>
+          <Payload name="Rear_HS_Controller_Kp_nominal">HexDump_2Bytes</Payload>
+          <Payload name="Rear_HS_Controller_Kd_nominal">HexDump_2Bytes</Payload>
+          <Payload name="Rear_HS_Saved_NL_left">HexDump_4Bytes</Payload>
+          <Payload name="Rear_HS_Saved_NL_right">HexDump_4Bytes</Payload>
+          <Payload name="Diag_Sensor_Calibration_cmd">HexDump_1Byte</Payload>
+          <Payload name="Rear_Sensor_Calibration_Active">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE13</Address>
+      <Name>DE13</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="RearL_PS_Saved_Zero_Value">HexDump_4Bytes</Payload>
+          <Payload name="RearR_PS_Saved_Zero_Value">HexDump_4Bytes</Payload>
+          <Payload name="RLSM_calibration">HexDump_1Byte</Payload>
+          <Payload name="RLSM_calibration_status">HexDump_1Byte</Payload>
+          <Payload name="Left_Window_OTU_Calibration_EngOff">HexDump_1Byte</Payload>
+          <Payload name="Left_Window_OTU_Calibration_Status_EngOff">HexDump_1Byte</Payload>
+          <Payload name="Left_Window_OTU_MinToEnd_EngOff">HexDump_1Byte</Payload>
+          <Payload name="Left_Window_OTU_UnitCount_EngOff">HexDump_4Bytes</Payload>
+          <Payload name="Left_Window_OTU_Calibration_EngOn">HexDump_1Byte</Payload>
+          <Payload name="Left_Window_OTU_Calibration_Status_EngOn">HexDump_1Byte</Payload>
+          <Payload name="Left_Window_OTU_MinToEnd_EngOn">HexDump_1Byte</Payload>
+          <Payload name="Left_Window_OTU_UnitCount_EngOn">HexDump_4Bytes</Payload>
+          <Payload name="Right_Window_OTU_Calibration_EngOff">HexDump_1Byte</Payload>
+          <Payload name="Right_Window_OTU_Calibration_Status_EngOff">HexDump_1Byte</Payload>
+          <Payload name="Right_Window_OTU_MinToEnd_EngOff">HexDump_1Byte</Payload>
+          <Payload name="Right_Window_OTU_UnitCount_EngOff">HexDump_4Bytes</Payload>
+          <Payload name="Right_Window_OTU_Calibration_EngOn">HexDump_1Byte</Payload>
+          <Payload name="Right_Window_OTU_Calibration_Status_EngOn">HexDump_1Byte</Payload>
+          <Payload name="Right_Window_OTU_MinToEnd_EngOn">HexDump_1Byte</Payload>
+          <Payload name="Right_Window_OTU_UnitCount_EngOn">HexDump_4Bytes</Payload>
+          <Payload name="Left_Window_Last_Position">HexDump_2Bytes</Payload>
+          <Payload name="Right_Window_Last_Position">HexDump_2Bytes</Payload>
+          <Payload name="Left_Window_Stuck_Count">HexDump_1Byte</Payload>
+          <Payload name="Right_Window_Stuck_Count">HexDump_1Byte</Payload>
+          <Payload name="Power_Windows_OTU_Stuck_Limit">HexDump_1Byte</Payload>
+          <Payload name="Left_Window_Protection">HexDump_1Byte</Payload>
+          <Payload name="Right_Window_Protection">HexDump_1Byte</Payload>
+          <Payload name="Power_Windows_Motor_Protection">HexDump_1Byte</Payload>
+          <Payload name="Power_Windows_Spare_Bytes">HexDump_2Bytes</Payload>
+        </Response>
+        <Response serviceId="6E"></Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE14</Address>
+      <Name>DE14</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Rear_height_RideHeight">HexDump_4Bytes</Payload>
+          <Payload name="Rear_height_NL2">HexDump_4Bytes</Payload>
+          <Payload name="Rear_height_previous">HexDump_4Bytes</Payload>
+          <Payload name="ECAS_calibration_session_mode">HexDump_4Bytes</Payload>
+          <Payload name="Diag_Sensor_Calibration_resp">HexDump_4Bytes</Payload>
+          <Payload name="Rear_HS_Calibration_Status">HexDump_1Byte</Payload>
+          <Payload name="Rear_PS_Calibration_Status">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE15</Address>
+      <Name>DE15</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="DPF_Inhibit_Counter">HexDump_4Bytes</Payload>
+          <Payload name="DPF_Manual_Regen_Counter">HexDump_4Bytes</Payload>
+          <Payload name="LDWS_Counter">HexDump_4Bytes</Payload>
+          <Payload name="AEBS_Counter">HexDump_4Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE16</Address>
+      <Name>Total_Distance_SS_Axle_Lifted</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Total_Distance_SS_Axle_Lifted">HexDump_4Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE17</Address>
+      <Name>Total_Distance_TA_Axle_Lifted</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Total_Distance_TA_Axle_Lifted">HexDump_4Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE18</Address>
+      <Name>Total_Distance_SS_TA_Axle_Lifted</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Total_Distance_SS_TA_Axle_Lifted">HexDump_4Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE19</Address>
+      <Name>Spare DID 7</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Spare DID 7">Unsigned_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE20</Address>
+      <Name>DE20</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Min_Comp_Pressure">HexDump_2Bytes</Payload>
+          <Payload name="Max_Comp_Pressure">HexDump_2Bytes</Payload>
+          <Payload name="Min_Comp_Reactivate_Pressure">HexDump_2Bytes</Payload>
+          <Payload name="Max_Comp_Reactivate_Pressure">HexDump_2Bytes</Payload>
+          <Payload name="EngOffRpm">HexDump_1Byte</Payload>
+          <Payload name="MinOatTempAuxPmp">HexDump_1Byte</Payload>
+          <Payload name="MaxOatTempAuxPmp">HexDump_1Byte</Payload>
+          <Payload name="MinCoolntTemp">HexDump_1Byte</Payload>
+          <Payload name="InCarTempOffset">HexDump_1Byte</Payload>
+          <Payload name="Forced_Recirc_Max_Temp_Thr">HexDump_1Byte</Payload>
+          <Payload name="Forced_Recirc_Max_Temp_Time">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE21</Address>
+      <Name>DE21</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Rear_ECAS_parameter_checksum">HexDump_2Bytes</Payload>
+          <Payload name="Rear_HS_calibration_checksum">HexDump_2Bytes</Payload>
+          <Payload name="Rear_PS_calibration_checksum">HexDump_2Bytes</Payload>
+          <Payload name="Rear_valve_check_validated">HexDump_1Byte</Payload>
+          <Payload name="Rear_ECAS_axle_load_checksum">HexDump_4Bytes</Payload>
+          <Payload name="ECAS_calibration_spareDID2">HexDump_4Bytes</Payload>
+          <Payload name="ECAS_calibration_spareDID3">HexDump_4Bytes</Payload>
+          <Payload name="ECAS_calibration_spareDID4">HexDump_4Bytes</Payload>
+          <Payload name="ECAS_calibration_spareDID5">HexDump_4Bytes</Payload>
+          <Payload name="ECAS_calibration_spareDID6">HexDump_4Bytes</Payload>
+          <Payload name="ECAS_calibration_spareDID7">HexDump_4Bytes</Payload>
+          <Payload name="ECAS_calibration_spareDID8">HexDump_4Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE22</Address>
+      <Name>Spare DID 4</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Spare DID 4">Unsigned_2Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE24</Address>
+      <Name>Keyfob Battery Status</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Keyfob battery status">HexDump_2Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE23</Address>
+      <Name>DTC_Configuration</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="DTC_Configuration">HexDump_4Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE25</Address>
+      <Name>DE25</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Spare DID 11">HexDump_1Byte</Payload>
+          <Payload name="Spare DID 5">HexDump_1Byte</Payload>
+          <Payload name="LowLiner_State">HexDump_1Byte</Payload>
+          <Payload name="Damper_Configuration">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE26</Address>
+      <Name>DE26</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="PBL_version" >DID_DE26</Payload>
+          <Payload name="SBL_version">DID_DE26</Payload>
+          <Payload name="BSW_version">DID_DE26</Payload>
+          <Payload name="Cdd_version">DID_DE26</Payload>
+          <Payload name="VCAN_dbc_version">DID_DE26</Payload>
+          <Payload name="MSCAN_dbc_version">DID_DE26</Payload>
+          <Payload name="LIN3_ldf_version">DID_DE26</Payload>
+          <Payload name="HSCAN_dbc_version">DID_DE26</Payload>
+          <Payload name="LIN1_ldf_version">DID_DE26</Payload>
+          <Payload name="LIN2_ldf_version">DID_DE26</Payload>
+          <Payload name="LIN4_ldf_version">DID_DE26</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE27</Address>
+      <Name>DE27</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="RemoteControlDefaultKey">HexDump_4Bytes</Payload>
+          <Payload name="RemoteControlPinNumber">HexDump_4Bytes</Payload>
+          <Payload name="RemoteControl_SpareDID">HexDump_4Bytes</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE28</Address>
+      <Name>DomeLampDimmingLevelStatus</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="Dome Lamp Dimming Level Status">HexDump_1Byte</Payload>
+          <Payload name="Driver Map Reading Lamp Dimming Level Status">HexDump_1Byte</Payload>
+          <Payload name="Passenger Map Reading Lamp Dimming Level Status">HexDump_1Byte</Payload>
+          <Payload name="Ambient Light Dimming Level Status">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE3A</Address>
+      <Name>DE3A</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="distance_front_first_value_km">HexDump_4Bytes</Payload>
+          <Payload name="distance_front_calc_start_km">HexDump_4Bytes</Payload>
+          <Payload name="blr_fl_first_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_fl_calc_start_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_fl_previous_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_fr_first_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_fr_calc_start_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_fr_previous_value_perc">HexDump_1Byte</Payload>
+          <Payload name="displayed_front_predicted_km">HexDump_2Bytes</Payload>
+          <Payload name="blr_message_front_previous">HexDump_1Byte</Payload>
+          <Payload name="distance_rear1_first_value_km">HexDump_4Bytes</Payload>
+          <Payload name="distance_rear1_calc_start_km">HexDump_4Bytes</Payload>
+          <Payload name="blr_r1l_first_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r1l_calc_start_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r1l_previous_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r1r_first_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r1r_calc_start_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r1r_previous_value_perc">HexDump_1Byte</Payload>
+          <Payload name="Rear_HS_Calibration_Status">HexDump_1Byte</Payload>
+          <Payload name="displayed_rear1_predicted_km">HexDump_2Bytes</Payload>
+          <Payload name="blr_message_rear1_previous">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE3B</Address>
+      <Name>DE3B</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="distance_rear2_first_value_km">HexDump_4Bytes</Payload>
+          <Payload name="distance_rear2_calc_start_km">HexDump_4Bytes</Payload>
+          <Payload name="blr_r2l_first_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r2l_calc_start_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r2l_previous_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r2r_first_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r2r_calc_start_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r2r_previous_value_perc">HexDump_1Byte</Payload>
+          <Payload name="displayed_rear2_predicted_km">HexDump_2Bytes</Payload>
+          <Payload name="blr_message_rear2_previous">HexDump_1Byte</Payload>
+          <Payload name="distance_rear3_first_value_km">HexDump_4Bytes</Payload>
+          <Payload name="distance_rear3_calc_start_km">HexDump_4Bytes</Payload>
+          <Payload name="blr_r3l_first_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r3l_calc_start_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r3l_previous_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r3r_first_value_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r3r_calc_start_perc">HexDump_1Byte</Payload>
+          <Payload name="blr_r3r_previous_value_perc">HexDump_1Byte</Payload>
+          <Payload name="displayed_rear3_predicted_km">HexDump_2Bytes</Payload>
+          <Payload name="blr_message_rear3_previous">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE3C</Address>
+      <Name>ECOMode</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="ECOMode">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DE3D</Address>
+      <Name>ECOMode</Name>
+      <Type></Type>
+      <Group>ECU-DID</Group>
+      <Services>22;2E</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="ECOModeSwitch">HexDump_1Byte</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
+
+    // Ekleme Bitiş
+
+    <Control>
+      <Address>099B</Address>
+      <Name>ACCutOffSupply</Name>
+      <Type></Type>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="ACCutOffSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6F">
+        </Response>
+      </Responses>
+    </Control>
+    <Control>
+      <Address>DF51</Address>
+      <Name>AirHornActivateSupply</Name>
+      <Type></Type>
+      <Services>22;2F</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="AirHornActivateSupply">DID_Byte_Activate_Inactivate</Payload>
+        </Response>
+        <Response serviceId="6E">
+        </Response>
+      </Responses>
+    </Control>
     <Control>
       <Address>099B</Address>
       <Name>ACCutOffSupply</Name>

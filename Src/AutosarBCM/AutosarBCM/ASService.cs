@@ -231,7 +231,17 @@ namespace AutosarBCM.Config
             return $"{PayloadInfo.Name,-40}: {BitConverter.ToUInt16(Data, PayloadInfo.Index)}";
         }
     }
+    public class HexDump_16Bytes : Payload
+    {
+        public HexDump_16Bytes(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
+        public override string Print()
+        {
+            return $"{PayloadInfo.Name,-40}: {BitConverter.ToUInt16(Data, PayloadInfo.Index)}";
+        }
+    }
+
+   
     public class Unsigned_1Byte : Payload
     {
         public Unsigned_1Byte(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
@@ -550,18 +560,18 @@ namespace AutosarBCM.Config
             return $"{PayloadInfo.Name,-40}{result}";
         }
     }
-    public class Unsigned_1Byte : Payload
-    {
-        public Unsigned_1Byte(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
+    //public class Unsigned_1Byte : Payload
+    //{
+    //    public Unsigned_1Byte(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
 
-        public override string Print()
-        {
-            var result = string.Empty;
-            byte[] singleByteArray = new byte[] { Data[PayloadInfo.Index] };
-            result = BitConverter.ToString(singleByteArray);
-            return $"{PayloadInfo.Name,-40}{result}";
-        }
-    }
+    //    public override string Print()
+    //    {
+    //        var result = string.Empty;
+    //        byte[] singleByteArray = new byte[] { Data[PayloadInfo.Index] };
+    //        result = BitConverter.ToString(singleByteArray);
+    //        return $"{PayloadInfo.Name,-40}{result}";
+    //    }
+    //}
     public class DID_PWM : Payload
     {
         public DID_PWM(PayloadInfo payloadInfo, byte[] data) : base(payloadInfo, data) { }
