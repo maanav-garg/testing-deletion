@@ -147,6 +147,8 @@ namespace AutosarBCM.UserControls.Monitor
 
         private void btnRead_Click(object sender, EventArgs e)
         {
+            if (!ConnectionUtil.CheckConnection())
+                return;
             ControlInfo.Transmit(ServiceName.ReadDataByIdentifier);
         }
 

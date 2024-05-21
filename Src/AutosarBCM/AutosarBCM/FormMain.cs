@@ -1168,13 +1168,12 @@ namespace AutosarBCM
             tsbSession.DropDownItems.Clear();
             foreach (var session in ASContext.Configuration.Sessions)
                 tsbSession.DropDownItems.Add(new ToolStripMenuItem(session.Name, null, new EventHandler(tsbSession_Click)) { Tag = session });
-
-            if (tsbSession.DropDownItems.Count > 0)
-                tsbSession_Click(tsbSession.DropDownItems[0], EventArgs.Empty);
         }
 
         private void tsbSession_Click(object sender, EventArgs e)
         {
+            if (!ConnectionUtil.CheckConnection())
+                return;
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
             ASContext.CurrentSession = sessionInfo;
