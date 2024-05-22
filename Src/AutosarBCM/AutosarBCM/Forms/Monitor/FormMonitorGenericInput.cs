@@ -191,7 +191,10 @@ namespace AutosarBCM.Forms.Monitor
                         {
                             if (uc is UCItem ucItem)
                             {
-                                ucItem.Visible = ucItem.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
+                                bool titleMatch = ucItem.ControlInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
+                                bool listItemMatch = ucItem.GetListBoxItems().Any(item => item.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                                ucItem.Visible = titleMatch || listItemMatch;
                                 anyUcItemVisible |= ucItem.Visible;
                             }
                         }
