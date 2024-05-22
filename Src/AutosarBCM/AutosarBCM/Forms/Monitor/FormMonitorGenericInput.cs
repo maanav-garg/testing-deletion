@@ -40,6 +40,8 @@ namespace AutosarBCM.Forms.Monitor
         private List<InputMonitorItem> inputMonitorItems = new List<InputMonitorItem>();
 
         private List<UCItem> uCItems = new List<UCItem>();
+        Dictionary<string, List<UCItem>> groups = new Dictionary<string, List<UCItem>>();
+
 
         /// <summary>
         /// Maps item types to visibility states for upper, lower, and coefficient labels.
@@ -78,21 +80,34 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="config">Monitor config object</param>
         public void LoadConfiguration(ConfigurationInfo config)
         {
-            if (config != null)
-                pnlMonitorInput.Controls.Clear();
-
-            var flowPanel = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
-            flowPanel.Paint += pnlMonitorInput_Paint;
-
             foreach (var ctrl in config.Controls)
             {
                 var ucItem = new UCItem(ctrl);
                 uCItems.Add(ucItem);
                 ucItem.Click += UcItem_Click;
-                flowPanel.Controls.Add(ucItem);
+                string groupName = ctrl?.Group;
+                if (!string.IsNullOrEmpty(groupName))
+                {
+                    if (!groups.ContainsKey(groupName))
+                    {
+                        groups.Add(groupName, new List<UCItem>());
+                    }
+                    groups[groupName].Add(ucItem);
+                }
             }
+            foreach (var group in groups)
+            {
+                var flowPanelGrup = new FlowLayoutPanel { AutoSize = true, Margin = new Padding(3) };
+                var label = new Label { Text = group.Key, AutoSize = true, Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold) };
+                pnlMonitorInput.Controls.Add(label);
 
-            pnlMonitorInput.Controls.Add(flowPanel);
+                foreach (var ucItem in group.Value)
+                {
+                    flowPanelGrup.Controls.Add(ucItem);
+                }
+
+                pnlMonitorInput.Controls.Add(flowPanelGrup);
+            }
         }
 
         /// <summary>

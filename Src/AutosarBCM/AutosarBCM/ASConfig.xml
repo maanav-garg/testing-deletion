@@ -40,6 +40,7 @@
 			<Address>DE00</Address>
 			<Name>DE00</Name>
 			<Type></Type>
+      <Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
@@ -60,7 +61,7 @@
 			<Address>DE01</Address>
 			<Name>DE01</Name>
 			<Type></Type>
-			<Group>ECU DID</Group>
+			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">

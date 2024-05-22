@@ -30,6 +30,7 @@ namespace AutosarBCM.Core
         public ushort Address { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
+        public string Group { get; set; }
         public List<byte> Services { get; set; }
         public List<ResponseInfo> Responses { get; set; }
 
@@ -113,6 +114,7 @@ namespace AutosarBCM.Core
                     Address = Convert.ToUInt16(c.Element("Address").Value, 16),
                     Name = c.Element("Name").Value,
                     Type = c.Element("Type").Value,
+                    Group = c.Element("Group")?.Value,
                     Services = c.Element("Services").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList(),
                     Responses = c.Element("Responses") != null ?
                         c.Element("Responses").Elements("Response").Select(x =>
