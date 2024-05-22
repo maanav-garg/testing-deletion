@@ -108,6 +108,15 @@ namespace AutosarBCM.UserControls.Monitor
             });
         }
 
+        /// <summary>
+        /// Retrieves the items from listBox1 as an enumerable collection of strings.
+        /// </summary>
+        /// <returns>An IEnumerable of strings containing the items in listBox1.</returns>
+        public IEnumerable<string> GetListBoxItems()
+        {
+            return lbResponse.Items.Cast<PayloadInfo>().Select(payload => payload.Name);
+        }
+
         #endregion
 
         #region Private Methods

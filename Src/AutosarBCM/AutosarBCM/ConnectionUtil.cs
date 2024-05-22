@@ -232,7 +232,10 @@ namespace AutosarBCM
             {
                 transportProtocol?.Hardware?.Disconnect();
                 //hardware?.Disconnect();
-                transportProtocol.Hardware = null;
+
+                if(transportProtocol != null)
+                    transportProtocol.Hardware = null;
+
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 if (formMain.InvokeRequired)
                     formMain.Invoke(new Action(() => UpdateStartButton(formMain)));

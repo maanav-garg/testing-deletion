@@ -952,10 +952,10 @@ namespace AutosarBCM
 
             if (document is IPeriodicTest formInput)
             {
-                if (!formInput.CanBeRun())
-                {
-                    return;
-                }
+                //if (!formInput.CanBeRun())
+                //{
+                //    return;
+                //}
 
                 formInput.FilterUCItems(tspFilterTxb.Text);
             }
