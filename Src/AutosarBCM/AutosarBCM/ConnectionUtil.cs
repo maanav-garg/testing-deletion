@@ -145,6 +145,10 @@ namespace AutosarBCM
 
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
+            //Tester present 
+            if (e.Data[0] == 0x3E)
+                return;
+
             var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
