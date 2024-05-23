@@ -40,7 +40,7 @@ namespace AutosarBCM.Forms.Monitor
         private List<InputMonitorItem> inputMonitorItems = new List<InputMonitorItem>();
 
         private List<UCItem> uCItems = new List<UCItem>();
-        Dictionary<string, List<UCItem>> groups = new Dictionary<string, List<UCItem>>();
+        SortedDictionary<string, List<UCItem>> groups = new SortedDictionary<string, List<UCItem>>();
 
 
         /// <summary>
@@ -80,6 +80,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="config">Monitor config object</param>
         public void LoadConfiguration(ConfigurationInfo config)
         {
+            groups.Add("Other", new List<UCItem>());
             foreach (var ctrl in config.Controls)
             {
                 var ucItem = new UCItem(ctrl);
@@ -94,6 +95,10 @@ namespace AutosarBCM.Forms.Monitor
                     }
                     groups[groupName].Add(ucItem);
                 }
+                else
+                {
+                    groups["Other"].Add(ucItem);
+                }
             }
             foreach (var group in groups)
             {
@@ -102,7 +107,6 @@ namespace AutosarBCM.Forms.Monitor
                 pnlMonitorInput.Controls.Add(label);
 
                 flowPanelGroup.Paint += pnlMonitorInput_Paint;
-
 
                 foreach (var ucItem in group.Value)
                 {
