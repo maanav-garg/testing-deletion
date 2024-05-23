@@ -1,11 +1,11 @@
 @ECHO OFF
-SET RELEASE_DIR=..\DiagBox\DiagBox\bin\x64\Release
-SET EXE_NAME=DiagBox.exe
+SET RELEASE_DIR=..\AutosarBCM\AutosarBCM\bin\x64\Release
+SET EXE_NAME=AutosarBCM.exe
 SET ILMERGE_BIN_DIR=.\ILMerge_bin
 SET CONFUSER_BIN=.\confuser_ex\Confuser.CLI.exe
 SET DLL_DIR=..\Dlls
 SET MSBUILD_DIR="C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
-SET PROJECT_PATH=..\DiagBox\DiagBox\DiagBox.csproj
+SET PROJECT_PATH=..\AutosarBCM\AutosarBCM\AutosarBCM.csproj
 SET MSBUILD_PATH="C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
 
 

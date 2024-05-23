@@ -1,9 +1,9 @@
-<project outputDir="../Confused" baseDir="..\DiagBox\DiagBox\bin\x64\Release\Merged" xmlns="http://confuser.codeplex.com">
+<project outputDir="../Confused" baseDir="..\AutosarBCM\AutosarBCM\bin\x64\Release\Merged" xmlns="http://confuser.codeplex.com">
   <rule pattern="true" inherit="false">
     <protection id="rename" />
     <protection id="resources" />
   </rule>
-  <rule preset="none" pattern="namespace('DiagBox.Message') or namespace('DiagBox.Config') or match-type-name('LogObject')">
+  <rule preset="none" pattern="namespace('AutosarBCM.Message') or namespace('AutosarBCM.Config') or match-type-name('LogObject')">
 	<protection id="rename" action="remove" />
   </rule>
   <rule pattern="namespace('StringUtils')">
@@ -11,7 +11,7 @@
       <argument name="elements" value="SN" />
     </protection>
   </rule>
-  <module path="DiagBox.exe" />
+  <module path="AutosarBCM.exe" />
   <module path="LicenseHelper.dll">
     <rule pattern="true" preset="normal" inherit="false" />
   </module>
