@@ -1,11 +1,7 @@
 ﻿using AutosarBCM.Core.Enums;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace AutosarBCM.Core
@@ -14,6 +10,7 @@ namespace AutosarBCM.Core
     {
         public byte ID { get; set; }
         public string Name { get; set; }
+        public List<byte> AvailableServices { get; set; }
     }
 
     public class ServiceInfo
@@ -32,6 +29,8 @@ namespace AutosarBCM.Core
         public string Type { get; set; }
         public string Group { get; set; }
         public List<byte> Services { get; set; }
+        public List<byte> SessionActiveException { get; set; }
+        public List<byte> SessionInactiveException { get; set; }
         public List<ResponseInfo> Responses { get; set; }
 
         public void Transmit(ServiceName serviceName)
@@ -104,7 +103,8 @@ namespace AutosarBCM.Core
                 .Select(s => new SessionInfo
                 {
                     ID = Convert.ToByte(s.Element("ID").Value, 16),
-                    Name = s.Element("Name").Value
+                    Name = s.Element("Name").Value,
+                    AvailableServices = s.Element("AvailableServices").Value != "" ? s.Element("AvailableServices").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
                 })
                 .ToList();
 
@@ -116,6 +116,9 @@ namespace AutosarBCM.Core
                     Type = c.Element("Type").Value,
                     Group = c.Element("Group")?.Value,
                     Services = c.Element("Services").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList(),
+                    SessionActiveException = c.Element("SessionActiveException") != null && c.Element("SessionActiveException").Value != "" ? c.Element("SessionActiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+                    SessionInactiveException = c.Element("SessionInactiveException") != null && c.Element("SessionInactiveException").Value != "" ? c.Element("SessionInactiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+
                     Responses = c.Element("Responses") != null ?
                         c.Element("Responses").Elements("Response").Select(x =>
                             new ResponseInfo

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AutosarBCM
 {
@@ -35,6 +34,11 @@ namespace AutosarBCM
         /// Filter items to show
         /// </summary>
         void FilterUCItems(string filter);
+
+        /// <summary>
+        /// Filter items to show by sessions
+        /// </summary>
+        void SessionFiltering();
     }
 
     /// <summary>
