@@ -87,6 +87,7 @@ namespace AutosarBCM.Forms.Monitor
                 var ucItem = new UCItem(ctrl);
                 uCItems.Add(ucItem);
                 ucItem.Click += UcItem_Click;
+                ucItem.Enabled = false;
                 string groupName = ctrl?.Group;
                 if (!string.IsNullOrEmpty(groupName))
                 {
