@@ -154,6 +154,10 @@ namespace AutosarBCM
 
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
         {
+            //Tester present 
+            if (e.Data[0] == 0x7E)
+                return;
+
             if (e.Data[0] == 0x62 || e.Data[0] == 0x6F)
             {
                 var response = ASResponse.Parse(e.Data);
