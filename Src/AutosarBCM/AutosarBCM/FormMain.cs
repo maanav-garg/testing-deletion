@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -1178,6 +1177,9 @@ namespace AutosarBCM
             new DiagnosticSessionControl().Transmit(sessionInfo);
             ASContext.CurrentSession = sessionInfo;
             tsbSession.Text = $"Session: {sessionInfo.Name}";
+
+            if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                formInput.SessionFiltering();
         }
 
         private void tsbToggle_Click(object sender, EventArgs e)

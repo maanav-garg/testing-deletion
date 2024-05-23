@@ -204,6 +204,27 @@ namespace AutosarBCM.Forms.Monitor
             }
         }
 
+        /// <summary>
+        /// Filters and updates the state of controls based on the current session's available services and exceptions.
+        /// </summary>
+        public void SessionFiltering()
+        {
+            foreach (Control control in pnlMonitorInput.Controls)
+            {
+                if (control is FlowLayoutPanel flowPanel)
+                {
+                    foreach (UCItem ucItem in flowPanel.Controls.OfType<UCItem>())
+                    {
+                        bool defaultSessionMatch = ucItem.ControlInfo.Services.Any(service => ASContext.CurrentSession.AvailableServices.Contains(service));
+                        bool activeExceptionMatch = ucItem.ControlInfo.SessionActiveException.Any(exception => exception == ASContext.CurrentSession.ID);
+                        bool inactiveExceptionMatch = ucItem.ControlInfo.SessionInactiveException.Any(exception => exception == ASContext.CurrentSession.ID);
+
+                        ucItem.Enabled = (defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch;
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Private Methods

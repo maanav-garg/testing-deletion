@@ -282,6 +282,11 @@ namespace AutosarBCM.Forms.Monitor
             ControlPaint.DrawBorder(e.Graphics, ((FlowLayoutPanel)sender).ClientRectangle, Color.LightGray, ButtonBorderStyle.Solid);
         }
 
+        public void SessionFiltering()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
