@@ -158,6 +158,11 @@ namespace AutosarBCM.UserControls.Monitor
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
+
+            lbResponse.Items.Clear();
+            lbResponse.Items.AddRange(ControlInfo.Responses.Where(x => x.ServiceID == 0x62).FirstOrDefault()?.Payloads?.ToArray());
+
+
             ControlInfo.Transmit(ServiceName.ReadDataByIdentifier);
         }
 

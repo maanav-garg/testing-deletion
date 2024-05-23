@@ -61,7 +61,7 @@ namespace AutosarBCM.Core
 
         public void Transmit()
         {
-            ConnectionUtil.TransmitData(new byte[] { serviceInfo.RequestID});
+            ConnectionUtil.TransmitData(new byte[] { serviceInfo.RequestID, 0});
         }
     }
 }

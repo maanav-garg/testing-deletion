@@ -542,6 +542,7 @@ namespace AutosarBCM
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(55, 24);
             this.btnStart.Text = "Start";
+            this.btnStart.Visible = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // btnClear

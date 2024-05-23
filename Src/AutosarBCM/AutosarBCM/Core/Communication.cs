@@ -35,7 +35,7 @@ namespace AutosarBCM.Core
             if (!ControlInfo.Services.Contains(ServiceInfo.RequestID))
                 return;
 
-            ConnectionUtil.TransmitData(0x0726, Data);
+            ConnectionUtil.TransmitData(Data);
         }
     }
 
