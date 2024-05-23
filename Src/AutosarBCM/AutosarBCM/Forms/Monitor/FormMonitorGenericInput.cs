@@ -97,16 +97,19 @@ namespace AutosarBCM.Forms.Monitor
             }
             foreach (var group in groups)
             {
-                var flowPanelGrup = new FlowLayoutPanel { AutoSize = true, Margin = new Padding(3) };
+                var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
                 var label = new Label { Text = group.Key, AutoSize = true, Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold) };
                 pnlMonitorInput.Controls.Add(label);
 
+                flowPanelGroup.Paint += pnlMonitorInput_Paint;
+
+
                 foreach (var ucItem in group.Value)
                 {
-                    flowPanelGrup.Controls.Add(ucItem);
+                    flowPanelGroup.Controls.Add(ucItem);
                 }
 
-                pnlMonitorInput.Controls.Add(flowPanelGrup);
+                pnlMonitorInput.Controls.Add(flowPanelGroup);
             }
         }
 
