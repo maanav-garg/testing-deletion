@@ -145,7 +145,11 @@ namespace AutosarBCM
 
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
-            throw new NotImplementedException();
+            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
+            var time = new DateTime((long)e.Timestamp);
+
+            AppendTrace(txRead, time, Color.Black);
         }
 
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
@@ -156,8 +160,8 @@ namespace AutosarBCM
                 foreach (var receiver in FormMain.Receivers)
                     if (receiver.Receive(response)) break;
             }
-
-            var rxRead = "Rx 72E " + BitConverter.ToString(e.Data);
+            var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
 
             ////HandleGeneralMessages(bytes);
@@ -192,29 +196,35 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="canId">The id of the message.</param>
         /// <param name="dataBytes">A byte array represents the data of the message.</param>
-        public static void TransmitData(uint canId, byte[] dataBytes)
+        public static void TransmitData(byte[] dataBytes)
         {
             if (Thread.CurrentThread != Program.UIThread)
-                TransmitDataInternal(canId, dataBytes);
+                TransmitDataInternal(dataBytes);
             else
-                Task.Run(() => TransmitDataInternal(canId, dataBytes));
+                Task.Run(() => TransmitDataInternal(dataBytes));
         }
 
-        private static void TransmitDataInternal(uint canId, byte[] dataBytes)
+        public static void TransmitData(uint canId, byte[] dataBytes)
+        {
+            MessageBox.Show("HW Layer not used");
+        }
+
+        private static void TransmitDataInternal(byte[] dataBytes)
         {
             FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
             lock (lockObj)
             {
                 try
                 {
-                    if (hardware is CanHardware canHardware)
-                    {
-                        canHardware.Transmit(canId, dataBytes);
-                    }
-                    else if (hardware is SerialPortHardware serialHardware)
-                    {
-                        serialHardware.Transmit(canId, dataBytes);
-                    }
+                    transportProtocol.SendBytes(dataBytes);
+                    //if (hardware is CanHardware canHardware)
+                    //{
+                    //    canHardware.Transmit(canId, dataBytes);
+                    //}
+                    //else if (hardware is SerialPortHardware serialHardware)
+                    //{
+                    //    serialHardware.Transmit(canId, dataBytes);
+                    //}
                 }
                 catch (Exception ex)
                 {

@@ -30,7 +30,7 @@ namespace AutosarBCM.Core
 
         public void Transmit(ControlInfo controlInfo)
         {
-            var request = new ASRequest(serviceInfo, controlInfo, $"03-{serviceInfo.RequestID.ToString("X")}-{BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray())}-00-00-00-00");
+            var request = new ASRequest(serviceInfo, controlInfo, $"{serviceInfo.RequestID.ToString("X")}-{BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray())}");
             request.Execute();
         }
     }
@@ -51,7 +51,7 @@ namespace AutosarBCM.Core
 
         public void Transmit(SessionInfo sessionInfo)
         {
-            ConnectionUtil.TransmitData(0x0726, new byte[] { serviceInfo.RequestID, sessionInfo.ID, 0, 0, 0, 0, 0, 0 });
+            ConnectionUtil.TransmitData(new byte[] { serviceInfo.RequestID, sessionInfo.ID});
         }
     }
 
@@ -61,7 +61,7 @@ namespace AutosarBCM.Core
 
         public void Transmit()
         {
-            ConnectionUtil.TransmitData(0x0726, new byte[] { serviceInfo.RequestID, 0, 0, 0, 0, 0, 0, 0 });
+            ConnectionUtil.TransmitData(new byte[] { serviceInfo.RequestID});
         }
     }
 }
