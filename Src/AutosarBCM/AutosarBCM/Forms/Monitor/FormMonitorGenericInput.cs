@@ -64,6 +64,7 @@ namespace AutosarBCM.Forms.Monitor
         public FormMonitorGenericInput()
         {
             InitializeComponent();
+            splitContainer1.Panel2Collapsed = true;
             pnlMonitorInput.HorizontalScroll.Maximum = 0;
             pnlMonitorInput.AutoScroll = true;
             typeof(FlowLayoutPanel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
@@ -320,7 +321,7 @@ namespace AutosarBCM.Forms.Monitor
 
         internal void ToggleSidebar()
         {
-            splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+            //splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
         }
 
         #endregion
