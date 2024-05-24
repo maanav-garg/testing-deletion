@@ -45,17 +45,19 @@
             this.pnlLogo.Controls.Add(this.picLogo);
             this.pnlLogo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlLogo.Location = new System.Drawing.Point(0, 0);
+            this.pnlLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlLogo.Name = "pnlLogo";
-            this.pnlLogo.Size = new System.Drawing.Size(509, 100);
+            this.pnlLogo.Size = new System.Drawing.Size(679, 123);
             this.pnlLogo.TabIndex = 0;
             // 
             // lblGroupName
             // 
             this.lblGroupName.AutoSize = true;
             this.lblGroupName.Font = new System.Drawing.Font("Nirmala UI Semilight", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGroupName.Location = new System.Drawing.Point(93, 63);
+            this.lblGroupName.Location = new System.Drawing.Point(124, 78);
+            this.lblGroupName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblGroupName.Name = "lblGroupName";
-            this.lblGroupName.Size = new System.Drawing.Size(322, 30);
+            this.lblGroupName.Size = new System.Drawing.Size(406, 37);
             this.lblGroupName.TabIndex = 1;
             this.lblGroupName.Text = "Automotive Software Tools Group";
             // 
@@ -63,9 +65,10 @@
             // 
             this.picLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.picLogo.Image = global::AutosarBCM.Properties.Resources.vLogo;
-            this.picLogo.Location = new System.Drawing.Point(189, 12);
+            this.picLogo.Location = new System.Drawing.Point(252, 15);
+            this.picLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(130, 48);
+            this.picLogo.Size = new System.Drawing.Size(173, 59);
             this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogo.TabIndex = 0;
             this.picLogo.TabStop = false;
@@ -74,9 +77,10 @@
             // 
             this.lblAppInfo.AutoSize = true;
             this.lblAppInfo.Font = new System.Drawing.Font("Nirmala UI Semilight", 15.75F);
-            this.lblAppInfo.Location = new System.Drawing.Point(214, 170);
+            this.lblAppInfo.Location = new System.Drawing.Point(285, 209);
+            this.lblAppInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAppInfo.Name = "lblAppInfo";
-            this.lblAppInfo.Size = new System.Drawing.Size(83, 30);
+            this.lblAppInfo.Size = new System.Drawing.Size(105, 37);
             this.lblAppInfo.TabIndex = 3;
             this.lblAppInfo.Text = "appinfo";
             this.lblAppInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -84,25 +88,27 @@
             // picAutosarBCMLogo
             // 
             this.picAutosarBCMLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.picAutosarBCMLogo.Image = global::AutosarBCM.Properties.Resources.tool11;
-            this.picAutosarBCMLogo.Location = new System.Drawing.Point(231, 123);
+            this.picAutosarBCMLogo.Image = global::AutosarBCM.Properties.Resources.icon;
+            this.picAutosarBCMLogo.Location = new System.Drawing.Point(308, 151);
+            this.picAutosarBCMLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.picAutosarBCMLogo.Name = "picAutosarBCMLogo";
-            this.picAutosarBCMLogo.Size = new System.Drawing.Size(47, 48);
+            this.picAutosarBCMLogo.Size = new System.Drawing.Size(63, 59);
             this.picAutosarBCMLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picAutosarBCMLogo.TabIndex = 2;
             this.picAutosarBCMLogo.TabStop = false;
             // 
             // FormSplashScreen
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(509, 211);
+            this.ClientSize = new System.Drawing.Size(679, 260);
             this.ControlBox = false;
             this.Controls.Add(this.picAutosarBCMLogo);
             this.Controls.Add(this.lblAppInfo);
             this.Controls.Add(this.pnlLogo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormSplashScreen";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
