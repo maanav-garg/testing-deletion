@@ -55,18 +55,10 @@ namespace AutosarBCM.Core
         {
             var response = new ASResponse { Data = data };
 
-            response.ServiceInfo = ASContext.Configuration.GetServiceByID(response.ServiceID);
+            response.ServiceInfo = ASContext.Configuration.GetServiceByResponseID(response.ServiceID);
             response.ControlInfo = ASContext.Configuration.GetControlByAddress(response.ControlAddress);
+            response.Payloads = response.ControlInfo.GetPayloads(response.ServiceInfo, data);
 
-            var responseIndex = response.ServiceInfo?.ResponseIndex ?? 0;
-            foreach (var pInfo in response.ControlInfo?.GetPayloads(response.ServiceInfo.ResponseID))
-            {
-                var payloadDef = ASContext.Configuration.GetPayloadInfoByType(pInfo.TypeName);
-
-                pInfo.Index = responseIndex;
-                response.Payloads.Add(((Payload)Activator.CreateInstance(Type.GetType($"AutosarBCM.Core.{pInfo.TypeName}"))).Parse(pInfo, data));
-                responseIndex += payloadDef?.Length ?? 0;
-            }
             return response;
         }
     }
