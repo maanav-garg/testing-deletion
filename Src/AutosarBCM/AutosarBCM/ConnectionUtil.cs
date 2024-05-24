@@ -225,14 +225,6 @@ namespace AutosarBCM
                 try
                 {
                     transportProtocol.SendBytes(dataBytes);
-                    //if (hardware is CanHardware canHardware)
-                    //{
-                    //    canHardware.Transmit(canId, dataBytes);
-                    //}
-                    //else if (hardware is SerialPortHardware serialHardware)
-                    //{
-                    //    serialHardware.Transmit(canId, dataBytes);
-                    //}
                 }
                 catch (Exception ex)
                 {

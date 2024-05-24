@@ -1,8 +1,10 @@
-﻿using AutosarBCM.Core.Enums;
+﻿using AutosarBCM.Config;
+using AutosarBCM.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace AutosarBCM.Core
 {
@@ -33,9 +35,12 @@ namespace AutosarBCM.Core
         public List<byte> SessionInactiveException { get; set; }
         public List<ResponseInfo> Responses { get; set; }
 
-        public void Transmit(ServiceName serviceName)
+        public void Transmit(ServiceName serviceName, byte[] data = null)
         {
-            if (serviceName == ServiceName.ReadDataByIdentifier) new ReadDataByIdenService().Transmit(this);
+            if (serviceName == ServiceName.ReadDataByIdentifier) 
+                new ReadDataByIdenService().Transmit(this);
+            else if (serviceName == ServiceName.InputOutputControlByIdentifier) 
+                new IOControlByIdentifierService().Transmit(this, data);
         }
 
         internal IEnumerable<PayloadInfo> GetPayloads(byte serviceID)
@@ -78,6 +83,7 @@ namespace AutosarBCM.Core
         public List<SessionInfo> Sessions { get; set; }
         public List<ControlInfo> Controls { get; set; }
         public List<PayloadInfo> Payloads { get; set; }
+        public EnvironmentalTest EnvironmentalTest { get; set; }
 
         internal static ConfigurationInfo Parse(string filePath)
         {
@@ -147,6 +153,44 @@ namespace AutosarBCM.Core
                 })
                 .ToList();
 
+
+            #region Environmental Test
+            
+            var environmentalTest = doc.Descendants("EnvironmentalTest")
+                .Select(t => new EnvironmentalTest
+                {
+                    EnvironmentalConfig = t.Descendants("EnvironmentalConfig")
+                        .Select(c => new EnvironmentalConfig
+                        {
+                            CycleTime = int.Parse(c.Element("CycleTime").Value),
+                            TxInterval = int.Parse(c.Element("TxInterval").Value),
+                            StartCycleIndex = int.Parse(c.Element("StartCycleIndex").Value),
+                            EndCycleIndex = int.Parse(c.Element("EndCycleIndex").Value),
+                            PWMDutyOpenValue = byte.Parse(c.Element("PWMDutyOpenValue").Value),
+                            PWMDutyCloseValue = byte.Parse(c.Element("PWMDutyCloseValue").Value),
+                            PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
+                            PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
+                        }).First(),
+                    ConnectionMappings= t.Element("ConnectionMappings").Elements("Mapping")
+                        .Select(m => new Mapping
+                        {
+                            InputName= m.Element("InputName").Value,
+                            OutputName= m.Element("OutputName").Value,
+                        }).ToList(),
+                    ContinousReadList = t.Element("ContinousReadList").Elements("Func")
+                        .Select(f => f.Value).ToList(),
+                    Cycles = t.Element("Cycles").Elements("Cycle")
+                        .Select(c => new Cycle { 
+                            Name= c.Element("Name").Value,
+                            OpenAt = int.Parse(c.Element("OpenAt").Value),
+                            CloseAt = int.Parse(c.Element("CloseAt").Value),
+                            Functions = c.Element("Functions").Elements("FuncName")
+                                .Select(f => f.Value).ToList(),
+                        }).ToList()
+                }).First();
+
+            #endregion
+
             return new ConfigurationInfo
             {
                 Settings = settings,
@@ -154,6 +198,7 @@ namespace AutosarBCM.Core
                 Sessions = sessions,
                 Controls = controls,
                 Payloads = payloads,
+                EnvironmentalTest = environmentalTest
             };
         }
 
@@ -184,4 +229,128 @@ namespace AutosarBCM.Core
                 Configuration = ConfigurationInfo.Parse(configFile);
         }
     }
+
+    public class EnvironmentalTest
+    {
+        public EnvironmentalConfig EnvironmentalConfig { get; set; }
+        /// <summary>
+        /// Gets or sets a list of connection mappings.
+        /// </summary>
+        public List<Mapping> ConnectionMappings { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of continuous read functions.
+        /// </summary>
+        [XmlArrayItem("Item")]
+        public List<string> ContinousReadList { get; set; }
+        /// <summary>
+        /// Gets or sets the test cycles
+        /// </summary>
+        public List<Cycle> Cycles { get; set; }
+    }
+
+    /// <summary>
+    /// Mapping output-input class
+    /// </summary>
+    public class Mapping
+    {
+        #region Properties
+
+        /// <summary>
+        /// Output name
+        /// </summary>
+        public string OutputName { get; set; }
+        /// <summary>
+        /// Relevant Input Name
+        /// </summary>
+        public string InputName { get; set; }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Common config class
+    /// </summary>
+    public class EnvironmentalConfig
+    {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the time interval for generic test
+        /// </summary>
+        public int CycleTime { get; set; }
+        /// <summary>
+        /// gets or sets cycle time for environmental tests
+        /// </summary>
+        public int TxInterval { get; set; }
+        /// <summary>
+        /// Gets or sets the start index of the cycles
+        /// </summary>
+        public int StartCycleIndex { get; set; }
+        /// <summary>
+        /// Gets or sets the end index of the cycles
+        /// </summary>
+        public int EndCycleIndex { get; set; }
+        ///
+        /// Gets or sets the message of PWM Open Duty value
+        /// </summary>
+        public byte PWMDutyOpenValue { get; set; }
+        /// <summary>
+        /// Gets or sets the message of PWM Close Duty value
+        /// </summary>
+        public byte PWMDutyCloseValue { get; set; }
+        /// <summary>
+        /// Gets or sets the message of PWM Open Frequency value
+        /// </summary>
+        public short PWMFreqOpenValue { get; set; }
+        /// <summary>
+        /// Gets or sets the message of PWM Close Frequency value
+        /// </summary>
+        public short PWMFreqCloseValue { get; set; }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Test Cycle
+    /// </summary>
+    public class Cycle
+    {
+        #region Properties
+
+        /// <summary>
+        /// Name of cycle
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Cycle number of outputs to be opened
+        /// </summary>
+        public int OpenAt { get; set; }
+        /// <summary>
+        /// Cycle number of outputs to be closed
+        /// </summary>
+        public int CloseAt { get; set; }
+        /// <summary>
+        /// List of functions
+        /// </summary>
+        [XmlArrayItem("FuncName")]
+        public List<string> Functions { get; set; }
+        /// <summary>
+        /// List of items
+        /// </summary>
+        public List<ControlInfo> Items { get; set; }
+        public List<ControlInfo> CloseItems { get; set; } = new List<ControlInfo>();
+        public List<ControlInfo> OpenItems { get; set; } = new List<ControlInfo>();
+        #endregion
+
+        public Cycle() { }
+        public Cycle(Cycle cycle)
+        {
+            Name = cycle.Name;
+            OpenAt = cycle.OpenAt;
+            CloseAt = cycle.CloseAt;
+            Functions = cycle.Functions;
+        }
+    }
+
 }

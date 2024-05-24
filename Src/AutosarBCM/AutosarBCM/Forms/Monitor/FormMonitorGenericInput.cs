@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Config;
 using AutosarBCM.Core;
+using AutosarBCM.Core.Enums;
+using System.Net;
 
 namespace AutosarBCM.Forms.Monitor
 {
@@ -40,6 +42,7 @@ namespace AutosarBCM.Forms.Monitor
         private List<InputMonitorItem> inputMonitorItems = new List<InputMonitorItem>();
 
         private List<UCItem> uCItems = new List<UCItem>();
+
         SortedDictionary<string, List<UCItem>> groups = new SortedDictionary<string, List<UCItem>>();
 
 
@@ -64,7 +67,6 @@ namespace AutosarBCM.Forms.Monitor
         public FormMonitorGenericInput()
         {
             InitializeComponent();
-            splitContainer1.Panel2Collapsed = true;
             pnlMonitorInput.HorizontalScroll.Maximum = 0;
             pnlMonitorInput.AutoScroll = true;
             typeof(FlowLayoutPanel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
@@ -157,7 +159,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the task</param>
         public void StartTest(CancellationToken cancellationToken)
         {
-            MonitorUtil.RunTestPeriodically(monitorConfig, cancellationToken, MonitorTestType.Generic);
+            //MonitorUtil.RunTestPeriodically(monitorConfig, cancellationToken, MonitorTestType.Generic);
         }
 
         /// <summary>
@@ -246,7 +248,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <returns>Returns true if the response is valid, otherwise false.</returns>
         private bool CheckResponse(byte SID, byte NRC)
         {
-            string response = string.Empty;
+            var response = string.Empty;
             if (sidResponseMessageDict.TryGetValue(SID, out string sidResponse))
             {
                 response += sidResponse + " ";
@@ -255,7 +257,7 @@ namespace AutosarBCM.Forms.Monitor
                     response += nrcResponse;
             }
 
-            if (!String.IsNullOrWhiteSpace(response))
+            if (!string.IsNullOrWhiteSpace(response))
             {
                 Program.MainForm.AppendTrace($"{response}");
                 return false;
@@ -274,13 +276,7 @@ namespace AutosarBCM.Forms.Monitor
             uc.Focus();
             //UpdateLabelVisibility(uc.Item.ItemType);
 
-            lblItemName.Text = $"{uc.GroupName}-{uc.ControlInfo.Name}";
-            lblName.Text = uc.ControlInfo.Name;
-            lblAddress.Text = BitConverter.ToString(BitConverter.GetBytes(uc.ControlInfo.Address).Reverse().ToArray());
-            //lblUpperLimit.Text = uc.Item.UpperLimit.ToString();
-            //lblLowerLimit.Text = uc.Item.LowerLimit.ToString();
-            //lblCoefficient.Text = uc.Item.Coefficient.ToString();
-            //lblData.Text = BitConverter.ToString(uc.Item.Data);
+            ucControlByIdentifierItem.UpdateSidebar(uc);
         }
 
         /// <summary>
@@ -343,7 +339,7 @@ namespace AutosarBCM.Forms.Monitor
 
         internal void ToggleSidebar()
         {
-            //splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+            splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
         }
 
         #endregion

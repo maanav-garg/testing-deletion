@@ -35,13 +35,18 @@ namespace AutosarBCM.Core
         }
     }
 
-    public class IOCtrlByIdenService : Service
+    public class IOControlByIdentifierService : Service
     {
-        public IOCtrlByIdenService() : base(ServiceName.InputOutputControlByIdentifier) { }
+        public IOControlByIdentifierService() : base(ServiceName.InputOutputControlByIdentifier) { }
 
-        public void Transmit(ControlInfo controlInfo)
+        public void Transmit(ControlInfo controlInfo, byte[] additionalData)
         {
-            throw new NotImplementedException();
+            var address = BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray());
+            var additionalBytes = BitConverter.ToString(additionalData);
+            var data = $"{serviceInfo.RequestID.ToString("X")}-{address}-{additionalBytes}";
+
+            var request = new ASRequest(serviceInfo, controlInfo, data);
+            request.Execute();
         }
     }
 

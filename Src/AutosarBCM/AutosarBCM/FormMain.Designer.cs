@@ -37,6 +37,7 @@ namespace AutosarBCM
             this.traceDialogtsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.testLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCheck = new System.Windows.Forms.ToolStripMenuItem();
+            this.environmentalTestTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.helpTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.userGuideTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutTsmi = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,7 +107,8 @@ namespace AutosarBCM
             this.optionsTsmi,
             this.traceDialogtsmi,
             this.testLogToolStripMenuItem,
-            this.tsmiCheck});
+            this.tsmiCheck,
+            this.environmentalTestTsmi});
             this.toolsTsmi.Name = "toolsTsmi";
             this.toolsTsmi.Size = new System.Drawing.Size(46, 20);
             this.toolsTsmi.Text = "Tools";
@@ -115,7 +117,7 @@ namespace AutosarBCM
             // 
             this.optionsTsmi.Image = ((System.Drawing.Image)(resources.GetObject("optionsTsmi.Image")));
             this.optionsTsmi.Name = "optionsTsmi";
-            this.optionsTsmi.Size = new System.Drawing.Size(155, 22);
+            this.optionsTsmi.Size = new System.Drawing.Size(184, 26);
             this.optionsTsmi.Text = "Options";
             this.optionsTsmi.Click += new System.EventHandler(this.optionsTsmi_Click);
             // 
@@ -123,7 +125,7 @@ namespace AutosarBCM
             // 
             this.traceDialogtsmi.Image = ((System.Drawing.Image)(resources.GetObject("traceDialogtsmi.Image")));
             this.traceDialogtsmi.Name = "traceDialogtsmi";
-            this.traceDialogtsmi.Size = new System.Drawing.Size(155, 22);
+            this.traceDialogtsmi.Size = new System.Drawing.Size(184, 26);
             this.traceDialogtsmi.Text = "Trace Dialog";
             this.traceDialogtsmi.Click += new System.EventHandler(this.traceDialogtsmi_Click);
             // 
@@ -131,7 +133,7 @@ namespace AutosarBCM
             // 
             this.testLogToolStripMenuItem.Image = global::AutosarBCM.Properties.Resources.EditWindow;
             this.testLogToolStripMenuItem.Name = "testLogToolStripMenuItem";
-            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.testLogToolStripMenuItem.Text = "Test Log Viewer";
             this.testLogToolStripMenuItem.Visible = false;
             this.testLogToolStripMenuItem.Click += new System.EventHandler(this.testLogToolStripMenuItem_Click);
@@ -140,10 +142,17 @@ namespace AutosarBCM
             // 
             this.tsmiCheck.Image = global::AutosarBCM.Properties.Resources.pass;
             this.tsmiCheck.Name = "tsmiCheck";
-            this.tsmiCheck.Size = new System.Drawing.Size(155, 22);
+            this.tsmiCheck.Size = new System.Drawing.Size(184, 26);
             this.tsmiCheck.Text = "Control Check";
             this.tsmiCheck.Visible = false;
             this.tsmiCheck.Click += new System.EventHandler(this.tsmiCheck_Click);
+            // 
+            // environmentalTestTsmi
+            // 
+            this.environmentalTestTsmi.Name = "environmentalTestTsmi";
+            this.environmentalTestTsmi.Size = new System.Drawing.Size(184, 26);
+            this.environmentalTestTsmi.Text = "Environmental Test";
+            this.environmentalTestTsmi.Click += new System.EventHandler(this.environmentalTestTsmi_Click);
             // 
             // helpTsmi
             // 
@@ -512,7 +521,7 @@ namespace AutosarBCM
             // nullToolStripMenuItem
             // 
             this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
-            this.nullToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.nullToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.nullToolStripMenuItem.Text = "N/A";
             // 
             // tsbECUReset
@@ -592,7 +601,6 @@ namespace AutosarBCM
             // tspFilterTxb
             // 
             this.tspFilterTxb.Enabled = false;
-            this.tspFilterTxb.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tspFilterTxb.Name = "tspFilterTxb";
             this.tspFilterTxb.Size = new System.Drawing.Size(76, 27);
             this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);
@@ -762,6 +770,7 @@ namespace AutosarBCM
         private ToolStripButton tsbToggle;
         private ToolStripDropDownButton tsbSession;
         private ToolStripMenuItem nullToolStripMenuItem;
+        private ToolStripMenuItem environmentalTestTsmi;
     }
 }
 

@@ -40,14 +40,8 @@
             this.toolStripStatusLabel8 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblData = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lblAddress = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.lblName = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.ucControlByIdentifierItem = new AutosarBCM.UserControls.Monitor.UCControlByIdentifierItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -61,7 +55,7 @@
             this.pnlMonitorInput.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlMonitorInput.Location = new System.Drawing.Point(0, 0);
             this.pnlMonitorInput.Name = "pnlMonitorInput";
-            this.pnlMonitorInput.Size = new System.Drawing.Size(700, 450);
+            this.pnlMonitorInput.Size = new System.Drawing.Size(614, 450);
             this.pnlMonitorInput.TabIndex = 0;
             this.pnlMonitorInput.WrapContents = false;
             // 
@@ -171,74 +165,20 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.splitContainer1.Panel2.Controls.Add(this.lblAddress);
-            this.splitContainer1.Panel2.Controls.Add(this.textBox3);
-            this.splitContainer1.Panel2.Controls.Add(this.textBox2);
-            this.splitContainer1.Panel2.Controls.Add(this.button1);
-            this.splitContainer1.Panel2.Controls.Add(this.comboBox1);
-            this.splitContainer1.Panel2.Controls.Add(this.textBox1);
-            this.splitContainer1.Panel2.Controls.Add(this.lblName);
+            this.splitContainer1.Panel2.Controls.Add(this.ucControlByIdentifierItem);
             this.splitContainer1.Panel2MinSize = 15;
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 700;
+            this.splitContainer1.SplitterDistance = 614;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 2;
             // 
-            // lblAddress
+            // ucControlByIdentifierItem
             // 
-            this.lblAddress.AutoSize = true;
-            this.lblAddress.Location = new System.Drawing.Point(16, 47);
-            this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(45, 13);
-            this.lblAddress.TabIndex = 6;
-            this.lblAddress.Text = "Address";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(95, 70);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(32, 20);
-            this.textBox3.TabIndex = 5;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(57, 70);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(32, 20);
-            this.textBox2.TabIndex = 4;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(19, 124);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Write";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(19, 96);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(108, 21);
-            this.comboBox1.TabIndex = 2;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(19, 70);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(32, 20);
-            this.textBox1.TabIndex = 1;
-            // 
-            // lblName
-            // 
-            this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(16, 27);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(35, 13);
-            this.lblName.TabIndex = 0;
-            this.lblName.Text = "Name";
+            this.ucControlByIdentifierItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucControlByIdentifierItem.Location = new System.Drawing.Point(0, 0);
+            this.ucControlByIdentifierItem.Name = "ucControlByIdentifierItem";
+            this.ucControlByIdentifierItem.Size = new System.Drawing.Size(183, 450);
+            this.ucControlByIdentifierItem.TabIndex = 7;
             // 
             // FormMonitorGenericInput
             // 
@@ -255,7 +195,6 @@
             this.statusStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -277,13 +216,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel8;
         private System.Windows.Forms.ToolStripStatusLabel lblData;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label lblAddress;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private UserControls.Monitor.UCControlByIdentifierItem ucControlByIdentifierItem;
     }
 }

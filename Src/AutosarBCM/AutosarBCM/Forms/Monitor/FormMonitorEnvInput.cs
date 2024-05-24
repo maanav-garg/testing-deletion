@@ -115,7 +115,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the task</param>
         public void StartTest(CancellationToken cancellationToken)
         {
-            MonitorUtil.RunTestPeriodically(monitorConfig, cancellationToken, MonitorTestType.Environmental);
+            //MonitorUtil.RunTestPeriodically(monitorConfig, cancellationToken, MonitorTestType.Environmental);
         }
 
         /// <summary>
