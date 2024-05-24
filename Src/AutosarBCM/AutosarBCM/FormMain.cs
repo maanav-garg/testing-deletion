@@ -1188,5 +1188,27 @@ namespace AutosarBCM
         }
 
         #endregion
+
+        private void toolStripDropDownButton2_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void activeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeToolStripMenuItem.Checked = true;
+            inactiveToolStripMenuItem.Checked = false;
+            testerPresentDropDownButton.Image = Resources.pass;
+
+        }
+
+        private void inactiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeToolStripMenuItem.Checked = false;
+            inactiveToolStripMenuItem.Checked = true;
+            testerPresentDropDownButton.Image = Resources.reset;
+
+
+
+        }
     }
 }

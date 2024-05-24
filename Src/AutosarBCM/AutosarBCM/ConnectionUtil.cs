@@ -142,40 +142,47 @@ namespace AutosarBCM
             //if (e. == CanHardware_ErrorStatus.Disconnect)
             //    Disconnect();
         }
-
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
-            //Tester present 
-            if (e.Data[0] == 0x3E)
-                return;
+            FormMain formMainInstance = new FormMain();
+            if (formMainInstance.inactiveToolStripMenuItem.Checked == true)
+            {
+                // Tester present
+                if (e.Data[0] == 0x3E)
+                    return;
 
-            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
-            var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
-            var time = new DateTime((long)e.Timestamp);
+                var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+                var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
+                var time = new DateTime((long)e.Timestamp);
 
-            AppendTrace(txRead, time, Color.Black);
+                AppendTrace(txRead, time, Color.Black);
+            }
         }
 
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
         {
-            //Tester present 
-            if (e.Data[0] == 0x7E)
-                return;
-
-            if (e.Data[0] == 0x62 || e.Data[0] == 0x6F)
+            FormMain formMainInstance = new FormMain();
+            if (formMainInstance.inactiveToolStripMenuItem.Checked == true)
             {
-                var response = ASResponse.Parse(e.Data);
-                foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Receive(response)) break;
+                //Tester present 
+                if (e.Data[0] == 0x7E)
+                    return;
+
+                if (e.Data[0] == 0x62 || e.Data[0] == 0x6F)
+                {
+                    var response = ASResponse.Parse(e.Data);
+                    foreach (var receiver in FormMain.Receivers)
+                        if (receiver.Receive(response)) break;
+                }
+                var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+                var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
+                var time = new DateTime((long)e.Timestamp);
+
+                ////HandleGeneralMessages(bytes);
+
+                AppendTrace(rxRead, time);
+                AppendTraceRx(rxRead, time);
             }
-            var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
-            var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
-            var time = new DateTime((long)e.Timestamp);
-
-            ////HandleGeneralMessages(bytes);
-
-            AppendTrace(rxRead, time);
-            AppendTraceRx(rxRead, time);
         }
 
         /// <summary>
