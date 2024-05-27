@@ -710,15 +710,12 @@ namespace AutosarBCM
                 {
                     if (!ConnectionUtil.BaseConnection())
                         return;
-
-                    StartTesterPresent();
                 }
                 else if (openConnection.Text == "Stop Connection")
                 {
                     if (IsTestRunning)
                         btnStart_Click(null, null);
                     ConnectionUtil.Disconnect();
-                    StopTesterPresent();
                 }
             }
             catch (Exception ex)
@@ -728,7 +725,7 @@ namespace AutosarBCM
             }
         }
 
-        private void StartTesterPresent()
+        public void StartTesterPresent()
         {
             TesterPresent = new TesterPresent();
             TesterPresentTimer = new System.Timers.Timer(5000) { AutoReset = true };
@@ -1198,6 +1195,7 @@ namespace AutosarBCM
             activeToolStripMenuItem.Checked = true;
             inactiveToolStripMenuItem.Checked = false;
             testerPresentDropDownButton.Image = Resources.pass;
+            StartTesterPresent();
 
         }
 
@@ -1206,8 +1204,7 @@ namespace AutosarBCM
             activeToolStripMenuItem.Checked = false;
             inactiveToolStripMenuItem.Checked = true;
             testerPresentDropDownButton.Image = Resources.reset;
-
-
+            StopTesterPresent();
 
         }
     }
