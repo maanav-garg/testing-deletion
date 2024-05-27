@@ -601,7 +601,7 @@ namespace AutosarBCM
             // activeToolStripMenuItem
             // 
             this.activeToolStripMenuItem.Name = "activeToolStripMenuItem";
-            this.activeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.activeToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.activeToolStripMenuItem.Text = "Active";
             this.activeToolStripMenuItem.Click += new System.EventHandler(this.activeToolStripMenuItem_Click);
             // 
@@ -610,7 +610,7 @@ namespace AutosarBCM
             this.inactiveToolStripMenuItem.Checked = true;
             this.inactiveToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.inactiveToolStripMenuItem.Name = "inactiveToolStripMenuItem";
-            this.inactiveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inactiveToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.inactiveToolStripMenuItem.Text = "Inactive";
             this.inactiveToolStripMenuItem.Click += new System.EventHandler(this.inactiveToolStripMenuItem_Click);
             // 
@@ -623,7 +623,6 @@ namespace AutosarBCM
             // tspFilterTxb
             // 
             this.tspFilterTxb.Enabled = false;
-            this.tspFilterTxb.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tspFilterTxb.Name = "tspFilterTxb";
             this.tspFilterTxb.Size = new System.Drawing.Size(76, 27);
             this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);

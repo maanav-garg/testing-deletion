@@ -71,6 +71,8 @@ namespace AutosarBCM.Forms.Monitor
             pnlMonitorInput.AutoScroll = true;
             typeof(FlowLayoutPanel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
                 null, pnlMonitorInput, new object[] { true });
+
+            splitContainer1.Panel2Collapsed = true;
         }
 
         #endregion
@@ -119,6 +121,8 @@ namespace AutosarBCM.Forms.Monitor
 
                 pnlMonitorInput.Controls.Add(flowPanelGroup);
             }
+
+            splitContainer1.Panel2Collapsed = false;
         }
 
         /// <summary>
