@@ -121,7 +121,7 @@ namespace AutosarBCM.Forms.Monitor
             else //Start Test
             {
                 cancellationTokenSource = new CancellationTokenSource();
-                //StartTest(cancellationTokenSource.Token);
+                StartTest(cancellationTokenSource.Token);
             }
 
             FormMain.IsTestRunning = !FormMain.IsTestRunning;

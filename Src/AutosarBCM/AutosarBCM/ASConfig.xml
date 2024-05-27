@@ -2075,7 +2075,7 @@
 			<PWMFreqCloseValue>200</PWMFreqCloseValue>
 		</EnvironmentalConfig>
 		<ContinousReadList>
-			<Func>C1.3_VehicleConverter12VSupply</Func>
+			<Func parent="TCCM_Input">KL75Relay1</Func>
 			<Func>C1.3_VehicleConverter12VSupply</Func>
 			<Func>C1.3_VehicleConverter12VSupply</Func>
 		</ContinousReadList>
@@ -2091,18 +2091,18 @@
 				<OpenAt>1</OpenAt>
 				<CloseAt>5</CloseAt>
 				<Functions>
-					<FuncName>C4.10_5V_DCDC</FuncName>
+					<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
 					<FuncName>C4.47_StartStopFunction12VLED</FuncName>
 					<FuncName>C5.37_DoorLockIndicatorSupply</FuncName>
 					<FuncName>C2.15_TrailerLeftSupply</FuncName>
 					<FuncName>C2.12_TrailerRightSupply</FuncName>
 					<FuncName>C1.16_RearParkingLightTrailerSupply</FuncName>
 					<FuncName>C2.4_RearFogLampsSupply</FuncName>
-					<FuncName>WaterPump</FuncName>
+					<FuncName parent="TCCM_Input">KL15Relay2</FuncName>
 					<FuncName>C1.15_LowBeamLeftSupply</FuncName>
 					<FuncName>C2.1_FogLampFrontRightSupply</FuncName>
 					<FuncName>C1.17_FogLampFrontLeftSupply</FuncName>
-					<FuncName>C2.3_DDRLSupplyRight</FuncName>
+					<FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
 					<FuncName>C3.17_InteriorLightDimmingSupply</FuncName>
 					<FuncName>C3.14_LowBeamRightSupply</FuncName>
 					<FuncName>C3.4_FrontParkingLightSupply</FuncName>

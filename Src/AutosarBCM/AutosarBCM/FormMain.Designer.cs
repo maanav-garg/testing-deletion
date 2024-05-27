@@ -94,6 +94,7 @@ namespace AutosarBCM
             this.btnShowEmbSwVer = new System.Windows.Forms.ToolStripButton();
             this.lblEmbSwVer = new System.Windows.Forms.ToolStripLabel();
             this.tsbToggle = new System.Windows.Forms.ToolStripButton();
+            this.environmentalTestTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -109,7 +110,8 @@ namespace AutosarBCM
             this.optionsTsmi,
             this.traceDialogtsmi,
             this.testLogToolStripMenuItem,
-            this.tsmiCheck});
+            this.tsmiCheck,
+            this.environmentalTestTsmi});
             this.toolsTsmi.Name = "toolsTsmi";
             this.toolsTsmi.Size = new System.Drawing.Size(46, 20);
             this.toolsTsmi.Text = "Tools";
@@ -118,7 +120,7 @@ namespace AutosarBCM
             // 
             this.optionsTsmi.Image = ((System.Drawing.Image)(resources.GetObject("optionsTsmi.Image")));
             this.optionsTsmi.Name = "optionsTsmi";
-            this.optionsTsmi.Size = new System.Drawing.Size(155, 22);
+            this.optionsTsmi.Size = new System.Drawing.Size(184, 26);
             this.optionsTsmi.Text = "Options";
             this.optionsTsmi.Click += new System.EventHandler(this.optionsTsmi_Click);
             // 
@@ -126,7 +128,7 @@ namespace AutosarBCM
             // 
             this.traceDialogtsmi.Image = ((System.Drawing.Image)(resources.GetObject("traceDialogtsmi.Image")));
             this.traceDialogtsmi.Name = "traceDialogtsmi";
-            this.traceDialogtsmi.Size = new System.Drawing.Size(155, 22);
+            this.traceDialogtsmi.Size = new System.Drawing.Size(184, 26);
             this.traceDialogtsmi.Text = "Trace Dialog";
             this.traceDialogtsmi.Click += new System.EventHandler(this.traceDialogtsmi_Click);
             // 
@@ -134,7 +136,7 @@ namespace AutosarBCM
             // 
             this.testLogToolStripMenuItem.Image = global::AutosarBCM.Properties.Resources.EditWindow;
             this.testLogToolStripMenuItem.Name = "testLogToolStripMenuItem";
-            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.testLogToolStripMenuItem.Text = "Test Log Viewer";
             this.testLogToolStripMenuItem.Visible = false;
             this.testLogToolStripMenuItem.Click += new System.EventHandler(this.testLogToolStripMenuItem_Click);
@@ -143,7 +145,7 @@ namespace AutosarBCM
             // 
             this.tsmiCheck.Image = global::AutosarBCM.Properties.Resources.pass;
             this.tsmiCheck.Name = "tsmiCheck";
-            this.tsmiCheck.Size = new System.Drawing.Size(155, 22);
+            this.tsmiCheck.Size = new System.Drawing.Size(184, 26);
             this.tsmiCheck.Text = "Control Check";
             this.tsmiCheck.Visible = false;
             this.tsmiCheck.Click += new System.EventHandler(this.tsmiCheck_Click);
@@ -623,6 +625,7 @@ namespace AutosarBCM
             // tspFilterTxb
             // 
             this.tspFilterTxb.Enabled = false;
+            this.tspFilterTxb.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tspFilterTxb.Name = "tspFilterTxb";
             this.tspFilterTxb.Size = new System.Drawing.Size(76, 27);
             this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);
@@ -688,6 +691,13 @@ namespace AutosarBCM
             this.tsbToggle.Size = new System.Drawing.Size(24, 24);
             this.tsbToggle.Text = "toolStripButton1";
             this.tsbToggle.Click += new System.EventHandler(this.tsbToggle_Click);
+            // 
+            // environmentalTestTsmi
+            // 
+            this.environmentalTestTsmi.Name = "environmentalTestTsmi";
+            this.environmentalTestTsmi.Size = new System.Drawing.Size(184, 26);
+            this.environmentalTestTsmi.Text = "Environmental Test";
+            this.environmentalTestTsmi.Click += new System.EventHandler(this.environmentalTestTsmi_Click);
             // 
             // FormMain
             // 
@@ -795,6 +805,7 @@ namespace AutosarBCM
         private ToolStripDropDownButton testerPresentDropDownButton;
         public ToolStripMenuItem activeToolStripMenuItem;
         public ToolStripMenuItem inactiveToolStripMenuItem;
+        private ToolStripMenuItem environmentalTestTsmi;
     }
 }
 

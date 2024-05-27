@@ -213,14 +213,22 @@ namespace AutosarBCM.Core
                             OutputName= m.Element("OutputName").Value,
                         }).ToList(),
                     ContinousReadList = t.Element("ContinousReadList").Elements("Func")
-                        .Select(f => f.Value).ToList(),
+                         .Select(f => new Function
+                         {
+                             Name = f.Value,
+                             Parent = f.Attribute("parent")?.Value ?? null,
+                         }).ToList(),
                     Cycles = t.Element("Cycles").Elements("Cycle")
                         .Select(c => new Cycle { 
                             Name= c.Element("Name").Value,
                             OpenAt = int.Parse(c.Element("OpenAt").Value),
                             CloseAt = int.Parse(c.Element("CloseAt").Value),
                             Functions = c.Element("Functions").Elements("FuncName")
-                                .Select(f => f.Value).ToList(),
+                                .Select(f => new Function
+                                {
+                                    Name = f.Value,
+                                    Parent = f.Attribute("parent")?.Value ?? null,
+                                }).ToList(),
                         }).ToList()
                 }).First();
 
@@ -281,8 +289,7 @@ namespace AutosarBCM.Core
         /// <summary>
         /// Gets or sets a list of continuous read functions.
         /// </summary>
-        [XmlArrayItem("Item")]
-        public List<string> ContinousReadList { get; set; }
+        public List<Function> ContinousReadList { get; set; }
         /// <summary>
         /// Gets or sets the test cycles
         /// </summary>
@@ -373,14 +380,18 @@ namespace AutosarBCM.Core
         /// <summary>
         /// List of functions
         /// </summary>
-        [XmlArrayItem("FuncName")]
-        public List<string> Functions { get; set; }
+        public List<Function> Functions { get; set; }
         /// <summary>
         /// List of items
         /// </summary>
-        public List<ControlInfo> Items { get; set; }
-        public List<ControlInfo> CloseItems { get; set; } = new List<ControlInfo>();
-        public List<ControlInfo> OpenItems { get; set; } = new List<ControlInfo>();
+        public HashSet<ControlInfo> Items { get; set; } = new HashSet<ControlInfo>();
+        public HashSet<PayloadInfo> PayloadItems { get; set; } = new HashSet<PayloadInfo>();
+
+        public HashSet<ControlInfo> CloseItems { get; set; } = new HashSet<ControlInfo>();
+        public HashSet<PayloadInfo> PayloadCloseItems { get; set; } = new HashSet<PayloadInfo>();
+        public HashSet<ControlInfo> OpenItems { get; set; } = new HashSet<ControlInfo>();
+        public HashSet<PayloadInfo> PayloadOpenItems { get; set; } = new HashSet<PayloadInfo>();
+
         #endregion
 
         public Cycle() { }
@@ -391,6 +402,12 @@ namespace AutosarBCM.Core
             CloseAt = cycle.CloseAt;
             Functions = cycle.Functions;
         }
+    }
+
+    public class Function
+    {
+        public string Name { get; set; }
+        public string Parent { get; set; }
     }
 
 }

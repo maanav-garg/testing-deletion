@@ -119,71 +119,104 @@ namespace AutosarBCM
         internal static void RunTestPeriodically(CancellationToken _cancellationToken, MonitorTestType monitorTestType)
         {
 
-            //cancellationToken = _cancellationToken;
+            cancellationToken = _cancellationToken;
             ////monitorConfig = _monitorConfig;
             ////foreach (var config in monitorConfig.GenericMonitorConfiguration.InputSection.Groups.SelectMany(x => x.InputItemList))
             ////    Program.MainForm.AppendTrace($"{config.Name}: (-1)");
 
-            //Task.Run(() =>
-            //{
-            //    try
-            //    {
-            //        if (monitorTestType == MonitorTestType.Generic)
-            //        {
-            //            var inputMonitorItems = monitorConfig.GenericMonitorConfiguration.InputSection.Groups.SelectMany(i => i.InputItemList).ToList();
-            //            var txInterval = monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.TxInterval;
-            //            var readInterval = monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.ReadInterval;
+            Task.Run(() =>
+            {
+                try
+                {
+                    if (monitorTestType == MonitorTestType.Generic)
+                    {
+                        //var inputMonitorItems = monitorConfig.GenericMonitorConfiguration.InputSection.Groups.SelectMany(i => i.InputItemList).ToList();
+                        //var txInterval = monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.TxInterval;
+                        //var readInterval = monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.ReadInterval;
 
-            //            while (!cancellationToken.IsCancellationRequested)
-            //            {
-            //                foreach (var item in inputMonitorItems)
-            //                    item.Transmit(txInterval);
+                        //while (!cancellationToken.IsCancellationRequested)
+                        //{
+                        //    foreach (var item in inputMonitorItems)
+                        //        item.Transmit(txInterval);
 
-            //                ThreadSleep(readInterval);
-            //            }
-            //        }
-            //        else if (monitorTestType == MonitorTestType.Environmental)
-            //        {
-            //            //GetRssiMessage(monitorConfig);
+                        //    ThreadSleep(readInterval);
+                        //}
+                    }
+                    else if (monitorTestType == MonitorTestType.Environmental)
+                    {
+                        StartTime = DateTime.Now;
+                        var cycles = ASContext.Configuration.EnvironmentalTest.Cycles;
+                        //var inputItems = monitorConfig.GenericMonitorConfiguration.InputSection.Groups.SelectMany(x => x.InputItemList);
+                        var controlItems = ASContext.Configuration.Controls;
+                        var startCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.StartCycleIndex;
+                        var endCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.EndCycleIndex;
+                        //var dictMapping = new Dictionary<string, InputMonitorItem>();
+                        var dictMapping = new Dictionary<string, Core.ControlInfo>();
+                        //var continousReadList = new List<InputMonitorItem>();
+                        var continousReadList = new Dictionary<string, Core.ControlInfo>();
 
-            //            StartTime = DateTime.Now;
-            //            var cycles = ASContext.Configuration.EnvironmentalTest.Cycles;
-            //            //var cycles = monitorConfig.EnvironmentalMonitorConfiguration.OutputSection.Cycles;
-            //            var inputItems = monitorConfig.GenericMonitorConfiguration.InputSection.Groups.SelectMany(x => x.InputItemList);
-            //            var startCycleIndex = monitorConfig.EnvironmentalMonitorConfiguration.OutputSection.CommonConfig.StartCycleIndex;
-            //            var endCycleIndex = monitorConfig.EnvironmentalMonitorConfiguration.OutputSection.CommonConfig.EndCycleIndex;
-            //            var dictMapping = new Dictionary<string, InputMonitorItem>();
-            //            var continousReadList = new List<InputMonitorItem>();
 
-            //            foreach (var cycle in cycles)
-            //                cycle.Items = ASContext.Configuration.Controls
-            //                .Where(it => cycle.Functions.Any(c => it.Name.Contains(c) && !string.IsNullOrEmpty(c))).ToList();
+                        //Find cycle items
+                        foreach (var cycle in cycles)
+                        {
+                            foreach (var func in cycle.Functions)
+                            {
+                                var ci = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == func.Parent);
+                                if (ci == null) continue;
+                                
+                                foreach (var payload in ci.Responses.FirstOrDefault().Payloads)
+                                {
+                                    if (func.Name == payload.Name)
+                                    {
+                                        cycle.Items.Add(ci);
+                                        cycle.PayloadItems.Add(payload);
+                                    }
+                                }
+                            }
+                        }
+                           
 
-            //            var cycleDict = GetCycleDict(cycles);
+                        var cycleDict = GetCycleDict(cycles);
 
-            //            foreach (var mapping in monitorConfig.EnvironmentalMonitorConfiguration.MappingSection.ConnectionMappings)
-            //            {
-            //                var inputItem = inputItems.Where(x => x.Name.Equals(mapping.InputName)).FirstOrDefault();
-            //                dictMapping.Add(mapping.OutputName, inputItem);
-            //            }
+                        //foreach (var mapping in monitorConfig.EnvironmentalMonitorConfiguration.MappingSection.ConnectionMappings)
+                        //{
+                        //    var inputItem = inputItems.Where(x => x.Name.Equals(mapping.InputName)).FirstOrDefault();
+                        //    dictMapping.Add(mapping.OutputName, inputItem);
+                        //}
 
-            //            foreach (var funcName in monitorConfig.EnvironmentalMonitorConfiguration.MappingSection.ContinousReadList)
-            //            {
-            //                var inputItem = inputItems.Where(x => x.Name.Equals(funcName)).FirstOrDefault();
-            //                continousReadList.Add(inputItem);
-            //            }
+                        foreach (var mapping in ASContext.Configuration.EnvironmentalTest.ConnectionMappings)
+                        {
+                            var controlItem = controlItems.Where(x => x.Name.Equals(mapping.InputName)).FirstOrDefault();
+                            dictMapping.Add(mapping.OutputName, controlItem);
+                        }
 
-            //            StartEnvironmentalTest(monitorConfig, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList);
 
-            //            ThreadSleep(250);
+                        //foreach (var funcName in monitorConfig.EnvironmentalMonitorConfiguration.MappingSection.ContinousReadList)
+                        //{
+                        //    var inputItem = inputItems.Where(x => x.Name.Equals(funcName)).FirstOrDefault();
+                        //    continousReadList.Add(inputItem);
+                        //}
 
-            //            StopEnvironmentalTest(monitorConfig, dictMapping);
-            //        }
-            //    }
-            //    finally
-            //    {
-            //    }
-            //}, cancellationToken);
+                        foreach (var func in ASContext.Configuration.EnvironmentalTest.ContinousReadList)
+                        {
+                            var controlItem = controlItems.Where(x => x.Name.Equals(func.Parent)).FirstOrDefault();
+                            if (controlItem == null) continue;
+                            var payloadInfo = controlItem.Responses.FirstOrDefault().Payloads.FirstOrDefault(p => p.Name == func.Name);
+                            if (payloadInfo == null) continue;
+                            continousReadList.Add(payloadInfo.Name, controlItem);
+                        }
+
+                        //StartEnvironmentalTest(monitorConfig, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList);
+
+                        ThreadSleep(250);
+
+                        //StopEnvironmentalTest(monitorConfig, dictMapping);
+                    }
+                }
+                finally
+                {
+                }
+            }, cancellationToken);
         }
 
         /// <summary>
@@ -262,26 +295,35 @@ namespace AutosarBCM
         /// <param name="cycles">List of cycles.</param>
         private static Dictionary<int,Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
         {
-            var cycleDict = new Dictionary<int, Core.Cycle>();    
-            foreach(var cycle in cycles)
+            var cycleDict = new Dictionary<int, Core.Cycle>();
+            foreach (var cycle in cycles)
             {
                 if (cycleDict.ContainsKey(cycle.OpenAt))
-                    cycleDict[cycle.OpenAt].OpenItems.AddRange(cycle.Items);
+                {
+                    cycleDict[cycle.OpenAt].OpenItems.UnionWith(cycle.Items);
+                    cycleDict[cycle.OpenAt].PayloadOpenItems.UnionWith(cycle.PayloadItems);
+
+                }
                 else
                 {
                     cycleDict.Add(cycle.OpenAt, new Core.Cycle(cycle));
-                    cycleDict[cycle.OpenAt].OpenItems.AddRange(cycle.Items);
+                    cycleDict[cycle.OpenAt].OpenItems.UnionWith(cycle.Items);
+                    cycleDict[cycle.OpenAt].PayloadOpenItems.UnionWith(cycle.PayloadItems);
                 }
 
                 if (cycle.CloseAt == -1)
                     continue;
 
                 if (cycleDict.ContainsKey(cycle.CloseAt))
-                    cycleDict[cycle.CloseAt].CloseItems.AddRange(cycle.Items);
+                {
+                    cycleDict[cycle.CloseAt].CloseItems.UnionWith(cycle.Items);
+                    cycleDict[cycle.CloseAt].PayloadCloseItems.UnionWith(cycle.PayloadItems);
+                }
                 else
                 {
                     cycleDict.Add(cycle.CloseAt, new Core.Cycle(cycle));
-                    cycleDict[cycle.CloseAt].CloseItems.AddRange(cycle.Items);
+                    cycleDict[cycle.CloseAt].CloseItems.UnionWith(cycle.Items);
+                    cycleDict[cycle.CloseAt].PayloadCloseItems.UnionWith(cycle.PayloadItems);
                 }
             }
 
