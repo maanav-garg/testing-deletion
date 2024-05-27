@@ -33,6 +33,7 @@
             this.lblName = new System.Windows.Forms.Label();
             this.btnSend = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.pnlControls = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
             // lblAddress
@@ -48,7 +49,7 @@
             // 
             this.cmbInputControlParameter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbInputControlParameter.FormattingEnabled = true;
-            this.cmbInputControlParameter.Location = new System.Drawing.Point(15, 61);
+            this.cmbInputControlParameter.Location = new System.Drawing.Point(15, 75);
             this.cmbInputControlParameter.Name = "cmbInputControlParameter";
             this.cmbInputControlParameter.Size = new System.Drawing.Size(108, 21);
             this.cmbInputControlParameter.TabIndex = 9;
@@ -64,6 +65,7 @@
             // 
             // btnSend
             // 
+            this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSend.Location = new System.Drawing.Point(128, 496);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(75, 23);
@@ -81,10 +83,24 @@
             this.label1.TabIndex = 14;
             this.label1.Text = "Input Control Parameter";
             // 
+            // pnlControls
+            // 
+            this.pnlControls.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlControls.AutoScroll = true;
+            this.pnlControls.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.pnlControls.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.pnlControls.Location = new System.Drawing.Point(3, 102);
+            this.pnlControls.Name = "pnlControls";
+            this.pnlControls.Size = new System.Drawing.Size(200, 388);
+            this.pnlControls.TabIndex = 15;
+            // 
             // UCControlByIdentifierItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pnlControls);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.lblAddress);
@@ -104,5 +120,6 @@
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.FlowLayoutPanel pnlControls;
     }
 }

@@ -210,6 +210,12 @@
     <Compile Include="UserControls\Monitor\UCControlByIdentifierItem.Designer.cs">
       <DependentUpon>UCControlByIdentifierItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Monitor\UCControlPayload.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Monitor\UCControlPayload.Designer.cs">
+      <DependentUpon>UCControlPayload.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Monitor\UCOutput.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -343,6 +349,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCControlByIdentifierItem.resx">
       <DependentUpon>UCControlByIdentifierItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Monitor\UCControlPayload.resx">
+      <DependentUpon>UCControlPayload.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCOutput.resx">
       <DependentUpon>UCOutput.cs</DependentUpon>

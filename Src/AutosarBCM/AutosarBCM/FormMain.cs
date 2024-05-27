@@ -1191,9 +1191,8 @@ namespace AutosarBCM
 
         private void tsbSession_Click(object sender, EventArgs e)
         {
-            //TODO to be uncommented
-            //if (!ConnectionUtil.CheckConnection())
-            //    return;
+            if (!ConnectionUtil.CheckConnection())
+                return;
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
             ASContext.CurrentSession = sessionInfo;
