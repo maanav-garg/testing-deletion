@@ -35,15 +35,15 @@ namespace AutosarBCM.Core
 
     public class IOControlByIdentifierService : Service
     {
-        public IOControlByIdentifierService() : base(ServiceName.InputOutputControlByIdentifier) { }
+        public IOControlByIdentifierService() : base(ServiceInfo.InputOutputControlByIdentifier) { }
 
         public void Transmit(ControlInfo controlInfo, byte[] additionalData)
         {
             var address = BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray());
             var additionalBytes = BitConverter.ToString(additionalData);
-            var data = $"{serviceInfo.RequestID.ToString("X")}-{address}-{additionalBytes}";
+            var data = $"{ServiceInfo.RequestID.ToString("X")}-{address}-{additionalBytes}";
 
-            var request = new ASRequest(serviceInfo, controlInfo, data);
+            var request = new ASRequest(ServiceInfo, controlInfo, data);
             request.Execute();
         }
     }
@@ -70,11 +70,12 @@ namespace AutosarBCM.Core
     }
     public class ECUReset : Service
     {
-        public ECUReset() : base(ServiceName.ECUReset) { }
+        public ECUReset() : base(ServiceInfo.ECUReset) { }
 
         public void Transmit()
         {
-            ConnectionUtil.TransmitData(new byte[] { serviceInfo.RequestID, 0x1 });
+            if (ServiceInfo == null) return;
+            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0x1 });
         }
     }
 }

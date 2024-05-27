@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Config;
 using AutosarBCM.Core;
-using AutosarBCM.Core.Enums;
 using System.Net;
 
 namespace AutosarBCM.Forms.Monitor

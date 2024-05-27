@@ -24,9 +24,11 @@ namespace AutosarBCM.Core
 
         public static ServiceInfo DiagnosticSessionControl { get => ASContext.Configuration?.GetServiceByRequestID(0x10); }
         public static ServiceInfo ReadDataByIdentifier { get => ASContext.Configuration?.GetServiceByRequestID(0x22); }
-        public static ServiceInfo IOCtrlByIdentifier { get => ASContext.Configuration?.GetServiceByRequestID(0x2F); }
+        public static ServiceInfo InputOutputControlByIdentifier { get => ASContext.Configuration?.GetServiceByRequestID(0x2F); }
         public static ServiceInfo WriteDataByIdentifier { get => ASContext.Configuration?.GetServiceByRequestID(0x2E); }
         public static ServiceInfo TesterPresent { get => ASContext.Configuration?.GetServiceByRequestID(0x3E); }
+        public static ServiceInfo ECUReset { get => ASContext.Configuration?.GetServiceByRequestID(0x11); }
+
     }
 
     public class ControlInfo
@@ -40,11 +42,11 @@ namespace AutosarBCM.Core
         public List<byte> SessionInactiveException { get; set; }
         public List<ResponseInfo> Responses { get; set; }
 
-        public void Transmit(ServiceName serviceName, byte[] data = null)
+        public void Transmit(ServiceInfo serviceInfo, byte[] data = null)
         {
-            if (serviceName == ServiceName.ReadDataByIdentifier) 
+            if (serviceInfo == ServiceInfo.ReadDataByIdentifier) 
                 new ReadDataByIdenService().Transmit(this);
-            else if (serviceName == ServiceName.InputOutputControlByIdentifier) 
+            else if (serviceInfo == ServiceInfo.InputOutputControlByIdentifier) 
                 new IOControlByIdentifierService().Transmit(this, data);
         }
 

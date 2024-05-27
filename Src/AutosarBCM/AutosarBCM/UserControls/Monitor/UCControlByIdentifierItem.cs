@@ -1,4 +1,5 @@
-﻿using AutosarBCM.Core.Enums;
+﻿using AutosarBCM.Core;
+using AutosarBCM.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,7 +38,7 @@ namespace AutosarBCM.UserControls.Monitor
             lblAddress.Text = "Address: " + BitConverter.ToString(BitConverter.GetBytes(ucItem.ControlInfo.Address).Reverse().ToArray());
 
             //IOControlByIdentifier Service
-            if (!ucItem.ControlInfo.Services.Contains((byte)ServiceName.InputOutputControlByIdentifier))
+            if (!ucItem.ControlInfo.Services.Contains(ServiceInfo.InputOutputControlByIdentifier.RequestID))
                 return;
 
             foreach (var payload in ucItem.ControlInfo.Responses[0].Payloads)
@@ -57,7 +58,7 @@ namespace AutosarBCM.UserControls.Monitor
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            ucItem.ControlInfo.Transmit(ServiceName.InputOutputControlByIdentifier, PrepareControlData());
+            ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareControlData());
         }
 
         private byte[] PrepareControlData()
