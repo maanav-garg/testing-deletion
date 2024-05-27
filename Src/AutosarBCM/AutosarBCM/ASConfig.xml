@@ -20,6 +20,9 @@
 		<Service requestID="3E" responseID="7E">
 			<Name>TesterPresent</Name>
 		</Service>
+		<Service requestID="11" responseID="51">
+			<Name>ECUReset</Name>
+		</Service>
 	</Services>
 	<Sessions>
 		<Session>

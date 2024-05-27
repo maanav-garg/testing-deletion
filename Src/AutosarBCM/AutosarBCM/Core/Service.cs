@@ -64,4 +64,13 @@ namespace AutosarBCM.Core
             ConnectionUtil.TransmitData(new byte[] { serviceInfo.RequestID, 0});
         }
     }
+    public class ECUReset : Service
+    {
+        public ECUReset() : base(ServiceName.ECUReset) { }
+
+        public void Transmit()
+        {
+            ConnectionUtil.TransmitData(new byte[] { serviceInfo.RequestID, 0x1 });
+        }
+    }
 }

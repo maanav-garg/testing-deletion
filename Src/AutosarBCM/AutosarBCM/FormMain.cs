@@ -161,6 +161,7 @@ namespace AutosarBCM
         internal static List<IReceiver> Receivers = new List<IReceiver>();
 
         private TesterPresent TesterPresent;
+        private ECUReset ECUReset;
         private System.Timers.Timer TesterPresentTimer;
 
         /// <summary>
@@ -740,7 +741,6 @@ namespace AutosarBCM
         {
             TesterPresentTimer?.Stop();
         }
-
         /// <summary>
         /// Clears the log panel
         /// </summary>
@@ -869,11 +869,15 @@ namespace AutosarBCM
         /// <param name="sender">A reference to the tsbECUReset instance.</param>
         /// <param name="e">A reference to the Click event's arguments.</param>
         private void tsbECUReset_Click(object sender, EventArgs e)
+        
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
 
             //new CanMessage("07E0", "0211030000000000").Transmit();
+            ECUReset = new ECUReset();
+       
+            ECUReset.Transmit();
         }
 
         /// <summary>
