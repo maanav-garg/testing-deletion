@@ -109,6 +109,10 @@ namespace AutosarBCM
         private FormTracePopup tracePopup = new FormTracePopup();
 
         /// <summary>
+        /// An instance of the 'FormEnvironmentalTest' control for displaying trace messages.
+        /// </summary>
+        private FormEnvironmentalTest formEnvironmentalTest;
+        /// <summary>
         /// An instance of the 'FormLogReader' control for displaying trace messages.
         /// </summary>
         private FormTestLogView logReader;
@@ -1129,7 +1133,23 @@ namespace AutosarBCM
             var f = new FormOptions();
             f.ShowDialog(); // modal dialog
         }
-        
+
+        /// <summary>
+        /// Displays environmental test dialog.
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">argument</param>
+        private void environmentalTestTsmi_Click(object sender, EventArgs e)
+        {
+            if (formEnvironmentalTest == null || formEnvironmentalTest.IsDisposed)
+                formEnvironmentalTest = new FormEnvironmentalTest();
+            else
+                formEnvironmentalTest.BringToFront();
+
+            formEnvironmentalTest.Show();
+            
+        }
+
         #endregion
 
         #region Help menu events
@@ -1188,5 +1208,7 @@ namespace AutosarBCM
         }
 
         #endregion
+
+      
     }
 }

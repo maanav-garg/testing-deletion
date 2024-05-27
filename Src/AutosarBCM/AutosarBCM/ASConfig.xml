@@ -13,6 +13,8 @@
 		</Service>
 		<Service requestID="2F">
 			<Name>InputOutputControlByIdentifier</Name>
+			<Sessions>03</Sessions>
+			<ResponseIndex>3</ResponseIndex>
 		</Service>
 		<Service requestID="2E">
 			<Name>WriteDataByIdentifier</Name>
@@ -1888,10 +1890,6 @@
 				</Response>
 			</Responses>
 		</Control>
-
-
-
-
 		<Control>
 			<Address>DF47</Address>
 			<Name>LIN_PWS_and_HLS_Switch</Name>
@@ -2049,4 +2047,52 @@
 		<Payload length="4" typeName="HexDump_4Bytes" />
 		<Payload length="16" typeName="DID_DE26" />
 	</Payloads>
+	<EnvironmentalTest>
+		<EnvironmentalConfig>
+			<CycleTime>3000</CycleTime>
+			<TxInterval>10</TxInterval>
+			<StartCycleIndex>16</StartCycleIndex>
+			<EndCycleIndex>90</EndCycleIndex>
+			<PWMDutyOpenValue>100</PWMDutyOpenValue>
+			<PWMDutyCloseValue>0</PWMDutyCloseValue>
+			<PWMFreqOpenValue>200</PWMFreqOpenValue>
+			<PWMFreqCloseValue>200</PWMFreqCloseValue>
+		</EnvironmentalConfig>
+		<ContinousReadList>
+			<Func>C1.3_VehicleConverter12VSupply</Func>
+			<Func>C1.3_VehicleConverter12VSupply</Func>
+			<Func>C1.3_VehicleConverter12VSupply</Func>
+		</ContinousReadList>
+		<ConnectionMappings>
+			<Mapping>
+				<OutputName>DOOR_UNLOCK_RIGHT</OutputName>
+				<InputName>C5.10_HazardSwitch</InputName>
+			</Mapping>
+		</ConnectionMappings>
+		<Cycles>
+			<Cycle>
+				<Name>SoftContinuous 1</Name>
+				<OpenAt>1</OpenAt>
+				<CloseAt>5</CloseAt>
+				<Functions>
+					<FuncName>C4.10_5V_DCDC</FuncName>
+					<FuncName>C4.47_StartStopFunction12VLED</FuncName>
+					<FuncName>C5.37_DoorLockIndicatorSupply</FuncName>
+					<FuncName>C2.15_TrailerLeftSupply</FuncName>
+					<FuncName>C2.12_TrailerRightSupply</FuncName>
+					<FuncName>C1.16_RearParkingLightTrailerSupply</FuncName>
+					<FuncName>C2.4_RearFogLampsSupply</FuncName>
+					<FuncName>WaterPump</FuncName>
+					<FuncName>C1.15_LowBeamLeftSupply</FuncName>
+					<FuncName>C2.1_FogLampFrontRightSupply</FuncName>
+					<FuncName>C1.17_FogLampFrontLeftSupply</FuncName>
+					<FuncName>C2.3_DDRLSupplyRight</FuncName>
+					<FuncName>C3.17_InteriorLightDimmingSupply</FuncName>
+					<FuncName>C3.14_LowBeamRightSupply</FuncName>
+					<FuncName>C3.4_FrontParkingLightSupply</FuncName>
+					<FuncName>C2.9_DDRLSupplyLeft</FuncName>
+				</Functions>
+			</Cycle>
+		</Cycles>
+	</EnvironmentalTest>
 </Configuration>

@@ -155,6 +155,12 @@
     <Compile Include="Forms\FormTestLogView.Designer.cs">
       <DependentUpon>FormTestLogView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Monitor\FormEnvironmentalTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Monitor\FormEnvironmentalTest.Designer.cs">
+      <DependentUpon>FormEnvironmentalTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Monitor\FormMonitorEnvInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +203,18 @@
     </Compile>
     <Compile Include="FormSplashScreen.Designer.cs">
       <DependentUpon>FormSplashScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Monitor\UCControlByIdentifierItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Monitor\UCControlByIdentifierItem.Designer.cs">
+      <DependentUpon>UCControlByIdentifierItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Monitor\UCControlPayload.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Monitor\UCControlPayload.Designer.cs">
+      <DependentUpon>UCControlPayload.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Monitor\UCOutput.cs">
       <SubType>UserControl</SubType>
@@ -297,6 +315,9 @@
     <EmbeddedResource Include="Forms\FormTestLogView.resx">
       <DependentUpon>FormTestLogView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Monitor\FormEnvironmentalTest.resx">
+      <DependentUpon>FormEnvironmentalTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Monitor\FormMonitorEnvInput.resx">
       <DependentUpon>FormMonitorEnvInput.cs</DependentUpon>
     </EmbeddedResource>
@@ -325,6 +346,12 @@
     </Compile>
     <EmbeddedResource Include="FormSplashScreen.resx">
       <DependentUpon>FormSplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Monitor\UCControlByIdentifierItem.resx">
+      <DependentUpon>UCControlByIdentifierItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Monitor\UCControlPayload.resx">
+      <DependentUpon>UCControlPayload.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCOutput.resx">
       <DependentUpon>UCOutput.cs</DependentUpon>

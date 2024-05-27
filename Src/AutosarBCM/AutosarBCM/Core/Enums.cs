@@ -53,6 +53,11 @@ namespace AutosarBCM.Core.Enums
         Present = 1
     }
 
+    public enum InputControlParameter: byte
+    {
+        ShortTermAdjustment = 0x3
+    }
+
     public enum ServiceName : byte
     {
         DiagnosticSessionControl = 0x10,

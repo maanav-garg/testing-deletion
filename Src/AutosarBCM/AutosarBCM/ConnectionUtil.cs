@@ -162,7 +162,7 @@ namespace AutosarBCM
             if (e.Data[0] == 0x7E)
                 return;
 
-            if (e.Data[0] == 0x62 || e.Data[0] == 0x6F)
+            if (e.Data[0] == 0x62)
             {
                 var response = ASResponse.Parse(e.Data);
                 foreach (var receiver in FormMain.Receivers)
@@ -225,14 +225,6 @@ namespace AutosarBCM
                 try
                 {
                     transportProtocol.SendBytes(dataBytes);
-                    //if (hardware is CanHardware canHardware)
-                    //{
-                    //    canHardware.Transmit(canId, dataBytes);
-                    //}
-                    //else if (hardware is SerialPortHardware serialHardware)
-                    //{
-                    //    serialHardware.Transmit(canId, dataBytes);
-                    //}
                 }
                 catch (Exception ex)
                 {
