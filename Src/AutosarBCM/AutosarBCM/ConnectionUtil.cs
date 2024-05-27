@@ -71,7 +71,7 @@ namespace AutosarBCM
             try
             {
                 InitHardware(hardware);
-                
+
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 formMain.txtTrace.ForeColor = Color.Blue;
                 formMain.openConnection.Text = "Stop Connection";
@@ -145,40 +145,40 @@ namespace AutosarBCM
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
 
-               // Tester present
-                if (e.Data[0] == 0x3E)
+            // Tester present
+            if (e.Data[0] == 0x3E)
                 return;
 
             var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
-                var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
-                var time = new DateTime((long)e.Timestamp);
+            var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
+            var time = new DateTime((long)e.Timestamp);
 
-                AppendTrace(txRead, time, Color.Black);
-            
+            AppendTrace(txRead, time, Color.Black);
+
         }
 
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
         {
 
-           // Tester present
-                if (e.Data[0] == 0x7E)
+            // Tester present
+            if (e.Data[0] == 0x7E)
                 return;
 
             if (e.Data[0] == 0x62 || e.Data[0] == 0x6F)
-                {
-                    var response = ASResponse.Parse(e.Data);
-                    foreach (var receiver in FormMain.Receivers)
-                        if (receiver.Receive(response)) break;
-                }
-                var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
-                var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
-                var time = new DateTime((long)e.Timestamp);
+            {
+                var response = ASResponse.Parse(e.Data);
+                foreach (var receiver in FormMain.Receivers)
+                    if (receiver.Receive(response)) break;
+            }
+            var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
+            var time = new DateTime((long)e.Timestamp);
 
-                ////HandleGeneralMessages(bytes);
+            ////HandleGeneralMessages(bytes);
 
-                AppendTrace(rxRead, time);
-                AppendTraceRx(rxRead, time);
-            
+            AppendTrace(rxRead, time);
+            AppendTraceRx(rxRead, time);
+
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace AutosarBCM
                 transportProtocol?.Hardware?.Disconnect();
                 //hardware?.Disconnect();
 
-                if(transportProtocol != null)
+                if (transportProtocol != null)
                     transportProtocol.Hardware = null;
 
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
@@ -346,7 +346,7 @@ namespace AutosarBCM
         private void SerialHardware_ErrorAccured(object sender, SerialPortErrorEventArgs e)
         {
             Helper.ShowErrorMessageBox(e.Message);
-            if(e.ErrorType == SerialHardware_ErrorType.Disposed)
+            if (e.ErrorType == SerialHardware_ErrorType.Disposed)
                 Disconnect();
         }
 
@@ -449,7 +449,7 @@ namespace AutosarBCM
         private void Hardware_CanError(object sender, CanErrorEventArgs e)
         {
             Helper.ShowErrorMessageBox(e.ErrorMessage);
-            if(e.Status == CanHardware_ErrorStatus.Disconnect)
+            if (e.Status == CanHardware_ErrorStatus.Disconnect)
                 Disconnect();
         }
 
@@ -528,7 +528,7 @@ namespace AutosarBCM
         /// <returns>A list of all connected devices.</returns>
         private List<IHardware> CreateHardwareList()
         {
-            var hardwareList = HardwareHelper.ScanDevices(HardwareHelper.DeviceType.Can|HardwareHelper.DeviceType.SerialPort);
+            var hardwareList = HardwareHelper.ScanDevices(HardwareHelper.DeviceType.Can | HardwareHelper.DeviceType.SerialPort);
             SetDefaultSettings(hardwareList);
             if (hardwareList.Count == 0)
                 Console.WriteLine("No device found");
@@ -552,18 +552,18 @@ namespace AutosarBCM
                     serialHardware.Parity = (Parity)Settings.Default.SerialParity;
                     serialHardware.StopBits = (StopBits)Settings.Default.SerialStopBits;
                     serialHardware.ReadTimeout = Settings.Default.SerialReadTimeout;
-                    serialHardware.WriteTimeout= Settings.Default.SerialWriteTimeout;
+                    serialHardware.WriteTimeout = Settings.Default.SerialWriteTimeout;
                 }
-                else if(hardware is IntrepidCsCan intrepidCsCanHardware)
+                else if (hardware is IntrepidCsCan intrepidCsCanHardware)
                 {
-                    if(Settings.Default.IntrepidDevice == null)
+                    if (Settings.Default.IntrepidDevice == null)
                         Settings.Default.IntrepidDevice = new IntrepidCsCan();
                     intrepidCsCanHardware.BitRate = Settings.Default.IntrepidDevice.BitRate;
                     intrepidCsCanHardware.NetworkID = Settings.Default.IntrepidDevice.NetworkID;
                 }
-                else if(hardware is KvaserCan kvaserCanHardware)
+                else if (hardware is KvaserCan kvaserCanHardware)
                 {
-                    if(Settings.Default.KvaserDevice == null)
+                    if (Settings.Default.KvaserDevice == null)
                         Settings.Default.KvaserDevice = new KvaserCan();
                     else
                         kvaserCanHardware.BitRate = Settings.Default.KvaserDevice.BitRate;
