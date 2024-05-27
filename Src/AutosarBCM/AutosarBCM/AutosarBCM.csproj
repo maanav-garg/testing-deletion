@@ -453,6 +453,7 @@
     <None Include="Resources\pass.png" />
     <None Include="Resources\Lock.png" />
     <None Include="Resources\UnLcok.png" />
+    <None Include="Resources\testerPresent.png" />
     <Content Include="tool1.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
