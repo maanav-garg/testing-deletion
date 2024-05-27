@@ -114,8 +114,23 @@ namespace AutosarBCM.UserControls.Monitor
         /// <returns>An IEnumerable of strings containing the items in listBox1.</returns>
         public IEnumerable<string> GetListBoxItems()
         {
-            return lbResponse.Items.Cast<PayloadInfo>().Select(payload => payload.Name);
+            foreach (var item in lbResponse.Items)
+            {
+                if (item is PayloadInfo payloadInfo)
+                {
+                    yield return payloadInfo.Name; // PayloadInfo türünde öğeler için Name özelliği
+                }
+                else if (item is PayloadValue payloadValue)
+                {
+                    yield return payloadValue.FormattedValue; // PayloadValue türünde öğeler için FormattedValue özelliği
+                }
+                else
+                {
+                    yield return item.ToString(); // Varsayılan olarak öğeyi string'e çevir
+                }
+            }
         }
+
 
         #endregion
 
