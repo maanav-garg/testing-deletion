@@ -39,9 +39,10 @@
             // lblAddress
             // 
             this.lblAddress.AutoSize = true;
-            this.lblAddress.Location = new System.Drawing.Point(12, 28);
+            this.lblAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblAddress.Location = new System.Drawing.Point(12, 32);
             this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(45, 13);
+            this.lblAddress.Size = new System.Drawing.Size(58, 15);
             this.lblAddress.TabIndex = 12;
             this.lblAddress.Text = "Address";
             // 
@@ -57,9 +58,10 @@
             // lblName
             // 
             this.lblName.AutoSize = true;
+            this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblName.Location = new System.Drawing.Point(12, 11);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(35, 13);
+            this.lblName.Size = new System.Drawing.Size(45, 15);
             this.lblName.TabIndex = 7;
             this.lblName.Text = "Name";
             // 
@@ -77,7 +79,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 45);
+            this.label1.Location = new System.Drawing.Point(12, 59);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(118, 13);
             this.label1.TabIndex = 14;
