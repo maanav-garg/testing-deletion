@@ -1,9 +1,8 @@
-﻿using AutosarBCM.Config;
-using AutosarBCM.Core.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using static AutosarBCM.Core.ControlInfo;
 using System.Xml.Serialization;
 
 namespace AutosarBCM.Core
@@ -22,6 +21,12 @@ namespace AutosarBCM.Core
         public string Name { get; set; }
         public int ResponseIndex { get; set; }
         public List<byte> Sessions { get; set; }
+
+        public static ServiceInfo DiagnosticSessionControl { get => ASContext.Configuration?.GetServiceByRequestID(0x10); }
+        public static ServiceInfo ReadDataByIdentifier { get => ASContext.Configuration?.GetServiceByRequestID(0x22); }
+        public static ServiceInfo IOCtrlByIdentifier { get => ASContext.Configuration?.GetServiceByRequestID(0x2F); }
+        public static ServiceInfo WriteDataByIdentifier { get => ASContext.Configuration?.GetServiceByRequestID(0x2E); }
+        public static ServiceInfo TesterPresent { get => ASContext.Configuration?.GetServiceByRequestID(0x3E); }
     }
 
     public class ControlInfo
@@ -43,31 +48,53 @@ namespace AutosarBCM.Core
                 new IOControlByIdentifierService().Transmit(this, data);
         }
 
-        internal IEnumerable<PayloadInfo> GetPayloads(byte serviceID)
+        internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data)
         {
-            return Responses.Where(a => a.ServiceID == serviceID).First()?.Payloads;
+            var payloads = new List<Payload>();
+            var responseIndex = serviceInfo.ResponseIndex;
+
+            foreach (var pInfo in Responses.Where(a => a.ServiceID == serviceInfo.ResponseID).First()?.Payloads)
+            {
+                var pDef = ASContext.Configuration.GetPayloadInfoByType(pInfo.TypeName);
+                if (pDef == null) continue;
+                var value = data?.Skip(responseIndex).Take(pDef.Length).ToArray();
+
+                payloads.Add(InitializeType(pInfo, value));
+                responseIndex += pDef?.Length ?? 0;
+
+                if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+            }
+            return payloads.ToList();
+        }
+
+        private static Payload InitializeType(PayloadInfo payloadInfo, byte[] value, int? index = null)
+        {
+            return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.{payloadInfo.TypeName}"))).Parse(payloadInfo, value, index);
         }
     }
 
     public class PayloadInfo
     {
-        public int Index { get; set; }
         public string Name { get; set; }
+        public string NamePadded { get => IsBit ? $"    {Name}" : Name; }
         public string TypeName { get; set; }
         public int Length { get; set; }
+        public bool IsBit { get; internal set; }
         public List<PayloadValue> Values { get; set; }
+        public List<PayloadInfo> Bits { get; set; }
 
-        internal PayloadValue GetPayloadValue(byte value)
+        internal PayloadValue GetPayloadValue(byte[] value)
         {
-            return Values?.FirstOrDefault(v => v.Value == value);
+            return Values?.FirstOrDefault(v => v.Value.SequenceEqual(value));
         }
     }
 
     public class PayloadValue
     {
-        public byte Value { get; set; }
+        public string ValueString { get; internal set; }
         public string Color { get; set; }
         public string FormattedValue { get; set; }
+        public byte[] Value { get => Enumerable.Range(0, ValueString.Length).Where(x => x % 2 == 0).Select(y => Convert.ToByte(ValueString.Substring(y, 2), 16)).ToArray(); }
     }
 
     public class ResponseInfo
@@ -133,7 +160,13 @@ namespace AutosarBCM.Core
                                 Payloads = x.Elements("Payload") != null ? x.Elements("Payload").Select((y, i) => new PayloadInfo
                                 {
                                     Name = y.Attribute("name").Value,
-                                    TypeName = y.Value
+                                    TypeName = y.Attribute("typeName").Value,
+                                    Bits = y.Elements("Payload").Select(z => new PayloadInfo
+                                    {
+                                        Name = z.Attribute("name").Value,
+                                        TypeName = z.Attribute("typeName").Value,
+                                        IsBit = true,
+                                    }).ToList()
                                 }).ToList() : new List<PayloadInfo>(),
                             }).ToList() : new List<ResponseInfo>(),
                 }).ToList();
@@ -146,7 +179,7 @@ namespace AutosarBCM.Core
                     Values = s.Elements("Value")
                         .Select(x => new PayloadValue
                         {
-                            Value = Convert.ToByte(x.Attribute("value").Value, 16),
+                            ValueString = x.Attribute("value").Value,
                             Color = x.Attribute("color")?.Value ?? null,
                             FormattedValue = x.Value
                         }).ToList(),
@@ -202,9 +235,14 @@ namespace AutosarBCM.Core
             };
         }
 
-        internal ServiceInfo GetServiceByID(byte serviceID)
+        internal ServiceInfo GetServiceByResponseID(byte serviceID)
         {
             return Services.Where(x => x.ResponseID == serviceID).FirstOrDefault();
+        }
+
+        internal ServiceInfo GetServiceByRequestID(byte serviceID)
+        {
+            return Services.Where(x => x.RequestID == serviceID).FirstOrDefault();
         }
 
         internal ControlInfo GetControlByAddress(ushort controlAddress)
