@@ -874,9 +874,7 @@ namespace AutosarBCM
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            //new CanMessage("07E0", "0211030000000000").Transmit();
             ECUReset = new ECUReset();
-       
             ECUReset.Transmit();
         }
 
