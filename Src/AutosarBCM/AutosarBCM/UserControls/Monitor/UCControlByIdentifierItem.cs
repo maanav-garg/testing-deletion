@@ -74,7 +74,7 @@ namespace AutosarBCM.UserControls.Monitor
                 {
                     if (ucPayload.IsSelected)
                     {
-                        bytes.Add(ucPayload.SelectedValue);
+                        bytes.AddRange(ucPayload.SelectedValue);
                         controlByte |= (byte)(1 << (7 - bitIndex));
                     }
                     else

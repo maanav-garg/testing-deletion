@@ -21,9 +21,9 @@ namespace AutosarBCM.UserControls.Monitor
         {
             get { return chkSelected.Checked; }
         }
-        public byte SelectedValue 
+        public byte[] SelectedValue 
         {
-            get { return (byte)cmbValue.SelectedValue; }
+            get { return (cmbValue.SelectedItem as PayloadValue).Value; }
         }
 
         #endregion
@@ -49,7 +49,6 @@ namespace AutosarBCM.UserControls.Monitor
         {
             var info = ASContext.Configuration.GetPayloadInfoByType(payloadInfo.TypeName);
             cmbValue.DataSource = info.Values;
-            cmbValue.ValueMember = "Value";
             cmbValue.DisplayMember = "FormattedValue";
         }
 
