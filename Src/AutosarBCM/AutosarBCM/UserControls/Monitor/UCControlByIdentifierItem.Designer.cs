@@ -68,11 +68,12 @@
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSend.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSend.Location = new System.Drawing.Point(128, 496);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(75, 23);
             this.btnSend.TabIndex = 13;
-            this.btnSend.Text = "Send";
+            this.btnSend.Text = "SEND";
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 

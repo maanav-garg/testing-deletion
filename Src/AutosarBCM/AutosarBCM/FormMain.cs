@@ -222,6 +222,7 @@ namespace AutosarBCM
             cycleLogMessageTimer.Start();
 
             Receivers.Add(formMonitorGenericInput);
+            Receivers.Add(formEnvironmentalTest);
 
         }
 

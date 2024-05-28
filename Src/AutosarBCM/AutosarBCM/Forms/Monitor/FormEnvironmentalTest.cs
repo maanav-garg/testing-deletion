@@ -13,12 +13,12 @@ using System.Windows.Forms;
 
 namespace AutosarBCM.Forms.Monitor
 {
-    public partial class FormEnvironmentalTest : Form, IPeriodicTest
+    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IReceiver
     {
 
         #region Variables
-        private SortedDictionary<string, List<UCItem>> groups = new SortedDictionary<string, List<UCItem>>();
-        private List<UCItem> uCItems = new List<UCItem>();
+        private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
+        private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
@@ -48,32 +48,21 @@ namespace AutosarBCM.Forms.Monitor
                 return;
             }
 
-            groups.Add("Other", new List<UCItem>());
-            foreach (var ctrl in ASContext.Configuration.Controls)
+            groups.Add("DID", new List<UCReadOnlyItem>());
+            foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
             {
-                var ucItem = new UCItem(ctrl);
-                uCItems.Add(ucItem);
-                //ucItem.Click += UcItem_Click;
-                ucItem.Enabled = false;
-                string groupName = ctrl?.Group;
-                if (!string.IsNullOrEmpty(groupName))
+                foreach (var payload in ctrl.Responses[0].Payloads)
                 {
-                    if (!groups.ContainsKey(groupName))
-                    {
-                        groups.Add(groupName, new List<UCItem>());
-                    }
-                    groups[groupName].Add(ucItem);
+                    var ucItem = new UCReadOnlyItem(ctrl, payload);
+                    ucItems.Add(ucItem);
                 }
-                else
-                {
-                    groups["Other"].Add(ucItem);
-                }
+                groups["DID"] = ucItems;
             }
+
+            //Generate UI
             foreach (var group in groups)
             {
                 var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
-                var label = new Label { Text = group.Key, AutoSize = true, Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold) };
-                pnlMonitor.Controls.Add(label);
 
                 flowPanelGroup.Paint += pnlMonitorInput_Paint;
 
@@ -139,8 +128,7 @@ namespace AutosarBCM.Forms.Monitor
 
         public void StartTest(CancellationToken cancellationToken)
         {
-            MonitorUtil.RunTestPeriodically(cancellationToken, MonitorTestType.Environmental);
-
+            //MonitorUtil.RunTestPeriodically(cancellationToken, MonitorTestType.Environmental);
         }
 
         public bool CanBeRun()
@@ -155,12 +143,45 @@ namespace AutosarBCM.Forms.Monitor
 
         public void FilterUCItems(string filter)
         {
-            //throw new NotImplementedException();
+            pnlMonitor.SuspendLayout();
+            foreach (FlowLayoutPanel flowPanel in pnlMonitor.Controls.OfType<FlowLayoutPanel>())
+            {
+                flowPanel.SuspendLayout();
+                foreach (var uc in flowPanel.Controls)
+                {
+                    if (uc is UCReadOnlyItem ucItem)
+                    {
+                        bool titleMatch = ucItem.PayloadInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0
+                            || ucItem.ControlInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                        ucItem.Visible = titleMatch;
+                    }
+                }
+                flowPanel.ResumeLayout();
+            }
+            pnlMonitor.ResumeLayout();
         }
 
         public void SessionFiltering()
         {
             throw new NotImplementedException();
+        }
+
+        public bool Receive(ASResponse response)
+        {
+            var items = groups[response.ControlInfo.Name];
+            foreach (var uc in items)
+            {
+                uc.ChangeStatus(response);
+                return true;
+            }
+            return false;
+        }
+
+        private void tspFilterTxb_TextChanged(object sender, EventArgs e)
+        {
+            FilterUCItems(tspFilterTxb.Text);
+            pnlMonitor.Refresh();
         }
     }
 }

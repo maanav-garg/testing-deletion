@@ -261,11 +261,11 @@
     <Compile Include="UserControls\Monitor\UCLoopback.Designer.cs">
       <DependentUpon>UCLoopback.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Monitor\UCReadOnlyOutputItem.cs">
+    <Compile Include="UserControls\Monitor\UCReadOnlyItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\Monitor\UCReadOnlyOutputItem.Designer.cs">
-      <DependentUpon>UCReadOnlyOutputItem.cs</DependentUpon>
+    <Compile Include="UserControls\Monitor\UCReadOnlyItem.Designer.cs">
+      <DependentUpon>UCReadOnlyItem.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Monitor\UCItem.cs">
       <SubType>UserControl</SubType>
@@ -377,8 +377,8 @@
     <EmbeddedResource Include="UserControls\Monitor\UCLoopback.resx">
       <DependentUpon>UCLoopback.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCReadOnlyOutputItem.resx">
-      <DependentUpon>UCReadOnlyOutputItem.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\Monitor\UCReadOnlyItem.resx">
+      <DependentUpon>UCReadOnlyItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCItem.resx">
       <DependentUpon>UCItem.cs</DependentUpon>
