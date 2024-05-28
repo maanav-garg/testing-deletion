@@ -37,6 +37,7 @@ namespace AutosarBCM
             this.traceDialogtsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.testLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCheck = new System.Windows.Forms.ToolStripMenuItem();
+            this.environmentalTestTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.helpTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.userGuideTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutTsmi = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,7 +47,6 @@ namespace AutosarBCM
             this.lblConnection = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOpen = new System.Windows.Forms.ToolStripButton();
-            this.tsbSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOptions = new System.Windows.Forms.ToolStripButton();
             this.tslReceived = new System.Windows.Forms.ToolStripLabel();
@@ -57,9 +57,6 @@ namespace AutosarBCM
             this.fileTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.openTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.saveTsmi = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsTsmi = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.recentFilesTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -94,7 +91,6 @@ namespace AutosarBCM
             this.btnShowEmbSwVer = new System.Windows.Forms.ToolStripButton();
             this.lblEmbSwVer = new System.Windows.Forms.ToolStripLabel();
             this.tsbToggle = new System.Windows.Forms.ToolStripButton();
-            this.environmentalTestTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -120,7 +116,7 @@ namespace AutosarBCM
             // 
             this.optionsTsmi.Image = ((System.Drawing.Image)(resources.GetObject("optionsTsmi.Image")));
             this.optionsTsmi.Name = "optionsTsmi";
-            this.optionsTsmi.Size = new System.Drawing.Size(184, 26);
+            this.optionsTsmi.Size = new System.Drawing.Size(174, 22);
             this.optionsTsmi.Text = "Options";
             this.optionsTsmi.Click += new System.EventHandler(this.optionsTsmi_Click);
             // 
@@ -128,7 +124,7 @@ namespace AutosarBCM
             // 
             this.traceDialogtsmi.Image = ((System.Drawing.Image)(resources.GetObject("traceDialogtsmi.Image")));
             this.traceDialogtsmi.Name = "traceDialogtsmi";
-            this.traceDialogtsmi.Size = new System.Drawing.Size(184, 26);
+            this.traceDialogtsmi.Size = new System.Drawing.Size(174, 22);
             this.traceDialogtsmi.Text = "Trace Dialog";
             this.traceDialogtsmi.Click += new System.EventHandler(this.traceDialogtsmi_Click);
             // 
@@ -136,7 +132,7 @@ namespace AutosarBCM
             // 
             this.testLogToolStripMenuItem.Image = global::AutosarBCM.Properties.Resources.EditWindow;
             this.testLogToolStripMenuItem.Name = "testLogToolStripMenuItem";
-            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.testLogToolStripMenuItem.Text = "Test Log Viewer";
             this.testLogToolStripMenuItem.Visible = false;
             this.testLogToolStripMenuItem.Click += new System.EventHandler(this.testLogToolStripMenuItem_Click);
@@ -145,10 +141,17 @@ namespace AutosarBCM
             // 
             this.tsmiCheck.Image = global::AutosarBCM.Properties.Resources.pass;
             this.tsmiCheck.Name = "tsmiCheck";
-            this.tsmiCheck.Size = new System.Drawing.Size(184, 26);
+            this.tsmiCheck.Size = new System.Drawing.Size(174, 22);
             this.tsmiCheck.Text = "Control Check";
             this.tsmiCheck.Visible = false;
             this.tsmiCheck.Click += new System.EventHandler(this.tsmiCheck_Click);
+            // 
+            // environmentalTestTsmi
+            // 
+            this.environmentalTestTsmi.Name = "environmentalTestTsmi";
+            this.environmentalTestTsmi.Size = new System.Drawing.Size(174, 22);
+            this.environmentalTestTsmi.Text = "Environmental Test";
+            this.environmentalTestTsmi.Click += new System.EventHandler(this.environmentalTestTsmi_Click);
             // 
             // helpTsmi
             // 
@@ -182,7 +185,6 @@ namespace AutosarBCM
             this.lblConnection,
             this.toolStripSeparator8,
             this.tsbOpen,
-            this.tsbSave,
             this.toolStripSeparator6,
             this.tsbOptions,
             this.tslReceived,
@@ -233,16 +235,6 @@ namespace AutosarBCM
             this.tsbOpen.Size = new System.Drawing.Size(24, 24);
             this.tsbOpen.Text = "Open... (Ctrl+O)";
             this.tsbOpen.Click += new System.EventHandler(this.openTsmi_Click);
-            // 
-            // tsbSave
-            // 
-            this.tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSave.Image = ((System.Drawing.Image)(resources.GetObject("tsbSave.Image")));
-            this.tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSave.Name = "tsbSave";
-            this.tsbSave.Size = new System.Drawing.Size(24, 24);
-            this.tsbSave.Text = "Save... (Crtl+S)";
-            this.tsbSave.Click += new System.EventHandler(this.saveTsmi_Click);
             // 
             // toolStripSeparator6
             // 
@@ -324,9 +316,6 @@ namespace AutosarBCM
             this.fileTsmi.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openTsmi,
             this.toolStripSeparator4,
-            this.saveTsmi,
-            this.saveAsTsmi,
-            this.toolStripSeparator2,
             this.recentFilesTsmi});
             this.fileTsmi.Name = "fileTsmi";
             this.fileTsmi.Size = new System.Drawing.Size(37, 20);
@@ -345,27 +334,6 @@ namespace AutosarBCM
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(152, 6);
-            // 
-            // saveTsmi
-            // 
-            this.saveTsmi.Image = ((System.Drawing.Image)(resources.GetObject("saveTsmi.Image")));
-            this.saveTsmi.Name = "saveTsmi";
-            this.saveTsmi.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveTsmi.Size = new System.Drawing.Size(155, 22);
-            this.saveTsmi.Text = "Save";
-            this.saveTsmi.Click += new System.EventHandler(this.saveTsmi_Click);
-            // 
-            // saveAsTsmi
-            // 
-            this.saveAsTsmi.Name = "saveAsTsmi";
-            this.saveAsTsmi.Size = new System.Drawing.Size(155, 22);
-            this.saveAsTsmi.Text = "Save as...";
-            this.saveAsTsmi.Click += new System.EventHandler(this.saveAsTsmi_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(152, 6);
             // 
             // recentFilesTsmi
             // 
@@ -692,13 +660,6 @@ namespace AutosarBCM
             this.tsbToggle.Text = "toolStripButton1";
             this.tsbToggle.Click += new System.EventHandler(this.tsbToggle_Click);
             // 
-            // environmentalTestTsmi
-            // 
-            this.environmentalTestTsmi.Name = "environmentalTestTsmi";
-            this.environmentalTestTsmi.Size = new System.Drawing.Size(184, 26);
-            this.environmentalTestTsmi.Text = "Environmental Test";
-            this.environmentalTestTsmi.Click += new System.EventHandler(this.environmentalTestTsmi_Click);
-            // 
             // FormMain
             // 
             this.AllowDrop = true;
@@ -749,7 +710,6 @@ namespace AutosarBCM
         private System.Windows.Forms.ToolStripMenuItem toolsTsmi;
         private System.Windows.Forms.ToolStripMenuItem optionsTsmi;
         private System.Windows.Forms.ToolStripButton tsbOpen;
-        private System.Windows.Forms.ToolStripButton tsbSave;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton tsbOptions;
         private System.Windows.Forms.Splitter splitter1;
@@ -763,9 +723,6 @@ namespace AutosarBCM
         private System.Windows.Forms.ToolStripMenuItem fileTsmi;
         private System.Windows.Forms.ToolStripMenuItem openTsmi;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem saveTsmi;
-        private System.Windows.Forms.ToolStripMenuItem saveAsTsmi;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem recentFilesTsmi;
         private System.Windows.Forms.TabPage tabPage2;
         internal System.Windows.Forms.RichTextBox txtTrace;
