@@ -16,6 +16,7 @@ namespace AutosarBCM.UserControls.Monitor
     {
         #region Variables
         private UCItem ucItem;
+        private bool isControlMaskActive;
 
         #endregion
 
@@ -32,6 +33,8 @@ namespace AutosarBCM.UserControls.Monitor
         public void UpdateSidebar(UCItem ucItem)
         {
             pnlControls.Controls.Clear();
+            btnSend.Visible = true;
+            lblError.Visible= false;
 
             this.ucItem = ucItem;
             lblName.Text = $"{ucItem.ControlInfo.Group}-{ucItem.ControlInfo.Name}";
@@ -39,11 +42,17 @@ namespace AutosarBCM.UserControls.Monitor
 
             //IOControlByIdentifier Service
             if (!ucItem.ControlInfo.Services.Contains(ServiceInfo.InputOutputControlByIdentifier.RequestID))
+            {
+                lblError.Visible = true;
+                btnSend.Visible = false;
                 return;
+            }
+
+            isControlMaskActive = ucItem.ControlInfo.Responses[0].Payloads.Count > 1;
 
             foreach (var payload in ucItem.ControlInfo.Responses[0].Payloads)
             {
-                var ucPayload = new UCControlPayload(payload);
+                var ucPayload = new UCControlPayload(payload, isControlMaskActive);
                 ucPayload.BorderStyle = BorderStyle.FixedSingle;
                 ucPayload.Anchor = AnchorStyles.Top| AnchorStyles.Left;
                 pnlControls.Controls.Add(ucPayload);
@@ -72,17 +81,27 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 if (uc is UCControlPayload ucPayload)
                 {
-                    if (ucPayload.IsSelected)
+                    if (!isControlMaskActive)
                     {
-                        bytes.Add(ucPayload.SelectedValue);
-                        controlByte |= (byte)(1 << (7 - bitIndex));
+                        bytes.AddRange(ucPayload.SelectedValue);
                     }
                     else
-                        bytes.Add(0x0);
-                    bitIndex++;
+                    {
+                        if (ucPayload.IsSelected)
+                        {
+                            //bytes.Add(ucPayload.SelectedValue);
+                            bytes.AddRange(ucPayload.SelectedValue);
+                            controlByte |= (byte)(1 << (7 - bitIndex));
+                        }
+                        else
+                            bytes.Add(0x0);
+                        bitIndex++;
+                    }
+                    
                 }
             }
-            bytes.Add(controlByte);
+            if(isControlMaskActive)
+                bytes.Add(controlByte);
             return bytes.ToArray();
         }
 

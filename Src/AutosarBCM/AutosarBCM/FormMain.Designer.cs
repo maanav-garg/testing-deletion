@@ -525,7 +525,7 @@ namespace AutosarBCM
             // nullToolStripMenuItem
             // 
             this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
-            this.nullToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.nullToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nullToolStripMenuItem.Text = "N/A";
             // 
             // tsbECUReset

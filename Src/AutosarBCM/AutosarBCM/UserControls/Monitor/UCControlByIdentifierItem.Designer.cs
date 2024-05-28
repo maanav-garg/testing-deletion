@@ -34,13 +34,14 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlControls = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblError = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblAddress
             // 
             this.lblAddress.AutoSize = true;
             this.lblAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblAddress.Location = new System.Drawing.Point(12, 32);
+            this.lblAddress.Location = new System.Drawing.Point(3, 23);
             this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(58, 15);
             this.lblAddress.TabIndex = 12;
@@ -50,7 +51,7 @@
             // 
             this.cmbInputControlParameter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbInputControlParameter.FormattingEnabled = true;
-            this.cmbInputControlParameter.Location = new System.Drawing.Point(15, 75);
+            this.cmbInputControlParameter.Location = new System.Drawing.Point(6, 75);
             this.cmbInputControlParameter.Name = "cmbInputControlParameter";
             this.cmbInputControlParameter.Size = new System.Drawing.Size(108, 21);
             this.cmbInputControlParameter.TabIndex = 9;
@@ -59,7 +60,7 @@
             // 
             this.lblName.AutoSize = true;
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblName.Location = new System.Drawing.Point(12, 11);
+            this.lblName.Location = new System.Drawing.Point(3, 4);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(45, 15);
             this.lblName.TabIndex = 7;
@@ -75,12 +76,13 @@
             this.btnSend.TabIndex = 13;
             this.btnSend.Text = "SEND";
             this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Visible = false;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 59);
+            this.label1.Location = new System.Drawing.Point(3, 59);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(118, 13);
             this.label1.TabIndex = 14;
@@ -99,10 +101,22 @@
             this.pnlControls.Size = new System.Drawing.Size(200, 388);
             this.pnlControls.TabIndex = 15;
             // 
+            // lblError
+            // 
+            this.lblError.AutoSize = true;
+            this.lblError.ForeColor = System.Drawing.Color.Red;
+            this.lblError.Location = new System.Drawing.Point(3, 43);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(149, 13);
+            this.lblError.TabIndex = 16;
+            this.lblError.Text = "SERVICE NOT SUPPORTED";
+            this.lblError.Visible = false;
+            // 
             // UCControlByIdentifierItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblError);
             this.Controls.Add(this.pnlControls);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSend);
@@ -124,5 +138,6 @@
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel pnlControls;
+        private System.Windows.Forms.Label lblError;
     }
 }
