@@ -84,7 +84,13 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="config">Monitor config object</param>
         public void LoadConfiguration(ConfigurationInfo config)
         {
-            groups.Add("Other", new List<UCItem>());
+            ClearPreviousConfiguration();
+            ASContext.Configuration = config;
+            pnlMonitorInput.Controls.Clear();
+            if (!groups.ContainsKey("Other"))
+            {
+                groups["Other"] = new List<UCItem>();
+            }
             foreach (var ctrl in config.Controls)
             {
                 var ucItem = new UCItem(ctrl);
@@ -163,6 +169,11 @@ namespace AutosarBCM.Forms.Monitor
         public void StartTest(CancellationToken cancellationToken)
         {
             //MonitorUtil.RunTestPeriodically(monitorConfig, cancellationToken, MonitorTestType.Generic);
+        }
+        public void ClearPreviousConfiguration()
+        {
+            pnlMonitorInput.Controls.Clear();
+            groups.Clear();
         }
 
         /// <summary>
