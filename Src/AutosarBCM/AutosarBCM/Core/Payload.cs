@@ -61,6 +61,10 @@ namespace AutosarBCM.Core
     public class DID_DE03_0 : Payload { }
     public class DID_DE01_3 : Payload { }
     public class DID_DE01_4 : Payload { }
+    public class DID_DE08_7 : Payload { }
+    public class DID_Byte_Kmph : Payload { }
+
+
 
     public class DID_Byte_On_Off : Payload { }
     public class DID_Bits_On_Off : Payload { }
@@ -69,8 +73,16 @@ namespace AutosarBCM.Core
     {
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
+    public class HexDump_2Bytes : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
 
     public class HexDump_4Bytes : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class HexDump_16Bytes : Payload
     {
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
@@ -95,6 +107,26 @@ namespace AutosarBCM.Core
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
     public class DID_DE26 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class DID_DE04_7 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class DID_DE06_1 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class DID_DE06_3 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class DID_DE0B_1 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class Unsigned_2Bytes : Payload
     {
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }

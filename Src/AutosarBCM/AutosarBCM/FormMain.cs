@@ -354,6 +354,35 @@ namespace AutosarBCM
 
             errorLogMessageTimer.Start();
         }
+        private void LoadXMLDoc()
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Xml|*.xml";
+            openFileDialog.Multiselect = false;
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var filePath = openFileDialog.FileName;
+                ASContext = new ASContext(filePath);
+                LoadSessions();
+                var configuration = ASContext.Configuration;
+                if (configuration == null)
+                    return;
+                else
+                    tspFilterTxb.Enabled = true;
+
+                if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
+                {
+                    genericInput.LoadConfiguration(configuration);
+                    //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                }
+                else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
+                {
+                    envInput.LoadConfiguration(Configuration);
+                    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                }
+            }
+        }
            
         /// <summary>
         /// Handles the event triggered by the cycle log timer to write cycle messages to a log file.
@@ -778,32 +807,7 @@ namespace AutosarBCM
         /// <param name="e">The event arguments.</param>
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Xml|*.xml";
-            openFileDialog.Multiselect = false;
-            openFileDialog.RestoreDirectory = true;
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var filePath = openFileDialog.FileName;
-                ASContext = new ASContext(filePath);
-                LoadSessions();
-                var configuration = ASContext.Configuration;
-                if (configuration == null)
-                    return;
-                else
-                    tspFilterTxb.Enabled = true;
-
-                if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
-                {
-                    genericInput.LoadConfiguration(configuration);
-                    //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
-                }
-                else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
-                {
-                    envInput.LoadConfiguration(Configuration);
-                    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
-                }
-            }
+            LoadXMLDoc();
         }
 
         /// <summary>
@@ -1027,24 +1031,25 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void openTsmi_Click(object sender, EventArgs e)
         {
-            #region File selection
+            //#region File selection
 
-            var openFileDialog = new OpenFileDialog()
-            {
-                Title = "Open any file",
-                Filter = "Xml files(*.xml)| *.xml",
-                Multiselect = false
-            };
+            //var openFileDialog = new OpenFileDialog()
+            //{
+            //    Title = "Open any file",
+            //    Filter = "Xml files(*.xml)| *.xml",
+            //    Multiselect = false
+            //};
 
-            if (openFileDialog.ShowDialog() != DialogResult.OK)
-                return;
-            var fileName = openFileDialog.FileName;
-            #endregion
+            //if (openFileDialog.ShowDialog() != DialogResult.OK)
+            //    return;
+            //var fileName = openFileDialog.FileName;
+            //#endregion
 
-            ParseMessages(fileName);
+            //ParseMessages(fileName);
 
-            // add to recent file list
-            recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
+            //// add to recent file list
+            //recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
+            LoadXMLDoc();
         }
 
         /// <summary>
