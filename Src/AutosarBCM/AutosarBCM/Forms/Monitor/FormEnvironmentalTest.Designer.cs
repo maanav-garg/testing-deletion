@@ -47,7 +47,7 @@
             this.tspFilterTxb});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1184, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -79,10 +79,10 @@
             // 
             // tspFilterTxb
             // 
-            this.tspFilterTxb.Enabled = false;
             this.tspFilterTxb.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tspFilterTxb.Name = "tspFilterTxb";
             this.tspFilterTxb.Size = new System.Drawing.Size(76, 25);
+            this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);
             // 
             // pnlMonitor
             // 
@@ -92,9 +92,8 @@
             this.pnlMonitor.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlMonitor.Location = new System.Drawing.Point(0, 25);
             this.pnlMonitor.Margin = new System.Windows.Forms.Padding(2);
-            this.pnlMonitor.MinimumSize = new System.Drawing.Size(800, 600);
             this.pnlMonitor.Name = "pnlMonitor";
-            this.pnlMonitor.Size = new System.Drawing.Size(800, 600);
+            this.pnlMonitor.Size = new System.Drawing.Size(1184, 736);
             this.pnlMonitor.TabIndex = 3;
             this.pnlMonitor.WrapContents = false;
             // 
@@ -102,9 +101,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1184, 761);
             this.Controls.Add(this.pnlMonitor);
             this.Controls.Add(this.toolStrip1);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "FormEnvironmentalTest";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

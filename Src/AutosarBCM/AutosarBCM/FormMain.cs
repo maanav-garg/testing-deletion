@@ -222,6 +222,7 @@ namespace AutosarBCM
             cycleLogMessageTimer.Start();
 
             Receivers.Add(formMonitorGenericInput);
+            Receivers.Add(formEnvironmentalTest);
 
         }
 
@@ -1210,8 +1211,9 @@ namespace AutosarBCM
 
         private void tsbSession_Click(object sender, EventArgs e)
         {
-            if (!ConnectionUtil.CheckConnection())
-                return;
+            //TODO to be commented out
+            //if (!ConnectionUtil.CheckConnection())
+            //    return;
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
             ASContext.CurrentSession = sessionInfo;

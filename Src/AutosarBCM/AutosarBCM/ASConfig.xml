@@ -931,7 +931,7 @@
 			<Name>Hazard_Warning_Switch</Name>
 			<Type></Type>
 			<Group>DID</Group>
-			<Services>22;2F</Services>
+			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="Hazar Warning Switch" typeName="DID_Byte_On_Off"></Payload>
@@ -945,7 +945,7 @@
 			<Name>Blower_Switch</Name>
 			<Type></Type>
 			<Group>DID</Group>
-			<Services>22;2F</Services>
+			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="Blower Switch" typeName="DID_Byte_On_Off"></Payload>
@@ -987,7 +987,7 @@
 			<Name>Key_Switch_System_Input_Signal</Name>
 			<Type></Type>
 			<Group>DID</Group>
-			<Services>22;2F</Services>
+			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="Ignition/Crank" typeName="DID_Byte_On_Off"></Payload>
@@ -1039,7 +1039,7 @@
 			<Name>Sunroof_Switch</Name>
 			<Type></Type>
 			<Group>DID</Group>
-			<Services>22;2F</Services>
+			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="Sunroof Close Switch" typeName="DID_Byte_On_Off"></Payload>

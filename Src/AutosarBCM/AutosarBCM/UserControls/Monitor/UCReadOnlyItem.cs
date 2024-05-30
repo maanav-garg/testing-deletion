@@ -1,9 +1,11 @@
 ﻿using AutosarBCM.Config;
+using AutosarBCM.Core;
 using AutosarBCM.Forms.Monitor;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
 
 namespace AutosarBCM.UserControls.Monitor
@@ -11,7 +13,7 @@ namespace AutosarBCM.UserControls.Monitor
     /// <summary>
     /// Represents a user control for displaying read-only output information.
     /// </summary>
-    public partial class UCReadOnlyOutputItem : UserControl
+    public partial class UCReadOnlyItem : UserControl
     {
         #region Variables
 
@@ -19,7 +21,11 @@ namespace AutosarBCM.UserControls.Monitor
         /// Represents an output monitor item associated with this control.
         /// </summary>
         public OutputMonitorItem Item;
-
+        /// <summary>
+        /// Represents a control item associated with this control.
+        /// </summary>
+        public Core.ControlInfo ControlInfo { get; set; }
+        public PayloadInfo PayloadInfo { get; set; }
         /// <summary>
         /// Gets or sets the group name of the control.
         /// </summary>
@@ -66,7 +72,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         /// <param name="item">The OutputMonitorItem associated with this control.</param>
         /// <param name="messageID">The message ID to be used for communication.</param>
-        public UCReadOnlyOutputItem(OutputMonitorItem item,string messageID)
+        public UCReadOnlyItem(OutputMonitorItem item,string messageID)
         {
             InitializeComponent();            
 
@@ -92,9 +98,45 @@ namespace AutosarBCM.UserControls.Monitor
             currentValue = new Tuple<string, Color>(lblStatus.Text, lblStatus.ForeColor);
         }
 
+        public UCReadOnlyItem(Core.ControlInfo controlInfo, PayloadInfo payloadInfo)
+        {
+            InitializeComponent();
+            ControlInfo= controlInfo;
+            PayloadInfo = payloadInfo;
+          
+            if (controlInfo.Name.Length > 30)
+                lblParent.Text = $"{controlInfo.Name.Substring(0, 27)}...";
+            else
+                lblParent.Text = controlInfo.Name;
+
+            if (payloadInfo.Name.Length > 30)
+                lblName.Text = $"{payloadInfo.Name.Substring(0, 27)}...";
+            else
+                lblName.Text = payloadInfo.Name;
+        }
+
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Change status of the input window regarding to read data from the device.
+        /// </summary>
+        /// <param name="monitorItem">Monitor item to be updated</param>
+        /// <param name="inputResponse">Data comes from device</param>
+        public void ChangeStatus(ASResponse response)
+        {
+            //UpdateCounters(messageDirection);
+            //if (messageDirection == MessageDirection.TX) return;
+
+            //oldValue = currentValue;
+
+            lblStatus.BeginInvoke((MethodInvoker)delegate ()
+            {
+                var payload = response.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+                lblStatus.Text = payload.FormattedValue;
+            });
+        }
 
         /// <summary>
         /// Change status of the input window regarding to read data from the device.

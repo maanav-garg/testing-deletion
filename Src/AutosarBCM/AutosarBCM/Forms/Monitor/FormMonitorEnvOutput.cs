@@ -34,7 +34,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <summary>
         /// List of read-only output items.
         /// </summary>
-        private List<UCReadOnlyOutputItem> outputItems = new List<UCReadOnlyOutputItem>();
+        private List<UCReadOnlyItem> outputItems = new List<UCReadOnlyItem>();
         
         #endregion
 
@@ -135,7 +135,7 @@ namespace AutosarBCM.Forms.Monitor
 
                 pnlMonitorOutput.Controls.Add(flowPanel);
             }
-            outputItems.AddRange(pnlMonitorOutput.Controls.OfType<FlowLayoutPanel>().ToList().SelectMany(sl => sl.Controls.OfType<UCReadOnlyOutputItem>()));
+            outputItems.AddRange(pnlMonitorOutput.Controls.OfType<FlowLayoutPanel>().ToList().SelectMany(sl => sl.Controls.OfType<UCReadOnlyItem>()));
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace AutosarBCM.Forms.Monitor
 
                 foreach (var uc in flowPanel.Controls)
                 {
-                    if (uc is UCReadOnlyOutputItem ucItem)
+                    if (uc is UCReadOnlyItem ucItem)
                     {
                         bool isVisible = ucItem.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
                         ucItem.Visible = isVisible;
@@ -192,12 +192,12 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="item">The output monitor item containing wiper data.</param>
         /// <param name="group">The group to add the output items to.</param>
         /// <returns>List of read-only output items created for wiper functionality.</returns>
-        private List<UCReadOnlyOutputItem> CreateOutputItemsFromWiper(OutputMonitorItem item, Group group)
+        private List<UCReadOnlyItem> CreateOutputItemsFromWiper(OutputMonitorItem item, Group group)
         {
             if (item.WiperCase == null)
-                return new List<UCReadOnlyOutputItem>();
+                return new List<UCReadOnlyItem>();
 
-            var items = new List<UCReadOnlyOutputItem>
+            var items = new List<UCReadOnlyItem>
             {
                 CreateOutputItem(new OutputMonitorItem()
                 {
@@ -241,12 +241,12 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="item">The output monitor item containing door control data.</param>
         /// <param name="group">The group to add the output items to.</param>
         /// <returns>List of read-only output items created for door control functionality.</returns>
-        private List<UCReadOnlyOutputItem> CreateOutputItemsFromDoorControlsItem(OutputMonitorItem item, Group group)
+        private List<UCReadOnlyItem> CreateOutputItemsFromDoorControlsItem(OutputMonitorItem item, Group group)
         {
             if(item.DoorControl == null)
-                return new List<UCReadOnlyOutputItem>();
+                return new List<UCReadOnlyItem>();
 				
-            var items = new List<UCReadOnlyOutputItem>
+            var items = new List<UCReadOnlyItem>
             {
                 CreateOutputItem(new OutputMonitorItem()
                 {
@@ -280,14 +280,14 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="item">The output monitor item containing open/close data.</param>
         /// <param name="group">The group to add the output items to.</param>
         /// <returns>List of read-only output items created for open/close functionality.</returns>
-        private List<UCReadOnlyOutputItem> CreateOutputItemsFromOpenCloseItem(OutputMonitorItem item, Group group)
+        private List<UCReadOnlyItem> CreateOutputItemsFromOpenCloseItem(OutputMonitorItem item, Group group)
         {
             var openCloseItem = GetOpenCloseItem(item);
 
             if (openCloseItem == null)
-                return new List<UCReadOnlyOutputItem>();
+                return new List<UCReadOnlyItem>();
 
-            var items = new List<UCReadOnlyOutputItem>
+            var items = new List<UCReadOnlyItem>
             {
                 CreateOutputItem(new OutputMonitorItem()
                 {
@@ -335,12 +335,12 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="item">The output monitor item containing loopback data.</param>
         /// <param name="group">The group to add the output items to.</param>
         /// <returns>List of read-only output items created for loopback functionality.</returns>
-        private List<UCReadOnlyOutputItem> CreateOutputItemsFromLoopBack(OutputMonitorItem item, Group group)
+        private List<UCReadOnlyItem> CreateOutputItemsFromLoopBack(OutputMonitorItem item, Group group)
         {
             if (item.Loopback.Pair2Data == null)
-                return new List<UCReadOnlyOutputItem>();
+                return new List<UCReadOnlyItem>();
 
-            var items = new List<UCReadOnlyOutputItem>
+            var items = new List<UCReadOnlyItem>
             {
                 CreateOutputItem(new OutputMonitorItem()
                 {
@@ -380,12 +380,12 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="item">The output monitor item containing power mirror data.</param>
         /// <param name="group">The group to add the output items to.</param>
         /// <returns>List of read-only output items created for power mirror controls.</returns>
-        private List<UCReadOnlyOutputItem> CreateOutputItemsFromPowerMirror(OutputMonitorItem item, Group group)
+        private List<UCReadOnlyItem> CreateOutputItemsFromPowerMirror(OutputMonitorItem item, Group group)
         {
             if(item.PowerMirror == null)
-                return new List<UCReadOnlyOutputItem>();
+                return new List<UCReadOnlyItem>();
 
-            var items = new List<UCReadOnlyOutputItem>
+            var items = new List<UCReadOnlyItem>
             {
                 CreateOutputItem(new OutputMonitorItem()
                 {
@@ -437,9 +437,9 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="item">Monitor Item</param>
         /// <param name="group">Item Group</param>
         /// <returns>User control</returns>
-        private UCReadOnlyOutputItem CreateOutputItem(OutputMonitorItem item, Group group)
+        private UCReadOnlyItem CreateOutputItem(OutputMonitorItem item, Group group)
         {
-            var ucItem = new UCReadOnlyOutputItem(item, !string.IsNullOrEmpty(item.MessageID) ? item.MessageID : (monitorConfig.GenericMonitorConfiguration.OutputSection.CommonConfig?.MessageID));
+            var ucItem = new UCReadOnlyItem(item, !string.IsNullOrEmpty(item.MessageID) ? item.MessageID : (monitorConfig.GenericMonitorConfiguration.OutputSection.CommonConfig?.MessageID));
 
             ucItem.GroupName = group.Name;
             ucItem.RegisterDict = CreateRegisterDict(item);
@@ -456,7 +456,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="e">Event args</param>
         private void UcItem_Click(object sender, EventArgs e)
         {
-            var ucOutputItem = (UCReadOnlyOutputItem)sender;
+            var ucOutputItem = (UCReadOnlyItem)sender;
             ucOutputItem.Focus();
             lblItemName.Text = $"{ucOutputItem.Item.Name}";
             lblData.Text = ucOutputItem.StatusValue;
