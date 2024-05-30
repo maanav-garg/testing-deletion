@@ -145,7 +145,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblName);
             this.Name = "UCItem";
-            this.Size = new System.Drawing.Size(357, 127);
+            this.Size = new System.Drawing.Size(355, 125);
             this.ResumeLayout(false);
             this.PerformLayout();
 
