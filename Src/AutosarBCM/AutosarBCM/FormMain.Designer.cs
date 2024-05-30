@@ -326,19 +326,19 @@ namespace AutosarBCM
             this.openTsmi.Image = ((System.Drawing.Image)(resources.GetObject("openTsmi.Image")));
             this.openTsmi.Name = "openTsmi";
             this.openTsmi.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openTsmi.Size = new System.Drawing.Size(184, 26);
+            this.openTsmi.Size = new System.Drawing.Size(155, 22);
             this.openTsmi.Text = "Open...";
             this.openTsmi.Click += new System.EventHandler(this.openTsmi_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(152, 6);
             // 
             // recentFilesTsmi
             // 
             this.recentFilesTsmi.Name = "recentFilesTsmi";
-            this.recentFilesTsmi.Size = new System.Drawing.Size(184, 26);
+            this.recentFilesTsmi.Size = new System.Drawing.Size(155, 22);
             this.recentFilesTsmi.Text = "Recent Files";
             // 
             // imageList1
@@ -486,7 +486,7 @@ namespace AutosarBCM
             // nullToolStripMenuItem
             // 
             this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
-            this.nullToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.nullToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.nullToolStripMenuItem.Text = "N/A";
             // 
             // tsbECUReset
@@ -593,7 +593,6 @@ namespace AutosarBCM
             // tspFilterTxb
             // 
             this.tspFilterTxb.Enabled = false;
-            this.tspFilterTxb.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tspFilterTxb.Name = "tspFilterTxb";
             this.tspFilterTxb.Size = new System.Drawing.Size(76, 27);
             this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);
