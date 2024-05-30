@@ -113,7 +113,17 @@ namespace AutosarBCM.UserControls.Monitor
         /// <returns>An IEnumerable of strings containing the items in listBox1.</returns>
         public IEnumerable<string> GetListBoxItems()
         {
-            return lbResponse.Items.Cast<Payload>().Select(payload => payload.PayloadInfo.Name);
+            foreach (var item in lbResponse.Items)
+            {
+                if (item is PayloadInfo payloadInfo)
+                {
+                    yield return $"{payloadInfo.Name} {payloadInfo.TypeName}";
+                }
+                else if(item is Payload payload)
+                {
+                    yield return $"{payload.PayloadInfo.Name} {payload.PayloadInfo.TypeName} {payload.FormattedValue}";
+                }
+            }
         }
 
         #endregion
