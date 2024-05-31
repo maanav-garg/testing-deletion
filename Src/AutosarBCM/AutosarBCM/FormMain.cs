@@ -364,17 +364,23 @@ namespace AutosarBCM
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var filePath = openFileDialog.FileName;
+                ParseMessages(filePath);
                 ASContext = new ASContext(filePath);
                 LoadSessions();
-                var configuration = ASContext.Configuration;
-                if (configuration == null)
+
+                if (ASContext.Configuration == null)
                     return;
                 else
                     tspFilterTxb.Enabled = true;
 
                 if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
                 {
-                    genericInput.LoadConfiguration(configuration);
+                    genericInput.ClearPreviousConfiguration();
+                    genericInput.LoadConfiguration(ASContext.Configuration);
+                    if (tsbSession.Text != "Session: N/A")
+                    {
+                        genericInput.SessionFiltering();
+                    }
                     //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
                 }
                 else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
@@ -384,7 +390,7 @@ namespace AutosarBCM
                 }
             }
         }
-           
+
         /// <summary>
         /// Handles the event triggered by the cycle log timer to write cycle messages to a log file.
         /// </summary>
@@ -785,7 +791,7 @@ namespace AutosarBCM
             }
         }
 
-        
+
         private void StopTesterPresent()
         {
             TesterPresentTimer?.Stop();
@@ -913,11 +919,15 @@ namespace AutosarBCM
                 return;
             else
                 tspFilterTxb.Enabled = true;
-            formMonitorGenericInput.ClearPreviousConfiguration();
+
             if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
             {
+                genericInput.ClearPreviousConfiguration();
                 genericInput.LoadConfiguration(ASContext.Configuration);
-                genericInput.SessionFiltering();
+                if (tsbSession.Text != "Session: N/A")
+                {
+                    genericInput.SessionFiltering();
+                }
                 //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
             }
             //else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
@@ -1062,6 +1072,7 @@ namespace AutosarBCM
             ImportMessages(filePath);
 
             string fileName = Path.GetFileName(filePath);
+            LoadFile(fileName);
         }
 
         /// <summary>
@@ -1217,8 +1228,8 @@ namespace AutosarBCM
         private void tsbSession_Click(object sender, EventArgs e)
         {
             //TODO to be commented out
-            //if (!ConnectionUtil.CheckConnection())
-            //    return;
+            if (!ConnectionUtil.CheckConnection())
+                return;
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
             ASContext.CurrentSession = sessionInfo;
@@ -1233,8 +1244,8 @@ namespace AutosarBCM
             formMonitorGenericInput.ToggleSidebar();
         }
 
-        #endregion
 
+        #endregion
 
     }
 }

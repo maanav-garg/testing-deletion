@@ -104,6 +104,7 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 lbResponse.Items.Clear();
                 lbResponse.Items.AddRange(response.Payloads.ToArray());
+
             });
         }
 
@@ -119,7 +120,7 @@ namespace AutosarBCM.UserControls.Monitor
                 {
                     yield return $"{payloadInfo.Name} {payloadInfo.TypeName}";
                 }
-                else if(item is Payload payload)
+                else if (item is Payload payload)
                 {
                     yield return $"{payload.PayloadInfo.Name} {payload.PayloadInfo.TypeName} {payload.FormattedValue}";
                 }
