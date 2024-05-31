@@ -14,7 +14,7 @@ namespace AutosarBCM.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.7.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -46,18 +46,6 @@ namespace AutosarBCM.Properties {
             }
             set {
                 this["UserName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ProjectName {
-            get {
-                return ((string)(this["ProjectName"]));
-            }
-            set {
-                this["ProjectName"] = value;
             }
         }
         
@@ -238,6 +226,66 @@ namespace AutosarBCM.Properties {
             }
             set {
                 this["KvaserDevice"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0x7E0")]
+        public string TransmitAdress {
+            get {
+                return ((string)(this["TransmitAdress"]));
+            }
+            set {
+                this["TransmitAdress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0x7E8")]
+        public string ReceiveAdress {
+            get {
+                return ((string)(this["ReceiveAdress"]));
+            }
+            set {
+                this["ReceiveAdress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0xA")]
+        public string BlockSize {
+            get {
+                return ((string)(this["BlockSize"]));
+            }
+            set {
+                this["BlockSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0x10")]
+        public string StMin {
+            get {
+                return ((string)(this["StMin"]));
+            }
+            set {
+                this["StMin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0x00")]
+        public string PaddingByte {
+            get {
+                return ((string)(this["PaddingByte"]));
+            }
+            set {
+                this["PaddingByte"] = value;
             }
         }
     }
