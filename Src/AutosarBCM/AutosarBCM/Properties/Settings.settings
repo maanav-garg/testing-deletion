@@ -54,13 +54,13 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="TransmitAdress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0x7E0</Value>
+      <Value Profile="(Default)">0x726</Value>
     </Setting>
     <Setting Name="ReceiveAdress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0x7E8</Value>
+      <Value Profile="(Default)">0x72E</Value>
     </Setting>
     <Setting Name="BlockSize" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0xA</Value>
+      <Value Profile="(Default)">0x00</Value>
     </Setting>
     <Setting Name="StMin" Type="System.String" Scope="User">
       <Value Profile="(Default)">0x10</Value>

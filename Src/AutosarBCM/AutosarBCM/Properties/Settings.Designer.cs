@@ -14,7 +14,7 @@ namespace AutosarBCM.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.6.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -231,7 +231,7 @@ namespace AutosarBCM.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0x7E0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0x726")]
         public string TransmitAdress {
             get {
                 return ((string)(this["TransmitAdress"]));
@@ -243,7 +243,7 @@ namespace AutosarBCM.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0x7E8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0x72E")]
         public string ReceiveAdress {
             get {
                 return ((string)(this["ReceiveAdress"]));
@@ -255,7 +255,7 @@ namespace AutosarBCM.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0xA")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0x00")]
         public string BlockSize {
             get {
                 return ((string)(this["BlockSize"]));
