@@ -170,6 +170,24 @@ namespace AutosarBCM
                 foreach (var receiver in FormMain.Receivers)
                     if (receiver.Receive(response)) break;
             }
+            if (e.Data[0] == 0x50)
+            {
+                FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+
+                    formInput.SessionFiltering();
+
+            }
+            if (e.Data[0] == 0x7F)
+            {
+                if (e.Data[1] == 0x10)
+                {
+                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                        formInput.DisabledAllSession();
+                }
+            }
+
             var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);

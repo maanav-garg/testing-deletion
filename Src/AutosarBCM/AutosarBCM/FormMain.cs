@@ -384,7 +384,7 @@ namespace AutosarBCM
                 }
             }
         }
-           
+
         /// <summary>
         /// Handles the event triggered by the cycle log timer to write cycle messages to a log file.
         /// </summary>
@@ -785,7 +785,7 @@ namespace AutosarBCM
             }
         }
 
-        
+
         private void StopTesterPresent()
         {
             TesterPresentTimer?.Stop();
@@ -1213,19 +1213,22 @@ namespace AutosarBCM
             foreach (var session in ASContext.Configuration.Sessions)
                 tsbSession.DropDownItems.Add(new ToolStripMenuItem(session.Name, null, new EventHandler(tsbSession_Click)) { Tag = session });
         }
+        internal void CheckSession()
+        {
+            if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                formInput.SessionFiltering();
+        }
 
         private void tsbSession_Click(object sender, EventArgs e)
         {
             //TODO to be commented out
-            //if (!ConnectionUtil.CheckConnection())
-            //    return;
+            if (!ConnectionUtil.CheckConnection())
+                return;
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
             ASContext.CurrentSession = sessionInfo;
             tsbSession.Text = $"Session: {sessionInfo.Name}";
-
-            if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                formInput.SessionFiltering();
+            CheckSession();
         }
 
         private void tsbToggle_Click(object sender, EventArgs e)

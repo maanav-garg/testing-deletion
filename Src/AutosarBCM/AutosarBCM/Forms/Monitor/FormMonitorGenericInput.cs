@@ -249,6 +249,23 @@ namespace AutosarBCM.Forms.Monitor
                 }
             }
         }
+        public void DisabledAllSession()
+        {
+            foreach (Control control in pnlMonitorInput.Controls)
+            {
+                if (control is FlowLayoutPanel flowPanel)
+                {
+                    foreach (UCItem ucItem in flowPanel.Controls.OfType<UCItem>())
+                    {
+
+                        ucItem.BeginInvoke(new Action(() =>
+                        {
+                            ucItem.Enabled = false;
+                        }));
+                    }
+                }
+            }
+        }
 
         #endregion
 
