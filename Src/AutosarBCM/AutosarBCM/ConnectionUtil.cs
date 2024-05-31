@@ -100,11 +100,11 @@ namespace AutosarBCM
                     }
 
                     transportProtocol = new Iso15765();
-                    transportProtocol.Config.PhysicalAddr.TxId = 0x726;
-                    transportProtocol.Config.PhysicalAddr.RxId = 0x72E;
-                    transportProtocol.Config.BlockSize = 0;
-                    transportProtocol.Config.PaddingByte = 0;
-                    transportProtocol.Config.StMin = 0x10;
+                    transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
+                    transportProtocol.Config.PhysicalAddr.RxId = Convert.ToUInt32(Settings.Default.ReceiveAdress, 16);
+                    transportProtocol.Config.BlockSize = Convert.ToByte(Settings.Default.BlockSize, 16);
+                    transportProtocol.Config.PaddingByte = Convert.ToByte(Settings.Default.PaddingByte, 16);
+                    transportProtocol.Config.StMin = Convert.ToByte(Settings.Default.StMin, 16);
                     transportProtocol.Hardware = hardware;
 
                     transportProtocol.MessageReceived += TransportProtocol_MessageReceived;
