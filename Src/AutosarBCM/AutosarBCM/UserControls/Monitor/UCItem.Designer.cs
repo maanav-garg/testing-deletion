@@ -59,7 +59,6 @@
             this.lblStatus.TabIndex = 1;
             this.lblStatus.Text = "-";
             this.lblStatus.Visible = false;
-            this.lblStatus.Click += new System.EventHandler(this.lblStatus_Click);
             // 
             // label1
             // 

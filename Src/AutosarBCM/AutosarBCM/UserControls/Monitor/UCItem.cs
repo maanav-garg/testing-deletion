@@ -35,25 +35,23 @@ namespace AutosarBCM.UserControls.Monitor
         public string GroupName { get; set; }
 
         /// <summary>
-        /// Gets or sets the current value of the input item.
-        /// </summary>
-        private double currentValue = -1;
-
-        /// <summary>
         /// Gets or sets a boolean indicating whether the input is being logged.
         /// </summary>
         public bool IsLogged = false;
 
         /// <summary>
-        /// Gets or sets the previous (old) value of the input item.
+        /// Gets or sets a number of transmitted message and received message.
         /// </summary>
-        private double oldValue = -1;
-        private InputMonitorItem item;
-        private CommonConfig commonConfig;
+        public float MessageTransmitted = 0;
+        public float MessageReceived = 0;
 
         /// <summary>
         /// Gets or sets the previous (old) value of the input item.
         /// </summary>
+        private ASResponse oldValue;
+
+        private InputMonitorItem item;
+        private CommonConfig commonConfig;
 
         #endregion
 
@@ -91,14 +89,37 @@ namespace AutosarBCM.UserControls.Monitor
         /// <summary>
         /// Change status of the input window regarding to read data from the device.
         /// </summary>
-        /// <param name="monitorItem">Monitor item to be updated</param>
-        /// <param name="inputResponse">Data comes from device</param>
+        /// <param name="response">Data comes from device</param>
         public void ChangeStatus(ASResponse response)
         {
-            //UpdateCounters(messageDirection);
-            //if (messageDirection == MessageDirection.TX) return;
+            lblReceived.BeginInvoke((MethodInvoker)delegate ()
+            {
+                MessageReceived++;
+                lblReceived.Text = MessageReceived.ToString();
+            });
 
-            oldValue = currentValue;
+            if (oldValue != null)
+            {
+                bool areEqual = response.Payloads.Count == oldValue.Payloads.Count;
+
+                if (areEqual)
+                {
+                    for (int i = 0; i < response.Payloads.Count; i++)
+                    {
+                        if (response.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
+                            response.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
+                        {
+                            areEqual = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (areEqual)
+                    return;
+            }
+
+            oldValue = response;
 
             lblStatus.BeginInvoke((MethodInvoker)delegate ()
             {
@@ -168,16 +189,9 @@ namespace AutosarBCM.UserControls.Monitor
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            lbResponse.Items.Clear();
-            lbResponse.Items.AddRange(ControlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
-
-
+            MessageTransmitted++;
+            lblTransmitted.Text = MessageTransmitted.ToString();
             ControlInfo.Transmit(ServiceInfo.ReadDataByIdentifier);
-        }
-
-        private void lblStatus_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void lbResponse_DrawItem(object sender, DrawItemEventArgs e)
