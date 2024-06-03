@@ -9,7 +9,7 @@ namespace AutosarBCM.Core
 {
     public class Service
     {
-        protected ServiceInfo ServiceInfo;
+        public ServiceInfo ServiceInfo { get; set; }
 
         public Service(ServiceInfo serviceInfo)
         {
@@ -24,12 +24,24 @@ namespace AutosarBCM.Core
 
     public class ReadDataByIdenService : Service
     {
+        public ControlInfo ControlInfo { get; private set; }
+        public List<Payload> Payloads { get; private set; }
+
         public ReadDataByIdenService() : base(ServiceInfo.ReadDataByIdentifier) { }
 
         public void Transmit(ControlInfo controlInfo)
         {
             new ASRequest(ServiceInfo, controlInfo, $"{ServiceInfo.RequestID.ToString("X")}-{BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray())}")
                 .Execute();
+        }
+
+        internal static Service Receive(ASResponse response)
+        {
+            var service = new ReadDataByIdenService();
+
+            service.ControlInfo = ASContext.Configuration.GetControlByAddress(BitConverter.ToUInt16(response.Data.Skip(1).Take(2).Reverse().ToArray(), 0));
+            service.Payloads = service.ControlInfo.GetPayloads(service.ServiceInfo, response.Data);
+            return service;
         }
     }
 
@@ -67,7 +79,13 @@ namespace AutosarBCM.Core
             if (ServiceInfo == null) return;
             ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0 });
         }
+
+        internal static TesterPresent Receive(ASResponse response)
+        {
+            return new TesterPresent();
+        }
     }
+
     public class ECUReset : Service
     {
         public ECUReset() : base(ServiceInfo.ECUReset) { }
@@ -77,5 +95,40 @@ namespace AutosarBCM.Core
             if (ServiceInfo == null) return;
             ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0x1 });
         }
+    }
+
+    public class ReadDTCInformationService : Service
+    {
+        public List<DTCValue> Values { get; set; }
+
+        public ReadDTCInformationService() : base(ServiceInfo.ReadDTCInformation) { }
+
+        public void Transmit()
+        {
+            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0x02, 0x40 });
+        }
+
+        public static ReadDTCInformationService Receive(ASResponse response)
+        {
+            var result = new List<DTCValue>();
+            var data = response.Data.Skip(3).ToArray();
+
+            for (var i = 0; i < data.Length; i += 4)
+                result.Add(new DTCValue
+                {
+                    Code = BitConverter.ToString(data.Skip(i).Take(2).ToArray()).Replace("-", ""),
+                    FailureType = data[i + 2],
+                    Mask = data[i + 3]
+                });
+            return new ReadDTCInformationService { Values = result };
+        }
+    }
+
+    public class DTCValue
+    {
+        public string Code { get; set; }
+        public byte FailureType { get; set; }
+        public byte Mask { get; set; }
+        public string Description { get => DTCFailure.GetByValue(FailureType).Description; }
     }
 }

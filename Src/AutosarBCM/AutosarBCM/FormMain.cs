@@ -103,6 +103,8 @@ namespace AutosarBCM
         /// </summary>
         private FormMonitorEnvOutput formMonitorEnvOutput = new FormMonitorEnvOutput();
 
+        private FormDTCPanel formDTCPanel = new FormDTCPanel();
+
         /// <summary>
         /// An instance of the 'FormTracePopup' control for displaying trace messages.
         /// </summary>
@@ -223,6 +225,7 @@ namespace AutosarBCM
 
             Receivers.Add(formMonitorGenericInput);
             Receivers.Add(formEnvironmentalTest);
+            Receivers.Add(formDTCPanel);
 
         }
 
@@ -377,6 +380,7 @@ namespace AutosarBCM
                 {
                     genericInput.ClearPreviousConfiguration();
                     genericInput.LoadConfiguration(ASContext.Configuration);
+                    formDTCPanel.LoadConfiguration();
                     if (tsbSession.Text != "Session: N/A")
                     {
                         genericInput.SessionFiltering();
@@ -585,6 +589,7 @@ namespace AutosarBCM
             {
                 case MonitorTestType.Generic:
                     formMonitorGenericInput.Show(dockMonitor, DockState.Document);
+                    formDTCPanel.Show(dockMonitor, DockState.Document);
                     // visibility settings for generic output tab
                     //formMonitorGenericOutput.Show(dockMonitor, DockState.Document);
                     break;
@@ -1244,8 +1249,16 @@ namespace AutosarBCM
             formMonitorGenericInput.ToggleSidebar();
         }
 
+        private void btnReadDTC_Click(object sender, EventArgs e)
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+
+            formDTCPanel.LoadConfiguration();
+            new ReadDTCInformationService().Transmit();
+        }
+
 
         #endregion
-
     }
 }

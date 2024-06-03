@@ -4,13 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AutosarBCM.Core
 {
     internal interface IReceiver
     {
-        bool Receive(ASResponse response);
+        bool Receive(Service service);
     }
+
+    internal interface IReadDataByIdenReceiver : IReceiver { }
+    internal interface IDTCReceiver : IReceiver { }
 
     public class ASRequest
     {
@@ -42,24 +46,19 @@ namespace AutosarBCM.Core
     public class ASResponse
     {
         public byte[] Data { get; private set; }
-        public ServiceInfo ServiceInfo { get; private set; }
-        public ControlInfo ControlInfo { get; private set; }
-        public List<Payload> Payloads { get; private set; } = new List<Payload>();
 
-        public byte ServiceID => Data[0];
-        public ushort ControlAddress => BitConverter.ToUInt16(Data.Skip(1).Take(2).Reverse().ToArray(), 0);
-
-        private ASResponse() { }
-
-        public static ASResponse Parse(byte[] data)
+        public ASResponse(byte[] data)
         {
-            var response = new ASResponse { Data = data };
+            Data = data;
+        }
 
-            response.ServiceInfo = ASContext.Configuration.GetServiceByResponseID(response.ServiceID);
-            response.ControlInfo = ASContext.Configuration.GetControlByAddress(response.ControlAddress);
-            response.Payloads = response.ControlInfo.GetPayloads(response.ServiceInfo, data);
+        public Service Parse()
+        {
+            if (Data[0] == 0x7E) return TesterPresent.Receive(this);
+            else if (Data[0] == 0x59) return ReadDTCInformationService.Receive(this);
+            else if (Data[0] == 0x62) return ReadDataByIdenService.Receive(this);
 
-            return response;
+            return null;
         }
     }
 }

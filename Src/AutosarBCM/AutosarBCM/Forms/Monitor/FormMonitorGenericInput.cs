@@ -16,7 +16,7 @@ namespace AutosarBCM.Forms.Monitor
     /// <summary>
     /// Implements the FormMonitorGenericInput form.
     /// </summary>
-    public partial class FormMonitorGenericInput : DockContent, IPeriodicTest, IReceiver
+    public partial class FormMonitorGenericInput : DockContent, IPeriodicTest, IReadDataByIdenReceiver
     {
         #region Variables
 
@@ -341,12 +341,14 @@ namespace AutosarBCM.Forms.Monitor
             ControlPaint.DrawBorder(e.Graphics, ((FlowLayoutPanel)sender).ClientRectangle, Color.LightGray, ButtonBorderStyle.Solid);
         }
 
-        public bool Receive(ASResponse response)
+        public bool Receive(Service baseService)
         {
+            var service = baseService as ReadDataByIdenService;
+
             foreach (var ucItem in uCItems)
-                if (ucItem.ControlInfo.Address == response.ControlInfo.Address)
+                if (ucItem.ControlInfo.Address == service.ControlInfo.Address)
                 {
-                    ucItem.ChangeStatus(response);
+                    ucItem.ChangeStatus(service);
                     return true;
                 }
             return false;

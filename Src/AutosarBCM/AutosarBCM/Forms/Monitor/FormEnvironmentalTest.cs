@@ -167,12 +167,13 @@ namespace AutosarBCM.Forms.Monitor
             throw new NotImplementedException();
         }
 
-        public bool Receive(ASResponse response)
+        public bool Receive(Service baseService)
         {
-            var items = groups[response.ControlInfo.Name];
+            var service = (ReadDataByIdenService)baseService;
+            var items = groups[service.ControlInfo.Name];
             foreach (var uc in items)
             {
-                uc.ChangeStatus(response);
+                uc.ChangeStatus(service);
                 return true;
             }
             return false;
