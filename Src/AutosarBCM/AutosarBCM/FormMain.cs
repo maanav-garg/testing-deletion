@@ -163,6 +163,7 @@ namespace AutosarBCM
         internal static bool EMCMonitoring;
 
         internal static List<IReceiver> Receivers = new List<IReceiver>();
+        internal ASContext ASContext = new ASContext(null);
 
         private TesterPresent TesterPresent;
         private ECUReset ECUReset;
@@ -192,7 +193,6 @@ namespace AutosarBCM
             }
         }
 
-        internal ASContext ASContext = new ASContext(null);
 
         #endregion
 
@@ -295,7 +295,7 @@ namespace AutosarBCM
         {
             if (this.InvokeRequired)
                 Invoke(new Action(() => { tabControl1.Enabled = status; }));
-            else 
+            else
                 tabControl1.Enabled = status;
         }
 
@@ -319,6 +319,13 @@ namespace AutosarBCM
                 this.Invoke(new Action(() => { SetCounterValues(transmitted, received); }));
             else
                 SetCounterValues(transmitted, received);
+        }
+        public void StartTesterPresent()
+        {
+            TesterPresent = new TesterPresent();
+            TesterPresentTimer = new System.Timers.Timer(5000) { AutoReset = true };
+            TesterPresentTimer.Elapsed += (s, e) => TesterPresent.Transmit();
+            TesterPresentTimer.Start();
         }
 
         #endregion
@@ -347,6 +354,41 @@ namespace AutosarBCM
                 File.AppendAllLines(AppDomain.CurrentDomain.BaseDirectory + $"/{logFileName}ErrorLog{errorMessageCountCounter / 950000}.txt", errorList);
 
             errorLogMessageTimer.Start();
+        }
+        private void LoadXMLDoc()
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Xml|*.xml";
+            openFileDialog.Multiselect = false;
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var filePath = openFileDialog.FileName;
+                ParseMessages(filePath);
+                ASContext = new ASContext(filePath);
+                LoadSessions();
+
+                if (ASContext.Configuration == null)
+                    return;
+                else
+                    tspFilterTxb.Enabled = true;
+
+                if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
+                {
+                    genericInput.ClearPreviousConfiguration();
+                    genericInput.LoadConfiguration(ASContext.Configuration);
+                    if (tsbSession.Text != "Session: N/A")
+                    {
+                        genericInput.SessionFiltering();
+                    }
+                    //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                }
+                else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
+                {
+                    envInput.LoadConfiguration(Configuration);
+                    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                }
+            }
         }
 
         /// <summary>
@@ -621,6 +663,24 @@ namespace AutosarBCM
         {
             new FormControlChecker().Show();
         }
+        private void activeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+
+            activeToolStripMenuItem.Checked = true;
+            inactiveToolStripMenuItem.Checked = false;
+            testerPresentDropDownButton.Image = Resources.pass;
+            StartTesterPresent();
+        }
+
+        private void inactiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeToolStripMenuItem.Checked = false;
+            inactiveToolStripMenuItem.Checked = true;
+            testerPresentDropDownButton.Image = Resources.reset;
+            StopTesterPresent();
+        }
 
         #endregion
 
@@ -646,7 +706,7 @@ namespace AutosarBCM
 
             cmbTestType.SelectedIndex = 0;
         }
-        
+
         /// <summary>
         /// Saves the settings before closing the form.
         /// </summary>
@@ -731,13 +791,6 @@ namespace AutosarBCM
             }
         }
 
-        public void StartTesterPresent()
-        {
-            TesterPresent = new TesterPresent();
-            TesterPresentTimer = new System.Timers.Timer(5000) { AutoReset = true };
-            TesterPresentTimer.Elapsed += (s, e) => TesterPresent.Transmit();
-            TesterPresentTimer.Start();
-        }
 
         private void StopTesterPresent()
         {
@@ -761,32 +814,7 @@ namespace AutosarBCM
         /// <param name="e">The event arguments.</param>
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Xml|*.xml";
-            openFileDialog.Multiselect = false;
-            openFileDialog.RestoreDirectory = true;
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var filePath = openFileDialog.FileName;
-                ASContext = new ASContext(filePath);
-                LoadSessions();
-                var configuration = ASContext.Configuration;
-                if (configuration == null)
-                    return;
-                else
-                    tspFilterTxb.Enabled = true;
-
-                if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
-                {
-                    genericInput.LoadConfiguration(configuration);
-                    //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
-                }
-                else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
-                {
-                    envInput.LoadConfiguration(Configuration);
-                    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
-                }
-            }
+            LoadXMLDoc();
         }
 
         /// <summary>
@@ -871,7 +899,7 @@ namespace AutosarBCM
         /// <param name="sender">A reference to the tsbECUReset instance.</param>
         /// <param name="e">A reference to the Click event's arguments.</param>
         private void tsbECUReset_Click(object sender, EventArgs e)
-        
+
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
@@ -887,22 +915,27 @@ namespace AutosarBCM
         /// <param name="e">Params</param>
         private void btnClear_Click(object sender, EventArgs e)
         {
-            if (Configuration == null)
+            if (ASContext.Configuration == null)
                 return;
             else
                 tspFilterTxb.Enabled = true;
 
             if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
             {
+                genericInput.ClearPreviousConfiguration();
                 genericInput.LoadConfiguration(ASContext.Configuration);
-                ((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                if (tsbSession.Text != "Session: N/A")
+                {
+                    genericInput.SessionFiltering();
+                }
+                //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
             }
-            else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
-            {
-                envInput.LoadConfiguration(Configuration);
-                ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
-                ucCycleBar.Clear();
-            }
+            //else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
+            //{
+            //    envInput.LoadConfiguration(Configuration);
+            //    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+            //    ucCycleBar.Clear();
+            //}
 
             SetCounter(-MessagesTransmitted, -MessagesReceived);
         }
@@ -1009,24 +1042,25 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void openTsmi_Click(object sender, EventArgs e)
         {
-            #region File selection
+            //#region File selection
 
-            var openFileDialog = new OpenFileDialog()
-            {
-                Title = "Open any file",
-                Filter = "Xml files(*.xml)| *.xml",
-                Multiselect = false
-            };
+            //var openFileDialog = new OpenFileDialog()
+            //{
+            //    Title = "Open any file",
+            //    Filter = "Xml files(*.xml)| *.xml",
+            //    Multiselect = false
+            //};
 
-            if (openFileDialog.ShowDialog() != DialogResult.OK)
-                return;
-            var fileName = openFileDialog.FileName;
-            #endregion
+            //if (openFileDialog.ShowDialog() != DialogResult.OK)
+            //    return;
+            //var fileName = openFileDialog.FileName;
+            //#endregion
 
-            ParseMessages(fileName);
+            //ParseMessages(fileName);
 
-            // add to recent file list
-            recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
+            //// add to recent file list
+            //recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
+            LoadXMLDoc();
         }
 
         /// <summary>
@@ -1038,6 +1072,7 @@ namespace AutosarBCM
             ImportMessages(filePath);
 
             string fileName = Path.GetFileName(filePath);
+            LoadFile(fileName);
         }
 
         /// <summary>
@@ -1045,58 +1080,59 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="sender">button</param>
         /// <param name="e">argument</param>
-        private void saveTsmi_Click(object sender, EventArgs e)
-        {
-            var mostRecentFilePath = recentToolFileHelper.GetMostRecentFile();
+        /// 
+        //private void saveTsmi_Click(object sender, EventArgs e)
+        //{
+        //    var mostRecentFilePath = recentToolFileHelper.GetMostRecentFile();
 
-            if (mostRecentFilePath != null)
-            {
-                ExportMessages(mostRecentFilePath);
-            }
-            else
-            {
-                #region File selection
-                var saveFileDialog = new SaveFileDialog()
-                {
-                    Filter = "XML file save|.xml",
-                };
-                if (saveFileDialog.ShowDialog() != DialogResult.OK)
-                    return;
+        //    if (mostRecentFilePath != null)
+        //    {
+        //        ExportMessages(mostRecentFilePath);
+        //    }
+        //    else
+        //    {
+        //        #region File selection
+        //        var saveFileDialog = new SaveFileDialog()
+        //        {
+        //            Filter = "XML file save|.xml",
+        //        };
+        //        if (saveFileDialog.ShowDialog() != DialogResult.OK)
+        //            return;
 
-                var fileName = saveFileDialog.FileName;
-                #endregion
+        //        var fileName = saveFileDialog.FileName;
+        //        #endregion
 
-                ExportMessages(fileName);
+        //        ExportMessages(fileName);
 
-                // add to recent file list
-                recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
-            }
+        //        // add to recent file list
+        //        recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
+        //    }
 
-        }
+        //}
 
         /// <summary>
         /// Displays file selection form and adds selected form to recent file list.
         /// </summary>
         /// <param name="sender">button</param>
         /// <param name="e">argument</param>
-        private void saveAsTsmi_Click(object sender, EventArgs e)
-        {
-            #region File selection
-            var saveFileDialog = new SaveFileDialog()
-            {
-                Filter = "XML file save|.xml",
-            };
-            if (saveFileDialog.ShowDialog() != DialogResult.OK)
-                return;
+        //private void saveAsTsmi_Click(object sender, EventArgs e)
+        //{
+        //    #region File selection
+        //    var saveFileDialog = new SaveFileDialog()
+        //    {
+        //        Filter = "XML file save|.xml",
+        //    };
+        //    if (saveFileDialog.ShowDialog() != DialogResult.OK)
+        //        return;
 
-            var fileName = saveFileDialog.FileName;
-            #endregion
+        //    var fileName = saveFileDialog.FileName;
+        //    #endregion
 
-            ExportMessages(fileName);
+        //    ExportMessages(fileName);
 
-            // add to recent file list
-            recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
-        }
+        //    // add to recent file list
+        //    recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
+        //}
 
         /// <summary>
         /// Displays file selection form and loads selected file.
@@ -1118,7 +1154,7 @@ namespace AutosarBCM
 
             LoadFile(fileName);
         }
-        
+
         #endregion
 
         #region Tool menu events
@@ -1147,7 +1183,7 @@ namespace AutosarBCM
                 formEnvironmentalTest.BringToFront();
 
             formEnvironmentalTest.Show();
-            
+
         }
 
         #endregion
@@ -1188,19 +1224,22 @@ namespace AutosarBCM
             foreach (var session in ASContext.Configuration.Sessions)
                 tsbSession.DropDownItems.Add(new ToolStripMenuItem(session.Name, null, new EventHandler(tsbSession_Click)) { Tag = session });
         }
+        internal void CheckSession()
+        {
+            if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                formInput.SessionFiltering();
+        }
 
         private void tsbSession_Click(object sender, EventArgs e)
         {
             //TODO to be commented out
-            //if (!ConnectionUtil.CheckConnection())
-            //    return;
+            if (!ConnectionUtil.CheckConnection())
+                return;
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
             ASContext.CurrentSession = sessionInfo;
             tsbSession.Text = $"Session: {sessionInfo.Name}";
-
-            if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                formInput.SessionFiltering();
+            CheckSession();
         }
 
         private void tsbToggle_Click(object sender, EventArgs e)
@@ -1208,26 +1247,8 @@ namespace AutosarBCM
             formMonitorGenericInput.ToggleSidebar();
         }
 
+
         #endregion
 
-        private void activeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!ConnectionUtil.CheckConnection())
-                return;
-
-            activeToolStripMenuItem.Checked = true;
-            inactiveToolStripMenuItem.Checked = false;
-            testerPresentDropDownButton.Image = Resources.pass;
-            StartTesterPresent();
-        }
-
-        private void inactiveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            activeToolStripMenuItem.Checked = false;
-            inactiveToolStripMenuItem.Checked = true;
-            testerPresentDropDownButton.Image = Resources.reset;
-            StopTesterPresent();
-
-        }
     }
 }

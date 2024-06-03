@@ -104,6 +104,7 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 lbResponse.Items.Clear();
                 lbResponse.Items.AddRange(response.Payloads.ToArray());
+
             });
         }
 
@@ -113,7 +114,17 @@ namespace AutosarBCM.UserControls.Monitor
         /// <returns>An IEnumerable of strings containing the items in listBox1.</returns>
         public IEnumerable<string> GetListBoxItems()
         {
-            return lbResponse.Items.Cast<Payload>().Select(payload => payload.PayloadInfo.Name);
+            foreach (var item in lbResponse.Items)
+            {
+                if (item is PayloadInfo payloadInfo)
+                {
+                    yield return $"{payloadInfo.Name} {payloadInfo.TypeName}";
+                }
+                else if (item is Payload payload)
+                {
+                    yield return $"{payload.PayloadInfo.Name} {payload.PayloadInfo.TypeName} {payload.FormattedValue}";
+                }
+            }
         }
 
         #endregion
@@ -179,6 +190,13 @@ namespace AutosarBCM.UserControls.Monitor
 
             var item = lbResponse.Items[e.Index] as Payload;
             e.Graphics.DrawString($"{item.PayloadInfo.NamePadded,-30} {item.FormattedValue}", e.Font, new SolidBrush(Color.FromName(item.Color ?? DefaultForeColor.Name)), e.Bounds);
+        }
+
+        private void btnUCClear_Click(object sender, EventArgs e)
+        {
+            lbResponse.Items.Clear();
+            lbResponse.Items.AddRange(ControlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
+
         }
     }
 

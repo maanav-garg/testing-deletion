@@ -37,15 +37,17 @@
             this.lblDiff = new System.Windows.Forms.Label();
             this.btnRead = new System.Windows.Forms.Button();
             this.lbResponse = new System.Windows.Forms.ListBox();
+            this.btnUCClear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblName
             // 
-            this.lblName.AutoSize = true;
+            this.lblName.AutoEllipsis = true;
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblName.Location = new System.Drawing.Point(3, 4);
+            this.lblName.Location = new System.Drawing.Point(3, 10);
+            this.lblName.MaximumSize = new System.Drawing.Size(160, 20);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(52, 18);
+            this.lblName.Size = new System.Drawing.Size(160, 20);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "label1";
             this.lblName.Click += new System.EventHandler(this.lblName_Click);
@@ -131,10 +133,21 @@
             this.lbResponse.TabIndex = 0;
             this.lbResponse.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbResponse_DrawItem);
             // 
+            // btnUCClear
+            // 
+            this.btnUCClear.Location = new System.Drawing.Point(164, 9);
+            this.btnUCClear.Name = "btnUCClear";
+            this.btnUCClear.Size = new System.Drawing.Size(46, 23);
+            this.btnUCClear.TabIndex = 11;
+            this.btnUCClear.Text = "Clear";
+            this.btnUCClear.UseVisualStyleBackColor = true;
+            this.btnUCClear.Click += new System.EventHandler(this.btnUCClear_Click);
+            // 
             // UCItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnUCClear);
             this.Controls.Add(this.lbResponse);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnRead);
@@ -145,7 +158,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblName);
             this.Name = "UCItem";
-            this.Size = new System.Drawing.Size(357, 127);
+            this.Size = new System.Drawing.Size(355, 125);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,5 +175,6 @@
         private System.Windows.Forms.Label lblDiff;
         private System.Windows.Forms.Button btnRead;
         private System.Windows.Forms.ListBox lbResponse;
+        private System.Windows.Forms.Button btnUCClear;
     }
 }

@@ -84,7 +84,13 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="config">Monitor config object</param>
         public void LoadConfiguration(ConfigurationInfo config)
         {
-            groups.Add("Other", new List<UCItem>());
+            ClearPreviousConfiguration();
+            ASContext.Configuration = config;
+            pnlMonitorInput.Controls.Clear();
+            if (!groups.ContainsKey("Other"))
+            {
+                groups["Other"] = new List<UCItem>();
+            }
             foreach (var ctrl in config.Controls)
             {
                 var ucItem = new UCItem(ctrl);
@@ -164,6 +170,12 @@ namespace AutosarBCM.Forms.Monitor
         {
             //MonitorUtil.RunTestPeriodically(monitorConfig, cancellationToken, MonitorTestType.Generic);
         }
+        public void ClearPreviousConfiguration()
+        {
+            pnlMonitorInput.Controls.Clear();
+            groups.Clear();
+            uCItems.Clear();
+        }
 
         /// <summary>
         /// Gets whether this test is runnable or not.
@@ -234,6 +246,23 @@ namespace AutosarBCM.Forms.Monitor
                         bool inactiveExceptionMatch = ucItem.ControlInfo.SessionInactiveException.Any(exception => exception == ASContext.CurrentSession.ID);
 
                         ucItem.Enabled = (defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch;
+                    }
+                }
+            }
+        }
+        public void DisabledAllSession()
+        {
+            foreach (Control control in pnlMonitorInput.Controls)
+            {
+                if (control is FlowLayoutPanel flowPanel)
+                {
+                    foreach (UCItem ucItem in flowPanel.Controls.OfType<UCItem>())
+                    {
+
+                        ucItem.BeginInvoke(new Action(() =>
+                        {
+                            ucItem.Enabled = false;
+                        }));
                     }
                 }
             }

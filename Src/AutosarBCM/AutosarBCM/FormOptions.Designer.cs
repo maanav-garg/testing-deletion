@@ -61,8 +61,16 @@
             this.textBoxUserName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPageProp2 = new System.Windows.Forms.TabPage();
-            this.textBoxProject = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.txtPaddingByte = new System.Windows.Forms.TextBox();
+            this.lblPaddingByte = new System.Windows.Forms.Label();
+            this.txtStMin = new System.Windows.Forms.TextBox();
+            this.lblStMin = new System.Windows.Forms.Label();
+            this.txtBlockSize = new System.Windows.Forms.TextBox();
+            this.lblBlockSize = new System.Windows.Forms.Label();
+            this.txtReceiveAdress = new System.Windows.Forms.TextBox();
+            this.lblReceiveAdress = new System.Windows.Forms.Label();
+            this.txtTransmitAdress = new System.Windows.Forms.TextBox();
+            this.lblTransmitAdress = new System.Windows.Forms.Label();
             this.tabSerialPort = new System.Windows.Forms.TabPage();
             this.lblSerialPortType = new System.Windows.Forms.Label();
             this.cmbSerialPortType = new System.Windows.Forms.ComboBox();
@@ -144,14 +152,14 @@
             // 
             this.loadTsmi.Image = global::AutosarBCM.Properties.Resources.Open_6529;
             this.loadTsmi.Name = "loadTsmi";
-            this.loadTsmi.Size = new System.Drawing.Size(184, 26);
+            this.loadTsmi.Size = new System.Drawing.Size(117, 22);
             this.loadTsmi.Text = "Load...";
             this.loadTsmi.Click += new System.EventHandler(this.loadTsmi_Click);
             // 
             // exportTsmi
             // 
             this.exportTsmi.Name = "exportTsmi";
-            this.exportTsmi.Size = new System.Drawing.Size(184, 26);
+            this.exportTsmi.Size = new System.Drawing.Size(117, 22);
             this.exportTsmi.Text = "Export...";
             this.exportTsmi.Click += new System.EventHandler(this.exportTsmi_Click);
             // 
@@ -230,7 +238,7 @@
             this.tabPageProp1.Controls.Add(this.label1);
             this.tabPageProp1.Location = new System.Drawing.Point(4, 22);
             this.tabPageProp1.Name = "tabPageProp1";
-            this.tabPageProp1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageProp1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageProp1.Size = new System.Drawing.Size(405, 318);
             this.tabPageProp1.TabIndex = 0;
             this.tabPageProp1.Text = "Config group 1";
@@ -400,31 +408,103 @@
             // 
             // tabPageProp2
             // 
-            this.tabPageProp2.Controls.Add(this.textBoxProject);
-            this.tabPageProp2.Controls.Add(this.label2);
+            this.tabPageProp2.Controls.Add(this.txtPaddingByte);
+            this.tabPageProp2.Controls.Add(this.lblPaddingByte);
+            this.tabPageProp2.Controls.Add(this.txtStMin);
+            this.tabPageProp2.Controls.Add(this.lblStMin);
+            this.tabPageProp2.Controls.Add(this.txtBlockSize);
+            this.tabPageProp2.Controls.Add(this.lblBlockSize);
+            this.tabPageProp2.Controls.Add(this.txtReceiveAdress);
+            this.tabPageProp2.Controls.Add(this.lblReceiveAdress);
+            this.tabPageProp2.Controls.Add(this.txtTransmitAdress);
+            this.tabPageProp2.Controls.Add(this.lblTransmitAdress);
             this.tabPageProp2.Location = new System.Drawing.Point(4, 22);
             this.tabPageProp2.Name = "tabPageProp2";
-            this.tabPageProp2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPageProp2.Size = new System.Drawing.Size(405, 319);
+            this.tabPageProp2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageProp2.Size = new System.Drawing.Size(405, 318);
             this.tabPageProp2.TabIndex = 1;
-            this.tabPageProp2.Text = "Config group 2";
+            this.tabPageProp2.Text = "General";
             this.tabPageProp2.UseVisualStyleBackColor = true;
             // 
-            // textBoxProject
+            // txtPaddingByte
             // 
-            this.textBoxProject.Location = new System.Drawing.Point(77, 19);
-            this.textBoxProject.Name = "textBoxProject";
-            this.textBoxProject.Size = new System.Drawing.Size(100, 20);
-            this.textBoxProject.TabIndex = 3;
+            this.txtPaddingByte.Location = new System.Drawing.Point(94, 122);
+            this.txtPaddingByte.Name = "txtPaddingByte";
+            this.txtPaddingByte.Size = new System.Drawing.Size(100, 20);
+            this.txtPaddingByte.TabIndex = 5;
             // 
-            // label2
+            // lblPaddingByte
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 22);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Project";
+            this.lblPaddingByte.AutoSize = true;
+            this.lblPaddingByte.Location = new System.Drawing.Point(6, 125);
+            this.lblPaddingByte.Name = "lblPaddingByte";
+            this.lblPaddingByte.Size = new System.Drawing.Size(70, 13);
+            this.lblPaddingByte.TabIndex = 4;
+            this.lblPaddingByte.Text = "Padding Byte";
+            // 
+            // txtStMin
+            // 
+            this.txtStMin.Location = new System.Drawing.Point(94, 96);
+            this.txtStMin.Name = "txtStMin";
+            this.txtStMin.Size = new System.Drawing.Size(100, 20);
+            this.txtStMin.TabIndex = 5;
+            // 
+            // lblStMin
+            // 
+            this.lblStMin.AutoSize = true;
+            this.lblStMin.Location = new System.Drawing.Point(6, 99);
+            this.lblStMin.Name = "lblStMin";
+            this.lblStMin.Size = new System.Drawing.Size(34, 13);
+            this.lblStMin.TabIndex = 4;
+            this.lblStMin.Text = "StMin";
+            // 
+            // txtBlockSize
+            // 
+            this.txtBlockSize.Location = new System.Drawing.Point(94, 70);
+            this.txtBlockSize.Name = "txtBlockSize";
+            this.txtBlockSize.Size = new System.Drawing.Size(100, 20);
+            this.txtBlockSize.TabIndex = 5;
+            // 
+            // lblBlockSize
+            // 
+            this.lblBlockSize.AutoSize = true;
+            this.lblBlockSize.Location = new System.Drawing.Point(6, 73);
+            this.lblBlockSize.Name = "lblBlockSize";
+            this.lblBlockSize.Size = new System.Drawing.Size(57, 13);
+            this.lblBlockSize.TabIndex = 4;
+            this.lblBlockSize.Text = "Block Size";
+            // 
+            // txtReceiveAdress
+            // 
+            this.txtReceiveAdress.Location = new System.Drawing.Point(94, 44);
+            this.txtReceiveAdress.Name = "txtReceiveAdress";
+            this.txtReceiveAdress.Size = new System.Drawing.Size(100, 20);
+            this.txtReceiveAdress.TabIndex = 3;
+            // 
+            // lblReceiveAdress
+            // 
+            this.lblReceiveAdress.AutoSize = true;
+            this.lblReceiveAdress.Location = new System.Drawing.Point(6, 47);
+            this.lblReceiveAdress.Name = "lblReceiveAdress";
+            this.lblReceiveAdress.Size = new System.Drawing.Size(82, 13);
+            this.lblReceiveAdress.TabIndex = 2;
+            this.lblReceiveAdress.Text = "Receive Adress";
+            // 
+            // txtTransmitAdress
+            // 
+            this.txtTransmitAdress.Location = new System.Drawing.Point(94, 18);
+            this.txtTransmitAdress.Name = "txtTransmitAdress";
+            this.txtTransmitAdress.Size = new System.Drawing.Size(100, 20);
+            this.txtTransmitAdress.TabIndex = 3;
+            // 
+            // lblTransmitAdress
+            // 
+            this.lblTransmitAdress.AutoSize = true;
+            this.lblTransmitAdress.Location = new System.Drawing.Point(6, 21);
+            this.lblTransmitAdress.Name = "lblTransmitAdress";
+            this.lblTransmitAdress.Size = new System.Drawing.Size(82, 13);
+            this.lblTransmitAdress.TabIndex = 2;
+            this.lblTransmitAdress.Text = "Transmit Adress";
             // 
             // tabSerialPort
             // 
@@ -446,8 +526,8 @@
             this.tabSerialPort.Controls.Add(this.lblPort);
             this.tabSerialPort.Location = new System.Drawing.Point(4, 22);
             this.tabSerialPort.Name = "tabSerialPort";
-            this.tabSerialPort.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabSerialPort.Size = new System.Drawing.Size(405, 319);
+            this.tabSerialPort.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSerialPort.Size = new System.Drawing.Size(405, 318);
             this.tabSerialPort.TabIndex = 2;
             this.tabSerialPort.Text = "Serial Port";
             this.tabSerialPort.UseVisualStyleBackColor = true;
@@ -634,10 +714,10 @@
             this.tabCanHardware.Controls.Add(this.label3);
             this.tabCanHardware.Controls.Add(this.tabCanHardware_cmbDevice);
             this.tabCanHardware.Location = new System.Drawing.Point(4, 22);
-            this.tabCanHardware.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware.Name = "tabCanHardware";
-            this.tabCanHardware.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabCanHardware.Size = new System.Drawing.Size(405, 319);
+            this.tabCanHardware.Padding = new System.Windows.Forms.Padding(2);
+            this.tabCanHardware.Size = new System.Drawing.Size(405, 318);
             this.tabCanHardware.TabIndex = 3;
             this.tabCanHardware.Text = "Can Hardware";
             this.tabCanHardware.UseVisualStyleBackColor = true;
@@ -647,7 +727,7 @@
             this.flowLayoutPanel1.Controls.Add(this.tabCanHardware_grpIntrepid);
             this.flowLayoutPanel1.Controls.Add(this.tabCanHardware_grpKvaser);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 54);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(401, 264);
             this.flowLayoutPanel1.TabIndex = 2;
@@ -659,9 +739,9 @@
             this.tabCanHardware_grpIntrepid.Controls.Add(this.label4);
             this.tabCanHardware_grpIntrepid.Controls.Add(this.tabCanHardware_cmbBitRate);
             this.tabCanHardware_grpIntrepid.Location = new System.Drawing.Point(2, 2);
-            this.tabCanHardware_grpIntrepid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_grpIntrepid.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_grpIntrepid.Name = "tabCanHardware_grpIntrepid";
-            this.tabCanHardware_grpIntrepid.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_grpIntrepid.Padding = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_grpIntrepid.Size = new System.Drawing.Size(397, 81);
             this.tabCanHardware_grpIntrepid.TabIndex = 0;
             this.tabCanHardware_grpIntrepid.TabStop = false;
@@ -696,7 +776,7 @@
             "NETID_FIRE_LIN4",
             "NETID_FIRE_CGI"});
             this.tabCanHardware_cmbNetworkId.Location = new System.Drawing.Point(88, 41);
-            this.tabCanHardware_cmbNetworkId.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_cmbNetworkId.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_cmbNetworkId.Name = "tabCanHardware_cmbNetworkId";
             this.tabCanHardware_cmbNetworkId.Size = new System.Drawing.Size(153, 21);
             this.tabCanHardware_cmbNetworkId.TabIndex = 3;
@@ -729,7 +809,7 @@
             "800000",
             "1000000"});
             this.tabCanHardware_cmbBitRate.Location = new System.Drawing.Point(88, 17);
-            this.tabCanHardware_cmbBitRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_cmbBitRate.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_cmbBitRate.Name = "tabCanHardware_cmbBitRate";
             this.tabCanHardware_cmbBitRate.Size = new System.Drawing.Size(153, 21);
             this.tabCanHardware_cmbBitRate.TabIndex = 1;
@@ -739,9 +819,9 @@
             this.tabCanHardware_grpKvaser.Controls.Add(this.label14);
             this.tabCanHardware_grpKvaser.Controls.Add(this.tabCanHardware_cmbKvaserBitRate);
             this.tabCanHardware_grpKvaser.Location = new System.Drawing.Point(2, 87);
-            this.tabCanHardware_grpKvaser.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_grpKvaser.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_grpKvaser.Name = "tabCanHardware_grpKvaser";
-            this.tabCanHardware_grpKvaser.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_grpKvaser.Padding = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_grpKvaser.Size = new System.Drawing.Size(397, 51);
             this.tabCanHardware_grpKvaser.TabIndex = 1;
             this.tabCanHardware_grpKvaser.TabStop = false;
@@ -771,7 +851,7 @@
             "500000",
             "1000000"});
             this.tabCanHardware_cmbKvaserBitRate.Location = new System.Drawing.Point(88, 17);
-            this.tabCanHardware_cmbKvaserBitRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_cmbKvaserBitRate.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_cmbKvaserBitRate.Name = "tabCanHardware_cmbKvaserBitRate";
             this.tabCanHardware_cmbKvaserBitRate.Size = new System.Drawing.Size(153, 21);
             this.tabCanHardware_cmbKvaserBitRate.TabIndex = 1;
@@ -795,7 +875,7 @@
             "Kvaser",
             "Vector"});
             this.tabCanHardware_cmbDevice.Location = new System.Drawing.Point(93, 15);
-            this.tabCanHardware_cmbDevice.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_cmbDevice.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_cmbDevice.Name = "tabCanHardware_cmbDevice";
             this.tabCanHardware_cmbDevice.Size = new System.Drawing.Size(92, 21);
             this.tabCanHardware_cmbDevice.TabIndex = 0;
@@ -891,8 +971,6 @@
         private System.Windows.Forms.TabPage tabPageProp1;
         private System.Windows.Forms.TabPage tabPageProp2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxProject;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.Button buttonCancel;
@@ -938,5 +1016,15 @@
         private System.Windows.Forms.GroupBox tabCanHardware_grpKvaser;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox tabCanHardware_cmbKvaserBitRate;
+        private System.Windows.Forms.TextBox txtBlockSize;
+        private System.Windows.Forms.Label lblBlockSize;
+        private System.Windows.Forms.TextBox txtReceiveAdress;
+        private System.Windows.Forms.Label lblReceiveAdress;
+        private System.Windows.Forms.TextBox txtTransmitAdress;
+        private System.Windows.Forms.Label lblTransmitAdress;
+        private System.Windows.Forms.TextBox txtPaddingByte;
+        private System.Windows.Forms.Label lblPaddingByte;
+        private System.Windows.Forms.TextBox txtStMin;
+        private System.Windows.Forms.Label lblStMin;
     }
 }
