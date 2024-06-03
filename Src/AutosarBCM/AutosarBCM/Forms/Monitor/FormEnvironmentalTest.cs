@@ -128,7 +128,7 @@ namespace AutosarBCM.Forms.Monitor
 
         public void StartTest(CancellationToken cancellationToken)
         {
-            //MonitorUtil.RunTestPeriodically(cancellationToken, MonitorTestType.Environmental);
+            MonitorUtil.RunTestPeriodically(cancellationToken, MonitorTestType.Environmental);
         }
 
         public bool CanBeRun()
