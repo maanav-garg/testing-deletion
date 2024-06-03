@@ -191,6 +191,13 @@ namespace AutosarBCM.UserControls.Monitor
             var item = lbResponse.Items[e.Index] as Payload;
             e.Graphics.DrawString($"{item.PayloadInfo.NamePadded,-30} {item.FormattedValue}", e.Font, new SolidBrush(Color.FromName(item.Color ?? DefaultForeColor.Name)), e.Bounds);
         }
+
+        private void btnUCClear_Click(object sender, EventArgs e)
+        {
+            lbResponse.Items.Clear();
+            lbResponse.Items.AddRange(ControlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
+
+        }
     }
 
     #endregion
