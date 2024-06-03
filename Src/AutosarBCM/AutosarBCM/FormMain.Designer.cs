@@ -246,15 +246,7 @@ namespace AutosarBCM
             this.tsbOpen.Click += new System.EventHandler(this.openTsmi_Click);
             // 
 
-            // tsbSave
-            // 
-            this.tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSave.Image = ((System.Drawing.Image)(resources.GetObject("tsbSave.Image")));
-            this.tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSave.Name = "tsbSave";
-            this.tsbSave.Size = new System.Drawing.Size(29, 24);
-            this.tsbSave.Text = "Save... (Crtl+S)";
-            this.tsbSave.Click += new System.EventHandler(this.saveTsmi_Click);
+            
             // 
 
             // toolStripSeparator6
@@ -358,27 +350,8 @@ namespace AutosarBCM
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(187, 6);
-            // 
-            // saveTsmi
-            // 
-            this.saveTsmi.Image = ((System.Drawing.Image)(resources.GetObject("saveTsmi.Image")));
-            this.saveTsmi.Name = "saveTsmi";
-            this.saveTsmi.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveTsmi.Size = new System.Drawing.Size(190, 26);
-            this.saveTsmi.Text = "Save";
-            this.saveTsmi.Click += new System.EventHandler(this.saveTsmi_Click);
-            // 
-            // saveAsTsmi
-            // 
-            this.saveAsTsmi.Name = "saveAsTsmi";
-            this.saveAsTsmi.Size = new System.Drawing.Size(190, 26);
-            this.saveAsTsmi.Text = "Save as...";
-            this.saveAsTsmi.Click += new System.EventHandler(this.saveAsTsmi_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(187, 6);
+            
+           
 
             // 
             // recentFilesTsmi
