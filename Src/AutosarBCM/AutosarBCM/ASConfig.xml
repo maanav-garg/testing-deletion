@@ -2125,6 +2125,26 @@
           <FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
         </Functions>
       </Cycle>
+	  <Cycle>
+        <Name>SoftContinuous 2</Name>
+        <OpenAt>6</OpenAt>
+        <CloseAt>11</CloseAt>
+        <Functions>
+          <FuncName parent="TCCM_Input">KL15Relay1</FuncName>
+          <FuncName parent="TCCM_Input">KL15Relay2</FuncName>
+          <FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+        </Functions>
+      </Cycle>
+	  <Cycle>
+        <Name>SoftContinuous 3</Name>
+        <OpenAt>12</OpenAt>
+        <CloseAt>18</CloseAt>
+        <Functions>
+          <FuncName parent="TCCM_Input">KL15Relay1</FuncName>
+          <FuncName parent="TCCM_Input">KL15Relay2</FuncName>
+          <FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+        </Functions>
+      </Cycle>
     </Cycles>
   </EnvironmentalTest>
 </Configuration>

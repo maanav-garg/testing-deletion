@@ -348,9 +348,12 @@ namespace AutosarBCM
             //TODO to be checked
             //if (cycleIndex == 0 && reboots == 0)
             //    Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
+            Console.WriteLine(Constants.StartProcessStarted);
 
             //TODO to be checked
             //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
+            Console.WriteLine($"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}");
+
 
             if (cycleDict.TryGetValue(cycleIndex + 1, out Core.Cycle cycle))
             {
@@ -360,6 +363,7 @@ namespace AutosarBCM
 
             //if (cycleIndex == startCycleIndex - 1 && reboots == 0)
             //    Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
+            Console.WriteLine(Constants.StartProcessCompleted);
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
 
@@ -382,6 +386,7 @@ namespace AutosarBCM
             //}                
 
             //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
+            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
 
             if (cycleIndex >= endCycleIndex - 1)
             {

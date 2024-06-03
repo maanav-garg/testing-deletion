@@ -98,7 +98,7 @@ namespace AutosarBCM.Core
             }
             if (isControlMaskActive)
                 bytes.Add(controlByte);
-
+            Console.WriteLine($"DID {Name} {(isOpen?"opened":"closed")}");
             //Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
         }
 
