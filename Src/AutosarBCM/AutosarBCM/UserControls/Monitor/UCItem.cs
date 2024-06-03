@@ -195,6 +195,8 @@ namespace AutosarBCM.UserControls.Monitor
         private void btnUCClear_Click(object sender, EventArgs e)
         {
             lbResponse.Items.Clear();
+            lbResponse.Items.AddRange(ControlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
+
         }
     }
 
