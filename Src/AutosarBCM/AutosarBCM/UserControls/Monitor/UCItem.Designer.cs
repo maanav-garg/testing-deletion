@@ -127,7 +127,7 @@
             this.lbResponse.ItemHeight = 15;
             this.lbResponse.Location = new System.Drawing.Point(6, 39);
             this.lbResponse.Name = "lbResponse";
-            this.lbResponse.Size = new System.Drawing.Size(343, 64);
+            this.lbResponse.Size = new System.Drawing.Size(343, 79);
             this.lbResponse.TabIndex = 0;
             this.lbResponse.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbResponse_DrawItem);
             // 
@@ -145,7 +145,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblName);
             this.Name = "UCItem";
-            this.Size = new System.Drawing.Size(357, 115);
+            this.Size = new System.Drawing.Size(355, 125);
             this.ResumeLayout(false);
             this.PerformLayout();
 

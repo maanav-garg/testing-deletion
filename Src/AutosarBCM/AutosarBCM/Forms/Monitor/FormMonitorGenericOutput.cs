@@ -344,7 +344,7 @@ namespace AutosarBCM.Forms.Monitor
                     lblItemName.Text = $"{ucwiperitem.GroupName}-{ucwiperitem.Name}";
                     ucwiperitem.Focus();
                     break;
-                case UCReadOnlyOutputItem ucreadonlyitem:
+                case UCReadOnlyItem ucreadonlyitem:
                     lblItemName.Text = $"{ucreadonlyitem.GroupName}-{ucreadonlyitem.Name}";
                     ucreadonlyitem.Focus();
                     break;

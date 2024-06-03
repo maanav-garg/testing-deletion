@@ -10,8 +10,8 @@ namespace AutosarBCM.Core
 {
     public abstract class Payload
     {
-        protected byte[] Data;
-        public byte Value { get; protected set; }
+        public byte[] Value { get; protected set; }
+
         public string FormattedValue { get; protected set; }
         public string Color { get; protected set; }
 
@@ -19,14 +19,15 @@ namespace AutosarBCM.Core
 
         public Payload() { }
 
-        public Payload Parse(PayloadInfo payloadInfo, byte[] data)
+        public Payload Parse(PayloadInfo payloadInfo, byte[] value, int? index = null)
         {
             PayloadInfo = payloadInfo;
-            Data = data;
+            Value = value;
 
-            Value = data[payloadInfo.Index];
-            SetFormattedValue();
+            if (value != null && payloadInfo.IsBit)
+                Value = new byte[] { (byte)((value[0] & (1 << index)) == 0 ? 0 : 1) };
 
+            if (value != null) SetFormattedValue();
             return this;
         }
 
@@ -60,41 +61,73 @@ namespace AutosarBCM.Core
     public class DID_DE03_0 : Payload { }
     public class DID_DE01_3 : Payload { }
     public class DID_DE01_4 : Payload { }
+    public class DID_DE08_7 : Payload { }
+    public class DID_Byte_Kmph : Payload { }
+
+
 
     public class DID_Byte_On_Off : Payload { }
+    public class DID_Bits_On_Off : Payload { }
 
     public class HexDump_1Byte : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = Data[PayloadInfo.Index].ToString();
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class HexDump_2Bytes : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
 
     public class HexDump_4Bytes : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Data, PayloadInfo.Index);
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class HexDump_16Bytes : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
 
     public class Unsigned_1Byte : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = Data[PayloadInfo.Index].ToString();
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
 
     public class DID_F166_0 : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Data, PayloadInfo.Index);
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
 
     public class Internal_Version : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Data, PayloadInfo.Index);
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
 
     public class DID_PWM : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Data, PayloadInfo.Index);
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
     public class DID_DE26 : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Data, PayloadInfo.Index);
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
-
+    public class DID_DE04_7 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class DID_DE06_1 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class DID_DE06_3 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class DID_DE0B_1 : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class Unsigned_2Bytes : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
 }

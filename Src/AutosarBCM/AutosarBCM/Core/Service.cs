@@ -1,5 +1,4 @@
 ﻿using AutosarBCM.Config;
-using AutosarBCM.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,58 +9,73 @@ namespace AutosarBCM.Core
 {
     public class Service
     {
-        protected ServiceInfo serviceInfo;
+        protected ServiceInfo ServiceInfo;
 
-        public Service(ServiceName serviceName)
+        public Service(ServiceInfo serviceInfo)
         {
-            serviceInfo = ASContext.Configuration?.Services.Where(x => x.RequestID == (byte)serviceName).FirstOrDefault()
-                ?? new ServiceInfo { Name = serviceName.ToString(), RequestID = (byte)serviceName };
+            ServiceInfo = serviceInfo;
         }
 
-        public static void Transmit(ServiceName serviceName, ControlName controlName)
+        public static void Transmit(ServiceInfo serviceInfo, ushort controlAddress)
         {
-            ASContext.Configuration.Controls.Where(x => x.Name == controlName.ToString()).FirstOrDefault().Transmit(serviceName);
+            ASContext.Configuration.Controls.Where(x => x.Address == controlAddress).FirstOrDefault()?.Transmit(serviceInfo);
         }
     }
 
     public class ReadDataByIdenService : Service
     {
-        public ReadDataByIdenService() : base(ServiceName.ReadDataByIdentifier) { }
+        public ReadDataByIdenService() : base(ServiceInfo.ReadDataByIdentifier) { }
 
         public void Transmit(ControlInfo controlInfo)
         {
-            var request = new ASRequest(serviceInfo, controlInfo, $"{serviceInfo.RequestID.ToString("X")}-{BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray())}");
-            request.Execute();
+            new ASRequest(ServiceInfo, controlInfo, $"{ServiceInfo.RequestID.ToString("X")}-{BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray())}")
+                .Execute();
         }
     }
 
-    public class IOCtrlByIdenService : Service
+    public class IOControlByIdentifierService : Service
     {
-        public IOCtrlByIdenService() : base(ServiceName.InputOutputControlByIdentifier) { }
+        public IOControlByIdentifierService() : base(ServiceInfo.InputOutputControlByIdentifier) { }
 
-        public void Transmit(ControlInfo controlInfo)
+        public void Transmit(ControlInfo controlInfo, byte[] additionalData)
         {
-            throw new NotImplementedException();
+            var address = BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray());
+            var additionalBytes = BitConverter.ToString(additionalData);
+            var data = $"{ServiceInfo.RequestID.ToString("X")}-{address}-{additionalBytes}";
+
+            var request = new ASRequest(ServiceInfo, controlInfo, data);
+            request.Execute();
         }
     }
 
     public class DiagnosticSessionControl : Service
     {
-        public DiagnosticSessionControl() : base(ServiceName.DiagnosticSessionControl) { }
+        public DiagnosticSessionControl() : base(ServiceInfo.DiagnosticSessionControl) { }
 
         public void Transmit(SessionInfo sessionInfo)
         {
-            ConnectionUtil.TransmitData(new byte[] { serviceInfo.RequestID, sessionInfo.ID});
+            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, sessionInfo.ID });
         }
     }
 
     public class TesterPresent : Service
     {
-        public TesterPresent() : base(ServiceName.TesterPresent) { }
+        public TesterPresent() : base(ServiceInfo.TesterPresent) { }
 
         public void Transmit()
         {
-            ConnectionUtil.TransmitData(new byte[] { serviceInfo.RequestID, 0});
+            if (ServiceInfo == null) return;
+            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0 });
+        }
+    }
+    public class ECUReset : Service
+    {
+        public ECUReset() : base(ServiceInfo.ECUReset) { }
+
+        public void Transmit()
+        {
+            if (ServiceInfo == null) return;
+            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0x1 });
         }
     }
 }
