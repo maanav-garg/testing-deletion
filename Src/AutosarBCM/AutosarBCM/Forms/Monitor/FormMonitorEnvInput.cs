@@ -287,6 +287,11 @@ namespace AutosarBCM.Forms.Monitor
             throw new NotImplementedException();
         }
 
+        public void DisabledAllSession()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
