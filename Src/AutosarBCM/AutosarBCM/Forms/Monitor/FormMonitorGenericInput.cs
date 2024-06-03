@@ -174,6 +174,7 @@ namespace AutosarBCM.Forms.Monitor
         {
             pnlMonitorInput.Controls.Clear();
             groups.Clear();
+            uCItems.Clear();
         }
 
         /// <summary>
