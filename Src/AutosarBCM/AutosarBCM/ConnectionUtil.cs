@@ -149,6 +149,13 @@ namespace AutosarBCM
             if (e.Data[0] == 0x3E)
                 return;
 
+            if (e.Data[0] == 0x22)
+            {
+                var response = ASResponse.Parse(e.Data);
+                foreach (var receiver in FormMain.Receivers)
+                    if (receiver.Receive(response)) break;
+            }
+
             var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);

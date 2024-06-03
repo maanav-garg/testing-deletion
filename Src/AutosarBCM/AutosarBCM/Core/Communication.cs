@@ -56,6 +56,8 @@ namespace AutosarBCM.Core
             var response = new ASResponse { Data = data };
 
             response.ServiceInfo = ASContext.Configuration.GetServiceByResponseID(response.ServiceID);
+            if (response.ServiceInfo == null)
+                response.ServiceInfo = ASContext.Configuration.GetServiceByRequestID(response.ServiceID);
             response.ControlInfo = ASContext.Configuration.GetControlByAddress(response.ControlAddress);
             response.Payloads = response.ControlInfo.GetPayloads(response.ServiceInfo, data);
 
