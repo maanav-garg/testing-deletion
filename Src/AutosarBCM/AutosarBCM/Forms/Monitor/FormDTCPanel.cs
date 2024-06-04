@@ -30,7 +30,7 @@ namespace AutosarBCM.Forms.Monitor
             pnlMonitor.Controls.Clear();
             ucItems = new List<UCDTCCard>();
 
-            foreach (var cInfo in ASContext.Configuration.Controls)
+            foreach (var cInfo in ASContext.Configuration.Controls.Where(c=> c.Group == "DID"))
                 foreach (var pInfo in cInfo.Responses.Where(r => r.ServiceID == 0x62).FirstOrDefault()?.Payloads)
                 {
                     var ucItem = new UCDTCCard(cInfo, pInfo);
