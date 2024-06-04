@@ -137,6 +137,12 @@
     <Compile Include="FormControlChecker.Designer.cs">
       <DependentUpon>FormControlChecker.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormEMCView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEMCView.Designer.cs">
+      <DependentUpon>FormEMCView.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormOptions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,6 +310,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormControlChecker.resx">
       <DependentUpon>FormControlChecker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormEMCView.resx">
+      <DependentUpon>FormEMCView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

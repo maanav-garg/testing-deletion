@@ -17,6 +17,7 @@ using AutosarBCM.UserControls.Monitor;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Forms;
 using AutosarBCM.Core;
+using DiagBox;
 
 namespace AutosarBCM
 {
@@ -1250,5 +1251,9 @@ namespace AutosarBCM
 
         #endregion
 
+        private void tsmiEMCView_Click(object sender, EventArgs e)
+        {
+            new FormEMCView().Show();
+        }
     }
 }
