@@ -1232,6 +1232,12 @@ namespace AutosarBCM
             foreach (var session in ASContext.Configuration.Sessions)
                 tsbSession.DropDownItems.Add(new ToolStripMenuItem(session.Name, null, new EventHandler(tsbSession_Click)) { Tag = session });
         }
+        internal void CheckSession()
+        {
+            if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                formInput.SessionFiltering();
+            formDTCPanel.Session_Changed();
+        }
 
         private void tsbSession_Click(object sender, EventArgs e)
         {
@@ -1242,10 +1248,7 @@ namespace AutosarBCM
             new DiagnosticSessionControl().Transmit(sessionInfo);
             ASContext.CurrentSession = sessionInfo;
             tsbSession.Text = $"Session: {sessionInfo.Name}";
-
-            if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                formInput.SessionFiltering();
-            formDTCPanel.Session_Changed();
+            CheckSession();
         }
 
         private void tsbToggle_Click(object sender, EventArgs e)

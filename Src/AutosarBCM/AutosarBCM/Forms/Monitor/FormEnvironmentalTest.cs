@@ -184,5 +184,10 @@ namespace AutosarBCM.Forms.Monitor
             FilterUCItems(tspFilterTxb.Text);
             pnlMonitor.Refresh();
         }
+
+        public void DisabledAllSession()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

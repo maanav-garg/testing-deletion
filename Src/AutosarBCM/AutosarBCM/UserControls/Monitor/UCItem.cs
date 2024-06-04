@@ -50,6 +50,11 @@ namespace AutosarBCM.UserControls.Monitor
         private double oldValue = -1;
         private InputMonitorItem item;
         private CommonConfig commonConfig;
+        private const int ResizeHandleSize = 10;
+        private Point lastMousePosition;
+        private bool isResizing = false;
+        private ToolTip lblNameToolTip;
+        private string fullLabelText;
 
         /// <summary>
         /// Gets or sets the previous (old) value of the input item.
@@ -70,20 +75,136 @@ namespace AutosarBCM.UserControls.Monitor
             InitializeComponent();
 
             ControlInfo = controlInfo;
-            if (controlInfo.Name.Length > 23)
-                lblName.Text = $"{controlInfo.Name.Substring(0, 20)}...";
-            else
-                lblName.Text = controlInfo.Name;
 
             lbResponse.Items.AddRange(controlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
+
+            InitResizeFeat();
         }
 
+        
         public UCItem(InputMonitorItem item, CommonConfig commonConfig)
         {
             //this.item = item;
             //this.commonConfig = commonConfig;
         }
 
+        private void InitResizeFeat()
+        {
+
+            SetStyle(ControlStyles.ResizeRedraw, true);
+            Resize += UCItem_Resize;
+
+            lblName.AutoSize = true;
+            fullLabelText = ControlInfo.Name;
+            lblName.Text = TruncateText(fullLabelText, 20);
+            lblName.AutoEllipsis = true;
+
+            lblName.Margin = new Padding(0, 0, btnRead.Width + 10, 0);
+
+            lblName.MouseHover += LblName_MouseHover;
+            lblNameToolTip = new ToolTip();
+            // Set the minimum size for the control
+            int minWidth = CalculateMinWidth();
+            int minHeight = 100;
+            MinimumSize = new Size(minWidth, minHeight);
+        }
+
+        private void UCItem_Resize(object sender, EventArgs e)
+        {
+            UpdateLayout();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            ControlPaint.DrawSizeGrip(e.Graphics, BackColor, Width - ResizeHandleSize, Height - ResizeHandleSize, ResizeHandleSize, ResizeHandleSize);
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (e.Button == MouseButtons.Left && IsInResizeHandle(e.Location))
+            {
+                isResizing = true;
+                lastMousePosition = e.Location;
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+            isResizing = false;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if (isResizing)
+            {
+                int deltaX = e.X - lastMousePosition.X;
+                int deltaY = e.Y - lastMousePosition.Y;
+
+                Width = Math.Max(Width + deltaX, MinimumSize.Width);
+                Height = Math.Max(Height + deltaY, MinimumSize.Height);
+
+                lastMousePosition = e.Location;
+                UpdateLayout();
+            }
+        }
+
+        private void UpdateLayout()
+        {
+            // Calculate available width for lblName
+            int availableWidth = Width - btnRead.Width - 30;
+
+            if (availableWidth > 0)
+            {
+                lblName.Width = availableWidth;
+            }
+
+            if (TextRenderer.MeasureText(fullLabelText, lblName.Font).Width <= availableWidth)
+            {
+                lblName.Text = fullLabelText;
+            }
+            else
+            {
+                lblName.Text = TruncateText(fullLabelText, CalculateMaxCharacters(availableWidth));
+            }
+
+            lbResponse.Size = new Size(Math.Max(0, Width - 6), Math.Max(0, Height - 40));
+            lbResponse.Location = new Point(3, 40);
+        }
+
+        private bool IsInResizeHandle(Point point)
+        {
+            return point.X >= Width - ResizeHandleSize && point.Y >= Height - ResizeHandleSize;
+        }
+
+        private void LblName_MouseHover(object sender, EventArgs e)
+        {
+            lblNameToolTip.SetToolTip(lblName, fullLabelText);
+        }
+
+        private string TruncateText(string text, int maxLength)
+        {
+            if (text.Length <= maxLength) return text;
+            return text.Substring(0, maxLength) + "...";
+        }
+
+        private int CalculateMaxCharacters(int availableWidth)
+        {
+            int averageCharWidth = TextRenderer.MeasureText("A", lblName.Font).Width;
+            return Math.Max(1, availableWidth / averageCharWidth);
+        }
+
+        private int CalculateMinWidth()
+        {
+            int lblNameMinWidth = TextRenderer.MeasureText(TruncateText(fullLabelText, 20), lblName.Font).Width;
+            int btnReadWidth = btnRead.Width;
+            int padding = 40;
+
+            return lblNameMinWidth + btnReadWidth + padding;
+        }
         #endregion
 
         #region Public Methods
@@ -190,6 +311,13 @@ namespace AutosarBCM.UserControls.Monitor
 
             var item = lbResponse.Items[e.Index] as Payload;
             e.Graphics.DrawString($"{item.PayloadInfo.NamePadded,-30} {item.FormattedValue}", e.Font, new SolidBrush(Color.FromName(item.Color ?? DefaultForeColor.Name)), e.Bounds);
+        }
+
+        private void btnUCClear_Click(object sender, EventArgs e)
+        {
+            lbResponse.Items.Clear();
+            lbResponse.Items.AddRange(ControlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
+
         }
     }
 

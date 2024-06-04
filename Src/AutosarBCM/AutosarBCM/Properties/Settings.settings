@@ -8,9 +8,6 @@
     <Setting Name="UserName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Default</Value>
     </Setting>
-    <Setting Name="ProjectName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="Version" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -55,6 +52,21 @@
     </Setting>
     <Setting Name="KvaserDevice" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TransmitAdress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0x726</Value>
+    </Setting>
+    <Setting Name="ReceiveAdress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0x72E</Value>
+    </Setting>
+    <Setting Name="BlockSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0x00</Value>
+    </Setting>
+    <Setting Name="StMin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0x10</Value>
+    </Setting>
+    <Setting Name="PaddingByte" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0x00</Value>
     </Setting>
   </Settings>
 </SettingsFile>
