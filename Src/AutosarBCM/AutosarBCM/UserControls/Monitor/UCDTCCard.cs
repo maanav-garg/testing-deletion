@@ -34,5 +34,10 @@ namespace AutosarBCM.UserControls.Monitor
                 lbxValues.Items.Add($"{dtcValue.Description,-30}{dtcValue.Mask}");
             }));
         }
+
+        public string GetDTCValues()
+        {
+            return string.Join(" ", lbxValues.Items.Cast<string>());
+        }
     }
 }

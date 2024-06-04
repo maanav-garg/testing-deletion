@@ -59,7 +59,7 @@ namespace AutosarBCM.Forms.Monitor
         {
             pnlMonitor.SuspendLayout();
             foreach (var item in pnlMonitor.Controls.OfType<UCDTCCard>())
-                item.Visible = $"{item.ControlInfo.Name} {item.PayloadInfo.Name}".IndexOf(text, StringComparison.OrdinalIgnoreCase) >= 0;
+                item.Visible = $"{item.ControlInfo.Name} {item.PayloadInfo.Name} {item.GetDTCValues()}".IndexOf(text, StringComparison.OrdinalIgnoreCase) >= 0;
             pnlMonitor.ResumeLayout();
         }
 
