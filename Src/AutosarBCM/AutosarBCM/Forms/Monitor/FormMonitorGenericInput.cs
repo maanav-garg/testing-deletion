@@ -168,7 +168,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the task</param>
         public void StartTest(CancellationToken cancellationToken)
         {
-            //MonitorUtil.RunTestPeriodically(monitorConfig, cancellationToken, MonitorTestType.Generic);
+            MonitorUtil.RunTestPeriodically(cancellationToken, MonitorTestType.Generic);
         }
         public void ClearPreviousConfiguration()
         {
@@ -183,7 +183,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <returns>true if this test is runnable; otherwise, false.</returns>
         public bool CanBeRun()
         {
-            return monitorConfig != null;
+            return ASContext.Configuration != null;
         }
 
         /// <summary>

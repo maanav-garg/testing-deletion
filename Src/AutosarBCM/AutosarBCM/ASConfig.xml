@@ -1,6 +1,8 @@
 ﻿<Configuration>
   <Settings>
     <Entry key="namesPadding" value="30" />
+	<Entry key="TxInterval" value="5" />
+	<Entry key="ReadInterval" value="5" />
   </Settings>
   <Services>
     <Service requestID="10">
@@ -1632,7 +1634,8 @@
         <Response serviceId="6F"></Response>
       </Responses>
     </Control>
-    <Control>
+	  <!--Important: deactivated because there was no response in the control.-->
+	  <!--<Control>
       <Address>402A</Address>
       <Name>Vehicle_Battery_Voltage</Name>
       <Type></Type>
@@ -1652,7 +1655,7 @@
           <Payload name="Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
         </Response>
       </Responses>
-    </Control>
+    </Control>-->
     <Control>
       <Address>40C6</Address>
       <Name>Right_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
@@ -1840,7 +1843,8 @@
         <Response serviceId="6F"></Response>
       </Responses>
     </Control>
-    <Control>
+	<!--Important: deactivated because there was no response in the control.-->
+    <!--<Control>
       <Address>DD02</Address>
       <Name>Main_ECU_Voltage_Supply</Name>
       <Type></Type>
@@ -1848,11 +1852,12 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Main Ecu Voltage Supply" typeName="HexDump_1Byte"></Payload>
+          <Payload name="Main ECU Voltage Supply" typeName="HexDump_1Byte"></Payload>
         </Response>
       </Responses>
-    </Control>
-    <Control>
+    </Control>-->
+	<!--Important: deactivated because there was no response in the control.-->
+    <!--<Control>
       <Address>F166</Address>
       <Name>NOS_Message_Database</Name>
       <Type></Type>
@@ -1863,7 +1868,7 @@
           <Payload name="NOS Message Database #1 Version Number" typeName="DID_F166_0"></Payload>
         </Response>
       </Responses>
-    </Control>
+    </Control>-->
     <Control>
       <Address>40E8</Address>
       <Name>Right_Front_Low_Beam_Output_Control</Name>
