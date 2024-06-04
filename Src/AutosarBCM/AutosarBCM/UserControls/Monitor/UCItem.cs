@@ -214,7 +214,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         /// <param name="monitorItem">Monitor item to be updated</param>
         /// <param name="inputResponse">Data comes from device</param>
-        public void ChangeStatus(ASResponse response)
+        public void ChangeStatus(ReadDataByIdenService service)
         {
             //UpdateCounters(messageDirection);
             //if (messageDirection == MessageDirection.TX) return;
@@ -224,7 +224,7 @@ namespace AutosarBCM.UserControls.Monitor
             lblStatus.BeginInvoke((MethodInvoker)delegate ()
             {
                 lbResponse.Items.Clear();
-                lbResponse.Items.AddRange(response.Payloads.ToArray());
+                lbResponse.Items.AddRange(service.Payloads.ToArray());
 
             });
         }

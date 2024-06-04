@@ -27,6 +27,10 @@
     <Service requestID="11" responseID="51">
       <Name>ECUReset</Name>
     </Service>
+	<Service requestID="19" responseID="59">
+		<Name>ReadDtcInformation</Name>
+		<Sessions>01;03</Sessions>
+	</Service>
   </Services>
   <Sessions>
     <Session>
@@ -54,8 +58,8 @@
       <Services>22;2E</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Transmission" typeName="DID_DE00_0"></Payload>
-          <Payload name="Auto CAB Tilt" typeName="DID_Byte_Enable_Disable"></Payload>
+          <Payload name="Transmission" dtcCode="D005" typeName="DID_DE00_0"></Payload>
+          <Payload name="Auto CAB Tilt" dtcCode="9F0E" typeName="DID_Byte_Enable_Disable"></Payload>
           <Payload name="Differential Lock" typeName="DID_Byte_Enable_Disable"></Payload>
           <Payload name="Water Pump" typeName="DID_Byte_Present_notPresent"></Payload>
           <Payload name="Emission Level" typeName="DID_DE00_4"></Payload>
@@ -2095,8 +2099,26 @@
     <Payload length="1" typeName="DID_DE06_3" />
     <Payload length="1" typeName="DID_DE0B_1" />
     <Payload length="1" typeName="Unsigned_2Bytes" />
-
   </Payloads>
+  <DTCFailureTypes>
+  	<Type value="11">Circuit Short To Ground</Type>
+  	<Type value="12">Circuit Short To Battery</Type>
+  	<Type value="13">Circuit Open</Type>
+  	<Type value="14">Circuit Short To Ground or Open</Type>
+  	<Type value="16">Circuit Voltage Below Threshold</Type>
+  	<Type value="17">Circuit Voltage Above Threshold</Type>
+  	<Type value="18">Circuit Current Below Threshold</Type>
+  	<Type value="19">Circuit Current Above Threshold</Type>
+  	<Type value="41">General Checksum Failure</Type>
+  	<Type value="42">General Memory Failure</Type>
+  	<Type value="43">Special Memory Failure</Type>
+  	<Type value="44">Data Memory Failure</Type>
+  	<Type value="4B">Over Temperature</Type>
+  	<Type value="63">Circuit / Component Protection Time-Out</Type>
+  	<Type value="87">Missing Message</Type>
+  	<Type value="88">Bus off</Type>
+  	<Type value="F0">Manufacturer Defined</Type>
+  </DTCFailureTypes>
   <EnvironmentalTest>
     <EnvironmentalConfig>
       <CycleTime>3000</CycleTime>
