@@ -13,14 +13,18 @@ namespace AutosarBCM.UserControls.Monitor
 {
     public partial class UCDTCCard : UserControl
     {
+        public Core.ControlInfo ControlInfo { get; }
         public PayloadInfo PayloadInfo { get; }
 
-        public UCDTCCard(PayloadInfo payloadInfo)
+        public UCDTCCard(Core.ControlInfo controlInfo, PayloadInfo payloadInfo)
         {
             InitializeComponent();
 
+            ControlInfo = controlInfo;
             PayloadInfo = payloadInfo;
-            lblName.Text = payloadInfo.Name;
+
+            lblCtrlName.Text = controlInfo.Name;
+            lblSubCtrlName.Text = payloadInfo.Name;
         }
 
         internal void ChangeStatus(DTCValue dtcValue)

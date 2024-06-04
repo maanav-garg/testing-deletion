@@ -28,7 +28,13 @@ namespace AutosarBCM.Core
         {
             ServiceInfo = serviceInfo;
             ControlInfo = controlInfo;
-            Data = data.Split('-').Select(x => Byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToArray();
+            Data = data?.Split('-').Select(x => Byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToArray();
+        }
+
+        public ASRequest(ServiceInfo serviceInfo, byte[] data)
+        {
+            ServiceInfo = serviceInfo;
+            Data = data;
         }
 
         internal void Execute()
@@ -36,7 +42,7 @@ namespace AutosarBCM.Core
             if (!ServiceInfo.Sessions.Contains(ASContext.CurrentSession.ID))
                 return;
 
-            if (!ControlInfo.Services.Contains(ServiceInfo.RequestID))
+            if (!ControlInfo?.Services.Contains(ServiceInfo.RequestID) ?? false)
                 return;
 
             ConnectionUtil.TransmitData(Data);

@@ -91,7 +91,6 @@ namespace AutosarBCM
             this.btnShowEmbSwVer = new System.Windows.Forms.ToolStripButton();
             this.lblEmbSwVer = new System.Windows.Forms.ToolStripLabel();
             this.tsbToggle = new System.Windows.Forms.ToolStripButton();
-            this.btnReadDTC = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -458,8 +457,7 @@ namespace AutosarBCM
             this.toolStripDropDownButton1,
             this.btnShowEmbSwVer,
             this.lblEmbSwVer,
-            this.tsbToggle,
-            this.btnReadDTC});
+            this.tsbToggle});
             this.toolStrip3.Location = new System.Drawing.Point(0, 0);
             this.toolStrip3.Name = "toolStrip3";
             this.toolStrip3.Size = new System.Drawing.Size(1409, 27);
@@ -488,7 +486,7 @@ namespace AutosarBCM
             // nullToolStripMenuItem
             // 
             this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
-            this.nullToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.nullToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nullToolStripMenuItem.Text = "N/A";
             // 
             // tsbECUReset
@@ -595,7 +593,6 @@ namespace AutosarBCM
             // tspFilterTxb
             // 
             this.tspFilterTxb.Enabled = false;
-            this.tspFilterTxb.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tspFilterTxb.Name = "tspFilterTxb";
             this.tspFilterTxb.Size = new System.Drawing.Size(76, 27);
             this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);
@@ -661,15 +658,6 @@ namespace AutosarBCM
             this.tsbToggle.Size = new System.Drawing.Size(24, 24);
             this.tsbToggle.Text = "toolStripButton1";
             this.tsbToggle.Click += new System.EventHandler(this.tsbToggle_Click);
-            // 
-            // btnReadDTC
-            // 
-            this.btnReadDTC.Image = global::AutosarBCM.Properties.Resources.dtc;
-            this.btnReadDTC.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnReadDTC.Name = "btnReadDTC";
-            this.btnReadDTC.Size = new System.Drawing.Size(80, 24);
-            this.btnReadDTC.Text = "Read DTC";
-            this.btnReadDTC.Click += new System.EventHandler(this.btnReadDTC_Click);
             // 
             // FormMain
             // 
@@ -774,7 +762,6 @@ namespace AutosarBCM
         public ToolStripMenuItem activeToolStripMenuItem;
         public ToolStripMenuItem inactiveToolStripMenuItem;
         private ToolStripMenuItem environmentalTestTsmi;
-        private ToolStripButton btnReadDTC;
     }
 }
 

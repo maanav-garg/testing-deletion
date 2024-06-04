@@ -27,6 +27,7 @@
     </Service>
 	<Service requestID="19" responseID="59">
 		<Name>ReadDtcInformation</Name>
+		<Sessions>01;03</Sessions>
 	</Service>
   </Services>
   <Sessions>

@@ -1009,6 +1009,9 @@ namespace AutosarBCM
 
                 formOutput.FilterUCItems(tspFilterTxb.Text);
             }
+            else if (document is FormDTCPanel formDTCPanel)
+                formDTCPanel.FilterItems(tspFilterTxb.Text);
+
             tabControl1.Refresh();
         }
 
@@ -1242,22 +1245,13 @@ namespace AutosarBCM
 
             if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
                 formInput.SessionFiltering();
+            formDTCPanel.Session_Changed();
         }
 
         private void tsbToggle_Click(object sender, EventArgs e)
         {
             formMonitorGenericInput.ToggleSidebar();
         }
-
-        private void btnReadDTC_Click(object sender, EventArgs e)
-        {
-            if (!ConnectionUtil.CheckConnection())
-                return;
-
-            formDTCPanel.LoadConfiguration();
-            new ReadDTCInformationService().Transmit();
-        }
-
 
         #endregion
     }
