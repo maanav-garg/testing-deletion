@@ -126,7 +126,7 @@ namespace AutosarBCM
                 {
                     if (monitorTestType == MonitorTestType.Generic)
                     {
-                        var genericMonitorItems = ASContext.Configuration.Controls.ToList();
+                        var genericMonitorItems = ASContext.Configuration.Controls.Where(c=> c.Group == "DID" && c.Services.Contains((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER));
                         ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txInterval);
                         ASContext.Configuration.Settings.TryGetValue("ReadInterval", out string readInterval);
 
@@ -139,7 +139,7 @@ namespace AutosarBCM
                                 bool activeExceptionMatch = item.SessionActiveException.Any(exception => exception == ASContext.CurrentSession.ID);
                                 bool inactiveExceptionMatch = item.SessionInactiveException.Any(exception => exception == ASContext.CurrentSession.ID);
 
-                                if (item.Services.Contains(0x22) && ((defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch) && item.Group == "DID")
+                                if (((defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch) )
                                 {
                                     ThreadSleep(int.Parse(txInterval));
                                     item.Transmit(ServiceInfo.ReadDataByIdentifier);
