@@ -142,9 +142,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlHexBytes);
-            this.Controls.Add(this.cmbValue);
             this.Controls.Add(this.chkSelected);
             this.Controls.Add(this.lblName);
+            this.Controls.Add(this.cmbValue);
             this.Name = "UCControlPayload";
             this.Size = new System.Drawing.Size(335, 34);
             this.pnlHexBytes.ResumeLayout(false);
