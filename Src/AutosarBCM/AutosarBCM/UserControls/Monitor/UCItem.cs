@@ -92,34 +92,55 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="response">Data comes from device</param>
         public void ChangeStatus(ASResponse response)
         {
-            lblReceived.BeginInvoke((MethodInvoker)delegate ()
-            {
-                MessageReceived++;
-                lblReceived.Text = MessageReceived.ToString();
-            });
+            // Check if the message is transmitted successfully (0x22 value received)
+            //bool isTransmitted = response.Payloads.Any(payload => payload.FormattedValue == "0x22");
 
-            if (oldValue != null)
+            /*
+            if (isTransmitted)
             {
-                bool areEqual = response.Payloads.Count == oldValue.Payloads.Count;
+                // Increment messageTransmitted value
+                MessageTransmitted++;
 
-                if (areEqual)
+                // Update the UI with the new messageTransmitted value
+                lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
                 {
-                    for (int i = 0; i < response.Payloads.Count; i++)
+                    lblTransmitted.Text = MessageTransmitted.ToString();
+                });
+            }*/
+            //else
+            //{
+                lblReceived.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    MessageReceived++;
+                    lblReceived.Text = MessageReceived.ToString();
+                });
+
+                if (oldValue != null)
+                {
+                    bool areEqual = response.Payloads.Count == oldValue.Payloads.Count;
+
+                    if (areEqual)
                     {
-                        if (response.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
-                            response.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
+                        for (int i = 0; i < response.Payloads.Count; i++)
                         {
-                            areEqual = false;
-                            break;
+                            if (response.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
+                                response.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
+                            {
+                                areEqual = false;
+                                break;
+                            }
                         }
                     }
+
+                    if (areEqual)
+                        return;
                 }
 
-                if (areEqual)
-                    return;
-            }
-
-            oldValue = response;
+                oldValue = response;
+            //}
+             
+             
+            
 
             lblStatus.BeginInvoke((MethodInvoker)delegate ()
             {
@@ -189,8 +210,6 @@ namespace AutosarBCM.UserControls.Monitor
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            MessageTransmitted++;
-            lblTransmitted.Text = MessageTransmitted.ToString();
             ControlInfo.Transmit(ServiceInfo.ReadDataByIdentifier);
         }
 
