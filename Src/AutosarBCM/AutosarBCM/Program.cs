@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using DiagBox;
 using LicenseHelper;
 using log4net;
 using log4net.Config;

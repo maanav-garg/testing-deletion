@@ -17,7 +17,6 @@ using AutosarBCM.UserControls.Monitor;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Forms;
 using AutosarBCM.Core;
-using DiagBox;
 
 namespace AutosarBCM
 {
@@ -113,6 +112,10 @@ namespace AutosarBCM
         /// An instance of the 'FormEnvironmentalTest' control for displaying trace messages.
         /// </summary>
         private FormEnvironmentalTest formEnvironmentalTest;
+        /// <summary>
+        /// An instance of the 'FormEMCView' control.
+        /// </summary>
+        private FormEMCView formEMCView;
         /// <summary>
         /// An instance of the 'FormLogReader' control for displaying trace messages.
         /// </summary>
@@ -683,6 +686,19 @@ namespace AutosarBCM
             StopTesterPresent();
         }
 
+        private bool CheckConfigurationFile()
+        {
+            if (ASContext.Configuration == null)
+            {
+                Helper.ShowWarningMessageBox("No configuration file is imported. Please import the file first!");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         #endregion
 
         #region Form events
@@ -1178,12 +1194,16 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void environmentalTestTsmi_Click(object sender, EventArgs e)
         {
-            if (formEnvironmentalTest == null || formEnvironmentalTest.IsDisposed)
-                formEnvironmentalTest = new FormEnvironmentalTest();
-            else
-                formEnvironmentalTest.BringToFront();
-
-            formEnvironmentalTest.Show();
+            if (CheckConfigurationFile())
+            {
+                if (formEnvironmentalTest == null || formEnvironmentalTest.IsDisposed)
+                {
+                    formEnvironmentalTest = new FormEnvironmentalTest();
+                    formEnvironmentalTest.Show();
+                }
+                else
+                    formEnvironmentalTest.BringToFront();
+            }
 
         }
 
@@ -1253,7 +1273,16 @@ namespace AutosarBCM
 
         private void tsmiEMCView_Click(object sender, EventArgs e)
         {
-            new FormEMCView().Show();
+            if (CheckConfigurationFile())
+            {
+                if (formEMCView == null || formEMCView.IsDisposed)
+                {
+                    formEMCView = new FormEMCView();
+                    formEMCView.Show();
+                }
+                else
+                    formEMCView.BringToFront();
+            }
         }
     }
 }

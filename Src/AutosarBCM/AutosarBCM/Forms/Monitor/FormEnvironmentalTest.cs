@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -41,13 +42,6 @@ namespace AutosarBCM.Forms.Monitor
         #region Private Methods
         private void LoadControls()
         {
-            if (ASContext.Configuration == null)
-            {
-                Helper.ShowWarningMessageBox("No configuration file is imported. Please import the file first!");
-                this.Close();
-                return;
-            }
-
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
             {
@@ -188,5 +182,6 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
+
     }
 }

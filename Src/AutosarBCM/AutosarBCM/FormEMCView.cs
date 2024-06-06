@@ -10,8 +10,10 @@ using System.Windows.Forms;
 using AutosarBCM.Config;
 using AutosarBCM.UserControls.Monitor;
 using AutosarBCM;
+using AutosarBCM.Core;
+using System.Threading;
 
-namespace DiagBox
+namespace AutosarBCM
 {
     /// <summary>
     /// Represents a form that displays the EMC data in a grid.
@@ -33,7 +35,8 @@ namespace DiagBox
         /// <summary>
         /// A reference to the timer that updates the time elapsed
         /// </summary>
-        private Timer timer;
+        //private Timer timer;
+        public Core.ControlInfo ControlInfo { get; set; }
 
         #endregion
 
@@ -90,24 +93,48 @@ namespace DiagBox
         {
             if (start)
             {
-                if (!ConnectionUtil.CheckConnection())
-                    return;
-                if (Config == null)
-                { Helper.ShowWarningMessageBox("Please, load the configuration file first."); return; }
+                //if (!ConnectionUtil.CheckConnection())
+                //   return;
 
-                timer = new Timer() { Interval = 60000 };
+                //if (Config == null)
+                //{ Helper.ShowWarningMessageBox("Please, load the configuration file first."); return; }
+
+                //timer = new Timer() { Interval = 60000 };
                 //timer.Tick += (s, e) => { new UdsMessage() { Id = Config.CommonConfig.MessageID, Data = Config.CommonConfig.EMCLifecycle }.Transmit(); };
-                timer.Start();
+                //timer.Start();
 
-                ControlList = ControlHelper.GetControlsExtended(Config);
-                dgvData.Rows.Clear();
+                
+                var controls = ASContext.Configuration.Controls.Where(c => c.Group == "DID" && c.Services.Contains(0x22));
+                ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txInterval);
+
+                foreach (var control in controls)
+                {
+                    ThreadSleep(int.Parse(txInterval));
+                    control.Transmit(ServiceInfo.ReadDataByIdentifier);
+                }
+
+                FormMain.EMCMonitoring = start;
+                btnStart.Text = start ? "Stop" : "Start";
+                btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
+
             }
             else
-                timer?.Stop();
+                FormMain.EMCMonitoring = start;
+                btnStart.Text = start ? "Stop" : "Start";
+                btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
+                //timer?.Stop();
 
-            FormMain.EMCMonitoring = start;
-            btnStart.Text = start ? "Stop" : "Start";
-            btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
+
+        }
+
+        /// <summary>
+        /// Pauses the thread for a specified duration.
+        /// </summary>
+        /// <param name="threadSleep">The time in milliseconds for the thread to sleep.</param>
+        private static void ThreadSleep(int threadSleep)
+        {
+            if (threadSleep > 0)
+                Thread.Sleep(threadSleep);
         }
 
         /// <summary>

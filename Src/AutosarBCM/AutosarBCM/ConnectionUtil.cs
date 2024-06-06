@@ -192,6 +192,17 @@ namespace AutosarBCM
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
 
+            //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
+
+            if (FormMain.EMCMonitoring)
+            {
+                AppendTrace(rxRead, time);
+                //Program.FormEMCView?.HandleResponse(data);
+                return;
+            }
+
+            
+
             ////HandleGeneralMessages(bytes);
 
             AppendTrace(rxRead, time);
@@ -323,12 +334,12 @@ namespace AutosarBCM
 
                     var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 
-                    if (FormMain.EMCMonitoring)
-                    {
-                        AppendTrace(rxRead, time);
-                        Program.FormEMCView?.HandleResponse(data);
-                        return;
-                    }
+                    //if (FormMain.EMCMonitoring)
+                    //{
+                    //    AppendTrace(rxRead, time);
+                    //    Program.FormEMCView?.HandleResponse(data);
+                    //    return;
+                    //}
 
                     //if (FormMain.ControlChecker)
                     //{
