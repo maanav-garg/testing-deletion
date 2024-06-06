@@ -170,10 +170,14 @@ namespace AutosarBCM.Forms.Monitor
         {
             //MonitorUtil.RunTestPeriodically(monitorConfig, cancellationToken, MonitorTestType.Generic);
         }
+        /// <summary>
+        /// Clear Previous ASConfiguration
+        /// </summary>
         public void ClearPreviousConfiguration()
         {
             pnlMonitorInput.Controls.Clear();
             groups.Clear();
+            uCItems.Clear();
         }
 
         /// <summary>
