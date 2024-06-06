@@ -8,7 +8,7 @@
     </Service>
     <Service requestID="22" responseID="62">
       <Name>ReadDataByIdentifier</Name>
-      <Sessions>01</Sessions>
+      <Sessions>01;03</Sessions>
       <ResponseIndex>3</ResponseIndex>
     </Service>
     <Service requestID="2F">
@@ -2096,8 +2096,8 @@
     <EnvironmentalConfig>
       <CycleTime>3000</CycleTime>
       <TxInterval>10</TxInterval>
-      <StartCycleIndex>16</StartCycleIndex>
-      <EndCycleIndex>90</EndCycleIndex>
+      <StartCycleIndex>1</StartCycleIndex>
+      <EndCycleIndex>20</EndCycleIndex>
       <PWMDutyOpenValue>100</PWMDutyOpenValue>
       <PWMDutyCloseValue>0</PWMDutyCloseValue>
       <PWMFreqOpenValue>200</PWMFreqOpenValue>
@@ -2110,8 +2110,8 @@
     </ContinousReadList>
     <ConnectionMappings>
       <Mapping>
-        <OutputName>DOOR_UNLOCK_RIGHT</OutputName>
-        <InputName>C5.10_HazardSwitch</InputName>
+        <Output parent="TCCM_Input">KL15Relay1</Output>
+        <Input parent="Horn_Switch">Horn Switch</Input>
       </Mapping>
     </ConnectionMappings>
     <Cycles>
