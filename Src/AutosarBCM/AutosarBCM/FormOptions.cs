@@ -6,6 +6,7 @@ using Connection.Hardware.Can;
 using Connection.Hardware.SP;
 using AutosarBCM.Properties;
 using System.Linq;
+using System.Collections.Specialized;
 
 namespace AutosarBCM
 {
@@ -166,6 +167,15 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            /// <summary>
+            /// Saving filtered data.
+            /// </summary>
+            Settings.Default.FilterData = new StringCollection();
+            foreach (var item in lbFilterPage.Items)
+            {
+                Settings.Default.FilterData.Add(item.ToString());
+            }
+
             // save fields
             Settings.Default.UserName = textBoxUserName.Text;
             Settings.Default.TransmitAdress = txtTransmitAdress.Text;

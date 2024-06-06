@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 using Connection.Hardware.Can;
+using System.Collections.Specialized;
 
 namespace AutosarBCM.Properties {
     
@@ -120,7 +121,19 @@ namespace AutosarBCM.Properties {
                 this["SerialStopBits"] = value;
             }
         }
-        
+
+        public StringCollection FilterData
+        {
+            get
+            {
+                return ((StringCollection)(this["FilterData"]));
+            }
+            set
+            {
+                this["FilterData"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("-1")]

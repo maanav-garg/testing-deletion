@@ -30,18 +30,18 @@ namespace AutosarBCM
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("General");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Tool", new System.Windows.Forms.TreeNode[] {
-            treeNode15});
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("General");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Serial Port");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Can Hardware");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("TX/RX Filter");
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Communication", new System.Windows.Forms.TreeNode[] {
-            treeNode17,
-            treeNode18,
-            treeNode19,
-            treeNode20});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Tool", new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Serial Port");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Can Hardware");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("TX/RX Filter");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Communication", new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode4,
+            treeNode5,
+            treeNode6});
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.loadTsmi = new System.Windows.Forms.ToolStripMenuItem();
@@ -201,23 +201,23 @@ namespace AutosarBCM
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Margin = new System.Windows.Forms.Padding(4);
             this.treeView.Name = "treeView";
-            treeNode15.Name = "NodeToolGeneral";
-            treeNode15.Text = "General";
-            treeNode16.Name = "NodeTool";
-            treeNode16.Text = "Tool";
-            treeNode17.Name = "NodeCommGeneral";
-            treeNode17.Text = "General";
-            treeNode18.Name = "NodeCommSerial";
-            treeNode18.Text = "Serial Port";
-            treeNode19.Name = "nodeCommCanHardware";
-            treeNode19.Text = "Can Hardware";
-            treeNode20.Name = "nodeFilter";
-            treeNode20.Text = "TX/RX Filter";
-            treeNode21.Name = "NodeComm";
-            treeNode21.Text = "Communication";
+            treeNode1.Name = "NodeToolGeneral";
+            treeNode1.Text = "General";
+            treeNode2.Name = "NodeTool";
+            treeNode2.Text = "Tool";
+            treeNode3.Name = "NodeCommGeneral";
+            treeNode3.Text = "General";
+            treeNode4.Name = "NodeCommSerial";
+            treeNode4.Text = "Serial Port";
+            treeNode5.Name = "nodeCommCanHardware";
+            treeNode5.Text = "Can Hardware";
+            treeNode6.Name = "nodeFilter";
+            treeNode6.Text = "TX/RX Filter";
+            treeNode7.Name = "NodeComm";
+            treeNode7.Text = "Communication";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode16,
-            treeNode21});
+            treeNode2,
+            treeNode7});
             this.treeView.ShowLines = false;
             this.treeView.Size = new System.Drawing.Size(276, 429);
             this.treeView.TabIndex = 0;
