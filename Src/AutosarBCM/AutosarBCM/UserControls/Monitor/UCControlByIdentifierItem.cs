@@ -83,7 +83,6 @@ namespace AutosarBCM.UserControls.Monitor
                 {
                     if (!isControlMaskActive || ucPayload.IsSelected)
                     {
-                        AddPwmValueIfValid(ucPayload, bytes);
                         bytes.AddRange(ucPayload.SelectedValue);
 
                         if (isControlMaskActive && ucPayload.IsSelected)
@@ -110,41 +109,6 @@ namespace AutosarBCM.UserControls.Monitor
 
             return bytes.ToArray();
         }
-
-        private void AddPwmValueIfValid(UCControlPayload ucPayload, List<byte> bytes)
-        {
-            if (ucPayload.PWMTextBox.Text != "000000")
-            {
-                if (int.TryParse(ucPayload.PWMTextBox.Text, out int pwmValue))
-                {
-                    byte[] pwmBytes = BitConverter.GetBytes((ushort)pwmValue);
-                    if (BitConverter.IsLittleEndian)
-                    {
-                        Array.Reverse(pwmBytes);
-                    }
-                    byte[] trimmedBytes = TrimLeadingZeros(pwmBytes);
-                    bytes.AddRange(trimmedBytes);
-                }
-                else
-                {
-                    bytes.AddRange(new byte[2]);
-                }
-            }
-        }
-        private byte[] TrimLeadingZeros(byte[] bytes)
-        {
-            int startIndex = Array.FindIndex(bytes, b => b != 0x00);
-
-            if (startIndex == -1)
-            {
-                return new byte[0];
-            }
-            byte[] trimmedBytes = new byte[bytes.Length - startIndex];
-            Array.Copy(bytes, startIndex, trimmedBytes, 0, bytes.Length - startIndex);
-
-            return trimmedBytes;
-        }
-
 
         #endregion
 

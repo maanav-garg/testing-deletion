@@ -50,6 +50,7 @@
             this.lblName.Size = new System.Drawing.Size(170, 20);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "label1";
+            this.lblName.Click += new System.EventHandler(this.lblName_Click);
             // 
             // lblStatus
             // 

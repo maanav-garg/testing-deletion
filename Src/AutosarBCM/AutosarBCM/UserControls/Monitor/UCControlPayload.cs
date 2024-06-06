@@ -28,6 +28,8 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 if (cmbValue.Visible)
                     return (cmbValue.SelectedItem as PayloadValue).Value;
+                else if (txtPwm.Visible)
+                    return AddPwmValueIfValid();
                 else
                     return TextBoxesToArray();
             }
@@ -39,7 +41,6 @@ namespace AutosarBCM.UserControls.Monitor
         public UCControlPayload(PayloadInfo payloadInfo, bool isControlMaskActive)
         {
             InitializeComponent();
-            PWMTextBox.TextChanged += new EventHandler(PWMTextBox_TextChanged);
             this.payloadInfo = payloadInfo;
             lblName.Text = payloadInfo.Name;
             chkSelected.Visible = isControlMaskActive;
@@ -64,7 +65,12 @@ namespace AutosarBCM.UserControls.Monitor
                 cmbValue.DataSource = info.Values;
                 cmbValue.DisplayMember = "FormattedValue";
             }
-            else
+            else if (info.TypeName == "DID_PWM")
+            {
+                txtPwm.Visible = true;
+                txtPwm.TextChanged += new EventHandler(PWMTextBox_TextChanged);
+            }
+            else 
             {
                 pnlHexBytes.Visible = true;
                 if (info.Length == 1)
@@ -72,27 +78,17 @@ namespace AutosarBCM.UserControls.Monitor
                 else if (info.Length == 2)
                     txtDataByte3.Visible = txtDataByte4.Visible = false;
             }
-            if (info.TypeName == "DID_PWM")
-            {
-                PWMTextBox.Visible= true;
-                txtDataByte1.Visible = false;
-                txtDataByte2.Visible = false;
-                txtDataByte3.Visible = false;
-                txtDataByte4.Visible = false;
-            }
-            else
-            {
-                PWMTextBox.Visible= false;
-            }
+            
+         
             
         }
         private void PWMTextBox_TextChanged(object sender, EventArgs e)
         {
             int value;
-            if (int.TryParse(PWMTextBox.Text, out value) && value > 10000)
+            if (int.TryParse(txtPwm.Text, out value) && value > 10000)
             {
-                PWMTextBox.Text = "10000"; 
-                PWMTextBox.SelectionStart = PWMTextBox.Text.Length;
+                txtPwm.Text = "10000"; 
+                txtPwm.SelectionStart = txtPwm.Text.Length;
             }
         }
         /// <summary>
@@ -147,6 +143,41 @@ namespace AutosarBCM.UserControls.Monitor
         private void TextBoxKeyPress(object sender, KeyPressEventArgs keyEventArgs)
         {
             keyEventArgs.Handled = !Helper.IsHexadecimal(keyEventArgs.KeyChar);
+        }
+
+        private byte[] AddPwmValueIfValid()
+        {
+            var bytes = new List<byte>();
+            
+            if (txtPwm.Text != "00000" && int.TryParse(txtPwm.Text, out int pwmValue))
+            {
+                byte[] pwmBytes = BitConverter.GetBytes((ushort)pwmValue);
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(pwmBytes);
+                }
+                byte[] trimmedBytes = TrimLeadingZeros(pwmBytes);
+                bytes.AddRange(trimmedBytes);
+            }
+            else
+            {
+                bytes.AddRange(new byte[2]);
+            }
+
+            return bytes.ToArray();
+        }
+        private byte[] TrimLeadingZeros(byte[] bytes)
+        {
+            int startIndex = Array.FindIndex(bytes, b => b != 0x00);
+
+            if (startIndex == -1)
+            {
+                return new byte[0];
+            }
+            byte[] trimmedBytes = new byte[bytes.Length - startIndex];
+            Array.Copy(bytes, startIndex, trimmedBytes, 0, bytes.Length - startIndex);
+
+            return trimmedBytes;
         }
 
         #endregion
