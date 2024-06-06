@@ -1,6 +1,8 @@
 ﻿<Configuration>
   <Settings>
     <Entry key="namesPadding" value="30" />
+	<Entry key="TxInterval" value="5" />
+	<Entry key="ReadInterval" value="5" />
   </Settings>
   <Services>
     <Service requestID="10">
@@ -25,6 +27,10 @@
     <Service requestID="11" responseID="51">
       <Name>ECUReset</Name>
     </Service>
+	<Service requestID="19" responseID="59">
+		<Name>ReadDtcInformation</Name>
+		<Sessions>01;03</Sessions>
+	</Service>
   </Services>
   <Sessions>
     <Session>
@@ -52,8 +58,8 @@
       <Services>22;2E</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Transmission" typeName="DID_DE00_0"></Payload>
-          <Payload name="Auto CAB Tilt" typeName="DID_Byte_Enable_Disable"></Payload>
+          <Payload name="Transmission" dtcCode="D005" typeName="DID_DE00_0"></Payload>
+          <Payload name="Auto CAB Tilt" dtcCode="9F0E" typeName="DID_Byte_Enable_Disable"></Payload>
           <Payload name="Differential Lock" typeName="DID_Byte_Enable_Disable"></Payload>
           <Payload name="Water Pump" typeName="DID_Byte_Present_notPresent"></Payload>
           <Payload name="Emission Level" typeName="DID_DE00_4"></Payload>
@@ -1632,7 +1638,8 @@
         <Response serviceId="6F"></Response>
       </Responses>
     </Control>
-    <Control>
+	  <!--Important: deactivated because there was no response in the control.-->
+	  <!--<Control>
       <Address>402A</Address>
       <Name>Vehicle_Battery_Voltage</Name>
       <Type></Type>
@@ -1652,7 +1659,7 @@
           <Payload name="Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
         </Response>
       </Responses>
-    </Control>
+    </Control>-->
     <Control>
       <Address>40C6</Address>
       <Name>Right_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
@@ -1840,7 +1847,8 @@
         <Response serviceId="6F"></Response>
       </Responses>
     </Control>
-    <Control>
+	<!--Important: deactivated because there was no response in the control.-->
+    <!--<Control>
       <Address>DD02</Address>
       <Name>Main_ECU_Voltage_Supply</Name>
       <Type></Type>
@@ -1848,11 +1856,12 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Main Ecu Voltage Supply" typeName="HexDump_1Byte"></Payload>
+          <Payload name="Main ECU Voltage Supply" typeName="HexDump_1Byte"></Payload>
         </Response>
       </Responses>
-    </Control>
-    <Control>
+    </Control>-->
+	<!--Important: deactivated because there was no response in the control.-->
+    <!--<Control>
       <Address>F166</Address>
       <Name>NOS_Message_Database</Name>
       <Type></Type>
@@ -1863,7 +1872,7 @@
           <Payload name="NOS Message Database #1 Version Number" typeName="DID_F166_0"></Payload>
         </Response>
       </Responses>
-    </Control>
+    </Control>-->
     <Control>
       <Address>40E8</Address>
       <Name>Right_Front_Low_Beam_Output_Control</Name>
@@ -1932,17 +1941,17 @@
   </Controls>
   <Payloads>
     <Payload length="1" typeName="DID_Byte_Enable_Disable">
-      <Value value="00">Disable</Value>
-      <Value value="01">Enable</Value>
+      <Value isClose="true" value="00">Disable</Value>
+      <Value isOpen="true" value="01">Enable</Value>
     </Payload>
     <Payload length="1" typeName="DID_Byte_Activate_Inactivate">
       <Value value="00">Null - No Control Active</Value>
-      <Value value="01" color="Green">Activate</Value>
-      <Value value="02">Inactivate</Value>
+      <Value isOpen="true" value="01" color="Green">Activate</Value>
+      <Value isClose="true" value="02">Inactivate</Value>
     </Payload>
     <Payload length="1" typeName="DID_Bytes_High_Low">
-      <Value value="00">Low</Value>
-      <Value value="01">High</Value>
+      <Value isClose="true" value="00">Low</Value>
+      <Value isOpen="true" value="01">High</Value>
     </Payload>
     <Payload length="1" typeName="DID_DE00_0">
       <Value value="00">AMT</Value>
@@ -1955,22 +1964,22 @@
       <Value value="03">Euro 7</Value>
     </Payload>
     <Payload length="1" typeName="DID_Byte_Present_notPresent">
-      <Value value="00" color="Red">Not Present</Value>
-      <Value value="01" color="Green">Present</Value>
+      <Value isClose="true" value="00" color="Red">Not Present</Value>
+      <Value isOpen="true" value="01" color="Green">Present</Value>
     </Payload>
     <Payload length="1" typeName="OnOffState">
-      <Value value="00">On</Value>
-      <Value value="01">Off</Value>
+      <Value isOpen="true" value="00">On</Value>
+      <Value isClose="true" value="01">Off</Value>
     </Payload>
     <Payload length="1" typeName="DID_Lamp_Status">
       <Value value="00">Null - Not Configured for LED Outage Detection</Value>
-      <Value value="01">Lamp On</Value>
-      <Value value="02">Lamp Off</Value>
+      <Value isOpen="true" value="01">Lamp On</Value>
+      <Value isClose="true" value="02">Lamp Off</Value>
     </Payload>
     <Payload length="1" typeName="DID_Byte_Lamp_Control">
       <Value value="00">Null - No Control Active</Value>
-      <Value value="01">Active</Value>
-      <Value value="02">Inactive</Value>
+      <Value isOpen="true" value="01">Active</Value>
+      <Value isClose="true" value="02">Inactive</Value>
       <Value value="03">Flash</Value>
     </Payload>
     <Payload length="1" typeName="DID_4253_0">
@@ -1980,51 +1989,51 @@
       <Value value="03">Fault</Value>
     </Payload>
     <Payload length="1" typeName="DID_42A0_0">
-      <Value value="01">Active</Value>
-      <Value value="02">Inactive</Value>
+      <Value isOpen="true" value="01">Active</Value>
+      <Value isClose="true" value="02">Inactive</Value>
       <Value value="03">Null - No Control Active</Value>
       <Value value="04">On</Value>
       <Value value="05">Off</Value>
       <Value value="06">Daytime Running Lamp</Value>
     </Payload>
     <Payload length="1" typeName="DID_40E8_0">
-      <Value value="01">Active</Value>
-      <Value value="02">Inactive</Value>
+      <Value isOpen="true" value="01">Active</Value>
+      <Value isClose="true" value="02">Inactive</Value>
       <Value value="03">VREG - The Right Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation</Value>
       <Value value="04">Daytime Running Light (DRL) - The Right Front Low Beam Circuit Is Pulse Width Modulating For DRL</Value>
     </Payload>
     <Payload length="1" typeName="DID_40E7_0">
-      <Value value="01">Active</Value>
-      <Value value="02">Inactive</Value>
+      <Value isOpen="true" value="01">Active</Value>
+      <Value isClose="true" value="02">Inactive</Value>
       <Value value="03">VREG - The Left Front Low Beam Circuit Is Pulse Width Modulating For Voltage Regulation</Value>
       <Value value="04">Daytime Running Light (DRL) - The Left Front Low Beam Circuit Is Pulse Width Modulating For DRL</Value>
     </Payload>
     <Payload length="1" typeName="DID_4255_Daytime_Running_Light">
       <Value value="00">Null</Value>
-      <Value value="01">On / Set On</Value>
-      <Value value="02">Off / Set Off</Value>
+      <Value isOpen="true" value="01">On / Set On</Value>
+      <Value isClose="true" value="02">Off / Set Off</Value>
     </Payload>
     <Payload length="1" typeName="DID_41EF_0">
       <Value value="00">Null - No Control Active</Value>
-      <Value value="01">Active</Value>
-      <Value value="02">Inactive</Value>
+      <Value isOpen="true" value="01">Active</Value>
+      <Value isClose="true" value="02">Inactive</Value>
     </Payload>
     <Payload length="1" typeName="DID_41F1_0">
       <Value value="00">Null - No Control Active</Value>
-      <Value value="01">Active</Value>
-      <Value value="02">Inactive</Value>
+      <Value isOpen="true" value="01">Active</Value>
+      <Value isClose="true" value="02">Inactive</Value>
     </Payload>
     <Payload length="1" typeName="DID_41EC_0">
       <Value value="00">Null - No Control Active</Value>
-      <Value value="01">Active</Value>
-      <Value value="02">Inactive</Value>
+      <Value isOpen="true" value="01">Active</Value>
+      <Value isClose="true" value="02">Inactive</Value>
       <Value value="03">Ramping</Value>
       <Value value="04">Flash</Value>
     </Payload>
     <Payload length="1" typeName="DID_41F3_0">
       <Value value="00">Null - No Control Active</Value>
-      <Value value="01" color="Green">Active</Value>
-      <Value value="02">Inactive</Value>
+      <Value isOpen="true" value="01" color="Green">Active</Value>
+      <Value isClose="true" value="02">Inactive</Value>
       <Value value="03">Ramping</Value>
       <Value value="04">Flash</Value>
     </Payload>
@@ -2048,12 +2057,12 @@
       <Value value="03">Dry_Wet Type</Value>
     </Payload>
     <Payload length="1" typeName="DID_Byte_On_Off">
-      <Value value="00" color="Red">Off</Value>
-      <Value value="01" color="Green">On</Value>
+      <Value isClose="true" value="00" color="Red">Off</Value>
+      <Value isOpen="true" value="01" color="Green">On</Value>
     </Payload>
     <Payload length="1" typeName="DID_Bits_On_Off">
-      <Value value="00" color="Red">Off</Value>
-      <Value value="01" color="Green">On</Value>
+      <Value isClose="true" value="00" color="Red">Off</Value>
+      <Value isOpen="true" value="01" color="Green">On</Value>
     </Payload>
     <Payload length="1" typeName="DID_DE08_7">
       <Value value="00">Tractor</Value>
@@ -2090,8 +2099,26 @@
     <Payload length="1" typeName="DID_DE06_3" />
     <Payload length="1" typeName="DID_DE0B_1" />
     <Payload length="1" typeName="Unsigned_2Bytes" />
-
   </Payloads>
+  <DTCFailureTypes>
+  	<Type value="11">Circuit Short To Ground</Type>
+  	<Type value="12">Circuit Short To Battery</Type>
+  	<Type value="13">Circuit Open</Type>
+  	<Type value="14">Circuit Short To Ground or Open</Type>
+  	<Type value="16">Circuit Voltage Below Threshold</Type>
+  	<Type value="17">Circuit Voltage Above Threshold</Type>
+  	<Type value="18">Circuit Current Below Threshold</Type>
+  	<Type value="19">Circuit Current Above Threshold</Type>
+  	<Type value="41">General Checksum Failure</Type>
+  	<Type value="42">General Memory Failure</Type>
+  	<Type value="43">Special Memory Failure</Type>
+  	<Type value="44">Data Memory Failure</Type>
+  	<Type value="4B">Over Temperature</Type>
+  	<Type value="63">Circuit / Component Protection Time-Out</Type>
+  	<Type value="87">Missing Message</Type>
+  	<Type value="88">Bus off</Type>
+  	<Type value="F0">Manufacturer Defined</Type>
+  </DTCFailureTypes>
   <EnvironmentalTest>
     <EnvironmentalConfig>
       <CycleTime>3000</CycleTime>
@@ -2121,21 +2148,28 @@
         <CloseAt>5</CloseAt>
         <Functions>
           <FuncName parent="TCCM_Input">KL15Relay1</FuncName>
-          <FuncName>C4.47_StartStopFunction12VLED</FuncName>
-          <FuncName>C5.37_DoorLockIndicatorSupply</FuncName>
-          <FuncName>C2.15_TrailerLeftSupply</FuncName>
-          <FuncName>C2.12_TrailerRightSupply</FuncName>
-          <FuncName>C1.16_RearParkingLightTrailerSupply</FuncName>
-          <FuncName>C2.4_RearFogLampsSupply</FuncName>
           <FuncName parent="TCCM_Input">KL15Relay2</FuncName>
-          <FuncName>C1.15_LowBeamLeftSupply</FuncName>
-          <FuncName>C2.1_FogLampFrontRightSupply</FuncName>
-          <FuncName>C1.17_FogLampFrontLeftSupply</FuncName>
           <FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
-          <FuncName>C3.17_InteriorLightDimmingSupply</FuncName>
-          <FuncName>C3.14_LowBeamRightSupply</FuncName>
-          <FuncName>C3.4_FrontParkingLightSupply</FuncName>
-          <FuncName>C2.9_DDRLSupplyLeft</FuncName>
+        </Functions>
+      </Cycle>
+	  <Cycle>
+        <Name>SoftContinuous 2</Name>
+        <OpenAt>6</OpenAt>
+        <CloseAt>11</CloseAt>
+        <Functions>
+          <FuncName parent="TCCM_Input">KL15Relay1</FuncName>
+          <FuncName parent="TCCM_Input">KL15Relay2</FuncName>
+          <FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+        </Functions>
+      </Cycle>
+	  <Cycle>
+        <Name>SoftContinuous 3</Name>
+        <OpenAt>12</OpenAt>
+        <CloseAt>18</CloseAt>
+        <Functions>
+          <FuncName parent="TCCM_Input">KL15Relay1</FuncName>
+          <FuncName parent="TCCM_Input">KL15Relay2</FuncName>
+          <FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
         </Functions>
       </Cycle>
     </Cycles>

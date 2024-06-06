@@ -359,8 +359,8 @@ namespace AutosarBCM
             this.tabPage2.ImageIndex = 4;
             this.tabPage2.Location = new System.Drawing.Point(4, 23);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(1409, 716);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Size = new System.Drawing.Size(1409, 717);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Trace";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -369,10 +369,10 @@ namespace AutosarBCM
             // 
             this.txtTrace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTrace.Location = new System.Drawing.Point(2, 29);
-            this.txtTrace.Margin = new System.Windows.Forms.Padding(2);
+            this.txtTrace.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtTrace.Name = "txtTrace";
             this.txtTrace.ReadOnly = true;
-            this.txtTrace.Size = new System.Drawing.Size(1405, 685);
+            this.txtTrace.Size = new System.Drawing.Size(1405, 686);
             this.txtTrace.TabIndex = 10;
             this.txtTrace.Text = "";
             // 
@@ -516,7 +516,6 @@ namespace AutosarBCM
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(55, 24);
             this.btnStart.Text = "Start";
-            this.btnStart.Visible = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // btnClear
@@ -593,7 +592,6 @@ namespace AutosarBCM
             // tspFilterTxb
             // 
             this.tspFilterTxb.Enabled = false;
-            this.tspFilterTxb.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tspFilterTxb.Name = "tspFilterTxb";
             this.tspFilterTxb.Size = new System.Drawing.Size(76, 27);
             this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);
@@ -732,7 +730,6 @@ namespace AutosarBCM
         private TabPage tabPage3;
         private ToolStrip toolStrip3;
         private ToolStripButton tsbMonitorLoad;
-        private WeifenLuo.WinFormsUI.Docking.DockPanel dockMonitor;
         private ToolStripComboBox cmbTestType;
         private ToolStripLabel toolStripLabel1;
         private ToolStripButton btnStart;
@@ -763,6 +760,7 @@ namespace AutosarBCM
         public ToolStripMenuItem activeToolStripMenuItem;
         public ToolStripMenuItem inactiveToolStripMenuItem;
         private ToolStripMenuItem environmentalTestTsmi;
+        internal WeifenLuo.WinFormsUI.Docking.DockPanel dockMonitor;
     }
 }
 

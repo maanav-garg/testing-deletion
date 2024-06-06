@@ -15,6 +15,7 @@ using AutosarBCM.Common;
 using AutosarBCM.Properties;
 using AutosarBCM.Core;
 using Connection.Protocol.Uds;
+using AutosarBCM.Config;
 
 namespace AutosarBCM
 {
@@ -149,6 +150,13 @@ namespace AutosarBCM
             if (e.Data[0] == 0x3E)
                 return;
 
+            if (e.Data[0] == 0x22)
+            {
+                var response = new ASResponse(e.Data).Parse();
+                foreach (var receiver in FormMain.Receivers)
+                    if (receiver.Receive(response)) break;
+            }
+
             var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
@@ -159,17 +167,40 @@ namespace AutosarBCM
 
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
         {
+            var service = new ASResponse(e.Data).Parse();
 
-            // Tester present
-            if (e.Data[0] == 0x7E)
+            if (service?.ServiceInfo == ServiceInfo.TesterPresent)
                 return;
 
-            if (e.Data[0] == 0x62)
+            if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
             {
-                var response = ASResponse.Parse(e.Data);
-                foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Receive(response)) break;
+                foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
+                    if (receiver.Receive(service)) break;
             }
+            else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation)
+            {
+                foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
+                    if (receiver.Receive(service)) break;
+            }
+
+            if (e.Data[0] == 0x50)
+            {
+                FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+
+                    formInput.SessionFiltering();
+
+            }
+            if (e.Data[0] == 0x7F)
+            {
+                if (e.Data[1] == 0x10)
+                {
+                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                        formInput.DisabledAllSession();
+                }
+            }
+
             var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
@@ -453,14 +484,6 @@ namespace AutosarBCM
         /// <param name="e">A reference to the FrameRead event's arguments.</param>
         internal void Hardware_FrameRead(object sender, CanFrameEventArgs e)
         {
-            if (e.Data[1] == 0x62 || e.Data[1] == 0x6F)
-            {
-                var response = ASResponse.Parse(e.Data);
-                foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Receive(response)) return;
-            }
-
-
             ////if (e.Data.Length % 8 != 0)
             ////    return;
 

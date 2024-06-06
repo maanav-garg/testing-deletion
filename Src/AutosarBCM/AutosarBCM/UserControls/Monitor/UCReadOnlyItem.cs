@@ -124,7 +124,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         /// <param name="monitorItem">Monitor item to be updated</param>
         /// <param name="inputResponse">Data comes from device</param>
-        public void ChangeStatus(ASResponse response)
+        public void ChangeStatus(ReadDataByIdenService service)
         {
             //UpdateCounters(messageDirection);
             //if (messageDirection == MessageDirection.TX) return;
@@ -133,7 +133,7 @@ namespace AutosarBCM.UserControls.Monitor
 
             lblStatus.BeginInvoke((MethodInvoker)delegate ()
             {
-                var payload = response.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+                var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
                 lblStatus.Text = payload.FormattedValue;
             });
         }
