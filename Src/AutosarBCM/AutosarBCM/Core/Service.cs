@@ -9,6 +9,8 @@ namespace AutosarBCM.Core
 {
     public class Service
     {
+        public ASResponse Response { get; set; }
+
         public ServiceInfo ServiceInfo { get; set; }
 
         public Service(ServiceInfo serviceInfo)
@@ -41,6 +43,7 @@ namespace AutosarBCM.Core
 
             service.ControlInfo = ASContext.Configuration.GetControlByAddress(BitConverter.ToUInt16(response.Data.Skip(1).Take(2).Reverse().ToArray(), 0));
             service.Payloads = service.ControlInfo.GetPayloads(service.ServiceInfo, response.Data);
+            service.Response = response;
             return service;
         }
     }
