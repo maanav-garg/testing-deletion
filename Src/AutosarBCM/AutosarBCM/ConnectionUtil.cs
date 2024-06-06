@@ -16,6 +16,8 @@ using AutosarBCM.Properties;
 using AutosarBCM.Core;
 using Connection.Protocol.Uds;
 using AutosarBCM.Config;
+using System.Collections.Specialized;
+using System.Runtime.InteropServices;
 
 namespace AutosarBCM
 {
@@ -161,8 +163,8 @@ namespace AutosarBCM
             var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
 
-            AppendTrace(txRead, time, Color.Black);
-
+            if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
+                AppendTrace(txRead, time, Color.Black);
         }
 
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
@@ -207,8 +209,12 @@ namespace AutosarBCM
 
             ////HandleGeneralMessages(bytes);
 
-            AppendTrace(rxRead, time);
-            AppendTraceRx(rxRead, time);
+            if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
+            {
+                AppendTrace(rxRead, time);
+                AppendTraceRx(rxRead, time);
+            }
+            
 
         }
 

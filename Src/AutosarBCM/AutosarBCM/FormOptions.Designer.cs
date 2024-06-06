@@ -999,7 +999,6 @@ namespace AutosarBCM
             this.lbFilterPage.Name = "lbFilterPage";
             this.lbFilterPage.Size = new System.Drawing.Size(168, 276);
             this.lbFilterPage.TabIndex = 0;
-            this.lbFilterPage.SelectedIndexChanged += new System.EventHandler(this.lbFilterPage_SelectedIndexChanged);
             // 
             // panel1
             // 

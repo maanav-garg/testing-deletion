@@ -70,6 +70,11 @@ namespace AutosarBCM
             numFlushToFile.Value = Settings.Default.FlushToFile;
             numRollingAfter.Value = Settings.Default.RollingAfter;
             txtFilePath.Text = Settings.Default.TraceFilePath;
+            foreach (var item in Settings.Default.FilterData)
+            {
+                lbFilterPage.Items.Add(item.ToString());
+            }
+
 
             if (Settings.Default.IntrepidDevice != null)
             {
@@ -167,9 +172,6 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            /// <summary>
-            /// Saving filtered data.
-            /// </summary>
             Settings.Default.FilterData = new StringCollection();
             foreach (var item in lbFilterPage.Items)
             {
@@ -332,20 +334,6 @@ namespace AutosarBCM
             {
                 e.Handled = true;
             }
-        }
-
-        /// <summary>
-        /// Handles item changing event.
-        /// </summary>
-        /// <param name="sender">button</param>
-        /// <param name="e">argument</param>
-        private void lbFilterPage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lbFilterPage.SelectedItem != null)
-            {
-                string selectedItem = lbFilterPage.SelectedItem.ToString();
-            }
-
         }
     }
     #endregion
