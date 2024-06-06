@@ -91,7 +91,7 @@ namespace AutosarBCM.UserControls.Monitor
                         {
                             //bytes.Add(ucPayload.SelectedValue);
                             bytes.AddRange(ucPayload.SelectedValue);
-                            controlByte |= (byte)(1 << (7 - bitIndex));
+                            controlByte |= (byte)(1 << bitIndex);
                         }
                         else
                             bytes.Add(0x0);

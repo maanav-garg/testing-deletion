@@ -1241,7 +1241,6 @@ namespace AutosarBCM
 
         private void tsbSession_Click(object sender, EventArgs e)
         {
-            //TODO to be commented out
             if (!ConnectionUtil.CheckConnection())
                 return;
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
