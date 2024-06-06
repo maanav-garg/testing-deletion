@@ -51,8 +51,11 @@ namespace AutosarBCM
 
             // load fields
             textBoxUserName.Text = Settings.Default.UserName;
-            textBoxProject.Text = Settings.Default.ProjectName;
-
+            txtTransmitAdress.Text = Settings.Default.TransmitAdress;
+            txtReceiveAdress.Text = Settings.Default.ReceiveAdress;
+            txtBlockSize.Text = Settings.Default.BlockSize;
+            txtStMin.Text = Settings.Default.StMin;
+            txtPaddingByte.Text = Settings.Default.PaddingByte;
             cmbSerialPortType.SelectedItem = Settings.Default.SerialPortType;
             txtPort.Text = Settings.Default.SerialPort;
             numBaudRate.Value = Settings.Default.SerialBaudRate;
@@ -159,8 +162,11 @@ namespace AutosarBCM
         {
             // save fields
             Settings.Default.UserName = textBoxUserName.Text;
-            Settings.Default.ProjectName = textBoxProject.Text;
-
+            Settings.Default.TransmitAdress = txtTransmitAdress.Text;
+            Settings.Default.ReceiveAdress = txtReceiveAdress.Text;
+            Settings.Default.BlockSize = txtBlockSize.Text;
+            Settings.Default.StMin = txtStMin.Text;
+            Settings.Default.PaddingByte = txtPaddingByte.Text;
             Settings.Default.SerialPortType = (SerialPortType)cmbSerialPortType.SelectedItem;
             Settings.Default.SerialPort = txtPort.Text;
             Settings.Default.SerialBaudRate = (int)numBaudRate.Value;

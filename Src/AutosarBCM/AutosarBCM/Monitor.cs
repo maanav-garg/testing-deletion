@@ -40,6 +40,7 @@ namespace AutosarBCM
         /// Filter items to show by sessions
         /// </summary>
         void SessionFiltering();
+        void DisabledAllSession();
     }
 
     /// <summary>
