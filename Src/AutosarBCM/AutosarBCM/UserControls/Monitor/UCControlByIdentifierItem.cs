@@ -34,7 +34,7 @@ namespace AutosarBCM.UserControls.Monitor
         {
             pnlControls.Controls.Clear();
             btnSend.Visible = true;
-            lblError.Visible= false;
+            lblError.Visible = false;
 
             this.ucItem = ucItem;
             lblName.Text = $"{ucItem.ControlInfo.Group}-{ucItem.ControlInfo.Name}";
@@ -54,7 +54,7 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 var ucPayload = new UCControlPayload(payload, isControlMaskActive);
                 ucPayload.BorderStyle = BorderStyle.FixedSingle;
-                ucPayload.Anchor = AnchorStyles.Top| AnchorStyles.Left;
+                ucPayload.Anchor = AnchorStyles.Top | AnchorStyles.Left;
                 pnlControls.Controls.Add(ucPayload);
             }
         }
@@ -73,37 +73,78 @@ namespace AutosarBCM.UserControls.Monitor
         private byte[] PrepareControlData()
         {
             byte controlByte = 0x0;
-            var bitIndex = 0;
+            int bitIndex = 0;
 
-            var bytes = new List<byte>();
-            bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
+            var bytes = new List<byte> { (byte)InputControlParameter.ShortTermAdjustment };
+
             foreach (var uc in pnlControls.Controls)
             {
                 if (uc is UCControlPayload ucPayload)
                 {
-                    if (!isControlMaskActive)
+                    if (!isControlMaskActive || ucPayload.IsSelected)
                     {
+                        AddPwmValueIfValid(ucPayload, bytes);
                         bytes.AddRange(ucPayload.SelectedValue);
-                    }
-                    else
-                    {
-                        if (ucPayload.IsSelected)
+
+                        if (isControlMaskActive && ucPayload.IsSelected)
                         {
-                            //bytes.Add(ucPayload.SelectedValue);
-                            bytes.AddRange(ucPayload.SelectedValue);
-                            controlByte |= (byte)(1 << bitIndex);
+                            controlByte |= (byte)(1 << (bitIndex));
                         }
-                        else
-                            bytes.Add(0x0);
+                    }
+                    else if (isControlMaskActive)
+                    {
+                        bytes.Add(0x0);
+                    }
+
+                    if (isControlMaskActive)
+                    {
                         bitIndex++;
                     }
-                    
                 }
             }
-            if(isControlMaskActive)
+
+            if (isControlMaskActive)
+            {
                 bytes.Add(controlByte);
+            }
+
             return bytes.ToArray();
         }
+
+        private void AddPwmValueIfValid(UCControlPayload ucPayload, List<byte> bytes)
+        {
+            if (ucPayload.PWMTextBox.Text != "000000")
+            {
+                if (int.TryParse(ucPayload.PWMTextBox.Text, out int pwmValue))
+                {
+                    byte[] pwmBytes = BitConverter.GetBytes((ushort)pwmValue);
+                    if (BitConverter.IsLittleEndian)
+                    {
+                        Array.Reverse(pwmBytes);
+                    }
+                    byte[] trimmedBytes = TrimLeadingZeros(pwmBytes);
+                    bytes.AddRange(trimmedBytes);
+                }
+                else
+                {
+                    bytes.AddRange(new byte[2]);
+                }
+            }
+        }
+        private byte[] TrimLeadingZeros(byte[] bytes)
+        {
+            int startIndex = Array.FindIndex(bytes, b => b != 0x00);
+
+            if (startIndex == -1)
+            {
+                return new byte[0];
+            }
+            byte[] trimmedBytes = new byte[bytes.Length - startIndex];
+            Array.Copy(bytes, startIndex, trimmedBytes, 0, bytes.Length - startIndex);
+
+            return trimmedBytes;
+        }
+
 
         #endregion
 

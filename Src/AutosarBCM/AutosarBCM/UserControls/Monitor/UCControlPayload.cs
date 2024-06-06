@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -38,6 +39,7 @@ namespace AutosarBCM.UserControls.Monitor
         public UCControlPayload(PayloadInfo payloadInfo, bool isControlMaskActive)
         {
             InitializeComponent();
+            PWMTextBox.TextChanged += new EventHandler(PWMTextBox_TextChanged);
             this.payloadInfo = payloadInfo;
             lblName.Text = payloadInfo.Name;
             chkSelected.Visible = isControlMaskActive;
@@ -55,6 +57,7 @@ namespace AutosarBCM.UserControls.Monitor
         private void LoadControl()
         {
             var info = ASContext.Configuration.GetPayloadInfoByType(payloadInfo.TypeName);
+    
             if (info.Values?.Count > 0)
             {
                 cmbValue.Visible = true;
@@ -69,9 +72,29 @@ namespace AutosarBCM.UserControls.Monitor
                 else if (info.Length == 2)
                     txtDataByte3.Visible = txtDataByte4.Visible = false;
             }
+            if (info.TypeName == "DID_PWM")
+            {
+                PWMTextBox.Visible= true;
+                txtDataByte1.Visible = false;
+                txtDataByte2.Visible = false;
+                txtDataByte3.Visible = false;
+                txtDataByte4.Visible = false;
+            }
+            else
+            {
+                PWMTextBox.Visible= false;
+            }
             
         }
-
+        private void PWMTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int value;
+            if (int.TryParse(PWMTextBox.Text, out value) && value > 10000)
+            {
+                PWMTextBox.Text = "10000"; 
+                PWMTextBox.SelectionStart = PWMTextBox.Text.Length;
+            }
+        }
         /// <summary>
         /// Parses the values of the message data from each TextBox and returns the result as an array of bytes.
         /// </summary>
@@ -79,7 +102,6 @@ namespace AutosarBCM.UserControls.Monitor
         private byte[] TextBoxesToArray()
         {
             var data = new List<byte>();
-
             data.Add(byte.Parse(txtDataByte1.Text, System.Globalization.NumberStyles.AllowHexSpecifier));
             if(txtDataByte2.Visible)
                 data.Add(byte.Parse(txtDataByte2.Text, System.Globalization.NumberStyles.AllowHexSpecifier));

@@ -32,6 +32,7 @@
             this.chkSelected = new System.Windows.Forms.CheckBox();
             this.cmbValue = new System.Windows.Forms.ComboBox();
             this.pnlHexBytes = new System.Windows.Forms.Panel();
+            this.PWMTextBox = new System.Windows.Forms.MaskedTextBox();
             this.txtDataByte4 = new System.Windows.Forms.TextBox();
             this.txtDataByte3 = new System.Windows.Forms.TextBox();
             this.txtDataByte2 = new System.Windows.Forms.TextBox();
@@ -43,18 +44,20 @@
             // 
             this.lblName.AutoSize = true;
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblName.Location = new System.Drawing.Point(24, 10);
+            this.lblName.Location = new System.Drawing.Point(32, 12);
+            this.lblName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(41, 13);
+            this.lblName.Size = new System.Drawing.Size(52, 17);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "label1";
             // 
             // chkSelected
             // 
             this.chkSelected.AutoSize = true;
-            this.chkSelected.Location = new System.Drawing.Point(3, 9);
+            this.chkSelected.Location = new System.Drawing.Point(4, 11);
+            this.chkSelected.Margin = new System.Windows.Forms.Padding(4);
             this.chkSelected.Name = "chkSelected";
-            this.chkSelected.Size = new System.Drawing.Size(15, 14);
+            this.chkSelected.Size = new System.Drawing.Size(18, 17);
             this.chkSelected.TabIndex = 1;
             this.chkSelected.UseVisualStyleBackColor = true;
             // 
@@ -63,31 +66,44 @@
             this.cmbValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbValue.FormattingEnabled = true;
-            this.cmbValue.Location = new System.Drawing.Point(211, 6);
+            this.cmbValue.Location = new System.Drawing.Point(281, 7);
+            this.cmbValue.Margin = new System.Windows.Forms.Padding(4);
             this.cmbValue.Name = "cmbValue";
-            this.cmbValue.Size = new System.Drawing.Size(121, 21);
+            this.cmbValue.Size = new System.Drawing.Size(160, 24);
             this.cmbValue.TabIndex = 2;
             this.cmbValue.Visible = false;
             // 
             // pnlHexBytes
             // 
+            this.pnlHexBytes.Controls.Add(this.PWMTextBox);
             this.pnlHexBytes.Controls.Add(this.txtDataByte4);
             this.pnlHexBytes.Controls.Add(this.txtDataByte3);
             this.pnlHexBytes.Controls.Add(this.txtDataByte2);
             this.pnlHexBytes.Controls.Add(this.txtDataByte1);
-            this.pnlHexBytes.Location = new System.Drawing.Point(231, 0);
+            this.pnlHexBytes.Location = new System.Drawing.Point(308, 0);
+            this.pnlHexBytes.Margin = new System.Windows.Forms.Padding(4);
             this.pnlHexBytes.Name = "pnlHexBytes";
-            this.pnlHexBytes.Size = new System.Drawing.Size(101, 34);
+            this.pnlHexBytes.Size = new System.Drawing.Size(135, 42);
             this.pnlHexBytes.TabIndex = 3;
             this.pnlHexBytes.Visible = false;
+            // 
+            // PWMTextBox
+            // 
+            this.PWMTextBox.Location = new System.Drawing.Point(14, 6);
+            this.PWMTextBox.Mask = "00000";
+            this.PWMTextBox.Name = "PWMTextBox";
+            this.PWMTextBox.Size = new System.Drawing.Size(105, 22);
+            this.PWMTextBox.TabIndex = 4;
+            this.PWMTextBox.Text = "00000";
+            this.PWMTextBox.ValidatingType = typeof(int);
             // 
             // txtDataByte4
             // 
             this.txtDataByte4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtDataByte4.Location = new System.Drawing.Point(75, 6);
-            this.txtDataByte4.Margin = new System.Windows.Forms.Padding(2);
+            this.txtDataByte4.Location = new System.Drawing.Point(100, 7);
+            this.txtDataByte4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDataByte4.Name = "txtDataByte4";
-            this.txtDataByte4.Size = new System.Drawing.Size(22, 20);
+            this.txtDataByte4.Size = new System.Drawing.Size(28, 22);
             this.txtDataByte4.TabIndex = 78;
             this.txtDataByte4.Text = "00";
             this.txtDataByte4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -98,10 +114,10 @@
             // txtDataByte3
             // 
             this.txtDataByte3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtDataByte3.Location = new System.Drawing.Point(51, 6);
-            this.txtDataByte3.Margin = new System.Windows.Forms.Padding(2);
+            this.txtDataByte3.Location = new System.Drawing.Point(68, 7);
+            this.txtDataByte3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDataByte3.Name = "txtDataByte3";
-            this.txtDataByte3.Size = new System.Drawing.Size(22, 20);
+            this.txtDataByte3.Size = new System.Drawing.Size(28, 22);
             this.txtDataByte3.TabIndex = 77;
             this.txtDataByte3.Text = "00";
             this.txtDataByte3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -112,10 +128,10 @@
             // txtDataByte2
             // 
             this.txtDataByte2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtDataByte2.Location = new System.Drawing.Point(27, 6);
-            this.txtDataByte2.Margin = new System.Windows.Forms.Padding(2);
+            this.txtDataByte2.Location = new System.Drawing.Point(36, 7);
+            this.txtDataByte2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDataByte2.Name = "txtDataByte2";
-            this.txtDataByte2.Size = new System.Drawing.Size(22, 20);
+            this.txtDataByte2.Size = new System.Drawing.Size(28, 22);
             this.txtDataByte2.TabIndex = 76;
             this.txtDataByte2.Text = "00";
             this.txtDataByte2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -126,10 +142,10 @@
             // txtDataByte1
             // 
             this.txtDataByte1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtDataByte1.Location = new System.Drawing.Point(2, 6);
-            this.txtDataByte1.Margin = new System.Windows.Forms.Padding(2);
+            this.txtDataByte1.Location = new System.Drawing.Point(3, 7);
+            this.txtDataByte1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDataByte1.Name = "txtDataByte1";
-            this.txtDataByte1.Size = new System.Drawing.Size(22, 20);
+            this.txtDataByte1.Size = new System.Drawing.Size(28, 22);
             this.txtDataByte1.TabIndex = 75;
             this.txtDataByte1.Text = "00";
             this.txtDataByte1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -139,14 +155,15 @@
             // 
             // UCControlPayload
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlHexBytes);
+            this.Controls.Add(this.cmbValue);
             this.Controls.Add(this.chkSelected);
             this.Controls.Add(this.lblName);
-            this.Controls.Add(this.cmbValue);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "UCControlPayload";
-            this.Size = new System.Drawing.Size(335, 34);
+            this.Size = new System.Drawing.Size(447, 42);
             this.pnlHexBytes.ResumeLayout(false);
             this.pnlHexBytes.PerformLayout();
             this.ResumeLayout(false);
@@ -164,5 +181,6 @@
         internal System.Windows.Forms.TextBox txtDataByte3;
         internal System.Windows.Forms.TextBox txtDataByte2;
         internal System.Windows.Forms.TextBox txtDataByte1;
+        internal System.Windows.Forms.MaskedTextBox PWMTextBox;
     }
 }
