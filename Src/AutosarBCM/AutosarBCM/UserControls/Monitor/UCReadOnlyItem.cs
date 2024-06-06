@@ -124,7 +124,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         /// <param name="monitorItem">Monitor item to be updated</param>
         /// <param name="inputResponse">Data comes from device</param>
-        public void ChangeStatus(ReadDataByIdenService service)
+        public void ChangeStatus(IOControlByIdentifierService service)
         {
             //UpdateCounters(messageDirection);
             //if (messageDirection == MessageDirection.TX) return;
