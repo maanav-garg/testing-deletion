@@ -348,7 +348,15 @@ namespace AutosarBCM.UserControls.Monitor
         {
             lbResponse.Items.Clear();
             lbResponse.Items.AddRange(ControlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
+            oldValue = null;
+            lblTransmitted.Text = lblReceived.Text = "0";
+            MessageTransmitted = MessageReceived = 0;            
+        }
 
+        private void UCItem_Load(object sender, EventArgs e)
+        {
+            ToolTip ToolTip1 = new ToolTip();
+            ToolTip1.SetToolTip(this.btnUCClear, "Clear");
         }
     }
 
