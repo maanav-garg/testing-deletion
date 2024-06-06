@@ -348,10 +348,9 @@ namespace AutosarBCM.UserControls.Monitor
         {
             lbResponse.Items.Clear();
             lbResponse.Items.AddRange(ControlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
-            lblTransmitted.Text = "0";
-            lblReceived.Text = "0";
-            MessageTransmitted = 0;
-            MessageReceived = 0;
+            oldValue = null;
+            lblTransmitted.Text = lblReceived.Text = "0";
+            MessageTransmitted = MessageReceived = 0;            
         }
 
         private void UCItem_Load(object sender, EventArgs e)
