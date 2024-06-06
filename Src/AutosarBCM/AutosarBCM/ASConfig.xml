@@ -1,6 +1,8 @@
 ﻿<Configuration>
   <Settings>
     <Entry key="namesPadding" value="30" />
+	<Entry key="TxInterval" value="5" />
+	<Entry key="ReadInterval" value="5" />
   </Settings>
   <Services>
     <Service requestID="10">
@@ -25,6 +27,10 @@
     <Service requestID="11" responseID="51">
       <Name>ECUReset</Name>
     </Service>
+	<Service requestID="19" responseID="59">
+		<Name>ReadDtcInformation</Name>
+		<Sessions>01;03</Sessions>
+	</Service>
   </Services>
   <Sessions>
     <Session>
@@ -52,8 +58,8 @@
       <Services>22;2E</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Transmission" typeName="DID_DE00_0"></Payload>
-          <Payload name="Auto CAB Tilt" typeName="DID_Byte_Enable_Disable"></Payload>
+          <Payload name="Transmission" dtcCode="D005" typeName="DID_DE00_0"></Payload>
+          <Payload name="Auto CAB Tilt" dtcCode="9F0E" typeName="DID_Byte_Enable_Disable"></Payload>
           <Payload name="Differential Lock" typeName="DID_Byte_Enable_Disable"></Payload>
           <Payload name="Water Pump" typeName="DID_Byte_Present_notPresent"></Payload>
           <Payload name="Emission Level" typeName="DID_DE00_4"></Payload>
@@ -1632,7 +1638,8 @@
         <Response serviceId="6F"></Response>
       </Responses>
     </Control>
-    <Control>
+	  <!--Important: deactivated because there was no response in the control.-->
+	  <!--<Control>
       <Address>402A</Address>
       <Name>Vehicle_Battery_Voltage</Name>
       <Type></Type>
@@ -1652,7 +1659,7 @@
           <Payload name="Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
         </Response>
       </Responses>
-    </Control>
+    </Control>-->
     <Control>
       <Address>40C6</Address>
       <Name>Right_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
@@ -1840,7 +1847,8 @@
         <Response serviceId="6F"></Response>
       </Responses>
     </Control>
-    <Control>
+	<!--Important: deactivated because there was no response in the control.-->
+    <!--<Control>
       <Address>DD02</Address>
       <Name>Main_ECU_Voltage_Supply</Name>
       <Type></Type>
@@ -1848,11 +1856,12 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Main Ecu Voltage Supply" typeName="HexDump_1Byte"></Payload>
+          <Payload name="Main ECU Voltage Supply" typeName="HexDump_1Byte"></Payload>
         </Response>
       </Responses>
-    </Control>
-    <Control>
+    </Control>-->
+	<!--Important: deactivated because there was no response in the control.-->
+    <!--<Control>
       <Address>F166</Address>
       <Name>NOS_Message_Database</Name>
       <Type></Type>
@@ -1863,7 +1872,7 @@
           <Payload name="NOS Message Database #1 Version Number" typeName="DID_F166_0"></Payload>
         </Response>
       </Responses>
-    </Control>
+    </Control>-->
     <Control>
       <Address>40E8</Address>
       <Name>Right_Front_Low_Beam_Output_Control</Name>
@@ -2090,8 +2099,26 @@
     <Payload length="1" typeName="DID_DE06_3" />
     <Payload length="1" typeName="DID_DE0B_1" />
     <Payload length="1" typeName="Unsigned_2Bytes" />
-
   </Payloads>
+  <DTCFailureTypes>
+  	<Type value="11">Circuit Short To Ground</Type>
+  	<Type value="12">Circuit Short To Battery</Type>
+  	<Type value="13">Circuit Open</Type>
+  	<Type value="14">Circuit Short To Ground or Open</Type>
+  	<Type value="16">Circuit Voltage Below Threshold</Type>
+  	<Type value="17">Circuit Voltage Above Threshold</Type>
+  	<Type value="18">Circuit Current Below Threshold</Type>
+  	<Type value="19">Circuit Current Above Threshold</Type>
+  	<Type value="41">General Checksum Failure</Type>
+  	<Type value="42">General Memory Failure</Type>
+  	<Type value="43">Special Memory Failure</Type>
+  	<Type value="44">Data Memory Failure</Type>
+  	<Type value="4B">Over Temperature</Type>
+  	<Type value="63">Circuit / Component Protection Time-Out</Type>
+  	<Type value="87">Missing Message</Type>
+  	<Type value="88">Bus off</Type>
+  	<Type value="F0">Manufacturer Defined</Type>
+  </DTCFailureTypes>
   <EnvironmentalTest>
     <EnvironmentalConfig>
       <CycleTime>3000</CycleTime>

@@ -126,17 +126,27 @@ namespace AutosarBCM
                 {
                     if (monitorTestType == MonitorTestType.Generic)
                     {
-                        //var inputMonitorItems = monitorConfig.GenericMonitorConfiguration.InputSection.Groups.SelectMany(i => i.InputItemList).ToList();
-                        //var txInterval = monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.TxInterval;
-                        //var readInterval = monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.ReadInterval;
+                        var genericMonitorItems = ASContext.Configuration.Controls.Where(c=> c.Group == "DID" && c.Services.Contains((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER));
+                        ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txInterval);
+                        ASContext.Configuration.Settings.TryGetValue("ReadInterval", out string readInterval);
 
-                        //while (!cancellationToken.IsCancellationRequested)
-                        //{
-                        //    foreach (var item in inputMonitorItems)
-                        //        item.Transmit(txInterval);
+                        while (!cancellationToken.IsCancellationRequested)
+                        {
+                            foreach (var item in genericMonitorItems)
+                            {
+                                
+                                bool defaultSessionMatch = item.Services.Any(service => ASContext.CurrentSession.AvailableServices.Contains(service));
+                                bool activeExceptionMatch = item.SessionActiveException.Any(exception => exception == ASContext.CurrentSession.ID);
+                                bool inactiveExceptionMatch = item.SessionInactiveException.Any(exception => exception == ASContext.CurrentSession.ID);
 
-                        //    ThreadSleep(readInterval);
-                        //}
+                                if (((defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch) )
+                                {
+                                    ThreadSleep(int.Parse(txInterval));
+                                    item.Transmit(ServiceInfo.ReadDataByIdentifier);
+                                }
+                            }
+                            ThreadSleep(int.Parse(readInterval));
+                        }
                     }
                     else if (monitorTestType == MonitorTestType.Environmental)
                     {

@@ -50,7 +50,6 @@
             this.lblName.Size = new System.Drawing.Size(160, 20);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "label1";
-            this.lblName.Click += new System.EventHandler(this.lblName_Click);
             // 
             // lblStatus
             // 
@@ -61,10 +60,10 @@
             this.lblStatus.TabIndex = 1;
             this.lblStatus.Text = "-";
             this.lblStatus.Visible = false;
-            this.lblStatus.Click += new System.EventHandler(this.lblStatus_Click);
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label1.Location = new System.Drawing.Point(268, 6);
@@ -75,6 +74,7 @@
             // 
             // lblTransmitted
             // 
+            this.lblTransmitted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTransmitted.AutoSize = true;
             this.lblTransmitted.Location = new System.Drawing.Point(281, 13);
             this.lblTransmitted.Name = "lblTransmitted";
@@ -84,6 +84,7 @@
             // 
             // lblReceived
             // 
+            this.lblReceived.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblReceived.AutoSize = true;
             this.lblReceived.Location = new System.Drawing.Point(326, 13);
             this.lblReceived.Name = "lblReceived";
@@ -93,6 +94,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label2.Location = new System.Drawing.Point(311, 6);
@@ -112,6 +114,7 @@
             // 
             // btnRead
             // 
+            this.btnRead.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRead.Location = new System.Drawing.Point(216, 9);
             this.btnRead.Name = "btnRead";
             this.btnRead.Size = new System.Drawing.Size(46, 23);
