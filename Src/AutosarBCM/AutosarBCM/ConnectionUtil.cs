@@ -177,6 +177,11 @@ namespace AutosarBCM
                 foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
                     if (receiver.Receive(service)) break;
             }
+            else if (service.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
+            {
+                foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
+                    if (receiver.Receive(service)) break;
+            }
             else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())

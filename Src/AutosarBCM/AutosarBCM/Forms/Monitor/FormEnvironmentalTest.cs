@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace AutosarBCM.Forms.Monitor
 {
-    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IReceiver
+    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver
     {
 
         #region Variables
@@ -169,7 +169,7 @@ namespace AutosarBCM.Forms.Monitor
 
         public bool Receive(Service baseService)
         {
-            var service = (ReadDataByIdenService)baseService;
+            var service = (IOControlByIdentifierService)baseService;
             var items = groups[service.ControlInfo.Name];
             foreach (var uc in items)
             {

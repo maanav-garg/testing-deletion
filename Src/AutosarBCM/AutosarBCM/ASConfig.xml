@@ -16,7 +16,7 @@
     <Service requestID="2F">
       <Name>InputOutputControlByIdentifier</Name>
       <Sessions>03</Sessions>
-      <ResponseIndex>3</ResponseIndex>
+      <ResponseIndex>4</ResponseIndex>
     </Service>
     <Service requestID="2E">
       <Name>WriteDataByIdentifier</Name>

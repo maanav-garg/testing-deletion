@@ -13,6 +13,7 @@ namespace AutosarBCM.Core
         bool Receive(Service service);
     }
 
+    internal interface IIOControlByIdenReceiver : IReceiver { }
     internal interface IReadDataByIdenReceiver : IReceiver { }
     internal interface IDTCReceiver : IReceiver { }
 
