@@ -215,7 +215,7 @@ namespace AutosarBCM.UserControls.Monitor
         public void ChangeStatus(ReadDataByIdenService service)
         {
             // Check if the message is transmitted successfully (0x22 value received)
-            bool isTransmitted = service.ServiceInfo.RequestID.Equals((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER);
+            bool isTransmitted = service.Response.Data[0].Equals((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER);
 
 
             if (isTransmitted)

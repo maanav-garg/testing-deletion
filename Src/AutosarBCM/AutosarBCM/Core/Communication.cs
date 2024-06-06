@@ -62,7 +62,7 @@ namespace AutosarBCM.Core
         {
             if (Data[0] == 0x7E) return TesterPresent.Receive(this);
             else if (Data[0] == 0x59) return ReadDTCInformationService.Receive(this);
-            else if (Data[0] == 0x62) return ReadDataByIdenService.Receive(this);
+            else if (Data[0] == 0x62 || Data[0] == 0x22) return ReadDataByIdenService.Receive(this);
 
             return null;
         }
