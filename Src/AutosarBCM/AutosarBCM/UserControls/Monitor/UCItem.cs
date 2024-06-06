@@ -93,7 +93,7 @@ namespace AutosarBCM.UserControls.Monitor
         public void ChangeStatus(ASResponse response)
         {
             // Check if the message is transmitted successfully (0x22 value received)
-            bool isTransmitted = response.ServiceID.Equals(0x22);
+            bool isTransmitted = response.ServiceID.Equals((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER);
 
             
             if (isTransmitted)
