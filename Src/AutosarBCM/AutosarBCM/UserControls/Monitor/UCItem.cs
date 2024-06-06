@@ -93,9 +93,9 @@ namespace AutosarBCM.UserControls.Monitor
         public void ChangeStatus(ASResponse response)
         {
             // Check if the message is transmitted successfully (0x22 value received)
-            //bool isTransmitted = response.Payloads.Any(payload => payload.FormattedValue == "0x22");
+            bool isTransmitted = response.ServiceID.Equals(0x22);
 
-            /*
+            
             if (isTransmitted)
             {
                 // Increment messageTransmitted value
@@ -106,9 +106,9 @@ namespace AutosarBCM.UserControls.Monitor
                 {
                     lblTransmitted.Text = MessageTransmitted.ToString();
                 });
-            }*/
-            //else
-            //{
+            }
+            else
+            {
                 lblReceived.BeginInvoke((MethodInvoker)delegate ()
                 {
                     MessageReceived++;
@@ -137,16 +137,15 @@ namespace AutosarBCM.UserControls.Monitor
                 }
 
                 oldValue = response;
-            //}
-             
+
+                lblStatus.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    lbResponse.Items.Clear();
+                    lbResponse.Items.AddRange(response.Payloads.ToArray());
+                });
+            }
              
             
-
-            lblStatus.BeginInvoke((MethodInvoker)delegate ()
-            {
-                lbResponse.Items.Clear();
-                lbResponse.Items.AddRange(response.Payloads.ToArray());
-            });
         }
 
         /// <summary>
