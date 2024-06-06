@@ -163,7 +163,7 @@ namespace AutosarBCM
         internal static bool EMCMonitoring;
 
         internal static List<IReceiver> Receivers = new List<IReceiver>();
-        internal ASContext ASContext = new ASContext(null);
+        internal static ASContext ASContext;
 
         private TesterPresent TesterPresent;
         private ECUReset ECUReset;

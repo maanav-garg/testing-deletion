@@ -53,10 +53,6 @@
             this.grpType = new System.Windows.Forms.GroupBox();
             this.rdoInput = new System.Windows.Forms.RadioButton();
             this.dgvInput = new System.Windows.Forms.DataGridView();
-            this.Column15 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.numInterval = new System.Windows.Forms.NumericUpDown();
             this.lblInterval = new System.Windows.Forms.Label();
             this.grpOrder = new System.Windows.Forms.GroupBox();
@@ -65,6 +61,11 @@
             this.rdoVertical = new System.Windows.Forms.RadioButton();
             this.rdoHorizontal = new System.Windows.Forms.RadioButton();
             this.lblOrderNote = new System.Windows.Forms.Label();
+            this.Column15 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOutput)).BeginInit();
             this.grpType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInput)).BeginInit();
@@ -325,6 +326,7 @@
             this.Column15,
             this.Column12,
             this.Column14,
+            this.Column16,
             this.Column13});
             this.dgvInput.Location = new System.Drawing.Point(12, 76);
             this.dgvInput.Name = "dgvInput";
@@ -332,37 +334,6 @@
             this.dgvInput.Size = new System.Drawing.Size(1530, 567);
             this.dgvInput.TabIndex = 9;
             this.dgvInput.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_CellMouseClick);
-            // 
-            // Column15
-            // 
-            this.Column15.FillWeight = 9.979669F;
-            this.Column15.HeaderText = "";
-            this.Column15.Name = "Column15";
-            this.Column15.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // Column12
-            // 
-            this.Column12.FillWeight = 127.7397F;
-            this.Column12.HeaderText = "Name";
-            this.Column12.Name = "Column12";
-            this.Column12.ReadOnly = true;
-            this.Column12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column14
-            // 
-            this.Column14.FillWeight = 127.7397F;
-            this.Column14.HeaderText = "Type";
-            this.Column14.Name = "Column14";
-            this.Column14.ReadOnly = true;
-            this.Column14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column13
-            // 
-            this.Column13.FillWeight = 127.7397F;
-            this.Column13.HeaderText = "Value";
-            this.Column13.Name = "Column13";
-            this.Column13.ReadOnly = true;
-            this.Column13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // numInterval
             // 
@@ -475,6 +446,46 @@
             this.lblOrderNote.TabIndex = 12;
             this.lblOrderNote.Text = "Note:";
             // 
+            // Column15
+            // 
+            this.Column15.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Column15.FillWeight = 96.51904F;
+            this.Column15.HeaderText = "";
+            this.Column15.MinimumWidth = 39;
+            this.Column15.Name = "Column15";
+            this.Column15.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column15.Width = 39;
+            // 
+            // Column12
+            // 
+            this.Column12.FillWeight = 103.3683F;
+            this.Column12.HeaderText = "DID Name";
+            this.Column12.Name = "Column12";
+            this.Column12.ReadOnly = true;
+            this.Column12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column14
+            // 
+            this.Column14.FillWeight = 103.3683F;
+            this.Column14.HeaderText = "Control";
+            this.Column14.Name = "Column14";
+            this.Column14.ReadOnly = true;
+            this.Column14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column16
+            // 
+            this.Column16.FillWeight = 80.92103F;
+            this.Column16.HeaderText = "Data";
+            this.Column16.Name = "Column16";
+            // 
+            // Column13
+            // 
+            this.Column13.FillWeight = 103.3683F;
+            this.Column13.HeaderText = "Value";
+            this.Column13.Name = "Column13";
+            this.Column13.ReadOnly = true;
+            this.Column13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // FormControlChecker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -490,13 +501,14 @@
             this.Controls.Add(this.txtFilter);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnStart);
-            this.Controls.Add(this.dgvOutput);
             this.Controls.Add(this.dgvInput);
+            this.Controls.Add(this.dgvOutput);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1000, 450);
             this.Name = "FormControlChecker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Control Checker";
+            this.Load += new System.EventHandler(this.FormControlChecker_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOutput)).EndInit();
             this.grpType.ResumeLayout(false);
             this.grpType.PerformLayout();
@@ -538,15 +550,16 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.NumericUpDown numInterval;
         private System.Windows.Forms.Label lblInterval;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Column15;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
         private System.Windows.Forms.GroupBox grpOrder;
         private System.Windows.Forms.NumericUpDown numWaitTime;
         private System.Windows.Forms.Label lblWaitTime;
         private System.Windows.Forms.RadioButton rdoVertical;
         private System.Windows.Forms.RadioButton rdoHorizontal;
         private System.Windows.Forms.Label lblOrderNote;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
     }
 }

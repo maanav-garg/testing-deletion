@@ -623,11 +623,20 @@ namespace AutosarBCM.Config
 
         #endregion
     }
+    //public class Controls
+    //{
+    //    public string Name { get; set; }
 
-    /// <summary>
-    /// Tx Response class
-    /// </summary>
-    public class Response
+    //    public string Address { get; set; }
+    //    public string Group { get; set; }
+    //    public string Services { get; set; }
+    //}
+
+
+        /// <summary>
+        /// Tx Response class
+        /// </summary>
+        public class Response
     {
         #region Properties
 
