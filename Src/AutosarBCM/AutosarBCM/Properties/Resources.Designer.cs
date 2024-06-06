@@ -263,6 +263,16 @@ namespace AutosarBCM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dtc {
+            get {
+                object obj = ResourceManager.GetObject("dtc", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap EditWindow {
             get {
                 object obj = ResourceManager.GetObject("EditWindow", resourceCulture);
