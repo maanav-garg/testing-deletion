@@ -24,22 +24,22 @@ namespace AutosarBCM
         #region Variables
 
         /// <summary>
-        /// A reference to the MonitorConfiguration instance representing the config file.
-        /// </summary>
-        private AutosarBcmConfiguration Config;
-
-        /// <summary>
-        /// A list of all controls from the config file
-        /// </summary>
-        private List<ControlInfo> ControlList;
-
-        /// <summary>
         /// A reference to the timer that updates the time elapsed
         /// </summary>
-        //private Timer timer;
-        public Core.ControlInfo ControlInfo { get; set; }
-
-        private ASContext ASContext;
+        private System.Windows.Forms.Timer timer;
+        public Core.ControlInfo emcTimeControl { get; set; }
+        /// <summary>
+        /// Keeps the relation with dtc and it's parent control
+        /// </summary>
+        private Dictionary<string, Core.ControlInfo> dtcList = new Dictionary<string, Core.ControlInfo>();
+        /// <summary>
+        /// Keeps the values of DID payloads. It will be used to determine the changed data
+        /// </summary>
+        private Dictionary<string, string> payloadValueList = new Dictionary<string, string>();
+        /// <summary>
+        /// Keeps the values of DTC values. It will be used to determine the changed data
+        /// </summary>
+        private Dictionary<string, string> dtcValueList = new Dictionary<string, string>();
 
         #endregion
 
@@ -51,11 +51,36 @@ namespace AutosarBCM
         public FormEMCView()
         {
             InitializeComponent();
+
+            if (ASContext.Configuration == null)
+            {
+                Helper.ShowWarningMessageBox("Please, load the configuration file first.");
+                return;
+            }
+            InitializeLists();
         }
 
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// Initializes the data structures
+        /// </summary>
+        private void InitializeLists()
+        {
+            foreach (var control in ASContext.Configuration.Controls)
+            {
+                foreach (var payload in control.Responses?[0].Payloads)
+                {
+                    payloadValueList[payload.Name] = string.Empty;
+                    if (string.IsNullOrEmpty(payload.DTCCode))
+                        continue;
+                    dtcList[payload.DTCCode] = control;
+                    dtcValueList[payload.DTCCode] = string.Empty;
+                }
+            }
+        }
 
         /// <summary>
         /// Handles the Click event of the btnSave control and exports the data to a CSV file.
@@ -85,6 +110,9 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments.</param>
         private void btnStart_Click(object sender, EventArgs e)
         {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+
             Start(!FormMain.EMCMonitoring);
         }
 
@@ -97,45 +125,39 @@ namespace AutosarBCM
             FormMain.EMCMonitoring = start;
             btnStart.Text = start ? "Stop" : "Start";
             btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
+            //TODO düzeltilecek
+            emcTimeControl = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == "EMC");
             Task.Run(() =>
             {
                 try
                 {
-
                     if (start)
                     {
-
-                        //if (!ConnectionUtil.CheckConnection())
-                        //   return;
-
-                        //if (Config == null)
-                        //{ Helper.ShowWarningMessageBox("Please, load the configuration file first."); return; }
-
-                        //timer = new Timer() { Interval = 60000 };
-                        //timer.Tick += (s, e) => { new UdsMessage() { Id = Config.CommonConfig.MessageID, Data = Config.CommonConfig.EMCLifecycle }.Transmit(); };
-                        //timer.Start();
-
-                        
-
+                        timer = new System.Windows.Forms.Timer() { Interval = 60000 };
+                        timer.Tick += (s, e) => { emcTimeControl.Transmit(ServiceInfo.ReadDataByIdentifier); };
+                        timer.Start();
 
                         var controls = ASContext.Configuration.Controls.Where(c => c.Group == "DID" && c.Services.Contains(0x22));
                         ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txInterval);
 
-                        foreach (var control in controls)
+                        while (FormMain.EMCMonitoring)
                         {
+                            foreach (var control in controls)
+                            {
+                                ThreadSleep(int.Parse(txInterval));
+                                control.Transmit(ServiceInfo.ReadDataByIdentifier);
+                            }
                             ThreadSleep(int.Parse(txInterval));
-                            control.Transmit(ServiceInfo.ReadDataByIdentifier);
+                            new ReadDTCInformationService().Transmit();
                         }
-
-                        
-
                     }
                     else
-                        FormMain.EMCMonitoring = start;
+                    {
+                        FormMain.EMCMonitoring = false;
+                        timer?.Stop();
+                    }
                     btnStart.Text = start ? "Stop" : "Start";
                     btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
-                    //timer?.Stop();
-
                 }
                 finally
                 {
@@ -156,16 +178,16 @@ namespace AutosarBCM
         /// <summary>
         /// Adds a new row to the DataGridView based on the specified parameters.
         /// </summary>
-        /// <param name="item">A reference to the ControlInfo instance.</param>
-        /// <param name="response">A reference to the GenericResponse instance.</param>
-        /// <param name="diagValue">The diagnostic value if applicable.</param>
-        /// <param name="adcValue">The ADC value if applicable.</param>
+        /// <param name="control">A reference to the ControlInfo instance.</param>
+        /// <param name="payload">A reference to the PayloadInfo instance.</param>
+        /// <param name="controlValue">The Control value if applicable.</param>
+        /// <param name="dtcValue">The DTC value if applicable.</param>
         /// <returns>true if the row was added successfully; otherwise, false.</returns>
-        private bool AddDataRow(ControlInfo item, GenericResponse response, string diagValue, string adcValue, string currentValue)
+        private bool AddDataRow(Core.ControlInfo control, Core.PayloadInfo payload, string controlValue, string dtcValue)
         {
             Invoke(new Action(() =>
             {
-                dgvData.FirstDisplayedScrollingRowIndex = dgvData.Rows.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), BitConverter.ToString(response.RawData), item?.Name, item?.Output.ItemType, diagValue, adcValue, currentValue);
+                dgvData.FirstDisplayedScrollingRowIndex = dgvData.Rows.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), control?.Name, payload?.Name, controlValue, dtcValue);
             }));
             return true;
         }
@@ -181,51 +203,88 @@ namespace AutosarBCM
         }
 
         /// <summary>
-        /// Handles the Click event of the btnImport control and imports the data from a CSV file.
+        /// Handles the response received for DID and adds a new row to the DataGridView based on the response.
         /// </summary>
-        /// <param name="sender">A reference to the btnImport instance.</param>
-        /// <param name="e">A reference to the event's arguments.</param>
-        private void btnImport_Click(object sender, EventArgs e)
+        /// <param name="service">A reference to the response as a byte array.</param>
+        private void HandleDidReadResponse(Service service)
         {
-            using (OpenFileDialog dialog = new OpenFileDialog() { Filter = "Xml|*.xml" })
-                if (dialog.ShowDialog() == DialogResult.OK)
-                    Config = MonitorConfigManager.GetConfig(dialog.FileName).Configuration;
-        }
-
-        #endregion
-
-        #region Internal Methods
-
-        /// <summary>
-        /// Handles the response received and adds a new row to the DataGridView based on the response.
-        /// </summary>
-        /// <param name="responseArray">A reference to the response as a byte array.</param>
-        /// <returns>true if the row was added successfully; otherwise, false.</returns>
-        internal void HandleResponse(ReadDataByIdenService response)
-        {
-            Invoke(new Action(() =>
+            if (service is ReadDataByIdenService readService && readService.Response.IsPositiveRx)
             {
-                foreach (var payload in response.Payloads)
+                if (readService.ControlInfo.Address == emcTimeControl.Address)
                 {
-                    dgvData.Rows.Add("", "", response.ControlInfo.Name, payload.PayloadInfo.Name, payload.FormattedValue, "");
+                    IsInformativeRX(readService.Payloads.FirstOrDefault());
                 }
 
-            }));
+                foreach (var payload in readService.Payloads)
+                {
+                    //Check for changed data
+                    if (payloadValueList[payload.PayloadInfo.Name] != payload.FormattedValue)
+                    {
+                        AddDataRow(readService.ControlInfo, payload.PayloadInfo, payload.FormattedValue, "");
+                        payloadValueList[payload.PayloadInfo.Name] = payload.FormattedValue;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles the response received for DTC and adds a new row to the DataGridView based on the response.
+        /// </summary>
+        /// <param name="service">A reference to the response as a byte array.</param>
+        private void HandleDtcResponse(Service service)
+        {
+            if (service is ReadDTCInformationService dtcService && dtcService.Response.IsPositiveRx)
+            {
+                foreach (var dtcValue in dtcService.Values)
+                {
+                    if (!dtcList.ContainsKey(dtcValue.Code))
+                        continue;
+                    var control = dtcList[dtcValue.Code];
+                    var payload = control.Responses?[0].Payloads.First(p => p.DTCCode == dtcValue.Code);
+                    if (payload == null)
+                        continue;
+                    //Check for changed data
+                    if (dtcValueList[dtcValue.Code] != dtcValue.Description)
+                    {
+                        AddDataRow(control, payload, "", dtcValue.Description);
+                        dtcValueList[dtcValue.Code] = dtcValue.Description;
+                    }
+                }
+            }
         }
 
         /// <summary>
         /// Determines whether the specified response is an informative RX message
         /// </summary>
-        /// <param name="response">A reference to the response to be checked</param>
+        /// <param name="payload">A reference to the payload to be checked</param>
         /// <returns>True if the response is an informative RX message; otherwise, false</returns>
-        private bool IsInformativeRX(GenericResponse response)
+        private bool IsInformativeRX(Payload payload)
         {
-            if (Config.CommonConfig.EMCLifecycle.Skip(2).Take(2).SequenceEqual(response.RawData.Skip(4).Take(2)))
-            {
-                lblElapsedTime.Text = TimeSpan.FromMinutes(BitConverter.ToInt16(response.RawData, 8)).ToString(@"hh\:mm\:ss\.fff");
-                return true;
-            }
+            //TODO to be checked
+            lblElapsedTime.Text = payload.FormattedValue;
+            //if (Config.CommonConfig.EMCLifecycle.Skip(2).Take(2).SequenceEqual(response.RawData.Skip(4).Take(2)))
+            //{
+            //    lblElapsedTime.Text = TimeSpan.FromMinutes(BitConverter.ToInt16(response.RawData, 8)).ToString(@"hh\:mm\:ss\.fff");
+            //    return true;
+            //}
             return false;
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Handles the response received and adds a new row to the DataGridView based on the response.
+        /// </summary>
+        /// <param name="service">A reference to the response as a byte array.</param>
+        internal void HandleResponse(Service service)
+        {
+            if (!(service is ReadDataByIdenService || service is ReadDTCInformationService))
+                return;
+
+            HandleDidReadResponse(service);
+            HandleDtcResponse(service);
         }
 
         #endregion

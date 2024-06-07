@@ -5,7 +5,7 @@
 	<Entry key="ReadInterval" value="5" />
   </Settings>
   <Services>
-    <Service requestID="10">
+    <Service requestID="10" responseID="50">
       <Name>DiagnosticSessionControl</Name>
     </Service>
     <Service requestID="22" responseID="62">
@@ -13,12 +13,12 @@
       <Sessions>01</Sessions>
       <ResponseIndex>3</ResponseIndex>
     </Service>
-    <Service requestID="2F">
+    <Service requestID="2F" responseID="6F">
       <Name>InputOutputControlByIdentifier</Name>
       <Sessions>03</Sessions>
       <ResponseIndex>4</ResponseIndex>
     </Service>
-    <Service requestID="2E">
+    <Service requestID="2E" responseID="6E">
       <Name>WriteDataByIdentifier</Name>
     </Service>
     <Service requestID="3E" responseID="7E">

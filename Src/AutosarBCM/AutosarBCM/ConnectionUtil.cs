@@ -169,6 +169,18 @@ namespace AutosarBCM
         {
             var service = new ASResponse(e.Data).Parse();
 
+            var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
+            var time = new DateTime((long)e.Timestamp);
+
+
+            if (FormMain.EMCMonitoring)
+            {
+                AppendTrace(rxRead, time);
+                Program.FormEMCView?.HandleResponse(service);
+                return;
+            }
+
             if (service?.ServiceInfo == ServiceInfo.TesterPresent)
                 return;
 
@@ -188,7 +200,7 @@ namespace AutosarBCM
                     if (receiver.Receive(service)) break;
             }
 
-            if (e.Data[0] == 0x50)
+            if (service?.ServiceInfo == ServiceInfo.DiagnosticSessionControl)
             {
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
@@ -206,20 +218,9 @@ namespace AutosarBCM
                 }
             }
 
-            var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
-            var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
-            var time = new DateTime((long)e.Timestamp);
+           
 
             //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
-
-            if (FormMain.EMCMonitoring)
-            {
-                AppendTrace(rxRead, time);
-                Program.FormEMCView?.HandleResponse(service);
-                return;
-            }
-
-            
 
             ////HandleGeneralMessages(bytes);
 
