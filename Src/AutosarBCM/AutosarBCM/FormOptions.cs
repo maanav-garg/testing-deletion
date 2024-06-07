@@ -5,6 +5,8 @@ using Connection.Hardware;
 using Connection.Hardware.Can;
 using Connection.Hardware.SP;
 using AutosarBCM.Properties;
+using System.Linq;
+using System.Collections.Specialized;
 
 namespace AutosarBCM
 {
@@ -32,7 +34,7 @@ namespace AutosarBCM
             InitializeComponent();
             Icon = Helper.GetIconFromImage(Resources.gear_16xLG);
 
-            canChannelDict.Add(CSnet.eNETWORK_ID.NETID_HSCAN.ToString(),(int)CSnet.eNETWORK_ID.NETID_HSCAN);
+            canChannelDict.Add(CSnet.eNETWORK_ID.NETID_HSCAN.ToString(), (int)CSnet.eNETWORK_ID.NETID_HSCAN);
             cmbSerialPortType.DataSource = Enum.GetValues(typeof(SerialPortType));
         }
 
@@ -68,8 +70,13 @@ namespace AutosarBCM
             numFlushToFile.Value = Settings.Default.FlushToFile;
             numRollingAfter.Value = Settings.Default.RollingAfter;
             txtFilePath.Text = Settings.Default.TraceFilePath;
-            
-            if(Settings.Default.IntrepidDevice != null)
+            foreach (var item in Settings.Default.FilterData)
+            {
+                lbFilterPage.Items.Add(item.ToString());
+            }
+
+
+            if (Settings.Default.IntrepidDevice != null)
             {
                 tabCanHardware_cmbBitRate.SelectedItem = Settings.Default.IntrepidDevice.BitRate;
                 tabCanHardware_cmbNetworkId.SelectedItem = Settings.Default.IntrepidDevice.NetworkID;
@@ -99,6 +106,7 @@ namespace AutosarBCM
                 tabControl.TabPages.Add(tabPageProp2);
                 tabControl.TabPages.Add(tabSerialPort);
                 tabControl.TabPages.Add(tabCanHardware);
+                tabControl.TabPages.Add(tabFilterPage);
             }
 
             SelectTabPage(e.Node.Name);
@@ -125,6 +133,8 @@ namespace AutosarBCM
                     tabControl.SelectTab(tabSerialPort); break;
                 case "nodeCommCanHardware":
                     tabControl.SelectTab(tabCanHardware); break;
+                case "nodeFilter":
+                    tabControl.SelectTab(tabFilterPage); break;
                 default:
                     break;
             }
@@ -148,6 +158,8 @@ namespace AutosarBCM
                     tabControl.SelectTab(tabSerialPort); break;
                 case "nodeCommCanHardware":
                     tabControl.SelectTab(tabCanHardware); break;
+                case "nodeFilter":
+                    tabControl.SelectTab(tabFilterPage); break;
                 default:
                     break;
             }
@@ -160,6 +172,12 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            Settings.Default.FilterData = new StringCollection();
+            foreach (var item in lbFilterPage.Items)
+            {
+                Settings.Default.FilterData.Add(item.ToString());
+            }
+
             // save fields
             Settings.Default.UserName = textBoxUserName.Text;
             Settings.Default.TransmitAdress = txtTransmitAdress.Text;
@@ -186,7 +204,7 @@ namespace AutosarBCM
                 NetworkID = string.IsNullOrWhiteSpace(tabCanHardware_cmbNetworkId.Text) ? (uint)CSnet.eNETWORK_ID.NETID_DEVICE : Convert.ToUInt32(Enum.Parse(typeof(CSnet.eNETWORK_ID), tabCanHardware_cmbNetworkId.Text))
             };
 
-            var kvaserDevice = new KvaserCan() 
+            var kvaserDevice = new KvaserCan()
             {
                 BitRate = Convert.ToUInt32(string.IsNullOrWhiteSpace(tabCanHardware_cmbKvaserBitRate.Text) ? "0" : tabCanHardware_cmbKvaserBitRate.Text)
             };
@@ -256,6 +274,67 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void exportTsmi_Click(object sender, EventArgs e) { }
 
-        #endregion
+
+        /// <summary>
+        /// Handles "Clear" button click event.
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">argument</param>
+        private void btnClearFilter_Click(object sender, EventArgs e)
+        {
+            lbFilterPage.Items.Clear();
+        }
+
+        /// <summary>
+        /// Handles "Delete" button click event.
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">argument</param>
+        private void btnDeleteFilter_Click(object sender, EventArgs e)
+        {
+            lbFilterPage.Items.Remove(lbFilterPage.SelectedItem);
+        }
+
+        /// <summary>
+        /// Handles "Add" button click event.
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">argument</param>
+        private void btnAddFilter_Click(object sender, EventArgs e)
+        {
+            string input = tbFilter.Text;
+
+            // Check if the input length is 1 to 3 characters and contains only letters or digits
+            if (input.Length >= 1 && input.Length <= 3 && input.All(Uri.IsHexDigit))
+            {
+                this.lbFilterPage.Items.Add(input);
+                tbFilter.Text = string.Empty;  // Clear the TextBox after adding the item
+            }
+            else
+            {
+                MessageBox.Show("Please enter a string with 1 to 3 alphanumeric characters.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Handles changing text box event.
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">argument</param>
+        private void tbFilter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Allow control keys (e.g., backspace)
+            if (char.IsControl(e.KeyChar))
+            {
+                return;
+            }
+
+            // Allow only letters and digits, and limit the length to 3 characters
+            if (!Uri.IsHexDigit(e.KeyChar) || tbFilter.Text.Length >= 3)
+            {
+                e.Handled = true;
+            }
+        }
     }
+    #endregion
 }

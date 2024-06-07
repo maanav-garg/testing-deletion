@@ -68,5 +68,8 @@
     <Setting Name="PaddingByte" Type="System.String" Scope="User">
       <Value Profile="(Default)">0x00</Value>
     </Setting>
+    <Setting Name="FilterData" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
