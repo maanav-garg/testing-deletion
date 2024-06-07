@@ -1,4 +1,6 @@
-﻿namespace AutosarBCM
+﻿using System.Windows.Forms;
+
+namespace AutosarBCM
 {
     partial class FormOptions
     {
@@ -34,10 +36,12 @@
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("General");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Serial Port");
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Can Hardware");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Communication", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("TX/RX Filter");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Communication", new System.Windows.Forms.TreeNode[] {
             treeNode3,
             treeNode4,
-            treeNode5});
+            treeNode5,
+            treeNode6});
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.loadTsmi = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,6 +104,12 @@
             this.tabCanHardware_cmbKvaserBitRate = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tabCanHardware_cmbDevice = new System.Windows.Forms.ComboBox();
+            this.tabFilterPage = new System.Windows.Forms.TabPage();
+            this.btnAddFilter = new System.Windows.Forms.Button();
+            this.tbFilter = new System.Windows.Forms.TextBox();
+            this.btnClearFilter = new System.Windows.Forms.Button();
+            this.btnDeleteFilter = new System.Windows.Forms.Button();
+            this.lbFilterPage = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
@@ -123,6 +133,7 @@
             this.flowLayoutPanel1.SuspendLayout();
             this.tabCanHardware_grpIntrepid.SuspendLayout();
             this.tabCanHardware_grpKvaser.SuspendLayout();
+            this.tabFilterPage.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -167,7 +178,7 @@
             // 
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer.Location = new System.Drawing.Point(0, 24);
-            this.splitContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer.Name = "splitContainer";
             // 
             // splitContainer.Panel1
@@ -188,7 +199,7 @@
             this.treeView.FullRowSelect = true;
             this.treeView.HideSelection = false;
             this.treeView.Location = new System.Drawing.Point(0, 0);
-            this.treeView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeView.Margin = new System.Windows.Forms.Padding(4);
             this.treeView.Name = "treeView";
             treeNode1.Name = "NodeToolGeneral";
             treeNode1.Text = "General";
@@ -200,11 +211,13 @@
             treeNode4.Text = "Serial Port";
             treeNode5.Name = "nodeCommCanHardware";
             treeNode5.Text = "Can Hardware";
-            treeNode6.Name = "NodeComm";
-            treeNode6.Text = "Communication";
+            treeNode6.Name = "nodeFilter";
+            treeNode6.Text = "TX/RX Filter";
+            treeNode7.Name = "NodeComm";
+            treeNode7.Text = "Communication";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode2,
-            treeNode6});
+            treeNode7});
             this.treeView.ShowLines = false;
             this.treeView.Size = new System.Drawing.Size(276, 429);
             this.treeView.TabIndex = 0;
@@ -216,9 +229,10 @@
             this.tabControl.Controls.Add(this.tabPageProp2);
             this.tabControl.Controls.Add(this.tabSerialPort);
             this.tabControl.Controls.Add(this.tabCanHardware);
+            this.tabControl.Controls.Add(this.tabFilterPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
-            this.tabControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(551, 429);
@@ -241,9 +255,9 @@
             this.tabPageProp1.Controls.Add(this.textBoxUserName);
             this.tabPageProp1.Controls.Add(this.label1);
             this.tabPageProp1.Location = new System.Drawing.Point(4, 25);
-            this.tabPageProp1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageProp1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageProp1.Name = "tabPageProp1";
-            this.tabPageProp1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageProp1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageProp1.Size = new System.Drawing.Size(543, 400);
             this.tabPageProp1.TabIndex = 0;
             this.tabPageProp1.Text = "Config group 1";
@@ -262,7 +276,7 @@
             // numRollingAfter
             // 
             this.numRollingAfter.Location = new System.Drawing.Point(103, 132);
-            this.numRollingAfter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numRollingAfter.Margin = new System.Windows.Forms.Padding(4);
             this.numRollingAfter.Maximum = new decimal(new int[] {
             20,
             0,
@@ -315,7 +329,7 @@
             // btnBrowse
             // 
             this.btnBrowse.Location = new System.Drawing.Point(103, 206);
-            this.btnBrowse.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnBrowse.Margin = new System.Windows.Forms.Padding(4);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(100, 28);
             this.btnBrowse.TabIndex = 8;
@@ -326,7 +340,7 @@
             // txtFilePath
             // 
             this.txtFilePath.Location = new System.Drawing.Point(103, 165);
-            this.txtFilePath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtFilePath.Margin = new System.Windows.Forms.Padding(4);
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.Size = new System.Drawing.Size(272, 22);
             this.txtFilePath.TabIndex = 7;
@@ -344,7 +358,7 @@
             // numFlushToFile
             // 
             this.numFlushToFile.Location = new System.Drawing.Point(103, 100);
-            this.numFlushToFile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numFlushToFile.Margin = new System.Windows.Forms.Padding(4);
             this.numFlushToFile.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -367,7 +381,7 @@
             // numFlushToUI
             // 
             this.numFlushToUI.Location = new System.Drawing.Point(103, 66);
-            this.numFlushToUI.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numFlushToUI.Margin = new System.Windows.Forms.Padding(4);
             this.numFlushToUI.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -410,7 +424,7 @@
             // textBoxUserName
             // 
             this.textBoxUserName.Location = new System.Drawing.Point(103, 23);
-            this.textBoxUserName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxUserName.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxUserName.Name = "textBoxUserName";
             this.textBoxUserName.Size = new System.Drawing.Size(132, 22);
             this.textBoxUserName.TabIndex = 1;
@@ -438,10 +452,10 @@
             this.tabPageProp2.Controls.Add(this.txtTransmitAdress);
             this.tabPageProp2.Controls.Add(this.lblTransmitAdress);
             this.tabPageProp2.Location = new System.Drawing.Point(4, 25);
-            this.tabPageProp2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageProp2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageProp2.Name = "tabPageProp2";
-            this.tabPageProp2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPageProp2.Size = new System.Drawing.Size(543, 394);
+            this.tabPageProp2.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPageProp2.Size = new System.Drawing.Size(543, 400);
             this.tabPageProp2.TabIndex = 1;
             this.tabPageProp2.Text = "General";
             this.tabPageProp2.UseVisualStyleBackColor = true;
@@ -449,7 +463,7 @@
             // txtPaddingByte
             // 
             this.txtPaddingByte.Location = new System.Drawing.Point(125, 150);
-            this.txtPaddingByte.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPaddingByte.Margin = new System.Windows.Forms.Padding(4);
             this.txtPaddingByte.Name = "txtPaddingByte";
             this.txtPaddingByte.Size = new System.Drawing.Size(132, 22);
             this.txtPaddingByte.TabIndex = 5;
@@ -467,7 +481,7 @@
             // txtStMin
             // 
             this.txtStMin.Location = new System.Drawing.Point(125, 118);
-            this.txtStMin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtStMin.Margin = new System.Windows.Forms.Padding(4);
             this.txtStMin.Name = "txtStMin";
             this.txtStMin.Size = new System.Drawing.Size(132, 22);
             this.txtStMin.TabIndex = 5;
@@ -485,7 +499,7 @@
             // txtBlockSize
             // 
             this.txtBlockSize.Location = new System.Drawing.Point(125, 86);
-            this.txtBlockSize.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBlockSize.Margin = new System.Windows.Forms.Padding(4);
             this.txtBlockSize.Name = "txtBlockSize";
             this.txtBlockSize.Size = new System.Drawing.Size(132, 22);
             this.txtBlockSize.TabIndex = 5;
@@ -503,7 +517,7 @@
             // txtReceiveAdress
             // 
             this.txtReceiveAdress.Location = new System.Drawing.Point(125, 54);
-            this.txtReceiveAdress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtReceiveAdress.Margin = new System.Windows.Forms.Padding(4);
             this.txtReceiveAdress.Name = "txtReceiveAdress";
             this.txtReceiveAdress.Size = new System.Drawing.Size(132, 22);
             this.txtReceiveAdress.TabIndex = 3;
@@ -521,7 +535,7 @@
             // txtTransmitAdress
             // 
             this.txtTransmitAdress.Location = new System.Drawing.Point(125, 22);
-            this.txtTransmitAdress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTransmitAdress.Margin = new System.Windows.Forms.Padding(4);
             this.txtTransmitAdress.Name = "txtTransmitAdress";
             this.txtTransmitAdress.Size = new System.Drawing.Size(132, 22);
             this.txtTransmitAdress.TabIndex = 3;
@@ -555,10 +569,10 @@
             this.tabSerialPort.Controls.Add(this.txtPort);
             this.tabSerialPort.Controls.Add(this.lblPort);
             this.tabSerialPort.Location = new System.Drawing.Point(4, 25);
-            this.tabSerialPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabSerialPort.Margin = new System.Windows.Forms.Padding(4);
             this.tabSerialPort.Name = "tabSerialPort";
-            this.tabSerialPort.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabSerialPort.Size = new System.Drawing.Size(543, 394);
+            this.tabSerialPort.Padding = new System.Windows.Forms.Padding(4);
+            this.tabSerialPort.Size = new System.Drawing.Size(543, 400);
             this.tabSerialPort.TabIndex = 2;
             this.tabSerialPort.Text = "Serial Port";
             this.tabSerialPort.UseVisualStyleBackColor = true;
@@ -584,7 +598,7 @@
             "Mark",
             "Space"});
             this.cmbSerialPortType.Location = new System.Drawing.Point(125, 15);
-            this.cmbSerialPortType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbSerialPortType.Margin = new System.Windows.Forms.Padding(4);
             this.cmbSerialPortType.Name = "cmbSerialPortType";
             this.cmbSerialPortType.Size = new System.Drawing.Size(132, 24);
             this.cmbSerialPortType.TabIndex = 17;
@@ -592,7 +606,7 @@
             // numWriteTimeout
             // 
             this.numWriteTimeout.Location = new System.Drawing.Point(125, 242);
-            this.numWriteTimeout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numWriteTimeout.Margin = new System.Windows.Forms.Padding(4);
             this.numWriteTimeout.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -620,7 +634,7 @@
             // numReadTimeout
             // 
             this.numReadTimeout.Location = new System.Drawing.Point(125, 210);
-            this.numReadTimeout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numReadTimeout.Margin = new System.Windows.Forms.Padding(4);
             this.numReadTimeout.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -655,7 +669,7 @@
             "Two",
             "OnePointFive"});
             this.cmbStopBits.Location = new System.Drawing.Point(125, 175);
-            this.cmbStopBits.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbStopBits.Margin = new System.Windows.Forms.Padding(4);
             this.cmbStopBits.Name = "cmbStopBits";
             this.cmbStopBits.Size = new System.Drawing.Size(132, 24);
             this.cmbStopBits.TabIndex = 12;
@@ -671,7 +685,7 @@
             "Mark",
             "Space"});
             this.cmbParity.Location = new System.Drawing.Point(125, 143);
-            this.cmbParity.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbParity.Margin = new System.Windows.Forms.Padding(4);
             this.cmbParity.Name = "cmbParity";
             this.cmbParity.Size = new System.Drawing.Size(132, 24);
             this.cmbParity.TabIndex = 11;
@@ -679,7 +693,7 @@
             // numDataBits
             // 
             this.numDataBits.Location = new System.Drawing.Point(125, 112);
-            this.numDataBits.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numDataBits.Margin = new System.Windows.Forms.Padding(4);
             this.numDataBits.Name = "numDataBits";
             this.numDataBits.Size = new System.Drawing.Size(133, 22);
             this.numDataBits.TabIndex = 10;
@@ -687,7 +701,7 @@
             // numBaudRate
             // 
             this.numBaudRate.Location = new System.Drawing.Point(125, 80);
-            this.numBaudRate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numBaudRate.Margin = new System.Windows.Forms.Padding(4);
             this.numBaudRate.Maximum = new decimal(new int[] {
             99999999,
             0,
@@ -740,7 +754,7 @@
             // txtPort
             // 
             this.txtPort.Location = new System.Drawing.Point(125, 48);
-            this.txtPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPort.Margin = new System.Windows.Forms.Padding(4);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(132, 22);
             this.txtPort.TabIndex = 1;
@@ -764,7 +778,7 @@
             this.tabCanHardware.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabCanHardware.Name = "tabCanHardware";
             this.tabCanHardware.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabCanHardware.Size = new System.Drawing.Size(543, 394);
+            this.tabCanHardware.Size = new System.Drawing.Size(543, 400);
             this.tabCanHardware.TabIndex = 3;
             this.tabCanHardware.Text = "Can Hardware";
             this.tabCanHardware.UseVisualStyleBackColor = true;
@@ -924,13 +938,75 @@
             this.tabCanHardware_cmbDevice.TabIndex = 0;
             this.tabCanHardware_cmbDevice.SelectedIndexChanged += new System.EventHandler(this.tabCanHardware_cmbDevice_SelectedIndexChanged);
             // 
+            // tabFilterPage
+            // 
+            this.tabFilterPage.Controls.Add(this.btnAddFilter);
+            this.tabFilterPage.Controls.Add(this.tbFilter);
+            this.tabFilterPage.Controls.Add(this.btnClearFilter);
+            this.tabFilterPage.Controls.Add(this.btnDeleteFilter);
+            this.tabFilterPage.Controls.Add(this.lbFilterPage);
+            this.tabFilterPage.Location = new System.Drawing.Point(4, 25);
+            this.tabFilterPage.Name = "tabFilterPage";
+            this.tabFilterPage.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFilterPage.Size = new System.Drawing.Size(543, 400);
+            this.tabFilterPage.TabIndex = 4;
+            this.tabFilterPage.Text = "TX/RX Filter";
+            this.tabFilterPage.UseVisualStyleBackColor = true;
+            // 
+            // btnAddFilter
+            // 
+            this.btnAddFilter.Location = new System.Drawing.Point(234, 9);
+            this.btnAddFilter.Name = "btnAddFilter";
+            this.btnAddFilter.Size = new System.Drawing.Size(45, 23);
+            this.btnAddFilter.TabIndex = 5;
+            this.btnAddFilter.Text = "Add";
+            this.btnAddFilter.UseVisualStyleBackColor = true;
+            this.btnAddFilter.Click += new System.EventHandler(this.btnAddFilter_Click);
+            // 
+            // tbFilter
+            // 
+            this.tbFilter.Location = new System.Drawing.Point(182, 8);
+            this.tbFilter.Name = "tbFilter";
+            this.tbFilter.Size = new System.Drawing.Size(41, 22);
+            this.tbFilter.TabIndex = 4;
+            this.tbFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbFilter_KeyPress);
+            // 
+            // btnClearFilter
+            // 
+            this.btnClearFilter.Location = new System.Drawing.Point(6, 288);
+            this.btnClearFilter.Name = "btnClearFilter";
+            this.btnClearFilter.Size = new System.Drawing.Size(75, 23);
+            this.btnClearFilter.TabIndex = 2;
+            this.btnClearFilter.Text = "Clear";
+            this.btnClearFilter.UseVisualStyleBackColor = true;
+            this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
+            // 
+            // btnDeleteFilter
+            // 
+            this.btnDeleteFilter.Location = new System.Drawing.Point(99, 288);
+            this.btnDeleteFilter.Name = "btnDeleteFilter";
+            this.btnDeleteFilter.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteFilter.TabIndex = 1;
+            this.btnDeleteFilter.Text = "Delete";
+            this.btnDeleteFilter.UseVisualStyleBackColor = true;
+            this.btnDeleteFilter.Click += new System.EventHandler(this.btnDeleteFilter_Click);
+            // 
+            // lbFilterPage
+            // 
+            this.lbFilterPage.FormattingEnabled = true;
+            this.lbFilterPage.ItemHeight = 16;
+            this.lbFilterPage.Location = new System.Drawing.Point(6, 6);
+            this.lbFilterPage.Name = "lbFilterPage";
+            this.lbFilterPage.Size = new System.Drawing.Size(168, 276);
+            this.lbFilterPage.TabIndex = 0;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.buttonOk);
             this.panel1.Controls.Add(this.buttonCancel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 453);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(832, 44);
             this.panel1.TabIndex = 2;
@@ -939,7 +1015,7 @@
             // 
             this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonOk.Location = new System.Drawing.Point(612, 9);
-            this.buttonOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonOk.Margin = new System.Windows.Forms.Padding(4);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(100, 28);
             this.buttonOk.TabIndex = 1;
@@ -951,7 +1027,7 @@
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Location = new System.Drawing.Point(720, 9);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(100, 28);
             this.buttonCancel.TabIndex = 0;
@@ -968,7 +1044,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormOptions";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
@@ -1000,6 +1076,8 @@
             this.tabCanHardware_grpIntrepid.PerformLayout();
             this.tabCanHardware_grpKvaser.ResumeLayout(false);
             this.tabCanHardware_grpKvaser.PerformLayout();
+            this.tabFilterPage.ResumeLayout(false);
+            this.tabFilterPage.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1073,5 +1151,11 @@
         private System.Windows.Forms.Label lblPaddingByte;
         private System.Windows.Forms.TextBox txtStMin;
         private System.Windows.Forms.Label lblStMin;
+        private System.Windows.Forms.TabPage tabFilterPage;
+        private System.Windows.Forms.Button btnClearFilter;
+        private System.Windows.Forms.Button btnDeleteFilter;
+        private System.Windows.Forms.ListBox lbFilterPage;
+        private System.Windows.Forms.TextBox tbFilter;
+        private System.Windows.Forms.Button btnAddFilter;
     }
 }
