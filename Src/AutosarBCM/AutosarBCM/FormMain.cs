@@ -326,7 +326,7 @@ namespace AutosarBCM
         public void StartTesterPresent()
         {
             TesterPresent = new TesterPresent();
-            TesterPresentTimer = new System.Timers.Timer(5000) { AutoReset = true };
+            TesterPresentTimer = new System.Timers.Timer(1000) { AutoReset = true };
             TesterPresentTimer.Elapsed += (s, e) => TesterPresent.Transmit();
             TesterPresentTimer.Start();
         }

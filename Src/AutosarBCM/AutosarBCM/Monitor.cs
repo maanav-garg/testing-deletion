@@ -152,8 +152,7 @@ namespace AutosarBCM
                     {
                         StartTime = DateTime.Now;
                         var cycles = ASContext.Configuration.EnvironmentalTest.Cycles;
-                        //var inputItems = monitorConfig.GenericMonitorConfiguration.InputSection.Groups.SelectMany(x => x.InputItemList);
-                        var controlItems = ASContext.Configuration.Controls;
+                        var controlItems = ASContext.Configuration.Controls.Where(c => c.Group == "DID");
                         var startCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.StartCycleIndex;
                         var endCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.EndCycleIndex;
                         //var dictMapping = new Dictionary<string, InputMonitorItem>();
@@ -190,13 +189,12 @@ namespace AutosarBCM
                         //    var inputItem = inputItems.Where(x => x.Name.Equals(mapping.InputName)).FirstOrDefault();
                         //    dictMapping.Add(mapping.OutputName, inputItem);
                         //}
-
-                        //TODO to be checked
-                        //foreach (var mapping in ASContext.Configuration.EnvironmentalTest.ConnectionMappings)
-                        //{
-                        //    var controlItem = controlItems.Where(x => x.Name.Equals(mapping.InputName)).FirstOrDefault();
-                        //    dictMapping.Add(mapping.OutputName, controlItem);
-                        //}
+                        
+                        foreach (var mapping in ASContext.Configuration.EnvironmentalTest.ConnectionMappings)
+                        {
+                            var controlItem = controlItems.Where(x => x.Name.Equals(mapping.Input.Parent)).FirstOrDefault();
+                            dictMapping.Add(mapping.Output.Name, controlItem);
+                        }
 
 
                         //foreach (var funcName in monitorConfig.EnvironmentalMonitorConfiguration.MappingSection.ContinousReadList)
