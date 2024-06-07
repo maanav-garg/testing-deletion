@@ -215,8 +215,7 @@ namespace AutosarBCM
             if (FormMain.EMCMonitoring)
             {
                 AppendTrace(rxRead, time);
-                var response = ASResponse.Parse(e.Data);
-                Program.FormEMCView?.HandleResponse(response);
+                Program.FormEMCView?.HandleResponse(service);
                 return;
             }
 

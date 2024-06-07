@@ -201,7 +201,7 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="responseArray">A reference to the response as a byte array.</param>
         /// <returns>true if the row was added successfully; otherwise, false.</returns>
-        internal void HandleResponse(ASResponse response)
+        internal void HandleResponse(ReadDataByIdenService response)
         {
             Invoke(new Action(() =>
             {
