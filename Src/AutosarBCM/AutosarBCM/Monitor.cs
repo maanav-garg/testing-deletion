@@ -1,10 +1,12 @@
 using AutosarBCM.Config;
 using AutosarBCM.Core;
+using AutosarBCM.Forms.Monitor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AutosarBCM
 {
@@ -304,7 +306,7 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="cycles">List of cycles.</param>
         private static Dictionary<int,Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
-        {
+        {   
             var cycleDict = new Dictionary<int, Core.Cycle>();
             foreach (var cycle in cycles)
             {
@@ -397,7 +399,10 @@ namespace AutosarBCM
             //}                
 
             //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
-            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
+            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}"); 
+
+            FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
+            formEnvTest.SetCounter( reboots + 1, cycleIndex + 1);
 
             if (cycleIndex >= endCycleIndex - 1)
             {
