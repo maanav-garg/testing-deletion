@@ -45,9 +45,9 @@
             this.lblName.AutoEllipsis = true;
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblName.Location = new System.Drawing.Point(3, 10);
-            this.lblName.MaximumSize = new System.Drawing.Size(160, 20);
+            this.lblName.MaximumSize = new System.Drawing.Size(170, 20);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(160, 20);
+            this.lblName.Size = new System.Drawing.Size(170, 20);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "label1";
             this.lblName.Click += new System.EventHandler(this.lblName_Click);
@@ -61,7 +61,6 @@
             this.lblStatus.TabIndex = 1;
             this.lblStatus.Text = "-";
             this.lblStatus.Visible = false;
-            this.lblStatus.Click += new System.EventHandler(this.lblStatus_Click);
             // 
             // label1
             // 
@@ -140,11 +139,11 @@
             // 
             // btnUCClear
             // 
-            this.btnUCClear.Location = new System.Drawing.Point(164, 9);
+            this.btnUCClear.Image = global::AutosarBCM.Properties.Resources.delete_icon_12_795858790;
+            this.btnUCClear.Location = new System.Drawing.Point(181, 9);
             this.btnUCClear.Name = "btnUCClear";
-            this.btnUCClear.Size = new System.Drawing.Size(46, 23);
+            this.btnUCClear.Size = new System.Drawing.Size(32, 23);
             this.btnUCClear.TabIndex = 11;
-            this.btnUCClear.Text = "Clear";
             this.btnUCClear.UseVisualStyleBackColor = true;
             this.btnUCClear.Click += new System.EventHandler(this.btnUCClear_Click);
             // 
@@ -164,6 +163,7 @@
             this.Controls.Add(this.lblName);
             this.Name = "UCItem";
             this.Size = new System.Drawing.Size(355, 125);
+            this.Load += new System.EventHandler(this.UCItem_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

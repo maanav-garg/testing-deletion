@@ -34,7 +34,7 @@ namespace AutosarBCM.UserControls.Monitor
         {
             pnlControls.Controls.Clear();
             btnSend.Visible = true;
-            lblError.Visible= false;
+            lblError.Visible = false;
 
             this.ucItem = ucItem;
             lblName.Text = $"{ucItem.ControlInfo.Group}-{ucItem.ControlInfo.Name}";
@@ -54,7 +54,7 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 var ucPayload = new UCControlPayload(payload, isControlMaskActive);
                 ucPayload.BorderStyle = BorderStyle.FixedSingle;
-                ucPayload.Anchor = AnchorStyles.Top| AnchorStyles.Left;
+                ucPayload.Anchor = AnchorStyles.Top | AnchorStyles.Left;
                 pnlControls.Controls.Add(ucPayload);
             }
         }
@@ -73,35 +73,40 @@ namespace AutosarBCM.UserControls.Monitor
         private byte[] PrepareControlData()
         {
             byte controlByte = 0x0;
-            var bitIndex = 0;
+            int bitIndex = 0;
 
-            var bytes = new List<byte>();
-            bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
+            var bytes = new List<byte> { (byte)InputControlParameter.ShortTermAdjustment };
+
             foreach (var uc in pnlControls.Controls)
             {
                 if (uc is UCControlPayload ucPayload)
                 {
-                    if (!isControlMaskActive)
+                    if (!isControlMaskActive || ucPayload.IsSelected)
                     {
                         bytes.AddRange(ucPayload.SelectedValue);
-                    }
-                    else
-                    {
-                        if (ucPayload.IsSelected)
+
+                        if (isControlMaskActive && ucPayload.IsSelected)
                         {
-                            //bytes.Add(ucPayload.SelectedValue);
-                            bytes.AddRange(ucPayload.SelectedValue);
-                            controlByte |= (byte)(1 << (7 - bitIndex));
+                            controlByte |= (byte)(1 << (bitIndex));
                         }
-                        else
-                            bytes.Add(0x0);
+                    }
+                    else if (isControlMaskActive)
+                    {
+                        bytes.Add(0x0);
+                    }
+
+                    if (isControlMaskActive)
+                    {
                         bitIndex++;
                     }
-                    
                 }
             }
-            if(isControlMaskActive)
+
+            if (isControlMaskActive)
+            {
                 bytes.Add(controlByte);
+            }
+
             return bytes.ToArray();
         }
 

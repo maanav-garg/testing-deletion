@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace AutosarBCM.Forms.Monitor
 {
-    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IReceiver
+    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver
     {
 
         #region Variables
@@ -161,12 +161,13 @@ namespace AutosarBCM.Forms.Monitor
             throw new NotImplementedException();
         }
 
-        public bool Receive(ASResponse response)
+        public bool Receive(Service baseService)
         {
-            var items = groups[response.ControlInfo.Name];
+            var service = (IOControlByIdentifierService)baseService;
+            var items = groups[service.ControlInfo.Name];
             foreach (var uc in items)
             {
-                uc.ChangeStatus(response);
+                uc.ChangeStatus(service);
                 return true;
             }
             return false;

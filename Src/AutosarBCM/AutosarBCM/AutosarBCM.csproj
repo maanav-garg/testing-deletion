@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -161,6 +161,12 @@
     <Compile Include="Forms\FormTestLogView.Designer.cs">
       <DependentUpon>FormTestLogView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Monitor\FormDTCPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Monitor\FormDTCPanel.Designer.cs">
+      <DependentUpon>FormDTCPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Monitor\FormEnvironmentalTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -221,6 +227,12 @@
     </Compile>
     <Compile Include="UserControls\Monitor\UCControlPayload.Designer.cs">
       <DependentUpon>UCControlPayload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Monitor\UCDTCCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Monitor\UCDTCCard.Designer.cs">
+      <DependentUpon>UCDTCCard.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Monitor\UCOutput.cs">
       <SubType>UserControl</SubType>
@@ -324,6 +336,9 @@
     <EmbeddedResource Include="Forms\FormTestLogView.resx">
       <DependentUpon>FormTestLogView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Monitor\FormDTCPanel.resx">
+      <DependentUpon>FormDTCPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Monitor\FormEnvironmentalTest.resx">
       <DependentUpon>FormEnvironmentalTest.cs</DependentUpon>
     </EmbeddedResource>
@@ -361,6 +376,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCControlPayload.resx">
       <DependentUpon>UCControlPayload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Monitor\UCDTCCard.resx">
+      <DependentUpon>UCDTCCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCOutput.resx">
       <DependentUpon>UCOutput.cs</DependentUpon>
@@ -451,6 +469,7 @@
     <None Include="Resources\arrowdown2.png" />
     <Content Include="ASConfig.xml" />
     <Content Include="Resources\DownloadDocument.bmp" />
+    <None Include="Resources\dtc.png" />
     <Content Include="Resources\EditWindow.ico" />
     <Content Include="Resources\ExportReportData_10565_24.bmp" />
     <Content Include="Resources\ImportOrLoad_8600_24.bmp" />

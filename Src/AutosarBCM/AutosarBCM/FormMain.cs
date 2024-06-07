@@ -103,6 +103,8 @@ namespace AutosarBCM
         /// </summary>
         private FormMonitorEnvOutput formMonitorEnvOutput = new FormMonitorEnvOutput();
 
+        private FormDTCPanel formDTCPanel = new FormDTCPanel();
+
         /// <summary>
         /// An instance of the 'FormTracePopup' control for displaying trace messages.
         /// </summary>
@@ -227,6 +229,7 @@ namespace AutosarBCM
 
             Receivers.Add(formMonitorGenericInput);
             Receivers.Add(formEnvironmentalTest);
+            Receivers.Add(formDTCPanel);
 
         }
 
@@ -381,6 +384,7 @@ namespace AutosarBCM
                 {
                     genericInput.ClearPreviousConfiguration();
                     genericInput.LoadConfiguration(ASContext.Configuration);
+                    formDTCPanel.LoadConfiguration();
                     if (tsbSession.Text != "Session: N/A")
                     {
                         genericInput.SessionFiltering();
@@ -589,6 +593,7 @@ namespace AutosarBCM
             {
                 case MonitorTestType.Generic:
                     formMonitorGenericInput.Show(dockMonitor, DockState.Document);
+                    formDTCPanel.Show(dockMonitor, DockState.Document);
                     // visibility settings for generic output tab
                     //formMonitorGenericOutput.Show(dockMonitor, DockState.Document);
                     break;
@@ -1021,6 +1026,9 @@ namespace AutosarBCM
 
                 formOutput.FilterUCItems(tspFilterTxb.Text);
             }
+            else if (document is FormDTCPanel formDTCPanel)
+                formDTCPanel.FilterItems(tspFilterTxb.Text);
+
             tabControl1.Refresh();
         }
 
@@ -1249,11 +1257,11 @@ namespace AutosarBCM
         {
             if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
                 formInput.SessionFiltering();
+            formDTCPanel.Session_Changed();
         }
 
         private void tsbSession_Click(object sender, EventArgs e)
         {
-            //TODO to be commented out
             if (!ConnectionUtil.CheckConnection())
                 return;
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
@@ -1267,7 +1275,6 @@ namespace AutosarBCM
         {
             formMonitorGenericInput.ToggleSidebar();
         }
-
 
         #endregion
 

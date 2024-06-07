@@ -35,19 +35,21 @@ namespace AutosarBCM.UserControls.Monitor
         public string GroupName { get; set; }
 
         /// <summary>
-        /// Gets or sets the current value of the input item.
-        /// </summary>
-        private double currentValue = -1;
-
-        /// <summary>
         /// Gets or sets a boolean indicating whether the input is being logged.
         /// </summary>
         public bool IsLogged = false;
 
         /// <summary>
+        /// Gets or sets a number of transmitted message and received message.
+        /// </summary>
+        public float MessageTransmitted = 0;
+        public float MessageReceived = 0;
+
+        /// <summary>
         /// Gets or sets the previous (old) value of the input item.
         /// </summary>
-        private double oldValue = -1;
+        private ReadDataByIdenService oldValue;
+
         private InputMonitorItem item;
         private CommonConfig commonConfig;
         private const int ResizeHandleSize = 10;
@@ -55,10 +57,6 @@ namespace AutosarBCM.UserControls.Monitor
         private bool isResizing = false;
         private ToolTip lblNameToolTip;
         private string fullLabelText;
-
-        /// <summary>
-        /// Gets or sets the previous (old) value of the input item.
-        /// </summary>
 
         #endregion
 
@@ -81,7 +79,7 @@ namespace AutosarBCM.UserControls.Monitor
             InitResizeFeat();
         }
 
-        
+
         public UCItem(InputMonitorItem item, CommonConfig commonConfig)
         {
             //this.item = item;
@@ -214,19 +212,61 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         /// <param name="monitorItem">Monitor item to be updated</param>
         /// <param name="inputResponse">Data comes from device</param>
-        public void ChangeStatus(ASResponse response)
+        public void ChangeStatus(ReadDataByIdenService service)
         {
-            //UpdateCounters(messageDirection);
-            //if (messageDirection == MessageDirection.TX) return;
+            // Check if the message is transmitted successfully (0x22 value received)
+            bool isTransmitted = service.Response.Data[0].Equals((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER);
 
-            oldValue = currentValue;
 
-            lblStatus.BeginInvoke((MethodInvoker)delegate ()
+            if (isTransmitted)
             {
-                lbResponse.Items.Clear();
-                lbResponse.Items.AddRange(response.Payloads.ToArray());
+                // Increment messageTransmitted value
+                MessageTransmitted++;
 
-            });
+                // Update the UI with the new messageTransmitted value
+                lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    lblTransmitted.Text = MessageTransmitted.ToString();
+                });
+            }
+            else
+            {
+                lblReceived.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    MessageReceived++;
+                    lblReceived.Text = MessageReceived.ToString();
+                });
+
+                if (oldValue != null)
+                {
+                    bool areEqual = service.Payloads.Count == oldValue.Payloads.Count;
+
+                    if (areEqual)
+                    {
+                        for (int i = 0; i < service.Payloads.Count; i++)
+                        {
+                            if (service.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
+                                service.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
+                            {
+                                areEqual = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (areEqual)
+                        return;
+                }
+
+                oldValue = service;
+
+                lblStatus.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    lbResponse.Items.Clear();
+                    lbResponse.Items.AddRange(service.Payloads.ToArray());
+
+                });
+            }
         }
 
         /// <summary>
@@ -290,16 +330,7 @@ namespace AutosarBCM.UserControls.Monitor
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            lbResponse.Items.Clear();
-            lbResponse.Items.AddRange(ControlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
-
-
             ControlInfo.Transmit(ServiceInfo.ReadDataByIdentifier);
-        }
-
-        private void lblStatus_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void lbResponse_DrawItem(object sender, DrawItemEventArgs e)
@@ -317,7 +348,15 @@ namespace AutosarBCM.UserControls.Monitor
         {
             lbResponse.Items.Clear();
             lbResponse.Items.AddRange(ControlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
+            oldValue = null;
+            lblTransmitted.Text = lblReceived.Text = "0";
+            MessageTransmitted = MessageReceived = 0;            
+        }
 
+        private void UCItem_Load(object sender, EventArgs e)
+        {
+            ToolTip ToolTip1 = new ToolTip();
+            ToolTip1.SetToolTip(this.btnUCClear, "Clear");
         }
     }
 

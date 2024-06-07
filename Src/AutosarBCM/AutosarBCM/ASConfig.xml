@@ -16,7 +16,7 @@
     <Service requestID="2F">
       <Name>InputOutputControlByIdentifier</Name>
       <Sessions>03</Sessions>
-      <ResponseIndex>3</ResponseIndex>
+      <ResponseIndex>4</ResponseIndex>
     </Service>
     <Service requestID="2E">
       <Name>WriteDataByIdentifier</Name>
@@ -27,6 +27,10 @@
     <Service requestID="11" responseID="51">
       <Name>ECUReset</Name>
     </Service>
+	<Service requestID="19" responseID="59">
+		<Name>ReadDtcInformation</Name>
+		<Sessions>01;03</Sessions>
+	</Service>
   </Services>
   <Sessions>
     <Session>
@@ -922,7 +926,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Ajar On Off Control" typeName="DID_Byte_On_Off"></Payload>
+          <Payload name="Ajar On Off Control" dtcCode="9175" typeName="DID_Byte_On_Off"></Payload>
         </Response>
         <Response serviceId="6F">
         </Response>
@@ -1044,8 +1048,8 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Sunroof Close Switch" typeName="DID_Byte_On_Off"></Payload>
-          <Payload name="Sunroof Open Switch" typeName="DID_Byte_On_Off"></Payload>
+          <Payload name="Sunroof Close Switch" dtcCode="9F04" typeName="DID_Byte_On_Off"></Payload>
+          <Payload name="Sunroof Open Switch" dtcCode="9F03" typeName="DID_Byte_On_Off"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1057,8 +1061,8 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="MOT-B" typeName="DID_Byte_On_Off"></Payload>
-          <Payload name="MOT-A" typeName="DID_Byte_On_Off"></Payload>
+          <Payload name="MOT-B" dtcCode="9F17" typeName="DID_Byte_On_Off"></Payload>
+          <Payload name="MOT-A" dtcCode="9F18" typeName="DID_Byte_On_Off"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1118,8 +1122,8 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="PowerWindowPASSDownSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="PowerWindowPASSUpSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="PowerWindowPASSDownSwitch" dtcCode="93E6" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="PowerWindowPASSUpSwitch" dtcCode="93E5" typeName="DID_Byte_Present_notPresent"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1278,9 +1282,9 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="MainPTOAckSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="PTO1AcknowledgementSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="PTO2AcknowledgementSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="MainPTOAckSwitch" dtcCode="34F9" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="PTO1AcknowledgementSwitch" dtcCode="34FA" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="PTO2AcknowledgementSwitch" dtcCode="BA87" typeName="DID_Byte_Present_notPresent"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1292,9 +1296,9 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Start Stop Switch 3" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Start Stop Switch 2" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Start Stop Switch 1" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Start Stop Switch 3" dtcCode="05BC" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Start Stop Switch 2" dtcCode="05BF" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Start Stop Switch 1" dtcCode="05BE" typeName="DID_Byte_Present_notPresent"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1306,7 +1310,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="PWM_StartStopIllimunation12VLED" typeName="DID_PWM"></Payload>
+          <Payload name="PWM_StartStopIllimunation12VLED" dtcCode="06F4" typeName="DID_PWM"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1345,9 +1349,9 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="BlendingFuncIlluminationLED" typeName="DID_Byte_Activate_Inactivate"></Payload>
-          <Payload name="ESPOffOutputLED" typeName="DID_Byte_Activate_Inactivate"></Payload>
-          <Payload name="LDWSFuncIlluminationLED" typeName="DID_Byte_Activate_Inactivate"></Payload>
+          <Payload name="BlendingFuncIlluminationLED" dtcCode="45AD" typeName="DID_Byte_Activate_Inactivate"></Payload>
+          <Payload name="ESPOffOutputLED" dtcCode="93C9" typeName="DID_Byte_Activate_Inactivate"></Payload>
+          <Payload name="LDWSFuncIlluminationLED" dtcCode="93A8" typeName="DID_Byte_Activate_Inactivate"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1395,7 +1399,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="AirHornActivateSupply" typeName="DID_Byte_Activate_Inactivate"></Payload>
+          <Payload name="AirHornActivateSupply" dtcCode="9D98" typeName="DID_Byte_Activate_Inactivate"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1407,7 +1411,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="DifferentialLockValve1Supply" typeName="DID_Byte_Activate_Inactivate"></Payload>
+          <Payload name="DifferentialLockValve1Supply" dtcCode="350C" typeName="DID_Byte_Activate_Inactivate"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1420,7 +1424,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="EngineBrakeSupply" typeName="DID_Byte_Activate_Inactivate"></Payload>
+          <Payload name="EngineBrakeSupply" dtcCode="6104" typeName="DID_Byte_Activate_Inactivate"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1433,7 +1437,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="InterLockValveSupply" typeName="DID_Byte_Activate_Inactivate"></Payload>
+          <Payload name="InterLockValveSupply" dtcCode="350E" typeName="DID_Byte_Activate_Inactivate"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1616,8 +1620,8 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Left Side Stowage Box" typeName="HexDump_1Byte"></Payload>
-          <Payload name="Right Side Stowage Box" typeName="HexDump_1Byte"></Payload>
+          <Payload name="Left Side Stowage Box" dtcCode="8009" typeName="HexDump_1Byte"></Payload>
+          <Payload name="Right Side Stowage Box" dtcCode="8008" typeName="HexDump_1Byte"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1770,9 +1774,9 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="RearParkingLightLeftSupply" typeName="DID_41EF_0"></Payload>
-          <Payload name="RearParkingLightRightSupply" typeName="DID_41EF_0"></Payload>
-          <Payload name="RearParkingLightTrailerSupply" typeName="DID_41EF_0"></Payload>
+          <Payload name="RearParkingLightLeftSupply" dtcCode="9D99" typeName="DID_41EF_0"></Payload>
+          <Payload name="RearParkingLightRightSupply" dtcCode="9D9A" typeName="DID_41EF_0"></Payload>
+          <Payload name="RearParkingLightTrailerSupply" dtcCode="9445" typeName="DID_41EF_0"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1798,7 +1802,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Right Front Log Lamps Output" typeName="DID_41F3_0"></Payload>
+          <Payload name="Right Front Log Lamps Output" dtcCode="9148" typeName="DID_41F3_0"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1890,7 +1894,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Left Front Low Beam Output Control" typeName="DID_40E7_0"></Payload>
+          <Payload name="Left Front Low Beam Output Control" dtcCode="9D00" typeName="DID_40E7_0"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -2095,8 +2099,26 @@
     <Payload length="1" typeName="DID_DE06_3" />
     <Payload length="1" typeName="DID_DE0B_1" />
     <Payload length="1" typeName="Unsigned_2Bytes" />
-
   </Payloads>
+  <DTCFailureTypes>
+  	<Type value="11">Circuit Short To Ground</Type>
+  	<Type value="12">Circuit Short To Battery</Type>
+  	<Type value="13">Circuit Open</Type>
+  	<Type value="14">Circuit Short To Ground or Open</Type>
+  	<Type value="16">Circuit Voltage Below Threshold</Type>
+  	<Type value="17">Circuit Voltage Above Threshold</Type>
+  	<Type value="18">Circuit Current Below Threshold</Type>
+  	<Type value="19">Circuit Current Above Threshold</Type>
+  	<Type value="41">General Checksum Failure</Type>
+  	<Type value="42">General Memory Failure</Type>
+  	<Type value="43">Special Memory Failure</Type>
+  	<Type value="44">Data Memory Failure</Type>
+  	<Type value="4B">Over Temperature</Type>
+  	<Type value="63">Circuit / Component Protection Time-Out</Type>
+  	<Type value="87">Missing Message</Type>
+  	<Type value="88">Bus off</Type>
+  	<Type value="F0">Manufacturer Defined</Type>
+  </DTCFailureTypes>
   <EnvironmentalTest>
     <EnvironmentalConfig>
       <CycleTime>3000</CycleTime>

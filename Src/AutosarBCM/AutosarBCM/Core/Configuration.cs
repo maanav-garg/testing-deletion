@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -30,7 +30,7 @@ namespace AutosarBCM.Core
         public static ServiceInfo WriteDataByIdentifier { get => ASContext.Configuration?.GetServiceByRequestID(0x2E); }
         public static ServiceInfo TesterPresent { get => ASContext.Configuration?.GetServiceByRequestID(0x3E); }
         public static ServiceInfo ECUReset { get => ASContext.Configuration?.GetServiceByRequestID(0x11); }
-
+        public static ServiceInfo ReadDTCInformation { get => ASContext.Configuration?.GetServiceByRequestID(0x19); }
     }
 
     public class ControlInfo
@@ -46,9 +46,9 @@ namespace AutosarBCM.Core
 
         public void Transmit(ServiceInfo serviceInfo, byte[] data = null)
         {
-            if (serviceInfo == ServiceInfo.ReadDataByIdentifier) 
+            if (serviceInfo == ServiceInfo.ReadDataByIdentifier)
                 new ReadDataByIdenService().Transmit(this);
-            else if (serviceInfo == ServiceInfo.InputOutputControlByIdentifier) 
+            else if (serviceInfo == ServiceInfo.InputOutputControlByIdentifier)
                 new IOControlByIdentifierService().Transmit(this, data);
         }
 
@@ -67,7 +67,7 @@ namespace AutosarBCM.Core
                     bytes.Add(0x0);
                 else //Payload match
                 {
-                    controlByte |= (byte)(1 << (7 - bitIndex));
+                    controlByte |= (byte)(1 << bitIndex);
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;
@@ -134,6 +134,7 @@ namespace AutosarBCM.Core
         public string TypeName { get; set; }
         public int Length { get; set; }
         public bool IsBit { get; internal set; }
+        public string DTCCode { get; set; }
         public List<PayloadValue> Values { get; set; }
         public List<PayloadInfo> Bits { get; set; }
 
@@ -159,6 +160,17 @@ namespace AutosarBCM.Core
         public List<PayloadInfo> Payloads { get; set; }
     }
 
+    public class DTCFailure
+    {
+        public byte Value { get; set; }
+        public string Description { get; set; }
+
+        public static DTCFailure GetByValue(byte value)
+        {
+            return ASContext.Configuration.DTCFailureTypes.Where(a => a.Value == value).FirstOrDefault();
+        }
+    }
+
     public class ConfigurationInfo
     {
         public Dictionary<string, string> Settings { get; set; }
@@ -166,6 +178,7 @@ namespace AutosarBCM.Core
         public List<SessionInfo> Sessions { get; set; }
         public List<ControlInfo> Controls { get; set; }
         public List<PayloadInfo> Payloads { get; set; }
+        public List<DTCFailure> DTCFailureTypes { get; set; }
         public EnvironmentalTest EnvironmentalTest { get; set; }
 
         internal static ConfigurationInfo Parse(string filePath)
@@ -217,6 +230,7 @@ namespace AutosarBCM.Core
                                 {
                                     Name = y.Attribute("name").Value,
                                     TypeName = y.Attribute("typeName").Value,
+                                    DTCCode = y.Attribute("dtcCode")?.Value,
                                     Bits = y.Elements("Payload").Select(z => new PayloadInfo
                                     {
                                         Name = z.Attribute("name").Value,
@@ -244,9 +258,17 @@ namespace AutosarBCM.Core
                 })
                 .ToList();
 
+            var dtcFailureTypes = doc.Descendants("DTCFailureTypes").Descendants("Type")
+                .Select(t => new DTCFailure
+                {
+                    Value = Convert.ToByte(t.Attribute("value").Value, 16),
+                    Description = t.Value,
+                })
+                .ToList();
+
 
             #region Environmental Test
-            
+
             var environmentalTest = doc.Descendants("EnvironmentalTest")
                 .Select(t => new EnvironmentalTest
                 {
@@ -297,6 +319,7 @@ namespace AutosarBCM.Core
                 Sessions = sessions,
                 Controls = controls,
                 Payloads = payloads,
+                DTCFailureTypes = dtcFailureTypes,
                 EnvironmentalTest = environmentalTest
             };
         }
