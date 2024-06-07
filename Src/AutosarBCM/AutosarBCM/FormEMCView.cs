@@ -12,6 +12,7 @@ using AutosarBCM.UserControls.Monitor;
 using AutosarBCM;
 using AutosarBCM.Core;
 using System.Threading;
+using System.Web.UI;
 
 namespace AutosarBCM
 {
@@ -37,6 +38,8 @@ namespace AutosarBCM
         /// </summary>
         //private Timer timer;
         public Core.ControlInfo ControlInfo { get; set; }
+
+        private ASContext ASContext;
 
         #endregion
 
@@ -91,40 +94,53 @@ namespace AutosarBCM
         /// <param name="start">true if the process is starting; otherwise, false.</param>
         private void Start(bool start)
         {
-            if (start)
+            FormMain.EMCMonitoring = start;
+            btnStart.Text = start ? "Stop" : "Start";
+            btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
+            Task.Run(() =>
             {
-                //if (!ConnectionUtil.CheckConnection())
-                //   return;
-
-                //if (Config == null)
-                //{ Helper.ShowWarningMessageBox("Please, load the configuration file first."); return; }
-
-                //timer = new Timer() { Interval = 60000 };
-                //timer.Tick += (s, e) => { new UdsMessage() { Id = Config.CommonConfig.MessageID, Data = Config.CommonConfig.EMCLifecycle }.Transmit(); };
-                //timer.Start();
-
-                
-                var controls = ASContext.Configuration.Controls.Where(c => c.Group == "DID" && c.Services.Contains(0x22));
-                ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txInterval);
-
-                foreach (var control in controls)
+                try
                 {
-                    ThreadSleep(int.Parse(txInterval));
-                    control.Transmit(ServiceInfo.ReadDataByIdentifier);
+
+                    if (start)
+                    {
+
+                        //if (!ConnectionUtil.CheckConnection())
+                        //   return;
+
+                        //if (Config == null)
+                        //{ Helper.ShowWarningMessageBox("Please, load the configuration file first."); return; }
+
+                        //timer = new Timer() { Interval = 60000 };
+                        //timer.Tick += (s, e) => { new UdsMessage() { Id = Config.CommonConfig.MessageID, Data = Config.CommonConfig.EMCLifecycle }.Transmit(); };
+                        //timer.Start();
+
+                        
+
+
+                        var controls = ASContext.Configuration.Controls.Where(c => c.Group == "DID" && c.Services.Contains(0x22));
+                        ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txInterval);
+
+                        foreach (var control in controls)
+                        {
+                            ThreadSleep(int.Parse(txInterval));
+                            control.Transmit(ServiceInfo.ReadDataByIdentifier);
+                        }
+
+                        
+
+                    }
+                    else
+                        FormMain.EMCMonitoring = start;
+                    btnStart.Text = start ? "Stop" : "Start";
+                    btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
+                    //timer?.Stop();
+
                 }
-
-                FormMain.EMCMonitoring = start;
-                btnStart.Text = start ? "Stop" : "Start";
-                btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
-
-            }
-            else
-                FormMain.EMCMonitoring = start;
-                btnStart.Text = start ? "Stop" : "Start";
-                btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
-                //timer?.Stop();
-
-
+                finally
+                {
+                }
+            });
         }
 
         /// <summary>
@@ -185,24 +201,16 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="responseArray">A reference to the response as a byte array.</param>
         /// <returns>true if the row was added successfully; otherwise, false.</returns>
-        internal bool HandleResponse(byte[] responseArray)
+        internal void HandleResponse(ASResponse response)
         {
-            var response = new GenericResponse(responseArray,
-                   Config.GenericMonitorConfiguration.InputSection.CommonConfig.InputRegisterGroupOffset,
-                   Config.GenericMonitorConfiguration.InputSection.CommonConfig.InputRegisterGroupLength);
+            Invoke(new Action(() =>
+            {
+                foreach (var payload in response.Payloads)
+                {
+                    dgvData.Rows.Add("", "", response.ControlInfo.Name, payload.PayloadInfo.Name, payload.FormattedValue, "");
+                }
 
-            if (IsInformativeRX(response))
-                return true;
-
-            foreach (var item in ControlList)
-                if (item.IsDiagResponse(response))
-                    return AddDataRow(item, response, UCDigitalOutputItem.GetDigitalReadDiagResponseData(response.RegisterGroup, response.ResponseData), null, null);
-                else if (item.IsADCResponse(response))
-                    return AddDataRow(item, response, null, UCDigitalOutputItem.GetDigitalReadADCResponseData(response.RegisterGroup, response.ResponseData), null);
-                else if (item.IsCurrentResponse(response))
-                    return AddDataRow(item, response, null, null, UCDigitalOutputItem.GetDigitalReadCurrentValueResponseData(response.RegisterGroup, response.ResponseData));
-
-            return AddDataRow(null, response, "N/A", "N/A", "N/A");
+            }));
         }
 
         /// <summary>

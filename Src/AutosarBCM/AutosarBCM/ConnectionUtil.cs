@@ -159,7 +159,6 @@ namespace AutosarBCM
 
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
         {
-
             // Tester present
             if (e.Data[0] == 0x7E)
                 return;
@@ -197,7 +196,8 @@ namespace AutosarBCM
             if (FormMain.EMCMonitoring)
             {
                 AppendTrace(rxRead, time);
-                //Program.FormEMCView?.HandleResponse(data);
+                var response = ASResponse.Parse(e.Data);
+                Program.FormEMCView?.HandleResponse(response);
                 return;
             }
 
