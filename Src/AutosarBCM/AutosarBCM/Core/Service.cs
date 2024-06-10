@@ -147,7 +147,11 @@ namespace AutosarBCM.Core
                     FailureType = data[i + 2],
                     Mask = data[i + 3]
                 });
-            return new ReadDTCInformationService { Values = result };
+            return new ReadDTCInformationService 
+            { 
+                Values = result,
+                Response = response
+            };
         }
     }
 

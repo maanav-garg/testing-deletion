@@ -67,7 +67,7 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return TesterPresent.Receive(this);
             }
-            else if (Data[0] == ServiceInfo.DiagnosticSessionControl.ResponseID)
+            else if (Data[0] == ServiceInfo.ReadDTCInformation.ResponseID)
             {
                 IsPositiveRx = true;
                 return ReadDTCInformationService.Receive(this);

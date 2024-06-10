@@ -39,7 +39,7 @@ namespace AutosarBCM
         /// <summary>
         /// Keeps the values of DTC values. It will be used to determine the changed data
         /// </summary>
-        private Dictionary<string, string> dtcValueList = new Dictionary<string, string>();
+        private Dictionary<string, Dictionary<string, byte>> dtcValueList = new Dictionary<string, Dictionary<string, byte>>();
 
         #endregion
 
@@ -77,7 +77,7 @@ namespace AutosarBCM
                     if (string.IsNullOrEmpty(payload.DTCCode))
                         continue;
                     dtcList[payload.DTCCode] = control;
-                    dtcValueList[payload.DTCCode] = string.Empty;
+                    dtcValueList[payload.DTCCode] = new Dictionary<string, byte>();
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace AutosarBCM
             btnStart.Text = start ? "Stop" : "Start";
             btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
             //TODO düzeltilecek
-            emcTimeControl = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == "EMC");
+            emcTimeControl = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == "Emc_Swc_LifeCycle");
             Task.Run(() =>
             {
                 try
@@ -139,6 +139,7 @@ namespace AutosarBCM
 
                         var controls = ASContext.Configuration.Controls.Where(c => c.Group == "DID" && c.Services.Contains(0x22));
                         ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txInterval);
+                        ASContext.Configuration.Settings.TryGetValue("DTCWaitingTime", out string dtcWaitingTime);
 
                         while (FormMain.EMCMonitoring)
                         {
@@ -149,6 +150,7 @@ namespace AutosarBCM
                             }
                             ThreadSleep(int.Parse(txInterval));
                             new ReadDTCInformationService().Transmit();
+                            Thread.Sleep(int.Parse(dtcWaitingTime));
                         }
                     }
                     else
@@ -210,7 +212,7 @@ namespace AutosarBCM
         {
             if (service is ReadDataByIdenService readService && readService.Response.IsPositiveRx)
             {
-                if (readService.ControlInfo.Address == emcTimeControl.Address)
+                if (readService.ControlInfo.Address == emcTimeControl?.Address)
                 {
                     IsInformativeRX(readService.Payloads.FirstOrDefault());
                 }
@@ -244,11 +246,23 @@ namespace AutosarBCM
                     if (payload == null)
                         continue;
                     //Check for changed data
-                    if (dtcValueList[dtcValue.Code] != dtcValue.Description)
+                    try
                     {
-                        AddDataRow(control, payload, "", dtcValue.Description);
-                        dtcValueList[dtcValue.Code] = dtcValue.Description;
+                        //Add default value
+                        if (!dtcValueList[dtcValue.Code].ContainsKey(dtcValue.Description))
+                            dtcValueList[dtcValue.Code].Add(dtcValue.Description, 0);
+
+                        if (dtcValueList[dtcValue.Code][dtcValue.Description] != dtcValue.Mask)
+                        {
+                            AddDataRow(control, payload, "", dtcValue.Description);
+                            dtcValueList[dtcValue.Code][dtcValue.Description] = dtcValue.Mask;
+                        }
                     }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    
                 }
             }
         }

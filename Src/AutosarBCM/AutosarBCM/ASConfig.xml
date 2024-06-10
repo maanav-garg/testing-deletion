@@ -3,6 +3,7 @@
     <Entry key="namesPadding" value="30" />
 	<Entry key="TxInterval" value="5" />
 	<Entry key="ReadInterval" value="5" />
+	<Entry key="DTCWaitingTime" value="8000" />
   </Settings>
   <Services>
     <Service requestID="10" responseID="50">
@@ -10,7 +11,7 @@
     </Service>
     <Service requestID="22" responseID="62">
       <Name>ReadDataByIdentifier</Name>
-      <Sessions>01</Sessions>
+      <Sessions>01;03</Sessions>
       <ResponseIndex>3</ResponseIndex>
     </Service>
     <Service requestID="2F" responseID="6F">
@@ -1622,6 +1623,20 @@
         <Response serviceId="62">
           <Payload name="Left Side Stowage Box" dtcCode="8009" typeName="HexDump_1Byte"></Payload>
           <Payload name="Right Side Stowage Box" dtcCode="8008" typeName="HexDump_1Byte"></Payload>
+        </Response>
+      </Responses>
+    </Control>
+	<Control>
+      <Address>DF66</Address>
+      <Name>Emc_Swc_LifeCycle</Name>
+      <Type></Type>
+      <Group>DID</Group>
+      <Services>22</Services>
+      <Responses>
+        <Response serviceId="62">
+          <Payload name="SWC LifeCycle" typeName="HexDump_4Bytes"></Payload>
+        </Response>
+        <Response serviceId="6F">
         </Response>
       </Responses>
     </Control>
