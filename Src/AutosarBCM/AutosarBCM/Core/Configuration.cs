@@ -140,7 +140,7 @@ namespace AutosarBCM.Core
 
         internal PayloadValue GetPayloadValue(byte[] value)
         {
-            return Values?.FirstOrDefault(v => v.Value.SequenceEqual(value));
+            return Values?.FirstOrDefault(v => v.Value.SequenceEqual(value)) ?? new PayloadValue { FormattedValue = $"U/I {BitConverter.ToString(value)}" };
         }
     }
 
