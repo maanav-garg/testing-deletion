@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "AutosarBCM"
-#define MyAppVersion "0.2.0"
+#define MyAppVersion "0.3.0"
 #define MyApp2ndName "AutosarBCM"
 #define MyAppPublisher "Vestel"
 #define MyAppExeName "AutosarBCM.exe"
