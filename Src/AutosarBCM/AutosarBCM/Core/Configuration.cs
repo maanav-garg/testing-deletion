@@ -99,7 +99,7 @@ namespace AutosarBCM.Core
             if (isControlMaskActive)
                 bytes.Add(controlByte);
             Console.WriteLine($"DID {Name} {(isOpen?"opened":"closed")}");
-            //Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
         }
 
         internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data)
@@ -140,7 +140,7 @@ namespace AutosarBCM.Core
 
         internal PayloadValue GetPayloadValue(byte[] value)
         {
-            return Values?.FirstOrDefault(v => v.Value.SequenceEqual(value));
+            return Values?.FirstOrDefault(v => v.Value.SequenceEqual(value)) ?? new PayloadValue { FormattedValue = $"U/I {BitConverter.ToString(value)}" };
         }
     }
 
@@ -287,8 +287,18 @@ namespace AutosarBCM.Core
                     ConnectionMappings= t.Element("ConnectionMappings").Elements("Mapping")
                         .Select(m => new Mapping
                         {
-                            InputName= m.Element("InputName").Value,
-                            OutputName= m.Element("OutputName").Value,
+                            Input = m.Elements("Input")
+                                .Select(f => new Function
+                                {
+                                    Name = f.Value,
+                                    Parent = f.Attribute("parent")?.Value ?? null,
+                                }).First(),
+                            Output = m.Elements("Output")
+                                .Select(f => new Function
+                                {
+                                    Name = f.Value,
+                                    Parent = f.Attribute("parent")?.Value ?? null,
+                                }).First(),
                         }).ToList(),
                     ContinousReadList = t.Element("ContinousReadList").Elements("Func")
                          .Select(f => new Function
@@ -385,11 +395,11 @@ namespace AutosarBCM.Core
         /// <summary>
         /// Output name
         /// </summary>
-        public string OutputName { get; set; }
+        public Function Output { get; set; }
         /// <summary>
         /// Relevant Input Name
         /// </summary>
-        public string InputName { get; set; }
+        public Function Input { get; set; }
 
         #endregion
     }

@@ -1,10 +1,12 @@
 using AutosarBCM.Config;
 using AutosarBCM.Core;
+using AutosarBCM.Forms.Monitor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AutosarBCM
 {
@@ -152,8 +154,7 @@ namespace AutosarBCM
                     {
                         StartTime = DateTime.Now;
                         var cycles = ASContext.Configuration.EnvironmentalTest.Cycles;
-                        //var inputItems = monitorConfig.GenericMonitorConfiguration.InputSection.Groups.SelectMany(x => x.InputItemList);
-                        var controlItems = ASContext.Configuration.Controls;
+                        var controlItems = ASContext.Configuration.Controls.Where(c => c.Group == "DID");
                         var startCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.StartCycleIndex;
                         var endCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.EndCycleIndex;
                         //var dictMapping = new Dictionary<string, InputMonitorItem>();
@@ -190,13 +191,12 @@ namespace AutosarBCM
                         //    var inputItem = inputItems.Where(x => x.Name.Equals(mapping.InputName)).FirstOrDefault();
                         //    dictMapping.Add(mapping.OutputName, inputItem);
                         //}
-
-                        //TODO to be checked
-                        //foreach (var mapping in ASContext.Configuration.EnvironmentalTest.ConnectionMappings)
-                        //{
-                        //    var controlItem = controlItems.Where(x => x.Name.Equals(mapping.InputName)).FirstOrDefault();
-                        //    dictMapping.Add(mapping.OutputName, controlItem);
-                        //}
+                        
+                        foreach (var mapping in ASContext.Configuration.EnvironmentalTest.ConnectionMappings)
+                        {
+                            var controlItem = controlItems.Where(x => x.Name.Equals(mapping.Input.Parent)).FirstOrDefault();
+                            dictMapping.Add(mapping.Output.Name, controlItem);
+                        }
 
 
                         //foreach (var funcName in monitorConfig.EnvironmentalMonitorConfiguration.MappingSection.ContinousReadList)
@@ -304,7 +304,7 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="cycles">List of cycles.</param>
         private static Dictionary<int,Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
-        {
+        {   
             var cycleDict = new Dictionary<int, Core.Cycle>();
             foreach (var cycle in cycles)
             {
@@ -397,7 +397,10 @@ namespace AutosarBCM
             //}                
 
             //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
-            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
+            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}"); 
+
+            FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
+            formEnvTest.SetCounter( reboots + 1, cycleIndex + 1);
 
             if (cycleIndex >= endCycleIndex - 1)
             {

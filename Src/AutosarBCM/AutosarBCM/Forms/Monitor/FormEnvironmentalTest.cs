@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 using System.Windows.Forms;
 
 namespace AutosarBCM.Forms.Monitor
@@ -24,6 +25,8 @@ namespace AutosarBCM.Forms.Monitor
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
         private CancellationTokenSource cancellationTokenSource;
+        int timeCs, timeSec, timeMin, timeHour;
+        bool isActive;
 
         #endregion
 
@@ -42,6 +45,15 @@ namespace AutosarBCM.Forms.Monitor
         #region Private Methods
         private void LoadControls()
         {
+            if (ASContext.Configuration == null)
+            {
+                Helper.ShowWarningMessageBox("No configuration file is imported. Please import the file first!");
+                this.Close();
+                return;
+            }
+
+            ResetTime();
+
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
             {
@@ -94,7 +106,23 @@ namespace AutosarBCM.Forms.Monitor
 
 
         #endregion
-
+        internal void SetCounter(int cycleCounter, int loopCounter)
+        {
+            BeginInvoke(new Action(() =>
+            {
+                lblCycleVal.Text = cycleCounter.ToString();
+                lblLoopVal.Text = loopCounter.ToString();
+            }));
+            
+        }
+        private void ResetTime()
+        {
+            timeCs = 0;
+            timeSec = 0;
+            timeMin = 0;
+            timeHour = 0;
+            isActive = false;
+        }
         private void btnStart_Click(object sender, EventArgs e)
         {
             if (FormMain.IsTestRunning)
@@ -110,11 +138,14 @@ namespace AutosarBCM.Forms.Monitor
             FormMain.IsTestRunning = !FormMain.IsTestRunning;
             if (FormMain.IsTestRunning)
             {
+                ResetTime();
+                isActive = true;
                 btnStart.Text = "Stop";
                 btnStart.ForeColor = Color.Red;
             }
             else
             {
+                isActive=false;
                 btnStart.Text = "Start";
                 btnStart.ForeColor = Color.Green;
             }
@@ -171,6 +202,39 @@ namespace AutosarBCM.Forms.Monitor
                 return true;
             }
             return false;
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            if (isActive)
+            {
+                timeCs++;
+                if(timeCs >= 100)
+                {
+                    timeSec++;
+                    timeCs = 0;
+
+                    if(timeSec >= 60)
+                    {
+                        timeMin++;
+                        timeSec = 0;
+                        if(timeMin >= 60)
+                        {
+                            timeHour++;
+                            timeMin = 0;
+                        }
+                    }
+                }
+            }
+            DrawTime();
+        }
+
+        private void DrawTime()
+        {
+            lblCs.Text = String.Format("{0:00}", timeCs);
+            lblSec.Text = String.Format("{0:00}", timeSec);
+            lblMin.Text = String.Format("{0:00}", timeMin);
+            lblHour.Text = String.Format("{0:00}", timeHour);
         }
 
         private void tspFilterTxb_TextChanged(object sender, EventArgs e)
