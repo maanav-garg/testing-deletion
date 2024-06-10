@@ -1926,7 +1926,7 @@
         </Response>
       </Responses>
     </Control>
-    <Control>
+    <!--<Control>
       <Address>DF47</Address>
       <Name>LIN_PWS_and_HLS_Switch</Name>
       <Type></Type>
@@ -1952,7 +1952,7 @@
       <Responses>
         <Response serviceId="62"></Response>
       </Responses>
-    </Control>
+    </Control>-->
   </Controls>
   <Payloads>
     <Payload length="1" typeName="DID_Byte_Enable_Disable">

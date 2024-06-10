@@ -1,4 +1,5 @@
 using AutosarBCM.Config;
+using AutosarBCM.Core;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,7 @@ namespace AutosarBCM
         /// </summary>
         private ControlOrder controlOrder;
 
+
         #endregion
 
         #region Constructor
@@ -55,6 +57,7 @@ namespace AutosarBCM
             InitializeComponent();
             rdoOrder_CheckedChanged(null, null);
             rdoControl_CheckedChanged(null, null);
+
         }
 
         #endregion
@@ -68,12 +71,7 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments</param>
         private void btnImport_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog dialog = new OpenFileDialog() { Filter = "Xml|*.xml" })
-                if (dialog.ShowDialog() == DialogResult.OK)
-                    FormMain.Configuration = Config = MonitorConfigManager.GetConfig(dialog.FileName).Configuration;
-                else return;
-
-            LoadData(true);
+             //LoadConfig();
         }
 
         /// <summary>
@@ -85,16 +83,26 @@ namespace AutosarBCM
         {
             if (!FormMain.ControlChecker)
             {
-                if (!ConnectionUtil.CheckConnection()) 
+                if (!ConnectionUtil.CheckConnection())
                     return;
-                if (Config == null) 
-                { 
-                    Helper.ShowWarningMessageBox("Please, load the configuration file first."); 
-                    return; 
+                if (Config == null)
+                {
+                    Helper.ShowWarningMessageBox("Please, load the configuration file first.");
+                    return;
                 }
                 Task.Run(() => Start());
             }
             RefreshUI(!FormMain.ControlChecker);
+        }
+        private void LoadConfig()
+        {
+            if (ASContext.Configuration == null)
+            {
+                Helper.ShowWarningMessageBox("No configuration file is imported. Please import the file first!");
+                this.Close();
+                return;
+            }
+            LoadData(true);
         }
 
         /// <summary>
@@ -119,24 +127,24 @@ namespace AutosarBCM
         /// </summary>
         private void StartInputControls()
         {
-            bool anyDataSelected = false;
-            ClearResponse(3, dgvInput);
-            foreach (DataGridViewRow row in dgvInput.Rows)
-            {
-                if ((DataGridViewCell)row.Cells[0] is DataGridViewCheckBoxCell toBeTransmittedRow)
-                {
-                    if ((bool)toBeTransmittedRow.Value == true)
-                    {
-                        anyDataSelected = true;
-                        var input = (InputMonitorItem)row.Tag;
-                        Transmit(input.MessageIdOrDefault, input.Data);
+            //bool anyDataSelected = false;
+            //ClearResponse(3, dgvInput);
+            //foreach (DataGridViewRow row in dgvInput.Rows)
+            //{
+            //    if ((DataGridViewCell)row.Cells[0] is DataGridViewCheckBoxCell toBeTransmittedRow)
+            //    {
+            //        if ((bool)toBeTransmittedRow.Value == true)
+            //        {
+            //            anyDataSelected = true;
+            //            var input = (InputMonitorItem)row.Tag;
+            //            Transmit(input.MessageIdOrDefault, input.Data);
 
-                        if (!FormMain.ControlChecker) break;
-                    }
-                }
-            }
-            if (!anyDataSelected)
-                Helper.ShowWarningMessageBox("No Check Edits");
+            //            if (!FormMain.ControlChecker) break;
+            //        }
+            //    }
+            //}
+            //if (!anyDataSelected)
+            //    Helper.ShowWarningMessageBox("No Check Edits");
         }
 
         /// <summary>
@@ -175,7 +183,7 @@ namespace AutosarBCM
                         if (!Transmit(cInfo.Output.MessageIdOrDefault, cInfo.Current)) SetUnavailable(row, 12);
                         if (!Transmit(cInfo.CorrespondingInput?.MessageIdOrDefault, cInfo.CorrespondingInput?.Data)) SetUnavailable(row, 13);
 
-                        if (!FormMain.ControlChecker) 
+                        if (!FormMain.ControlChecker)
                             break;
                     }
                 }
@@ -196,9 +204,9 @@ namespace AutosarBCM
                         isDataSelected = true;
                         var cInfo = (ControlInfo)row.Tag;
 
-                        if (!Transmit(cInfo.Output.MessageIdOrDefault, cInfo.Open)) 
+                        if (!Transmit(cInfo.Output.MessageIdOrDefault, cInfo.Open))
                             SetUnavailable(row, 4);
-                        if (!Transmit(cInfo.CorrespondingInput?.MessageIdOrDefault, cInfo.CorrespondingInput?.Data)) 
+                        if (!Transmit(cInfo.CorrespondingInput?.MessageIdOrDefault, cInfo.CorrespondingInput?.Data))
                             SetUnavailable(row, 8);
 
                         selectedControls.Add((cInfo, row));
@@ -213,9 +221,9 @@ namespace AutosarBCM
 
                 foreach (var control in selectedControls)
                 {
-                    if (!Transmit(control.Item1.Output.MessageIdOrDefault, control.Item1.Close)) 
+                    if (!Transmit(control.Item1.Output.MessageIdOrDefault, control.Item1.Close))
                         SetUnavailable(control.Item2, 9);
-                    if (!Transmit(control.Item1.CorrespondingInput?.MessageIdOrDefault, control.Item1.CorrespondingInput?.Data)) 
+                    if (!Transmit(control.Item1.CorrespondingInput?.MessageIdOrDefault, control.Item1.CorrespondingInput?.Data))
                         SetUnavailable(control.Item2, 13);
                 }
             }
@@ -299,16 +307,16 @@ namespace AutosarBCM
             if (e.ColumnIndex == 0)
             {
                 DataGridView dgv = sender as DataGridView;
-
+                dgv.Visible = true;
                 Rectangle rect = dgv.GetCellDisplayRectangle(e.ColumnIndex, -1, true);
 
-                if (dgv == dgvInput)
+                if (dgv == dgvOutput)
                 {
                     if (chkSelectAllInput == null)
-                    { 
+                    {
                         chkSelectAllInput = new CheckBox();
                         chkSelectAllInput.Size = new Size(14, 14);
-                        chkSelectAllInput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllInput.Width) / 2 - 1, rect.Location.Y + (rect.Height - chkSelectAllInput.Height) / 2);
+                        chkSelectAllInput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllInput.Width) / 2, rect.Location.Y + (rect.Height - chkSelectAllInput.Height) / 2);
                         chkSelectAllInput.Checked = true;
                         dgv.Controls.Add(chkSelectAllInput);
 
@@ -323,17 +331,10 @@ namespace AutosarBCM
                                 dgv.EndEdit();
                             }
                         };
-
-                        Form form = dgv.FindForm();
-                        form.Resize += (s, args) =>
-                        {
-                            Rectangle newRect = dgv.GetCellDisplayRectangle(e.ColumnIndex, -1, true);
-                            chkSelectAllInput.Location = new Point(newRect.Location.X + (newRect.Width - chkSelectAllInput.Width) / 2, newRect.Location.Y + (newRect.Height - chkSelectAllInput.Height) / 2);
-                        };
                     }
                     else
                     {
-                        chkSelectAllInput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllInput.Width) / 2, rect.Location.Y + (rect.Height - chkSelectAllInput.Height) / 2);
+                        chkSelectAllInput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllInput.Width) / 2 - 1, rect.Location.Y + (rect.Height - chkSelectAllInput.Height) / 2);
                     }
                 }
                 else
@@ -357,19 +358,13 @@ namespace AutosarBCM
                                 dgv.EndEdit();
                             }
                         };
-
-                        Form form = dgv.FindForm();
-                        form.Resize += (s, args) =>
-                        {
-                            Rectangle newRect = dgv.GetCellDisplayRectangle(e.ColumnIndex, -1, true);
-                            chkSelectAllOutput.Location = new Point(newRect.Location.X + (newRect.Width - chkSelectAllOutput.Width) / 2, newRect.Location.Y + (newRect.Height - chkSelectAllOutput.Height) / 2);
-                        };
                     }
                     else
                     {
                         chkSelectAllOutput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllOutput.Width) / 2 - 1, rect.Location.Y + (rect.Height - chkSelectAllOutput.Height) / 2);
                     }
                 }
+                dgv.Visible = dgv == dgvOutput ? rdoOutput.Checked : rdoInput.Checked;
             }
         }
 
@@ -397,37 +392,54 @@ namespace AutosarBCM
         /// <returns>true if the data was successfully loaded; otherwise, false.</returns>
         private void LoadData(bool all = false)
         {
-            if (Config == null) 
-            { 
-                Helper.ShowWarningMessageBox("Please, load the configuration file first."); 
-                return; 
-            }
-            numInterval.Value = Config.GenericMonitorConfiguration.InputSection.CommonConfig.TxInterval;
-
-            if (all || rdoInput.Checked)
+            if (ASContext.Configuration == null)
             {
-                SetSelectAllControls(dgvInput, new DataGridViewCellMouseEventArgs(0, 0, 0, 0, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0)));
-                dgvInput.Rows.Clear();
-                foreach (var input in Config.GenericMonitorConfiguration.InputSection.Groups.SelectMany(x => x.InputItemList))
-                    dgvInput.Rows[dgvInput.Rows.Add(true, input.Name, input.ItemType)].Tag = input;
+                Helper.ShowWarningMessageBox("Please, load the configuration file first.");
+                return;
             }
+
+            if (ASContext.Configuration.Settings.TryGetValue("TXInterval", out string txIntervalValue))
+            {
+
+                numInterval.Value = Convert.ToDecimal(txIntervalValue);
+            }
+            else
+            {
+                MessageBox.Show("TXInterval key not found in the settings.");
+            }
+
             if (all || rdoOutput.Checked)
             {
                 SetSelectAllControls(dgvOutput, new DataGridViewCellMouseEventArgs(0, 0, 0, 0, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0)));
                 dgvOutput.Rows.Clear();
-
-                foreach (var item in ControlHelper.GetControlsExtended(Config))
+                foreach (var control in ASContext.Configuration.Controls.Where(c => c.Services.Contains(0x2F) && c.Group == "DID"))
                 {
-                    var index = dgvOutput.Rows.Add(true ,item.Name, item.Output.ItemType, item.CorrespondingInput?.Name);
-                    dgvOutput.Rows[index].Tag = item;
-
-                    if (item.CorrespondingInput == null)
+                    foreach (var response in control.Responses.Where(r => r.Payloads != null && r.Payloads.Any())
+                    .SelectMany(r => r.Payloads, (r, p) => new { ControlName = control.Name, r.ServiceID, PayloadName = p.Name, PayloadTypeName = p.TypeName }))
                     {
-                        dgvOutput.Rows[index].Cells[3].Value = dgvOutput.Rows[index].Cells[8].Value = dgvOutput.Rows[index].Cells[13].Value = "N / A";
-                        dgvOutput.Rows[index].Cells[3].Style.BackColor = dgvOutput.Rows[index].Cells[8].Style.BackColor = dgvOutput.Rows[index].Cells[13].Style.BackColor = Color.LightGray;
+                        dgvOutput.Rows[dgvOutput.Rows.Add(true, control.Name, response.PayloadName)].Tag = control;
                     }
+
                 }
+
             }
+            //if (all || rdoOutput.Checked)
+            //{
+            //    SetSelectAllControls(dgvOutput, new DataGridViewCellMouseEventArgs(0, 0, 0, 0, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0)));
+            //    dgvOutput.Rows.Clear();
+
+            //    foreach (var item in ControlHelper.GetControlsExtended(Config))
+            //    {
+            //        var index = dgvOutput.Rows.Add(true ,item.Name, item.Output.ItemType, item.CorrespondingInput?.Name);
+            //        dgvOutput.Rows[index].Tag = item;
+
+            //        if (item.CorrespondingInput == null)
+            //        {
+            //            dgvOutput.Rows[index].Cells[3].Value = dgvOutput.Rows[index].Cells[8].Value = dgvOutput.Rows[index].Cells[13].Value = "N / A";
+            //            dgvOutput.Rows[index].Cells[3].Style.BackColor = dgvOutput.Rows[index].Cells[8].Style.BackColor = dgvOutput.Rows[index].Cells[13].Style.BackColor = Color.LightGray;
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -461,7 +473,7 @@ namespace AutosarBCM
                     if ((string)row.Cells[i].Value == "N / A")
                         continue;
 
-                    if(dgv == dgvOutput)
+                    if (dgv == dgvOutput)
                         ((ControlInfo)row.Tag).Closing = false;
 
                     row.Cells[i].Value = null;
@@ -503,7 +515,7 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments.</param>
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Helper.ExportToCSV(rdoInput.Checked ? dgvInput : dgvOutput);
+        //    Helper.ExportToCSV(rdoInput.Checked ? dgvInput : dgvOutput);
         }
 
         /// <summary>
@@ -513,7 +525,7 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments.</param>
         private void txtFilter_TextChanged(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in dgvInput.Rows.OfType<DataGridViewRow>().Union(dgvOutput.Rows.OfType<DataGridViewRow>()))
+            foreach (DataGridViewRow row in dgvOutput.Rows.OfType<DataGridViewRow>().Union(dgvOutput.Rows.OfType<DataGridViewRow>()))
                 row.Visible = string.IsNullOrEmpty(txtFilter.Text) || row.Cells.OfType<DataGridViewCell>().Any(x => x.Value?.ToString().ToLower().Contains(txtFilter.Text.ToLower()) ?? false);
         }
 
@@ -541,7 +553,6 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments.</param>
         private void rdoControl_CheckedChanged(object sender, EventArgs e)
         {
-            dgvInput.Visible = rdoInput.Checked;
             dgvOutput.Visible = rdoOutput.Checked;
             grpOrder.Visible = lblOrderNote.Visible = rdoOutput.Checked;
         }
@@ -618,10 +629,10 @@ namespace AutosarBCM
                    Config.GenericMonitorConfiguration.InputSection.CommonConfig.InputRegisterGroupOffset,
                    Config.GenericMonitorConfiguration.InputSection.CommonConfig.InputRegisterGroupLength);
 
-            if (rdoInput.Checked)
-                foreach (DataGridViewRow row in dgvInput.Rows)
-                    if (HandleInputResponse(row, genericResponse))
-                        break;
+            //if (rdoInput.Checked)
+            //    foreach (DataGridViewRow row in dgvInput.Rows)
+            //        if (HandleInputResponse(row, genericResponse))
+            //            break;
             if (rdoOutput.Checked)
                 foreach (DataGridViewRow row in dgvOutput.Rows)
                     if (HandleOutputResponse(row, genericResponse))
@@ -630,5 +641,11 @@ namespace AutosarBCM
 
         #endregion
 
+        private void FormControlChecker_Load(object sender, EventArgs e)
+        {
+            rdoOutput.Checked = true;
+            LoadConfig();
+            //btnImport.PerformClick();
+        }
     }
 }

@@ -145,7 +145,6 @@ namespace AutosarBCM
             this.tsmiCheck.Name = "tsmiCheck";
             this.tsmiCheck.Size = new System.Drawing.Size(174, 22);
             this.tsmiCheck.Text = "Control Check";
-            this.tsmiCheck.Visible = false;
             this.tsmiCheck.Click += new System.EventHandler(this.tsmiCheck_Click);
             // 
             // tsmiEMCView
