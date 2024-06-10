@@ -53,6 +53,7 @@ namespace AutosarBCM.Core
     public class ASResponse
     {
         public byte[] Data { get; private set; }
+        public bool IsPositiveRx { get; set; } = false;
 
         public ASResponse(byte[] data)
         {
@@ -61,10 +62,28 @@ namespace AutosarBCM.Core
 
         public Service Parse()
         {
-            if (Data[0] == 0x7E) return TesterPresent.Receive(this);
-            else if (Data[0] == 0x59) return ReadDTCInformationService.Receive(this);
-            else if (Data[0] == 0x62 || Data[0] == 0x22) return ReadDataByIdenService.Receive(this);
-
+            if (Data[0] == ServiceInfo.TesterPresent.ResponseID)
+            {
+                IsPositiveRx = true;
+                return TesterPresent.Receive(this);
+            }
+            else if (Data[0] == ServiceInfo.ReadDTCInformation.ResponseID)
+            {
+                IsPositiveRx = true;
+                return ReadDTCInformationService.Receive(this);
+            }
+            else if (Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID
+                || Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
+            {
+                if (Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
+                    IsPositiveRx= true;
+                return ReadDataByIdenService.Receive(this);
+            }
+            else if (Data[0] == ServiceInfo.DiagnosticSessionControl.ResponseID)
+            { 
+                IsPositiveRx = true;
+                return DiagnosticSessionControl.Receive(this);
+            }
             return null;
         }
     }

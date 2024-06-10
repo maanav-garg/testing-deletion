@@ -84,6 +84,14 @@ namespace AutosarBCM.Core
         {
             ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, sessionInfo.ID });
         }
+
+        internal static DiagnosticSessionControl Receive(ASResponse response)
+        {
+            return new DiagnosticSessionControl()
+            {
+                Response = response
+            };
+        }
     }
 
     public class TesterPresent : Service
@@ -98,7 +106,10 @@ namespace AutosarBCM.Core
 
         internal static TesterPresent Receive(ASResponse response)
         {
-            return new TesterPresent();
+            return new TesterPresent()
+            {
+                Response = response
+            };
         }
     }
 
@@ -136,7 +147,11 @@ namespace AutosarBCM.Core
                     FailureType = data[i + 2],
                     Mask = data[i + 3]
                 });
-            return new ReadDTCInformationService { Values = result };
+            return new ReadDTCInformationService 
+            { 
+                Values = result,
+                Response = response
+            };
         }
     }
 

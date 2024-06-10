@@ -21,6 +21,8 @@ namespace AutosarBCM
         public static Thread UIThread = Thread.CurrentThread;
         public static FormMain MainForm => (FormMain)Application.OpenForms["FormMain"];
         public static FormControlChecker FormControlChecker => (FormControlChecker)Application.OpenForms["FormControlChecker"];
+        public static FormEMCView FormEMCView => (FormEMCView)Application.OpenForms["FormEMCView"];
+
         public static MultiKeyDictionary<string, string, ErrorLogDetectObject> MappingStateDict = new MultiKeyDictionary<string, string, ErrorLogDetectObject>();
 
         /// <summary>
