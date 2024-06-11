@@ -25,7 +25,7 @@ namespace AutosarBCM.Forms.Monitor
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
         private CancellationTokenSource cancellationTokenSource;
-        int timeCs, timeSec, timeMin, timeHour;
+        int timeSec, timeMin, timeHour;
         bool isActive;
 
         #endregion
@@ -113,11 +113,10 @@ namespace AutosarBCM.Forms.Monitor
                 lblCycleVal.Text = cycleCounter.ToString();
                 lblLoopVal.Text = loopCounter.ToString();
             }));
-            
+
         }
         private void ResetTime()
         {
-            timeCs = 0;
             timeSec = 0;
             timeMin = 0;
             timeHour = 0;
@@ -145,7 +144,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else
             {
-                isActive=false;
+                isActive = false;
                 btnStart.Text = "Start";
                 btnStart.ForeColor = Color.Green;
             }
@@ -208,30 +207,24 @@ namespace AutosarBCM.Forms.Monitor
         {
             if (isActive)
             {
-                timeCs++;
-                if(timeCs >= 100)
+                timeSec++;
+                if (timeSec >= 60)
                 {
-                    timeSec++;
-                    timeCs = 0;
-
-                    if(timeSec >= 60)
+                    timeMin++;
+                    timeSec = 0;
+                    if (timeMin >= 60)
                     {
-                        timeMin++;
-                        timeSec = 0;
-                        if(timeMin >= 60)
-                        {
-                            timeHour++;
-                            timeMin = 0;
-                        }
+                        timeHour++;
+                        timeMin = 0;
                     }
                 }
+
             }
             DrawTime();
         }
 
         private void DrawTime()
         {
-            lblCs.Text = String.Format("{0:00}", timeCs);
             lblSec.Text = String.Format("{0:00}", timeSec);
             lblMin.Text = String.Format("{0:00}", timeMin);
             lblHour.Text = String.Format("{0:00}", timeHour);
