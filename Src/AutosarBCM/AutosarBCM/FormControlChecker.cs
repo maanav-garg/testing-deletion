@@ -398,7 +398,7 @@ namespace AutosarBCM
                 return;
             }
 
-            if (ASContext.Configuration.Settings.TryGetValue("TXInterval", out string txIntervalValue))
+            if (ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txIntervalValue))
             {
 
                 numInterval.Value = Convert.ToDecimal(txIntervalValue);
