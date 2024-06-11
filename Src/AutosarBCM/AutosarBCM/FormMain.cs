@@ -1022,11 +1022,9 @@ namespace AutosarBCM
         /// <param name="e">The event arguments.</param>
         private void dockMonitor_ActiveDocumentChanged(object sender, EventArgs e)
         {
-            if (tspFilterTxb.Enabled && !string.IsNullOrWhiteSpace(tspFilterTxb.Text))
+            if (tspFilterTxb.Enabled)
                 tspFilterTxb_TextChanged(sender, e);
         }
-
-
 
         #endregion
 
