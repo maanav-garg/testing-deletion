@@ -2139,7 +2139,7 @@
       <CycleTime>3000</CycleTime>
       <TxInterval>10</TxInterval>
       <StartCycleIndex>1</StartCycleIndex>
-      <EndCycleIndex>20</EndCycleIndex>
+      <EndCycleIndex>13</EndCycleIndex>
       <PWMDutyOpenValue>100</PWMDutyOpenValue>
       <PWMDutyCloseValue>0</PWMDutyCloseValue>
       <PWMFreqOpenValue>200</PWMFreqOpenValue>
@@ -2167,26 +2167,56 @@
           <FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
         </Functions>
       </Cycle>
+		<Cycle>
+			<Name>SoftContinuous 1</Name>
+			<OpenAt>1</OpenAt>
+			<CloseAt>5</CloseAt>
+			<Functions>
+				<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
+				<FuncName parent="TCCM_Input">KL15Relay2</FuncName>
+				<FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+			</Functions>
+		</Cycle>
+		<Cycle>
+			<Name>SoftContinuous 1</Name>
+			<OpenAt>1</OpenAt>
+			<CloseAt>5</CloseAt>
+			<Functions>
+				<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
+				<FuncName parent="TCCM_Input">KL15Relay2</FuncName>
+				<FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+			</Functions>
+		</Cycle>
+		<Cycle>
+			<Name>SoftContinuous 1</Name>
+			<OpenAt>1</OpenAt>
+			<CloseAt>2</CloseAt>
+			<Functions>
+				<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
+				<FuncName parent="TCCM_Input">KL15Relay2</FuncName>
+				<FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+			</Functions>
+		</Cycle>
 	  <Cycle>
         <Name>SoftContinuous 2</Name>
-        <OpenAt>6</OpenAt>
-        <CloseAt>11</CloseAt>
+        <OpenAt>3</OpenAt>
+        <CloseAt>4</CloseAt>
         <Functions>
           <FuncName parent="TCCM_Input">KL15Relay1</FuncName>
           <FuncName parent="TCCM_Input">KL15Relay2</FuncName>
           <FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
         </Functions>
       </Cycle>
-	  <Cycle>
-        <Name>SoftContinuous 3</Name>
-        <OpenAt>12</OpenAt>
-        <CloseAt>18</CloseAt>
-        <Functions>
-          <FuncName parent="TCCM_Input">KL15Relay1</FuncName>
-          <FuncName parent="TCCM_Input">KL15Relay2</FuncName>
-          <FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
-        </Functions>
-      </Cycle>
+		<Cycle>
+			<Name>SoftContinuous 2</Name>
+			<OpenAt>6</OpenAt>
+			<CloseAt>11</CloseAt>
+			<Functions>
+				<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
+				<FuncName parent="TCCM_Input">KL15Relay2</FuncName>
+				<FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+			</Functions>
+		</Cycle>
     </Cycles>
   </EnvironmentalTest>
 </Configuration>

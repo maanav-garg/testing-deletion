@@ -67,7 +67,7 @@ namespace AutosarBCM.Core
                     bytes.Add(0x0);
                 else //Payload match
                 {
-                    controlByte |= (byte)(1 << bitIndex);
+                    controlByte |= (byte)(1 << (7- bitIndex));
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;

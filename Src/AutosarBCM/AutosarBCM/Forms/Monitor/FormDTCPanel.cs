@@ -43,15 +43,17 @@ namespace AutosarBCM.Forms.Monitor
 
         public bool Receive(Service baseService)
         {
-            var service = (ReadDTCInformationService)baseService;
-
-            foreach (var dtcValue in service.Values)
-                foreach (var ucItem in ucItems)
-                    if (dtcValue.Code == ucItem.PayloadInfo.DTCCode)
-                    {
-                        ucItem.ChangeStatus(dtcValue);
-                        break;
-                    }
+            var service = baseService as ReadDTCInformationService;
+            if(service != null)
+            {
+                foreach (var dtcValue in service.Values)
+                    foreach (var ucItem in ucItems)
+                        if (dtcValue.Code == ucItem.PayloadInfo.DTCCode)
+                        {
+                            ucItem.ChangeStatus(dtcValue);
+                            break;
+                        }
+            }
             return true;
         }
 

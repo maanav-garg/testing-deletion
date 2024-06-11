@@ -67,11 +67,21 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return TesterPresent.Receive(this);
             }
+
+            else if (Data[0] == ServiceInfo.InputOutputControlByIdentifier.ResponseID 
+                || Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
+            {
+                if (Data[0] == ServiceInfo.InputOutputControlByIdentifier.ResponseID)
+                    IsPositiveRx = true;
+                return IOControlByIdentifierService.Receive(this);
+            }
+
             else if (Data[0] == ServiceInfo.ReadDTCInformation.ResponseID)
             {
                 IsPositiveRx = true;
                 return ReadDTCInformationService.Receive(this);
             }
+
             else if (Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID
                 || Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
             {
@@ -79,11 +89,13 @@ namespace AutosarBCM.Core
                     IsPositiveRx= true;
                 return ReadDataByIdenService.Receive(this);
             }
+
             else if (Data[0] == ServiceInfo.DiagnosticSessionControl.ResponseID)
             { 
                 IsPositiveRx = true;
                 return DiagnosticSessionControl.Receive(this);
             }
+
             return null;
         }
     }

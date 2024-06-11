@@ -364,13 +364,15 @@ namespace AutosarBCM.Forms.Monitor
         public bool Receive(Service baseService)
         {
             var service = baseService as ReadDataByIdenService;
-
-            foreach (var ucItem in uCItems)
-                if (ucItem.ControlInfo.Address == service.ControlInfo.Address)
-                {
-                    ucItem.ChangeStatus(service);
-                    return true;
-                }
+            if (service != null)
+            {
+                foreach (var ucItem in uCItems)
+                    if (ucItem.ControlInfo.Address == service.ControlInfo.Address)
+                    {
+                        ucItem.ChangeStatus(service);
+                        return true;
+                    }
+            }
             return false;
         }
 

@@ -126,16 +126,31 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(IOControlByIdentifierService service)
         {
-            //UpdateCounters(messageDirection);
-            //if (messageDirection == MessageDirection.TX) return;
+            bool isTransmitted = !(service.Response.IsPositiveRx);
 
-            //oldValue = currentValue;
+            if (isTransmitted)
+            {
+                MessagesTransmitted++;
 
+                lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    lblTransmitted.Text = MessagesTransmitted.ToString();
+                });
+            }
+            else
+            {
+                lblReceived.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    MessagesReceived++;
+                    lblReceived.Text = MessagesReceived.ToString();
+                });
+            }
+            /*
             lblStatus.BeginInvoke((MethodInvoker)delegate ()
             {
                 var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
                 lblStatus.Text = payload.FormattedValue;
-            });
+            });*/
         }
 
         /// <summary>

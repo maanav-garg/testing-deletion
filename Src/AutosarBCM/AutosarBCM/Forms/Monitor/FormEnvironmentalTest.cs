@@ -195,11 +195,14 @@ namespace AutosarBCM.Forms.Monitor
         public bool Receive(Service baseService)
         {
             var service = (IOControlByIdentifierService)baseService;
-            var items = groups[service.ControlInfo.Name];
+            var items = groups["DID"];
             foreach (var uc in items)
             {
-                uc.ChangeStatus(service);
-                return true;
+                if (uc.ControlInfo.Name == service.ControlInfo.Name)
+                {
+                    uc.ChangeStatus(service);
+                    return true;
+                }
             }
             return false;
         }
