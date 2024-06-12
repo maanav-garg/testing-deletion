@@ -383,7 +383,6 @@ namespace AutosarBCM
                 if (cycleIndex % 5 == 0)
                 {
                     new ReadDTCInformationService().Transmit();
-                    new ClearDTCInformation().Transmit();
                 }
                 //if (cycleIndex % 4 == 0)
                 //{
