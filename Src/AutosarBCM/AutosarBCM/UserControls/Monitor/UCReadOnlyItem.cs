@@ -145,12 +145,12 @@ namespace AutosarBCM.UserControls.Monitor
                     lblReceived.Text = MessagesReceived.ToString();
                 });
             }
-            /*
+            
             lblStatus.BeginInvoke((MethodInvoker)delegate ()
             {
                 var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
-                lblStatus.Text = payload.FormattedValue;
-            });*/
+                lblStatus.Text = payload?.FormattedValue.ToString();
+            });
         }
 
         /// <summary>

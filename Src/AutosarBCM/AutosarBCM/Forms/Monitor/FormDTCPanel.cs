@@ -51,10 +51,10 @@ namespace AutosarBCM.Forms.Monitor
                         if (dtcValue.Code == ucItem.PayloadInfo.DTCCode)
                         {
                             ucItem.ChangeStatus(dtcValue);
-                            break;
+                            return true;
                         }
             }
-            return true;
+            return false;
         }
 
         internal void FilterItems(string text)

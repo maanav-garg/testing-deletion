@@ -152,14 +152,11 @@ namespace AutosarBCM
             if (e.Data[0] == 0x3E)
                 return;
 
-            if (e.Data[0] == 0x22 || e.Data[0] == 0x2f)
+            if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
                 var response = new ASResponse(e.Data).Parse();
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Receive(response)) {
-                        Console.WriteLine(response);
-                        break;
-                    } 
+                    if (receiver.Receive(response)) break;
             }
 
 
