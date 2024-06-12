@@ -49,6 +49,7 @@ namespace AutosarBCM
         /// A synchronization object used for locking critical sections of code to ensure thread safety.
         /// </summary>
         private static object lockObj = new object();
+        private Dictionary<byte, string> nrcResponseMessageDict = Enum.GetValues(typeof(NRCDescription)).Cast<NRCDescription>().ToDictionary(t => (byte)t, t => t.ToString());
 
         #endregion
 
@@ -172,7 +173,12 @@ namespace AutosarBCM
             var service = new ASResponse(e.Data).Parse();
 
             var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
-            var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
+            byte nrcByte = e.Data[2];
+            string nrcMessage = nrcResponseMessageDict.ContainsKey(nrcByte)
+                ? nrcResponseMessageDict[nrcByte]
+                : " ";
+
+            var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)} {nrcMessage}";
             var time = new DateTime((long)e.Timestamp);
 
 
