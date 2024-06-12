@@ -228,7 +228,6 @@ namespace AutosarBCM
             cycleLogMessageTimer.Start();
 
             Receivers.Add(formMonitorGenericInput);
-            Receivers.Add(formEnvironmentalTest);
             Receivers.Add(formDTCPanel);
 
         }
@@ -1207,6 +1206,7 @@ namespace AutosarBCM
                 if (formEnvironmentalTest == null || formEnvironmentalTest.IsDisposed)
                 {
                     formEnvironmentalTest = new FormEnvironmentalTest();
+                    Receivers.Add(formEnvironmentalTest);
                     formEnvironmentalTest.Show();
                 }
                 else

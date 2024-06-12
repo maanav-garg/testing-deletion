@@ -215,16 +215,12 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(ReadDataByIdenService service)
         {
-            // Check if the message is transmitted successfully (0x22 value received)
             bool isTransmitted = service.Response.Data[0].Equals((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER);
-
 
             if (isTransmitted)
             {
-                // Increment messageTransmitted value
                 MessageTransmitted++;
 
-                // Update the UI with the new messageTransmitted value
                 lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
                 {
                     lblTransmitted.Text = MessageTransmitted.ToString();
@@ -292,24 +288,6 @@ namespace AutosarBCM.UserControls.Monitor
         #endregion
 
         #region Private Methods
-
-        //private void UpdateCounters(MessageDirection messageDirection)
-        //{
-        //    if (messageDirection == MessageDirection.TX)
-        //        MessagesTransmitted++;
-        //    else
-        //        MessagesReceived++;
-
-        //    Invoke(new Action(() =>
-        //    {
-        //        lblTransmitted.Text = MessagesTransmitted.ToString();
-        //        lblReceived.Text = MessagesReceived.ToString();
-
-        //        var diff = MessagesReceived / MessagesTransmitted;
-        //        lblDiff.Text = diff.ToString("P2");
-        //        lblDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
-        //    }));
-        //}
 
         /// <summary>
         /// Label click event

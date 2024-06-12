@@ -152,12 +152,13 @@ namespace AutosarBCM
             if (e.Data[0] == 0x3E)
                 return;
 
-            if (e.Data[0] == 0x22)
+            if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
                 var response = new ASResponse(e.Data).Parse();
                 foreach (var receiver in FormMain.Receivers)
                     if (receiver.Receive(response)) break;
             }
+
 
             var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
@@ -183,8 +184,9 @@ namespace AutosarBCM
                 return;
             }
 
-            if (service?.ServiceInfo == ServiceInfo.TesterPresent)
+            if (service?.ServiceInfo == ServiceInfo.TesterPresent) {
                 return;
+            }
 
             if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
             {

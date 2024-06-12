@@ -106,6 +106,12 @@ namespace AutosarBCM.Forms.Monitor
 
 
         #endregion
+
+        /// <summary>
+        /// Handles cycle and loop value.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         internal void SetCounter(int cycleCounter, int loopCounter)
         {
             BeginInvoke(new Action(() =>
@@ -115,6 +121,12 @@ namespace AutosarBCM.Forms.Monitor
             }));
             
         }
+
+        /// <summary>
+        /// Handle time value to default value event.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         private void ResetTime()
         {
             timeCs = 0;
@@ -195,15 +207,33 @@ namespace AutosarBCM.Forms.Monitor
         public bool Receive(Service baseService)
         {
             var service = (IOControlByIdentifierService)baseService;
-            var items = groups[service.ControlInfo.Name];
-            foreach (var uc in items)
+            if(service == null)
             {
-                uc.ChangeStatus(service);
+                return false;
+            }
+            else
+            {
+                var items = groups["DID"];
+                var matchedControls = items.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
+                if (matchedControls == null)
+                    return false;
+
+                foreach (var uc in matchedControls)
+                {
+                    uc.ChangeStatus(service);
+                }
+
                 return true;
             }
-            return false;
+                
         }
 
+
+        /// <summary>
+        /// Timer starting event.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         private void timer_Tick(object sender, EventArgs e)
         {
             if (isActive)
@@ -229,6 +259,12 @@ namespace AutosarBCM.Forms.Monitor
             DrawTime();
         }
 
+
+        /// <summary>
+        /// Handle timer values event.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         private void DrawTime()
         {
             lblCs.Text = String.Format("{0:00}", timeCs);
