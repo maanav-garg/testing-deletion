@@ -378,23 +378,28 @@ namespace AutosarBCM
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
 
-            //if (cycleIndex >= startCycleIndex - 1)
-            //{
-            //    if(cycleIndex % 4 == 0)
-            //    {
-            //        foreach (var item in continousReadList)
-            //        {
-            //            item.Transmit(txInterval, Constants.ContinousRead);
-            //        }
-            //    }
+            if (cycleIndex >= startCycleIndex - 1)
+            {
+                if (cycleIndex % 5 == 0)
+                {
+                    new ReadDTCInformationService().Transmit();
+                    new ClearDTCInformation().Transmit();
+                }
+                //if (cycleIndex % 4 == 0)
+                //{
+                //    foreach (var item in continousReadList)
+                //    {
+                //        item.Transmit(txInterval, Constants.ContinousRead);
+                //    }
+                //}
 
-            //    if(softContinuousDiagList.Count > 0)
-            //    {
-            //        var softDiagList = softContinuousDiagList[(cycleIndex + 1 - startCycleIndex) % softContinuousDiagList.Count];
-            //        foreach (var softDiag in softDiagList)
-            //            softDiag.Transmit(softDiag.ReadDiagData, softDiag.MessageIdOrDefault, txInterval, Constants.SendDiagData);
-            //    }
-            //}                
+                //if (softContinuousDiagList.Count > 0)
+                //{
+                //    var softDiagList = softContinuousDiagList[(cycleIndex + 1 - startCycleIndex) % softContinuousDiagList.Count];
+                //    foreach (var softDiag in softDiagList)
+                //        softDiag.Transmit(softDiag.ReadDiagData, softDiag.MessageIdOrDefault, txInterval, Constants.SendDiagData);
+                //}
+            }
 
             //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
             Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}"); 
