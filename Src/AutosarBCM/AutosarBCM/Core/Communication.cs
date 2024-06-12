@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -54,6 +55,9 @@ namespace AutosarBCM.Core
     {
         public byte[] Data { get; private set; }
         public bool IsPositiveRx { get; set; } = false;
+        public string NegativeResponseCode { get; set; } = string.Empty;
+
+        private Dictionary<byte, string> nrcResponseMessageDict = Enum.GetValues(typeof(NRCDescription)).Cast<NRCDescription>().ToDictionary(t => (byte)t, t => t.ToString());
 
         public ASResponse(byte[] data)
         {
@@ -83,6 +87,13 @@ namespace AutosarBCM.Core
             { 
                 IsPositiveRx = true;
                 return DiagnosticSessionControl.Receive(this);
+            }
+            else if (Data[0] == ServiceInfo.NegativeResponse.ResponseID)
+            {
+                NegativeResponseCode = nrcResponseMessageDict.ContainsKey(Data[2])
+                    ? nrcResponseMessageDict[Data[2]]
+                    : string.Empty;
+                return NegativeResponse.Receive(this);
             }
             return null;
         }
