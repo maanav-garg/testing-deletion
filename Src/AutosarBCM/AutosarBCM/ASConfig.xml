@@ -850,7 +850,8 @@
 					<Payload name="KL50Output" typeName="DID_Bytes_High_Low"></Payload>
 					<Payload name="KL75Relay1" typeName="DID_Bytes_High_Low"></Payload>
 				</Response>
-				<Response serviceId="6F"></Response>
+				<Response serviceId="6F">
+				</Response>
 			</Responses>
 		</Control>
 		<Control>
@@ -2169,8 +2170,8 @@
 			</Cycle>
 			<Cycle>
 				<Name>SoftContinuous 2</Name>
-				<OpenAt>6</OpenAt>
-				<CloseAt>11</CloseAt>
+				<OpenAt>2</OpenAt>
+				<CloseAt>4</CloseAt>
 				<Functions>
 					<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
 					<FuncName parent="TCCM_Input">KL15Relay2</FuncName>
@@ -2179,8 +2180,8 @@
 			</Cycle>
 			<Cycle>
 				<Name>SoftContinuous 3</Name>
-				<OpenAt>12</OpenAt>
-				<CloseAt>18</CloseAt>
+				<OpenAt>3</OpenAt>
+				<CloseAt>5</CloseAt>
 				<Functions>
 					<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
 					<FuncName parent="TCCM_Input">KL15Relay2</FuncName>

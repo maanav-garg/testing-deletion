@@ -152,11 +152,11 @@ namespace AutosarBCM
             if (e.Data[0] == 0x3E)
                 return;
 
+            // Handle transmitted data -TX-
             if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
-                var response = new ASResponse(e.Data).Parse();
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Receive(response)) break;
+                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0))) ;
             }
 
 
@@ -222,7 +222,6 @@ namespace AutosarBCM
                 }
             }
 
-           
 
             //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 

@@ -63,6 +63,11 @@ namespace AutosarBCM.UserControls.Monitor
         /// An array to store RSSI (Received Signal Strength Indicator) measurement values.
         /// </summary>
         private float[] rssiValues = new float[3];
+
+        /// <summary>
+        /// Gets or sets the previous (old) value of the input item.
+        /// </summary>
+        private IOControlByIdentifierService oldValue;
         #endregion
 
         #region Constructor
@@ -119,6 +124,7 @@ namespace AutosarBCM.UserControls.Monitor
 
         #region Public Methods
 
+
         /// <summary>
         /// Change status of the input window regarding to read data from the device.
         /// </summary>
@@ -126,30 +132,67 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(IOControlByIdentifierService service)
         {
-            bool isTransmitted = !(service.Response.IsPositiveRx);
-
-            if (isTransmitted)
-            {
-                MessagesTransmitted++;
-
-                lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
-                {
-                    lblTransmitted.Text = MessagesTransmitted.ToString();
-                });
-            }
-            else
-            {
-                lblReceived.BeginInvoke((MethodInvoker)delegate ()
-                {
-                    MessagesReceived++;
-                    lblReceived.Text = MessagesReceived.ToString();
-                });
-            }
+           
             
+            lblReceived.BeginInvoke((MethodInvoker)delegate ()
+            {
+                MessagesReceived++;
+                lblReceived.Text = MessagesReceived.ToString();
+            });
+
+            if (oldValue != null)
+            {
+                bool areEqual = service.Payloads.Count == oldValue.Payloads.Count;
+
+                if (areEqual)
+                {
+                    for (int i = 0; i < service.Payloads.Count; i++)
+                    {
+                        if (service.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
+                            service.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
+                        {
+                            areEqual = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (areEqual)
+                    return;
+            }
+
+            oldValue = service;
+
             lblStatus.BeginInvoke((MethodInvoker)delegate ()
             {
-                var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
-                lblStatus.Text = payload?.FormattedValue.ToString();
+                if (service.Payloads[0].PayloadInfo.TypeName == "DID_PWM")
+                {
+                    var payload = (service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name)).FormattedValue;
+
+                    string hexValue = payload.Replace("-", "");
+                    string decimalValue = (Convert.ToInt32(hexValue, 16)).ToString();
+                    lblWriteStatus.Text = decimalValue;
+                }
+                else
+                {
+                    var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+                    lblWriteStatus.Text = payload?.FormattedValue.ToString();
+                }
+            });
+        }
+
+        /// <summary>
+        /// Handle number of transmitted data.
+        /// </summary>
+        /// <param name="monitorItem">Monitor item to be updated</param>
+        /// <param name="inputResponse">Data comes from device</param>
+        internal void HandleMetrics()
+        {
+            MessagesTransmitted++;
+
+            lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
+            {
+                lblTransmitted.Text = MessagesTransmitted.ToString();
             });
         }
 
@@ -733,5 +776,10 @@ namespace AutosarBCM.UserControls.Monitor
             return string.Empty;
         }
         #endregion
+
+        private void lblWriteStatus_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

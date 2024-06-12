@@ -228,6 +228,22 @@ namespace AutosarBCM.Forms.Monitor
                 
         }
 
+        /// <summary>
+        /// Handle transmitted data.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
+        public bool Sent(short address)
+        {
+            foreach (var ucItem in ucItems)
+                if (ucItem.ControlInfo.Address == address)
+                {
+                    ucItem.HandleMetrics();
+                    return true;
+                }
+            return false;
+
+        }
 
         /// <summary>
         /// Timer starting event.
@@ -259,7 +275,6 @@ namespace AutosarBCM.Forms.Monitor
             DrawTime();
         }
 
-
         /// <summary>
         /// Handle timer values event.
         /// </summary>
@@ -283,6 +298,5 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
-
     }
 }

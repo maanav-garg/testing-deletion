@@ -376,6 +376,22 @@ namespace AutosarBCM.Forms.Monitor
             return false;
         }
 
+        /// <summary>
+        /// Handle transmitted data.
+        /// </summary>
+        /// <param name="sender">Flowlayoutpanel to be painted.</param>
+        /// <param name="e">PaintEventArgs of the sender.</param>
+        public bool Sent(short address)
+        {
+                foreach (var ucItem in uCItems)
+                    if (ucItem.ControlInfo.Address == address)
+                    {
+                        ucItem.HandleMetrics();
+                        return true;
+                    }
+            return false;
+        }
+
         internal void ToggleSidebar()
         {
             splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
