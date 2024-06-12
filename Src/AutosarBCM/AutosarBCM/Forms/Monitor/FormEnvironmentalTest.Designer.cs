@@ -105,7 +105,7 @@
             this.pnlMonitor.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlMonitor.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.pnlMonitor.Location = new System.Drawing.Point(0, 27);
-            this.pnlMonitor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlMonitor.Margin = new System.Windows.Forms.Padding(2);
             this.pnlMonitor.Name = "pnlMonitor";
             this.pnlMonitor.Size = new System.Drawing.Size(1184, 734);
             this.pnlMonitor.TabIndex = 3;
@@ -207,7 +207,7 @@
             // timer
             // 
             this.timer.Enabled = true;
-            this.timer.Interval = 10;
+            this.timer.Interval = 1000;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // lblHour
