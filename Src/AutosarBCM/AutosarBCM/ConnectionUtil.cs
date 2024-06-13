@@ -49,7 +49,7 @@ namespace AutosarBCM
         /// A synchronization object used for locking critical sections of code to ensure thread safety.
         /// </summary>
         private static object lockObj = new object();
-
+       
         #endregion
 
         #region Public Methods
@@ -173,18 +173,23 @@ namespace AutosarBCM
             var service = new ASResponse(e.Data).Parse();
 
             var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
 
+            if (service?.ServiceInfo == ServiceInfo.TesterPresent)
+                return;
+
+            if (service?.ServiceInfo == ServiceInfo.NegativeResponse)
+            {
+                AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
+                return;
+            }
 
             if (FormMain.EMCMonitoring)
             {
                 AppendTrace(rxRead, time);
                 Program.FormEMCView?.HandleResponse(service);
-                return;
-            }
-
-            if (service?.ServiceInfo == ServiceInfo.TesterPresent) {
                 return;
             }
 

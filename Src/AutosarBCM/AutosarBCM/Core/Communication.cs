@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -54,6 +55,7 @@ namespace AutosarBCM.Core
     {
         public byte[] Data { get; private set; }
         public bool IsPositiveRx { get; set; } = false;
+        public string NegativeResponseCode { get; set; } = string.Empty;
 
         public ASResponse(byte[] data)
         {
@@ -95,7 +97,14 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return DiagnosticSessionControl.Receive(this);
             }
-
+            else if (Data[0] == ServiceInfo.NegativeResponse.ResponseID)
+            {
+                if (Enum.IsDefined(typeof(NRCDescription), Data[2]))
+                    NegativeResponseCode = ((NRCDescription)Data[2]).ToString();
+                else
+                    NegativeResponseCode = "Undefined";
+                return NegativeResponse.Receive(this);
+            }
             return null;
         }
     }
