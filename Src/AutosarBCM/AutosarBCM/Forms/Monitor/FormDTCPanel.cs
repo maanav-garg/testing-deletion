@@ -78,5 +78,18 @@ namespace AutosarBCM.Forms.Monitor
             LoadConfiguration();
             new ReadDTCInformationService().Transmit();
         }
+        
+        private void btnClearDTC_Click(object sender, EventArgs e)
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+
+            new ClearDTCInformation().Transmit();
+        }
+
+        public bool Sent(short address)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -154,7 +154,33 @@ namespace AutosarBCM.Core
             };
         }
     }
+   
+    public class ClearDTCInformation : Service
+    {
+        public ControlInfo ControlInfo { get; private set; }
+        public List<Payload> Payloads { get; private set; }
+        
+        
+        public ClearDTCInformation() : base(ServiceInfo.ClearDTCInformation) { }
+        
+        public void Transmit()
+        {
+            if (ServiceInfo == null) return;
+            //All DTCs
+            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0xFF, 0xFF, 0xFF });
+        }
 
+        public static ClearDTCInformation Receive(ASResponse response)
+        {
+            var service = new ClearDTCInformation();
+
+            service.ControlInfo = ASContext.Configuration.GetControlByAddress(BitConverter.ToUInt16(response.Data.Skip(1).Take(2).Reverse().ToArray(), 0));
+            service.Payloads = service.ControlInfo.GetPayloads(service.ServiceInfo, response.Data);
+            service.Response = response;
+            return service;
+        }
+    }
+    
     public class DTCValue
     {
         public string Code { get; set; }

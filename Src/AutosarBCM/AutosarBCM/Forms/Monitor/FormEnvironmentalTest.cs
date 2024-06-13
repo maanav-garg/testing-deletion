@@ -206,7 +206,7 @@ namespace AutosarBCM.Forms.Monitor
         public bool Receive(Service baseService)
         {
             var service = (IOControlByIdentifierService)baseService;
-            if(service == null)
+            if (service == null)
             {
                 return false;
             }
@@ -224,7 +224,23 @@ namespace AutosarBCM.Forms.Monitor
 
                 return true;
             }
-                
+
+        }
+        /// <summary>
+        /// Handle transmitted data.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
+        public bool Sent(short address)
+        {
+            foreach (var ucItem in ucItems)
+                if (ucItem.ControlInfo.Address == address)
+                {
+                    ucItem.HandleMetrics();
+                    return true;
+                }
+            return false;
+
         }
 
 
@@ -276,6 +292,5 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
-
     }
 }

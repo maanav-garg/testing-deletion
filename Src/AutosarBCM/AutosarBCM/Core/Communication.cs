@@ -10,6 +10,7 @@ namespace AutosarBCM.Core
 {
     internal interface IReceiver
     {
+        bool Sent(short address);
         bool Receive(Service service);
     }
 
@@ -68,11 +69,9 @@ namespace AutosarBCM.Core
                 return TesterPresent.Receive(this);
             }
 
-            else if (Data[0] == ServiceInfo.InputOutputControlByIdentifier.ResponseID 
-                || Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
+            else if (Data[0] == ServiceInfo.InputOutputControlByIdentifier.ResponseID)
             {
-                if (Data[0] == ServiceInfo.InputOutputControlByIdentifier.ResponseID)
-                    IsPositiveRx = true;
+                IsPositiveRx = true;
                 return IOControlByIdentifierService.Receive(this);
             }
 
@@ -81,17 +80,20 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return ReadDTCInformationService.Receive(this);
             }
-
-            else if (Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID
-                || Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
+            else if (Data[0] == ServiceInfo.ClearDTCInformation.ResponseID)
             {
-                if (Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
-                    IsPositiveRx= true;
+                IsPositiveRx = true;
+                return ClearDTCInformation.Receive(this);
+            }
+
+            else if (Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
+            {
+                IsPositiveRx = true;
                 return ReadDataByIdenService.Receive(this);
             }
 
             else if (Data[0] == ServiceInfo.DiagnosticSessionControl.ResponseID)
-            { 
+            {
                 IsPositiveRx = true;
                 return DiagnosticSessionControl.Receive(this);
             }

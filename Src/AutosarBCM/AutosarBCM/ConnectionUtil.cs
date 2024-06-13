@@ -152,11 +152,11 @@ namespace AutosarBCM
             if (e.Data[0] == 0x3E)
                 return;
 
+            // Handle transmitted data -TX-
             if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
-                var response = new ASResponse(e.Data).Parse();
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Receive(response)) break;
+                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
             }
 
 
@@ -198,7 +198,7 @@ namespace AutosarBCM
                 foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
                     if (receiver.Receive(service)) break;
             }
-            else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation)
+            else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
                     if (receiver.Receive(service)) break;
