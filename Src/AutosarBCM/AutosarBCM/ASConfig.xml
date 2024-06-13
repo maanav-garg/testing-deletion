@@ -1857,7 +1857,7 @@
       <Responses>
         <Response serviceId="62">
           <Payload name="High Beam Left" typeName="DID_42A0_0"></Payload>
-          <Payload name="High Beam Left" typeName="DID_42A0_0"></Payload>
+          <Payload name="High Beam Right" typeName="DID_42A0_0"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>

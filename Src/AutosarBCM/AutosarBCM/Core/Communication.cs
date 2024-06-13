@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -49,7 +50,31 @@ namespace AutosarBCM.Core
             ConnectionUtil.TransmitData(Data);
         }
     }
+    public class ToBeTransmittedList
+    {
+        public ushort Address { get; set; }
+        public byte[] ByteValue { get; set; }
+        public bool isMaskedValue { get; set; }
+        public ToBeTransmittedList(ushort stringValue, byte[] byteVal, bool isMaskedVal)
+        {
+            Address = stringValue;
+            ByteValue = byteVal;
+            isMaskedValue = isMaskedVal;
+        }
+    }
+    public class MainList
+    {
+        public ushort Address { get; set; }
+        public byte[] ByteValue { get; set; }
+        public bool isMaskedValue { get; set; }
 
+        public MainList(ushort stringValue, byte[] byteVal, bool isMaskedVal)
+        {
+            Address = stringValue;
+            ByteValue = byteVal;
+            isMaskedValue = isMaskedVal;
+        }
+    }
     public class ASResponse
     {
         public byte[] Data { get; private set; }

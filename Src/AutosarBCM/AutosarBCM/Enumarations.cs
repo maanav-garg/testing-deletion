@@ -35,6 +35,7 @@ namespace AutosarBCM
         SID_RESPONSE_ON_EVENT = 0x86
     }
 
+
     public enum NRCDescription : byte
     {
         NRC_GENERAL_REJECT = 0x10,

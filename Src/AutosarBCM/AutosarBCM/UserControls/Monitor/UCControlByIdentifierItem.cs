@@ -100,12 +100,16 @@ namespace AutosarBCM.UserControls.Monitor
                         bitIndex++;
                     }
                 }
-            }
 
+
+            }
             if (isControlMaskActive)
             {
                 bytes.Add(controlByte);
             }
+
+
+
 
             return bytes.ToArray();
         }

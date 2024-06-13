@@ -2,6 +2,7 @@ using AutosarBCM.Config;
 using AutosarBCM.Core;
 using AutosarBCM.UserControls.Monitor;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI;
 using System.Windows.Forms;
 
 namespace AutosarBCM
@@ -43,6 +45,13 @@ namespace AutosarBCM
         /// Control order of the execution
         /// </summary>
         private ControlOrder controlOrder;
+        public Core.ControlInfo ControlInfo { get; set; }
+
+
+        public byte[] isCloseValue { get; private set; }
+        public byte[] isOpenValue { get; private set; }
+        private bool isControlMaskActive;
+
 
 
         #endregion
@@ -71,7 +80,7 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments</param>
         private void btnImport_Click(object sender, EventArgs e)
         {
-             //LoadConfig();
+            //LoadConfig();
         }
 
         /// <summary>
@@ -81,18 +90,20 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments</param>
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (!FormMain.ControlChecker)
-            {
-                if (!ConnectionUtil.CheckConnection())
-                    return;
-                if (Config == null)
-                {
-                    Helper.ShowWarningMessageBox("Please, load the configuration file first.");
-                    return;
-                }
-                Task.Run(() => Start());
-            }
-            RefreshUI(!FormMain.ControlChecker);
+            Start();
+
+            //if (!FormMain.ControlChecker)
+            //{
+            //    if (!ConnectionUtil.CheckConnection())
+            //        return;
+            //    if (Config == null)
+            //    {
+            //        Helper.ShowWarningMessageBox("Please, load the configuration file first.");
+            //        return;
+            //    }
+            //    Task.Run(() => Start());
+            //}
+            //RefreshUI(!FormMain.ControlChecker);
         }
         private void LoadConfig()
         {
@@ -110,21 +121,94 @@ namespace AutosarBCM
         /// </summary>
         private void Start()
         {
-            try
+            List<MainList> list = new List<MainList>();
+            foreach (DataGridViewRow row in dgvOutput.Rows)
             {
-                Thread.Sleep(1000);
-                if (rdoInput.Checked) StartInputControls();
-                if (rdoOutput.Checked) StartOutputControls();
-            }
-            finally
-            {
-                RefreshUI(false);
-            }
-        }
+                var cInf = (AutosarBCM.Core.ControlInfo)row.Tag;
+                var x = cInf.Address;
+                isControlMaskActive = false;
+                if (row.Cells[0] is DataGridViewCheckBoxCell checkBoxCell)
+                {
+                    bool isChecked = checkBoxCell.Value is true;
+                    if (cInf.Name == row.Cells[1].Value.ToString())
+                    {
+                        
+                        foreach (var response in cInf.Responses.Where(r => r.Payloads != null && r.Payloads.Any())
+                        .SelectMany(r => r.Payloads, (r, p) => new { ControlName = cInf.Name, r.ServiceID, PayloadName = p.Name, PayloadTypeName = p.TypeName }))
+                        {
 
-        /// <summary>
-        /// Checks the input controls.
-        /// </summary>
+                            var payload = ASContext.Configuration.Payloads.FirstOrDefault(p => p.TypeName == response.PayloadTypeName);
+                            if (payload != null)
+                            {
+                                if (response.PayloadName == row.Cells[2].Value.ToString())
+                                {
+
+                                    isOpenValue = payload.Values.FirstOrDefault(v => v.IsOpen)?.Value;
+                                    isCloseValue = payload.Values.FirstOrDefault(v => v.IsClose)?.Value;
+                                    if (isChecked)
+                                    {
+                                        if (isOpenValue != null)
+                                        {
+                                            list.Add(new MainList(x, isOpenValue, isControlMaskActive));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (isCloseValue != null)
+                                        {
+                                            list.Add(new MainList(x, isCloseValue, isControlMaskActive));
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+                //try
+                //{
+                //    Thread.Sleep(1000);
+                //    if (rdoInput.Checked) StartInputControls();
+                //    if (rdoOutput.Checked) StartOutputControls();
+                //}
+                //finally
+                //{
+                //    RefreshUI(false);
+                //}
+            }
+            TransmitListedData(list);
+
+
+
+        }
+        private void TransmitListedData(List<MainList> list)
+        {
+            List<ToBeTransmittedList> resultList = AggregateByteValues(list);
+
+            foreach (var item in resultList)
+            {
+                Console.WriteLine($"Address: {item.Address}, ByteValues: {BitConverter.ToString(item.ByteValue)}, isMasked: {item.isMaskedValue}");
+            }
+
+        }
+        public static List<ToBeTransmittedList> AggregateByteValues(List<MainList> mainList)
+        {
+            //return mainList
+            //    .GroupBy(x => x.Address)
+            //    .Select(g => new ToBeTransmittedList(
+            //        g.Key,
+            //        g.SelectMany(x => x.ByteValue).ToArray()
+            //    ))
+            //    .ToList();
+            return mainList
+            .GroupBy(x => x.Address)
+            .Select(g => new ToBeTransmittedList(
+                g.Key,
+                g.SelectMany(x => x.ByteValue).ToArray(),
+                g.Count() > 1
+            ))
+            .ToList();
+        }
         private void StartInputControls()
         {
             //bool anyDataSelected = false;
@@ -312,6 +396,30 @@ namespace AutosarBCM
 
                 if (dgv == dgvOutput)
                 {
+                    if (chkSelectAllOutput == null)
+                    {
+                        chkSelectAllOutput = new CheckBox();
+                        chkSelectAllOutput.Size = new Size(14, 14);
+                        chkSelectAllOutput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllOutput.Width) / 2, rect.Location.Y + (rect.Height - chkSelectAllOutput.Height) / 2);
+                        chkSelectAllOutput.Checked = true;
+                        dgv.Controls.Add(chkSelectAllOutput);
+
+                        chkSelectAllOutput.Checked = true;
+
+                        chkSelectAllOutput.Click += (s, args) =>
+                        {
+                            foreach (DataGridViewRow row in dgv.Rows)
+                            {
+                                row.Cells[e.ColumnIndex].Value = chkSelectAllOutput.Checked;
+                                dgv.ClearSelection();
+                                dgv.EndEdit();
+                            }
+                        };
+                    }
+                    else
+                    {
+                        chkSelectAllOutput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllOutput.Width) / 2 - 1, rect.Location.Y + (rect.Height - chkSelectAllOutput.Height) / 2);
+                    }
                     if (chkSelectAllInput == null)
                     {
                         chkSelectAllInput = new CheckBox();
@@ -339,21 +447,21 @@ namespace AutosarBCM
                 }
                 else
                 {
-                    if (chkSelectAllOutput == null)
+                    if (chkSelectAllInput == null)
                     {
-                        chkSelectAllOutput = new CheckBox();
-                        chkSelectAllOutput.Size = new Size(14, 14);
-                        chkSelectAllOutput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllOutput.Width) / 2, rect.Location.Y + (rect.Height - chkSelectAllOutput.Height) / 2);
-                        chkSelectAllOutput.Checked = true;
-                        dgv.Controls.Add(chkSelectAllOutput);
+                        chkSelectAllInput = new CheckBox();
+                        chkSelectAllInput.Size = new Size(14, 14);
+                        chkSelectAllInput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllInput.Width) / 2, rect.Location.Y + (rect.Height - chkSelectAllInput.Height) / 2);
+                        chkSelectAllInput.Checked = true;
+                        dgv.Controls.Add(chkSelectAllInput);
 
-                        chkSelectAllOutput.Checked = true;
+                        chkSelectAllInput.Checked = true;
 
-                        chkSelectAllOutput.Click += (s, args) =>
+                        chkSelectAllInput.Click += (s, args) =>
                         {
                             foreach (DataGridViewRow row in dgv.Rows)
                             {
-                                row.Cells[e.ColumnIndex].Value = chkSelectAllOutput.Checked;
+                                row.Cells[e.ColumnIndex].Value = chkSelectAllInput.Checked;
                                 dgv.ClearSelection();
                                 dgv.EndEdit();
                             }
@@ -361,7 +469,7 @@ namespace AutosarBCM
                     }
                     else
                     {
-                        chkSelectAllOutput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllOutput.Width) / 2 - 1, rect.Location.Y + (rect.Height - chkSelectAllOutput.Height) / 2);
+                        chkSelectAllInput.Location = new Point(rect.Location.X + (rect.Width - chkSelectAllInput.Width) / 2 - 1, rect.Location.Y + (rect.Height - chkSelectAllInput.Height) / 2);
                     }
                 }
                 dgv.Visible = dgv == dgvOutput ? rdoOutput.Checked : rdoInput.Checked;
@@ -398,7 +506,7 @@ namespace AutosarBCM
                 return;
             }
 
-            if (ASContext.Configuration.Settings.TryGetValue("TXInterval", out string txIntervalValue))
+            if (ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txIntervalValue))
             {
 
                 numInterval.Value = Convert.ToDecimal(txIntervalValue);
@@ -515,7 +623,7 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments.</param>
         private void btnSave_Click(object sender, EventArgs e)
         {
-        //    Helper.ExportToCSV(rdoInput.Checked ? dgvInput : dgvOutput);
+            //    Helper.ExportToCSV(rdoInput.Checked ? dgvInput : dgvOutput);
         }
 
         /// <summary>

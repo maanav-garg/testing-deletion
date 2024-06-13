@@ -38,11 +38,6 @@
             this.grpType = new System.Windows.Forms.GroupBox();
             this.rdoInput = new System.Windows.Forms.RadioButton();
             this.dgvOutput = new System.Windows.Forms.DataGridView();
-            this.Column15 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.numInterval = new System.Windows.Forms.NumericUpDown();
             this.lblInterval = new System.Windows.Forms.Label();
             this.grpOrder = new System.Windows.Forms.GroupBox();
@@ -51,6 +46,11 @@
             this.rdoVertical = new System.Windows.Forms.RadioButton();
             this.rdoHorizontal = new System.Windows.Forms.RadioButton();
             this.lblOrderNote = new System.Windows.Forms.Label();
+            this.Column15 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grpType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOutput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numInterval)).BeginInit();
@@ -174,46 +174,6 @@
             this.dgvOutput.TabIndex = 9;
             this.dgvOutput.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_CellMouseClick);
             // 
-            // Column15
-            // 
-            this.Column15.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Column15.FillWeight = 96.51904F;
-            this.Column15.HeaderText = "";
-            this.Column15.MinimumWidth = 39;
-            this.Column15.Name = "Column15";
-            this.Column15.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column15.Width = 39;
-            // 
-            // Column12
-            // 
-            this.Column12.FillWeight = 103.3683F;
-            this.Column12.HeaderText = "DID Name";
-            this.Column12.Name = "Column12";
-            this.Column12.ReadOnly = true;
-            this.Column12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column14
-            // 
-            this.Column14.FillWeight = 103.3683F;
-            this.Column14.HeaderText = "Control";
-            this.Column14.Name = "Column14";
-            this.Column14.ReadOnly = true;
-            this.Column14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column16
-            // 
-            this.Column16.FillWeight = 80.92103F;
-            this.Column16.HeaderText = "Data";
-            this.Column16.Name = "Column16";
-            // 
-            // Column13
-            // 
-            this.Column13.FillWeight = 103.3683F;
-            this.Column13.HeaderText = "Value";
-            this.Column13.Name = "Column13";
-            this.Column13.ReadOnly = true;
-            this.Column13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
             // numInterval
             // 
             this.numInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
@@ -324,6 +284,46 @@
             this.lblOrderNote.Size = new System.Drawing.Size(33, 13);
             this.lblOrderNote.TabIndex = 12;
             this.lblOrderNote.Text = "Note:";
+            // 
+            // Column15
+            // 
+            this.Column15.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Column15.FillWeight = 96.51904F;
+            this.Column15.HeaderText = "";
+            this.Column15.MinimumWidth = 39;
+            this.Column15.Name = "Column15";
+            this.Column15.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column15.Width = 39;
+            // 
+            // Column12
+            // 
+            this.Column12.FillWeight = 103.3683F;
+            this.Column12.HeaderText = "DID Name";
+            this.Column12.Name = "Column12";
+            this.Column12.ReadOnly = true;
+            this.Column12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column14
+            // 
+            this.Column14.FillWeight = 103.3683F;
+            this.Column14.HeaderText = "Control";
+            this.Column14.Name = "Column14";
+            this.Column14.ReadOnly = true;
+            this.Column14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column16
+            // 
+            this.Column16.FillWeight = 80.92103F;
+            this.Column16.HeaderText = "Open";
+            this.Column16.Name = "Column16";
+            // 
+            // Column13
+            // 
+            this.Column13.FillWeight = 103.3683F;
+            this.Column13.HeaderText = "Close";
+            this.Column13.Name = "Column13";
+            this.Column13.ReadOnly = true;
+            this.Column13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // FormControlChecker
             // 

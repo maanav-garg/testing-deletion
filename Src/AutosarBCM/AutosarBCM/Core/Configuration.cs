@@ -152,6 +152,7 @@ namespace AutosarBCM.Core
         public bool IsClose { get; set; }
         public bool IsOpen { get; set; }
         public byte[] Value { get => Enumerable.Range(0, ValueString.Length).Where(x => x % 2 == 0).Select(y => Convert.ToByte(ValueString.Substring(y, 2), 16)).ToArray(); }
+
     }
 
     public class ResponseInfo
