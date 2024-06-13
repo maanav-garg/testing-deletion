@@ -182,6 +182,13 @@ namespace AutosarBCM
 
             if (service?.ServiceInfo == ServiceInfo.NegativeResponse)
             {
+                if (e.Data[1] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL)
+                {
+                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                        formInput.DisabledAllSession();
+                }
+
                 AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
                 return;
             }
@@ -217,17 +224,7 @@ namespace AutosarBCM
                     formInput.SessionFiltering();
 
             }
-            if (e.Data[0] == 0x7F)
-            {
-                if (e.Data[1] == 0x10)
-                {
-                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                        formInput.DisabledAllSession();
-                }
-            }
-
-           
+             
 
             //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 
