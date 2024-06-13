@@ -149,7 +149,7 @@ namespace AutosarBCM
         {
 
             // Tester present
-            if (e.Data[0] == 0x3E)
+            if (e.Data[0] == ServiceInfo.TesterPresent.RequestID)
                 return;
 
             // Handle transmitted data -TX-

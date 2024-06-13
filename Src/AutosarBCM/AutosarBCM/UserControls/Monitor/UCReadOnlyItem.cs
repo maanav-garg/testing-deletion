@@ -776,10 +776,5 @@ namespace AutosarBCM.UserControls.Monitor
             return string.Empty;
         }
         #endregion
-
-        private void lblWriteStatus_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
