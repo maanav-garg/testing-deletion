@@ -307,7 +307,6 @@ namespace AutosarBCM.Forms.Monitor
             }
             else
             {
-
                 if (!CanBeRun())
                 {
                     Helper.ShowWarningMessageBox("Please, load the configuration file first.");
