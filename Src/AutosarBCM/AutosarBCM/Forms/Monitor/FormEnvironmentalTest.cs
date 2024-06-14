@@ -11,16 +11,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Configuration;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 
 namespace AutosarBCM.Forms.Monitor
 {
-    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver
+    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver, IDTCReceiver
     {
 
         #region Variables
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
+        private Dictionary<string, Core.ControlInfo> dtcList = new Dictionary<string, Core.ControlInfo>();
+
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
@@ -61,6 +65,11 @@ namespace AutosarBCM.Forms.Monitor
                 {
                     var ucItem = new UCReadOnlyItem(ctrl, payload);
                     ucItems.Add(ucItem);
+
+                    //DTC init
+                    if (string.IsNullOrEmpty(payload.DTCCode))
+                        continue;
+                    dtcList[payload.DTCCode] = ctrl;
                 }
                 groups["DID"] = ucItems;
             }
@@ -205,26 +214,36 @@ namespace AutosarBCM.Forms.Monitor
 
         public bool Receive(Service baseService)
         {
-            var service = (IOControlByIdentifierService)baseService;
-            if(service == null)
+            if (baseService is IOControlByIdentifierService ioService)
             {
-                return false;
-            }
-            else
-            {
-                var items = groups["DID"];
-                var matchedControls = items.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
+                var matchedControls = ucItems.Where(c => c.ControlInfo.Name == ioService.ControlInfo.Name);
                 if (matchedControls == null)
                     return false;
 
                 foreach (var uc in matchedControls)
                 {
-                    uc.ChangeStatus(service);
+                    uc.ChangeStatus(ioService);
                 }
-
                 return true;
             }
-                
+            else if (baseService is ReadDTCInformationService dtcService)
+            {
+                foreach (var dtcValue in dtcService.Values)
+                {
+                    if (!dtcList.ContainsKey(dtcValue.Code))
+                        continue;
+                    var control = dtcList[dtcValue.Code];
+                    var payload = control.Responses?[0].Payloads.First(p => p.DTCCode == dtcValue.Code);
+                    if (payload == null)
+                        continue;
+                    var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
+                    uc?.ChangeDtc();
+                }
+
+
+
+            }
+            return false;
         }
 
 

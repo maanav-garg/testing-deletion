@@ -39,7 +39,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// <summary>
         /// Gets the status value from the control's label, or "-" if the label is empty.
         /// </summary>
-        public string StatusValue { get { return String.IsNullOrEmpty(lblStatus.Text) ? "-" : lblStatus.Text; } }
+        public string StatusValue { get { return String.IsNullOrEmpty(lblDtcStatus.Text) ? "-" : lblDtcStatus.Text; } }
 
         /// <summary>
         /// Gets or sets the message ID associated with this control.
@@ -95,7 +95,7 @@ namespace AutosarBCM.UserControls.Monitor
                 lblTransmitted.Visible = false;
             }
 
-            currentValue = new Tuple<string, Color>(lblStatus.Text, lblStatus.ForeColor);
+            currentValue = new Tuple<string, Color>(lblDtcStatus.Text, lblDtcStatus.ForeColor);
         }
 
         public UCReadOnlyItem(Core.ControlInfo controlInfo, PayloadInfo payloadInfo)
@@ -146,11 +146,19 @@ namespace AutosarBCM.UserControls.Monitor
                 });
             }
             
-            lblStatus.BeginInvoke((MethodInvoker)delegate ()
+            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
             {
                 var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
-                lblStatus.Text = payload?.FormattedValue.ToString();
+                lblWriteStatus.Text = payload?.FormattedValue.ToString();
             });
+        }
+
+        /// <summary>
+        /// Change DTC of the input window regarding to read data from the device.
+        /// </summary>
+        public void ChangeDtc()
+        {
+
         }
 
         /// <summary>
@@ -211,18 +219,18 @@ namespace AutosarBCM.UserControls.Monitor
             else 
                 return;
 
-            if (lblStatus.InvokeRequired)
+            if (lblDtcStatus.InvokeRequired)
             {
-                lblStatus.BeginInvoke((MethodInvoker)delegate ()
+                lblDtcStatus.BeginInvoke((MethodInvoker)delegate ()
                 {
-                    lblStatus.Text = currentValue.Item1;
-                    lblStatus.ForeColor = currentValue.Item2;
+                    lblDtcStatus.Text = currentValue.Item1;
+                    lblDtcStatus.ForeColor = currentValue.Item2;
                 });
             }
             else
             {
-                lblStatus.Text = currentValue.Item1;
-                lblStatus.ForeColor = currentValue.Item2;
+                lblDtcStatus.Text = currentValue.Item1;
+                lblDtcStatus.ForeColor = currentValue.Item2;
             }
         }
 
@@ -376,7 +384,7 @@ namespace AutosarBCM.UserControls.Monitor
                 Helper.WriteErrorMessageToLogFile(Item.Name, Item.ItemType, function, "", "", Constants.Unexpected);
             }
 
-            return new Tuple<string, Color>(lblStatus.Text, lblStatus.ForeColor);
+            return new Tuple<string, Color>(lblDtcStatus.Text, lblDtcStatus.ForeColor);
         }
 
         /// <summary>
@@ -532,7 +540,7 @@ namespace AutosarBCM.UserControls.Monitor
                 return new Tuple<string, Color>(((Loopback_Response)outputResponse.ResponseData).ToString(), Color.Black);
             }
 
-            return new Tuple<string, Color>(lblStatus.Text, lblStatus.ForeColor);
+            return new Tuple<string, Color>(lblDtcStatus.Text, lblDtcStatus.ForeColor);
         }
 
         /// <summary>
@@ -573,7 +581,7 @@ namespace AutosarBCM.UserControls.Monitor
                 return new Tuple<string, Color>("Sent", Color.Green);
             }
 
-            return new Tuple<string, Color>(lblStatus.Text, lblStatus.ForeColor);
+            return new Tuple<string, Color>(lblDtcStatus.Text, lblDtcStatus.ForeColor);
         }
 
         /// <summary>
@@ -707,7 +715,7 @@ namespace AutosarBCM.UserControls.Monitor
                 return new Tuple<string, Color>(message, Color.Green);
             }
 
-            return new Tuple<string, Color>(lblStatus.Text, lblStatus.ForeColor);
+            return new Tuple<string, Color>(lblDtcStatus.Text, lblDtcStatus.ForeColor);
         }
 
         /// <summary>

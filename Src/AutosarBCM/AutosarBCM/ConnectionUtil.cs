@@ -220,7 +220,6 @@ namespace AutosarBCM
             {
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-
                     formInput.SessionFiltering();
 
             }
