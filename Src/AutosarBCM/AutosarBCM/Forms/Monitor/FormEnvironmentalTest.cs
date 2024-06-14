@@ -27,7 +27,6 @@ namespace AutosarBCM.Forms.Monitor
         private CancellationTokenSource cancellationTokenSource;
         int timeSec, timeMin, timeHour;
         bool isActive;
-
         #endregion
 
         #region Constructor
@@ -202,6 +201,8 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
+        private int totalMessagesReceived = 0;
+        private int totalMessagesTransmitted = 0;
 
         public bool Receive(Service baseService)
         {
@@ -217,14 +218,36 @@ namespace AutosarBCM.Forms.Monitor
                 var matchedControls = ucItems.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
                 if (matchedControls == null)
                     return false;
-
+                totalMessagesReceived++;
                 foreach (var uc in matchedControls)
                 {
                     uc.ChangeStatus(service);
                 }
+                UpdateCounters();
                 return true;
             }
         }
+        /// <summary>
+        /// Updates TX/RX counters on UI
+        /// </summary>
+        private void UpdateCounters()
+        {
+            tslTransmitted.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            {
+                tslTransmitted.Text = totalMessagesTransmitted.ToString();
+            });
+            tslReceived.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            {
+                tslReceived.Text = totalMessagesReceived.ToString();
+            });
+            tslDiff.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            {
+                double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
+                tslDiff.Text = (diff * 100).ToString("F2") + "%";
+                tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+            });
+        }
+
         /// <summary>
         /// Handle transmitted data.
         /// </summary>
