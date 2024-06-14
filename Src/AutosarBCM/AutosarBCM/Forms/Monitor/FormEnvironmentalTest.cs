@@ -265,7 +265,6 @@ namespace AutosarBCM.Forms.Monitor
             DrawTime();
         }
 
-
         /// <summary>
         /// Handle timer values event.
         /// </summary>

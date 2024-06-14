@@ -49,7 +49,7 @@ namespace AutosarBCM
         /// A synchronization object used for locking critical sections of code to ensure thread safety.
         /// </summary>
         private static object lockObj = new object();
-
+       
         #endregion
 
         #region Public Methods
@@ -149,7 +149,7 @@ namespace AutosarBCM
         {
 
             // Tester present
-            if (e.Data[0] == 0x3E)
+            if (e.Data[0] == ServiceInfo.TesterPresent.RequestID)
                 return;
 
             // Handle transmitted data -TX-
@@ -175,18 +175,30 @@ namespace AutosarBCM
             var service = new ASResponse(e.Data).Parse();
 
             var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
 
+            if (service?.ServiceInfo == ServiceInfo.TesterPresent)
+                return;
+
+            if (service?.ServiceInfo == ServiceInfo.NegativeResponse)
+            {
+                if (e.Data[1] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL)
+                {
+                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                        formInput.DisabledAllSession();
+                }
+
+                AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
+                return;
+            }
 
             if (FormMain.EMCMonitoring)
             {
                 AppendTrace(rxRead, time);
                 Program.FormEMCView?.HandleResponse(service);
-                return;
-            }
-
-            if (service?.ServiceInfo == ServiceInfo.TesterPresent) {
                 return;
             }
 
@@ -214,17 +226,7 @@ namespace AutosarBCM
                     formInput.SessionFiltering();
 
             }
-            if (e.Data[0] == 0x7F)
-            {
-                if (e.Data[1] == 0x10)
-                {
-                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                        formInput.DisabledAllSession();
-                }
-            }
-
-           
+             
 
             //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 

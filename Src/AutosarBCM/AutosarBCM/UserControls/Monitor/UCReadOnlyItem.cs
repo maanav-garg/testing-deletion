@@ -124,6 +124,7 @@ namespace AutosarBCM.UserControls.Monitor
 
         #region Public Methods
 
+
         /// <summary>
         /// Change status of the input window regarding to read data from the device.
         /// </summary>
@@ -131,6 +132,8 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(IOControlByIdentifierService service)
         {
+           
+            
             lblReceived.BeginInvoke((MethodInvoker)delegate ()
             {
                 MessagesReceived++;
