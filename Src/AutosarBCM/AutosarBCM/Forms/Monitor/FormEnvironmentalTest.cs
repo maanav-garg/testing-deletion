@@ -212,8 +212,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else
             {
-                var items = groups["DID"];
-                var matchedControls = items.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
+                var matchedControls = ucItems.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
                 if (matchedControls == null)
                     return false;
 
@@ -234,13 +233,16 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="e">Argument</param>
         public bool Sent(short address)
         {
-            foreach (var ucItem in ucItems)
-                if (ucItem.ControlInfo.Address == address)
-                {
-                    ucItem.HandleMetrics();
-                    return true;
-                }
-            return false;
+            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address);
+            if (matchedControls == null)
+                return false;
+
+            foreach (var ucItem in matchedControls)
+            {
+                ucItem.HandleMetrics();
+            }
+            
+            return true;
 
         }
 
