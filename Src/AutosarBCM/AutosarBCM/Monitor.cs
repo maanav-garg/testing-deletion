@@ -203,6 +203,7 @@ namespace AutosarBCM
                             var controlItem = controlItems.Where(x => x.Name.Equals(funcName.Parent)).FirstOrDefault();
                             continousReadList.Add(controlItem);
                         }
+                        continousReadList = continousReadList.Distinct().ToList();
 
                         //TODO to be checked
                         //foreach (var func in ASContext.Configuration.EnvironmentalTest.ContinousReadList)
