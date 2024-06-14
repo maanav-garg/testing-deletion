@@ -39,5 +39,13 @@ namespace AutosarBCM.UserControls.Monitor
         {
             return string.Join(" ", lbxValues.Items.Cast<string>());
         }
+
+        internal void ClearDTCData()
+        {
+            lbxValues.Invoke((Action)(() =>
+            {
+                lbxValues.Items.Clear();
+            }));
+        }
     }
 }

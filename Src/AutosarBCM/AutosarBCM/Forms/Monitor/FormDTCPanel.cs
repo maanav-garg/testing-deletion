@@ -43,16 +43,30 @@ namespace AutosarBCM.Forms.Monitor
 
         public bool Receive(Service baseService)
         {
-            var service = baseService as ReadDTCInformationService;
-            if(service != null)
+            if(baseService is ReadDTCInformationService service)
             {
-                foreach (var dtcValue in service.Values)
-                    foreach (var ucItem in ucItems)
-                        if (dtcValue.Code == ucItem.PayloadInfo.DTCCode)
-                        {
-                            ucItem.ChangeStatus(dtcValue);
-                            return true;
-                        }
+                if (service != null)
+                {
+                    foreach (var dtcValue in service.Values)
+                        foreach (var ucItem in ucItems)
+                            if (dtcValue.Code == ucItem.PayloadInfo.DTCCode)
+                            {
+                                ucItem.ChangeStatus(dtcValue);
+                            }
+                    return true;
+                }
+                return false;
+            }
+            else if(baseService is ClearDTCInformation clearDTCService)
+            {
+                if (clearDTCService != null)
+                {
+                    foreach(var ucItem in ucItems)
+                    {
+                        ucItem.ClearDTCData();
+                    }
+                    return true;
+                }
             }
             return false;
         }
@@ -89,7 +103,8 @@ namespace AutosarBCM.Forms.Monitor
 
         public bool Sent(short address)
         {
-            throw new NotImplementedException();
+            return true;
+            //throw new NotImplementedException();
         }
     }
 }

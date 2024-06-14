@@ -9,6 +9,9 @@
 		<Service requestID="10" responseID="50">
 			<Name>DiagnosticSessionControl</Name>
 		</Service>
+		<Service requestID="14" responseID="54">
+			<Name>ClearDTCInformation</Name>
+		</Service>
 		<Service requestID="22" responseID="62">
 			<Name>ReadDataByIdentifier</Name>
 			<Sessions>01;03</Sessions>

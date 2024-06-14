@@ -174,8 +174,6 @@ namespace AutosarBCM.Core
         {
             var service = new ClearDTCInformation();
 
-            service.ControlInfo = ASContext.Configuration.GetControlByAddress(BitConverter.ToUInt16(response.Data.Skip(1).Take(2).Reverse().ToArray(), 0));
-            service.Payloads = service.ControlInfo.GetPayloads(service.ServiceInfo, response.Data);
             service.Response = response;
             return service;
         }
