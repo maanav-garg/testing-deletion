@@ -68,8 +68,8 @@
             // 
             this.lblDiff.AutoSize = true;
             this.lblDiff.BackColor = System.Drawing.Color.Green;
-            this.lblDiff.ForeColor = System.Drawing.Color.White;
-            this.lblDiff.Location = new System.Drawing.Point(293, 6);
+            this.lblDiff.ForeColor = System.Drawing.Color.Transparent;
+            this.lblDiff.Location = new System.Drawing.Point(266, 5);
             this.lblDiff.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDiff.Name = "lblDiff";
             this.lblDiff.Size = new System.Drawing.Size(11, 16);

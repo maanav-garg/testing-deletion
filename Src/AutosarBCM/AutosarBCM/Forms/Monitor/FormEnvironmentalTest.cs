@@ -27,7 +27,6 @@ namespace AutosarBCM.Forms.Monitor
         private CancellationTokenSource cancellationTokenSource;
         int timeCs, timeSec, timeMin, timeHour;
         bool isActive;
-
         #endregion
 
         #region Constructor
@@ -119,7 +118,7 @@ namespace AutosarBCM.Forms.Monitor
                 lblCycleVal.Text = cycleCounter.ToString();
                 lblLoopVal.Text = loopCounter.ToString();
             }));
-            
+
         }
 
         /// <summary>
@@ -157,7 +156,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else
             {
-                isActive=false;
+                isActive = false;
                 btnStart.Text = "Start";
                 btnStart.ForeColor = Color.Green;
             }
@@ -203,11 +202,13 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
+        private int totalMessagesReceived = 0;
+        private int totalMessagesTransmitted = 0;
 
         public bool Receive(Service baseService)
         {
             var service = (IOControlByIdentifierService)baseService;
-            if(service == null)
+            if (service == null)
             {
                 return false;
             }
@@ -215,17 +216,31 @@ namespace AutosarBCM.Forms.Monitor
             {
                 var items = groups["DID"];
                 var matchedControls = items.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
+                totalMessagesReceived++;
                 if (matchedControls == null)
                     return false;
 
                 foreach (var uc in matchedControls)
                 {
                     uc.ChangeStatus(service);
+                    tslTransmitted.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+                    {
+                        tslTransmitted.Text = totalMessagesTransmitted.ToString();
+                    });
+                    tslReceived.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+                    {
+                        tslReceived.Text = totalMessagesReceived.ToString();
+                    });
+                    tslDiff.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+                    {
+                        double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
+                        tslDiff.Text = (diff * 100).ToString("F2") + "%";
+                        tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+                    });
                 }
-
                 return true;
             }
-                
+
         }
 
         /// <summary>
@@ -239,6 +254,7 @@ namespace AutosarBCM.Forms.Monitor
                 if (ucItem.ControlInfo.Address == address)
                 {
                     ucItem.HandleMetrics();
+                    totalMessagesTransmitted++;
                     return true;
                 }
             return false;
@@ -255,16 +271,16 @@ namespace AutosarBCM.Forms.Monitor
             if (isActive)
             {
                 timeCs++;
-                if(timeCs >= 100)
+                if (timeCs >= 100)
                 {
                     timeSec++;
                     timeCs = 0;
 
-                    if(timeSec >= 60)
+                    if (timeSec >= 60)
                     {
                         timeMin++;
                         timeSec = 0;
-                        if(timeMin >= 60)
+                        if (timeMin >= 60)
                         {
                             timeHour++;
                             timeMin = 0;

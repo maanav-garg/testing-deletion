@@ -35,6 +35,9 @@
             this.btnClear = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tspFilterTxb = new System.Windows.Forms.ToolStripTextBox();
+            this.tslReceived = new System.Windows.Forms.ToolStripLabel();
+            this.tslTransmitted = new System.Windows.Forms.ToolStripLabel();
+            this.tslDiff = new System.Windows.Forms.ToolStripLabel();
             this.pnlMonitor = new System.Windows.Forms.FlowLayoutPanel();
             this.lblMin = new System.Windows.Forms.Label();
             this.lblSec = new System.Windows.Forms.Label();
@@ -59,7 +62,10 @@
             this.btnStart,
             this.btnClear,
             this.toolStripLabel2,
-            this.tspFilterTxb});
+            this.tspFilterTxb,
+            this.tslReceived,
+            this.tslTransmitted,
+            this.tslDiff});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1579, 27);
@@ -98,6 +104,42 @@
             this.tspFilterTxb.Name = "tspFilterTxb";
             this.tspFilterTxb.Size = new System.Drawing.Size(100, 27);
             this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);
+            // 
+            // tslReceived
+            // 
+            this.tslReceived.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tslReceived.BackColor = System.Drawing.Color.Transparent;
+            this.tslReceived.Image = global::AutosarBCM.Properties.Resources.arrowdown2;
+            this.tslReceived.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tslReceived.Margin = new System.Windows.Forms.Padding(0, 1, 10, 2);
+            this.tslReceived.Name = "tslReceived";
+            this.tslReceived.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.tslReceived.Size = new System.Drawing.Size(35, 24);
+            this.tslReceived.Text = "0";
+            // 
+            // tslTransmitted
+            // 
+            this.tslTransmitted.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tslTransmitted.BackColor = System.Drawing.Color.Transparent;
+            this.tslTransmitted.Image = global::AutosarBCM.Properties.Resources.arrowup2;
+            this.tslTransmitted.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tslTransmitted.Margin = new System.Windows.Forms.Padding(0, 1, 5, 2);
+            this.tslTransmitted.Name = "tslTransmitted";
+            this.tslTransmitted.Size = new System.Drawing.Size(35, 24);
+            this.tslTransmitted.Text = "0";
+            this.tslTransmitted.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            // 
+            // tslDiff
+            // 
+            this.tslDiff.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tslDiff.BackColor = System.Drawing.Color.Transparent;
+            this.tslDiff.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tslDiff.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.tslDiff.ForeColor = System.Drawing.Color.IndianRed;
+            this.tslDiff.Margin = new System.Windows.Forms.Padding(0, 1, 5, 2);
+            this.tslDiff.Name = "tslDiff";
+            this.tslDiff.Size = new System.Drawing.Size(20, 24);
+            this.tslDiff.Text = "0";
             // 
             // pnlMonitor
             // 
@@ -302,5 +344,8 @@
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label lblHour;
         private System.Windows.Forms.Label lblCol1;
+        private System.Windows.Forms.ToolStripLabel tslReceived;
+        private System.Windows.Forms.ToolStripLabel tslTransmitted;
+        private System.Windows.Forms.ToolStripLabel tslDiff;
     }
 }
