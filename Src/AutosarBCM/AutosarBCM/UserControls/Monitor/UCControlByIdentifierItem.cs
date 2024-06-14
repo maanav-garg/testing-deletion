@@ -87,7 +87,7 @@ namespace AutosarBCM.UserControls.Monitor
 
                         if (isControlMaskActive && ucPayload.IsSelected)
                         {
-                            controlByte |= (byte)(1 << (bitIndex));
+                            controlByte |= (byte)(1 << (7- bitIndex));
                         }
                     }
                     else if (isControlMaskActive)

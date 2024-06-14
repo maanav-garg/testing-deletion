@@ -31,6 +31,8 @@ namespace AutosarBCM.Core
         public static ServiceInfo TesterPresent { get => ASContext.Configuration?.GetServiceByRequestID(0x3E); }
         public static ServiceInfo ECUReset { get => ASContext.Configuration?.GetServiceByRequestID(0x11); }
         public static ServiceInfo ReadDTCInformation { get => ASContext.Configuration?.GetServiceByRequestID(0x19); }
+        public static ServiceInfo NegativeResponse { get => ASContext.Configuration?.GetServiceByResponseID(0x7F); }
+
     }
 
     public class ControlInfo
@@ -67,7 +69,7 @@ namespace AutosarBCM.Core
                     bytes.Add(0x0);
                 else //Payload match
                 {
-                    controlByte |= (byte)(1 << bitIndex);
+                    controlByte |= (byte)(1 << (7- bitIndex));
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;

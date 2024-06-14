@@ -10,6 +10,8 @@ using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Config;
 using AutosarBCM.Core;
 using System.Net;
+using AutosarBCM.Properties;
+using System.IO;
 
 namespace AutosarBCM.Forms.Monitor
 {
@@ -19,7 +21,6 @@ namespace AutosarBCM.Forms.Monitor
     public partial class FormMonitorGenericInput : DockContent, IPeriodicTest, IReadDataByIdenReceiver
     {
         #region Variables
-
         /// <summary>
         /// Configuration settings for the monitor.
         /// </summary>
@@ -44,6 +45,15 @@ namespace AutosarBCM.Forms.Monitor
 
         SortedDictionary<string, List<UCItem>> groups = new SortedDictionary<string, List<UCItem>>();
 
+        /// <summary>
+        /// A CancellationTokenSource for managing cancellation of asynchronous operations.
+        /// </summary>
+        private CancellationTokenSource cancellationTokenSource;
+
+        /// <summary>
+        /// Determines whether a test is running or not.
+        /// </summary>
+        internal static bool IsTestRunning = false;
 
         /// <summary>
         /// Maps item types to visibility states for upper, lower, and coefficient labels.
@@ -55,6 +65,12 @@ namespace AutosarBCM.Forms.Monitor
             { "Resistive", (true, true, true) },
             { "Frequency", (true, true, false) }
         };
+
+        /// <summary>
+        /// Determines how many output test clicked.
+        /// </summary>
+        public static int TestClickCounter { get { return testClickCounter; } set { testClickCounter = value < 0 ? 0 : value; } }
+        public static int testClickCounter = 0;
 
         #endregion
 
@@ -276,6 +292,45 @@ namespace AutosarBCM.Forms.Monitor
         #region Private Methods
 
         /// <summary>
+        /// An event handler to the btnStart's Click event.
+        /// </summary>
+        /// <param name="sender">A reference to the btnStart instance.</param>
+        /// <param name="e">A reference to the Click event's arguments.</param>
+        private void btnStartInput_Click(object sender, EventArgs e)
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+            if (IsTestRunning)
+            {
+                cancellationTokenSource.Cancel();
+                TestClickCounter = 0;
+            }
+            else
+            {
+                if (!CanBeRun())
+                {
+                    Helper.ShowWarningMessageBox("Please, load the configuration file first.");
+                    return;
+                }
+                cancellationTokenSource = new CancellationTokenSource();
+                StartTest(cancellationTokenSource.Token);
+            }
+
+            IsTestRunning = !IsTestRunning;
+            if (IsTestRunning)
+            {
+                btnStart.Text = "Stop";
+                btnStart.ForeColor = Color.Red;
+            }
+            else
+            {
+                btnStart.Text = "Start";
+                btnStart.ForeColor = Color.Green;
+            }
+        }
+
+
+        /// <summary>
         /// Checks and formats a response based on SID and NRC values.
         /// </summary>
         /// <param name="SID">The Service Identifier.</param>
@@ -364,13 +419,15 @@ namespace AutosarBCM.Forms.Monitor
         public bool Receive(Service baseService)
         {
             var service = baseService as ReadDataByIdenService;
-
-            foreach (var ucItem in uCItems)
-                if (ucItem.ControlInfo.Address == service.ControlInfo.Address)
-                {
-                    ucItem.ChangeStatus(service);
-                    return true;
-                }
+            if (service != null)
+            {
+                foreach (var ucItem in uCItems)
+                    if (ucItem.ControlInfo.Address == service.ControlInfo.Address)
+                    {
+                        ucItem.ChangeStatus(service);
+                        return true;
+                    }
+            }
             return false;
         }
 

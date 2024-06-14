@@ -25,7 +25,7 @@ namespace AutosarBCM.Forms.Monitor
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
         private CancellationTokenSource cancellationTokenSource;
-        int timeCs, timeSec, timeMin, timeHour;
+        int timeSec, timeMin, timeHour;
         bool isActive;
 
         #endregion
@@ -106,6 +106,12 @@ namespace AutosarBCM.Forms.Monitor
 
 
         #endregion
+
+        /// <summary>
+        /// Handles cycle and loop value.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         internal void SetCounter(int cycleCounter, int loopCounter)
         {
             BeginInvoke(new Action(() =>
@@ -113,11 +119,16 @@ namespace AutosarBCM.Forms.Monitor
                 lblCycleVal.Text = cycleCounter.ToString();
                 lblLoopVal.Text = loopCounter.ToString();
             }));
-            
+
         }
+
+        /// <summary>
+        /// Handle time value to default value event.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         private void ResetTime()
         {
-            timeCs = 0;
             timeSec = 0;
             timeMin = 0;
             timeHour = 0;
@@ -145,7 +156,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else
             {
-                isActive=false;
+                isActive = false;
                 btnStart.Text = "Start";
                 btnStart.ForeColor = Color.Green;
             }
@@ -195,43 +206,61 @@ namespace AutosarBCM.Forms.Monitor
         public bool Receive(Service baseService)
         {
             var service = (IOControlByIdentifierService)baseService;
-            var items = groups[service.ControlInfo.Name];
-            foreach (var uc in items)
+            if(service == null)
             {
-                uc.ChangeStatus(service);
+                return false;
+            }
+            else
+            {
+                var items = groups["DID"];
+                var matchedControls = items.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
+                if (matchedControls == null)
+                    return false;
+
+                foreach (var uc in matchedControls)
+                {
+                    uc.ChangeStatus(service);
+                }
+
                 return true;
             }
-            return false;
+                
         }
 
+
+        /// <summary>
+        /// Timer starting event.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         private void timer_Tick(object sender, EventArgs e)
         {
             if (isActive)
             {
-                timeCs++;
-                if(timeCs >= 100)
+                timeSec++;
+                if (timeSec >= 60)
                 {
-                    timeSec++;
-                    timeCs = 0;
-
-                    if(timeSec >= 60)
+                    timeMin++;
+                    timeSec = 0;
+                    if (timeMin >= 60)
                     {
-                        timeMin++;
-                        timeSec = 0;
-                        if(timeMin >= 60)
-                        {
-                            timeHour++;
-                            timeMin = 0;
-                        }
+                        timeHour++;
+                        timeMin = 0;
                     }
                 }
+
             }
             DrawTime();
         }
 
+
+        /// <summary>
+        /// Handle timer values event.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         private void DrawTime()
         {
-            lblCs.Text = String.Format("{0:00}", timeCs);
             lblSec.Text = String.Format("{0:00}", timeSec);
             lblMin.Text = String.Format("{0:00}", timeMin);
             lblHour.Text = String.Format("{0:00}", timeHour);

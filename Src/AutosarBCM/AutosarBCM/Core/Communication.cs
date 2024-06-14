@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -54,6 +55,7 @@ namespace AutosarBCM.Core
     {
         public byte[] Data { get; private set; }
         public bool IsPositiveRx { get; set; } = false;
+        public string NegativeResponseCode { get; set; } = string.Empty;
 
         public ASResponse(byte[] data)
         {
@@ -67,11 +69,21 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return TesterPresent.Receive(this);
             }
+
+            else if (Data[0] == ServiceInfo.InputOutputControlByIdentifier.ResponseID 
+                || Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
+            {
+                if (Data[0] == ServiceInfo.InputOutputControlByIdentifier.ResponseID)
+                    IsPositiveRx = true;
+                return IOControlByIdentifierService.Receive(this);
+            }
+
             else if (Data[0] == ServiceInfo.ReadDTCInformation.ResponseID)
             {
                 IsPositiveRx = true;
                 return ReadDTCInformationService.Receive(this);
             }
+
             else if (Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID
                 || Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
             {
@@ -79,10 +91,19 @@ namespace AutosarBCM.Core
                     IsPositiveRx= true;
                 return ReadDataByIdenService.Receive(this);
             }
+
             else if (Data[0] == ServiceInfo.DiagnosticSessionControl.ResponseID)
             { 
                 IsPositiveRx = true;
                 return DiagnosticSessionControl.Receive(this);
+            }
+            else if (Data[0] == ServiceInfo.NegativeResponse.ResponseID)
+            {
+                if (Enum.IsDefined(typeof(NRCDescription), Data[2]))
+                    NegativeResponseCode = ((NRCDescription)Data[2]).ToString();
+                else
+                    NegativeResponseCode = "Undefined";
+                return NegativeResponse.Receive(this);
             }
             return null;
         }
