@@ -154,8 +154,7 @@ namespace AutosarBCM
 
             // Handle transmitted data -TX-
             if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID
-                || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID
-                || e.Data[0] == ServiceInfo.ClearDTCInformation.RequestID)
+                || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
                 foreach (var receiver in FormMain.Receivers)
                     if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
@@ -224,7 +223,6 @@ namespace AutosarBCM
                 if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
 
                     formInput.SessionFiltering();
-
             }
              
 

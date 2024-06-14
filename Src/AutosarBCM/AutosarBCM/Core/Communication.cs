@@ -70,13 +70,11 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return TesterPresent.Receive(this);
             }
-
             else if (Data[0] == ServiceInfo.InputOutputControlByIdentifier.ResponseID)
             {
                 IsPositiveRx = true;
                 return IOControlByIdentifierService.Receive(this);
             }
-
             else if (Data[0] == ServiceInfo.ReadDTCInformation.ResponseID)
             {
                 IsPositiveRx = true;
@@ -87,17 +85,11 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return ClearDTCInformation.Receive(this);
             }
-
             else if (Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
             {
                 IsPositiveRx = true;
-                    IsPositiveRx= true;
-                    IsPositiveRx= true;
-                    IsPositiveRx= true;
-                    IsPositiveRx= true;
                 return ReadDataByIdenService.Receive(this);
             }
-
             else if (Data[0] == ServiceInfo.DiagnosticSessionControl.ResponseID)
             {
                 IsPositiveRx = true;

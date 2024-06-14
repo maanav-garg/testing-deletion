@@ -171,10 +171,6 @@ namespace AutosarBCM.Core
    
     public class ClearDTCInformation : Service
     {
-        public ControlInfo ControlInfo { get; private set; }
-        public List<Payload> Payloads { get; private set; }
-        
-        
         public ClearDTCInformation() : base(ServiceInfo.ClearDTCInformation) { }
         
         public void Transmit()
