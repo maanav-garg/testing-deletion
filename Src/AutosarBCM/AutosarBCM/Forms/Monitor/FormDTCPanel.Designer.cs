@@ -31,6 +31,7 @@
             this.pnlMonitor = new System.Windows.Forms.FlowLayoutPanel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnReadDTC = new System.Windows.Forms.ToolStripButton();
+            this.btnClearDTC = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,7 +52,8 @@
             this.toolStrip1.AutoSize = false;
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnReadDTC});
+            this.btnReadDTC,
+            this.btnClearDTC});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(800, 24);
@@ -64,9 +66,18 @@
             this.btnReadDTC.Image = global::AutosarBCM.Properties.Resources.dtc;
             this.btnReadDTC.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnReadDTC.Name = "btnReadDTC";
-            this.btnReadDTC.Size = new System.Drawing.Size(80, 27);
+            this.btnReadDTC.Size = new System.Drawing.Size(84, 27);
             this.btnReadDTC.Text = "Read DTC";
             this.btnReadDTC.Click += new System.EventHandler(this.btnReadDTC_Click);
+            // 
+            // btnClearDTC
+            // 
+            this.btnClearDTC.Image = global::AutosarBCM.Properties.Resources.reset;
+            this.btnClearDTC.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnClearDTC.Name = "btnClearDTC";
+            this.btnClearDTC.Size = new System.Drawing.Size(77, 27);
+            this.btnClearDTC.Text = "Clear DTC";
+            this.btnClearDTC.Click += new System.EventHandler(this.btnClearDTC_Click);
             // 
             // FormDTCPanel
             // 
@@ -88,5 +99,6 @@
         private System.Windows.Forms.FlowLayoutPanel pnlMonitor;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnReadDTC;
+        private System.Windows.Forms.ToolStripButton btnClearDTC;
     }
 }

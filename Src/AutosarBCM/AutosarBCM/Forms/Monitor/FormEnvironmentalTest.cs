@@ -222,12 +222,9 @@ namespace AutosarBCM.Forms.Monitor
                 {
                     uc.ChangeStatus(service);
                 }
-
                 return true;
             }
-                
         }
-
         /// <summary>
         /// Handle transmitted data.
         /// </summary>
@@ -243,11 +240,8 @@ namespace AutosarBCM.Forms.Monitor
             {
                 ucItem.HandleMetrics();
             }
-            
             return true;
-
         }
-
         /// <summary>
         /// Timer starting event.
         /// </summary>

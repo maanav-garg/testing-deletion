@@ -1,165 +1,164 @@
 ﻿<Configuration>
-  <Settings>
-    <Entry key="namesPadding" value="30" />
-	<Entry key="TxInterval" value="5" />
-	<Entry key="ReadInterval" value="5" />
-	<Entry key="DTCWaitingTime" value="8000" />
-  </Settings>
-  <Services>
-    <Service requestID="10" responseID="50">
-      <Name>DiagnosticSessionControl</Name>
-    </Service>
-    <Service requestID="22" responseID="62">
-      <Name>ReadDataByIdentifier</Name>
-      <Sessions>01;03</Sessions>
-      <ResponseIndex>3</ResponseIndex>
-    </Service>
-    <Service requestID="2F" responseID="6F">
-      <Name>InputOutputControlByIdentifier</Name>
-      <Sessions>03</Sessions>
-      <ResponseIndex>4</ResponseIndex>
-    </Service>
-    <Service requestID="2E" responseID="6E">
-      <Name>WriteDataByIdentifier</Name>
-    </Service>
-    <Service requestID="3E" responseID="7E">
-      <Name>TesterPresent</Name>
-    </Service>
-    <Service requestID="11" responseID="51">
-      <Name>ECUReset</Name>
-    </Service>
-	<Service requestID="19" responseID="59">
-		<Name>ReadDtcInformation</Name>
-		<Sessions>01;03</Sessions>
-	</Service>
-	<Service responseID="7F">
-		<Name>NegativeResponse</Name>
-		<Sessions>01;02;03</Sessions>
-	</Service>
-  </Services>
-  <Sessions>
-    <Session>
-      <ID>01</ID>
-      <Name>Default Session</Name>
-      <AvailableServices>22</AvailableServices>
-    </Session>
-    <Session>
-      <ID>02</ID>
-      <Name>Programming Session</Name>
-      <AvailableServices></AvailableServices>
-    </Session>
-    <Session>
-      <ID>03</ID>
-      <Name>Extended Diagnostic Session</Name>
-      <AvailableServices>22</AvailableServices>
-    </Session>
-  </Sessions>
-  <Controls>
-    <Control>
-      <Address>DE00</Address>
-      <Name>DE00</Name>
-      <Type></Type>
-      <Group>ECU-DID</Group>
-      <Services>22;2E</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="Transmission" typeName="DID_DE00_0"></Payload>
-          <Payload name="Auto CAB Tilt" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Differential Lock" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Water Pump" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Emission Level" typeName="DID_DE00_4"></Payload>
-          <Payload name="PTO_AMT" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="A/C Compressor Control" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Low Liner" typeName="DID_Byte_Enable_Disable"></Payload>
-        </Response>
-        <Response serviceId="6E">
-        </Response>
-      </Responses>
-    </Control>
-    <Control>
-      <Address>DE01</Address>
-      <Name>DE01</Name>
-      <Type></Type>
-      <Group>ECU-DID</Group>
-      <Services>22;2E</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="Heated Windshield" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Front Fog Lamps" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Corner Lighting" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Liter of Engine" typeName="DID_DE01_3"></Payload>
-          <Payload name="Auxiliary Heater" typeName="DID_DE01_4"></Payload>
-          <Payload name="C6AS_Truck" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="DPF Systems" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="F-Sight" typeName="DID_Byte_Present_notPresent"></Payload>
-        </Response>
-        <Response serviceId="6E">
-        </Response>
-      </Responses>
-    </Control>
-    <Control>
-      <Address>DE02</Address>
-      <Name>DE02</Name>
-      <Type></Type>
-      <Group>ECU-DID</Group>
-      <Services>22;2E</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="Era Glonass" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="One Touch Up/Global Open-Close" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Heated Mirror" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Power Mirror" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Remote Door Control" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Ambiance Light" typeName="HexDump_1Byte"></Payload>
-          <Payload name="Autolock" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Vehicle Type" typeName="DID_DE02_7"></Payload>
-        </Response>
-        <Response serviceId="6E">
-        </Response>
-      </Responses>
-    </Control>
-    <Control>
-      <Address>DE03</Address>
-      <Name>DE03</Name>
-      <Type></Type>
-      <Group>ECU-DID</Group>
-      <Services>22;2E</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="Vehicle Line" typeName="DID_DE03_0"></Payload>
-          <Payload name="Trailer Tag Axle Lifting" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="SVO Garbage Truck" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="SVO Concrete Pump" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="SVO Fire Truck" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="SVO Damper" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Extra High Roof" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Rain Sensor" typeName="DID_Byte_Present_notPresent"></Payload>
-        </Response>
-        <Response serviceId="6E">
-        </Response>
-      </Responses>
-    </Control>
-    <Control>
-      <Address>DE04</Address>
-      <Name>DE04</Name>
-      <Type></Type>
-      <Group>ECU-DID</Group>
-      <Services>22;2E</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="Active Emergency Breaking System" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Active Emergency Breaking System" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Trailer Detection" typeName="DID_Byte_Enable_Disable"></Payload>
-          <Payload name="Sunroof" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Climate Control Module" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Multimedia" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Intarder" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Brake System" typeName="DID_DE04_7"></Payload>
-        </Response>
-        <Response serviceId="6E">
-        </Response>
-      </Responses>
-    </Control>
+	<Settings>
+		<Entry key="namesPadding" value="30" />
+		<Entry key="TxInterval" value="5" />
+		<Entry key="ReadInterval" value="5" />
+		<Entry key="DTCWaitingTime" value="8000" />
+	</Settings>
+	<Services>
+		<Service requestID="10" responseID="50">
+			<Name>DiagnosticSessionControl</Name>
+		</Service>
+		<Service requestID="14" responseID="54">
+			<Name>ClearDTCInformation</Name>
+		</Service>
+		<Service requestID="22" responseID="62">
+			<Name>ReadDataByIdentifier</Name>
+			<Sessions>01;03</Sessions>
+			<ResponseIndex>3</ResponseIndex>
+		</Service>
+		<Service requestID="2F" responseID="6F">
+			<Name>InputOutputControlByIdentifier</Name>
+			<Sessions>03</Sessions>
+			<ResponseIndex>4</ResponseIndex>
+		</Service>
+		<Service requestID="2E" responseID="6E">
+			<Name>WriteDataByIdentifier</Name>
+		</Service>
+		<Service requestID="3E" responseID="7E">
+			<Name>TesterPresent</Name>
+		</Service>
+		<Service requestID="11" responseID="51">
+			<Name>ECUReset</Name>
+		</Service>
+		<Service requestID="19" responseID="59">
+			<Name>ReadDtcInformation</Name>
+			<Sessions>01;03</Sessions>
+		</Service>
+	</Services>
+	<Sessions>
+		<Session>
+			<ID>01</ID>
+			<Name>Default Session</Name>
+			<AvailableServices>22</AvailableServices>
+		</Session>
+		<Session>
+			<ID>02</ID>
+			<Name>Programming Session</Name>
+			<AvailableServices></AvailableServices>
+		</Session>
+		<Session>
+			<ID>03</ID>
+			<Name>Extended Diagnostic Session</Name>
+			<AvailableServices>22</AvailableServices>
+		</Session>
+	</Sessions>
+	<Controls>
+		<Control>
+			<Address>DE00</Address>
+			<Name>DE00</Name>
+			<Type></Type>
+			<Group>ECU-DID</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Transmission" typeName="DID_DE00_0"></Payload>
+					<Payload name="Auto CAB Tilt" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Differential Lock" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Water Pump" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Emission Level" typeName="DID_DE00_4"></Payload>
+					<Payload name="PTO_AMT" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="A/C Compressor Control" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Low Liner" typeName="DID_Byte_Enable_Disable"></Payload>
+				</Response>
+				<Response serviceId="6E">
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>DE01</Address>
+			<Name>DE01</Name>
+			<Type></Type>
+			<Group>ECU-DID</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Heated Windshield" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Front Fog Lamps" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Corner Lighting" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Liter of Engine" typeName="DID_DE01_3"></Payload>
+					<Payload name="Auxiliary Heater" typeName="DID_DE01_4"></Payload>
+					<Payload name="C6AS_Truck" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="DPF Systems" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="F-Sight" typeName="DID_Byte_Present_notPresent"></Payload>
+				</Response>
+				<Response serviceId="6E">
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>DE02</Address>
+			<Name>DE02</Name>
+			<Type></Type>
+			<Group>ECU-DID</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Era Glonass" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="One Touch Up/Global Open-Close" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Heated Mirror" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Power Mirror" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Remote Door Control" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Ambiance Light" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Autolock" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Vehicle Type" typeName="DID_DE02_7"></Payload>
+				</Response>
+				<Response serviceId="6E">
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>DE03</Address>
+			<Name>DE03</Name>
+			<Type></Type>
+			<Group>ECU-DID</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Vehicle Line" typeName="DID_DE03_0"></Payload>
+					<Payload name="Trailer Tag Axle Lifting" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="SVO Garbage Truck" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="SVO Concrete Pump" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="SVO Fire Truck" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="SVO Damper" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Extra High Roof" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Rain Sensor" typeName="DID_Byte_Present_notPresent"></Payload>
+				</Response>
+				<Response serviceId="6E">
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>DE04</Address>
+			<Name>DE04</Name>
+			<Type></Type>
+			<Group>ECU-DID</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Active Emergency Breaking System" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Active Emergency Breaking System" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Trailer Detection" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Sunroof" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Climate Control Module" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Multimedia" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Intarder" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Brake System" typeName="DID_DE04_7"></Payload>
+				</Response>
+				<Response serviceId="6E">
+				</Response>
+			</Responses>
+		</Control>
 
 		<Control>
 			<Address>DE05</Address>
