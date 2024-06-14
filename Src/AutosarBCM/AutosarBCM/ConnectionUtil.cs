@@ -149,14 +149,14 @@ namespace AutosarBCM
         {
 
             // Tester present
-            if (e.Data[0] == 0x3E)
+            if (e.Data[0] == ServiceInfo.TesterPresent.RequestID)
                 return;
 
+            // Handle transmitted data -TX-
             if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
-                var response = new ASResponse(e.Data).Parse();
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Receive(response)) break;
+                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0))) ;
             }
 
 

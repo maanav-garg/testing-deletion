@@ -215,55 +215,57 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(ReadDataByIdenService service)
         {
-            bool isTransmitted = service.Response.Data[0].Equals((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER);
-
-            if (isTransmitted)
+            lblReceived.BeginInvoke((MethodInvoker)delegate ()
             {
-                MessageTransmitted++;
+                MessageReceived++;
+                lblReceived.Text = MessageReceived.ToString();
+            });
 
-                lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
-                {
-                    lblTransmitted.Text = MessageTransmitted.ToString();
-                });
-            }
-            else
+            if (oldValue != null)
             {
-                lblReceived.BeginInvoke((MethodInvoker)delegate ()
-                {
-                    MessageReceived++;
-                    lblReceived.Text = MessageReceived.ToString();
-                });
+                bool areEqual = service.Payloads.Count == oldValue.Payloads.Count;
 
-                if (oldValue != null)
+                if (areEqual)
                 {
-                    bool areEqual = service.Payloads.Count == oldValue.Payloads.Count;
-
-                    if (areEqual)
+                    for (int i = 0; i < service.Payloads.Count; i++)
                     {
-                        for (int i = 0; i < service.Payloads.Count; i++)
+                        if (service.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
+                            service.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
                         {
-                            if (service.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
-                                service.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
-                            {
-                                areEqual = false;
-                                break;
-                            }
+                            areEqual = false;
+                            break;
                         }
                     }
-
-                    if (areEqual)
-                        return;
                 }
 
-                oldValue = service;
-
-                lblStatus.BeginInvoke((MethodInvoker)delegate ()
-                {
-                    lbResponse.Items.Clear();
-                    lbResponse.Items.AddRange(service.Payloads.ToArray());
-
-                });
+                if (areEqual)
+                    return;
             }
+
+            oldValue = service;
+
+            lblStatus.BeginInvoke((MethodInvoker)delegate ()
+            {
+                lbResponse.Items.Clear();
+                lbResponse.Items.AddRange(service.Payloads.ToArray());
+
+            });
+            
+        }
+
+        /// <summary>
+        /// Handle number of transmitted data.
+        /// </summary>
+        /// <param name="monitorItem">Monitor item to be updated</param>
+        /// <param name="inputResponse">Data comes from device</param>
+        internal void HandleMetrics()
+        {
+            MessageTransmitted++;
+
+            lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
+            {
+                lblTransmitted.Text = MessageTransmitted.ToString();
+            });
         }
 
         /// <summary>

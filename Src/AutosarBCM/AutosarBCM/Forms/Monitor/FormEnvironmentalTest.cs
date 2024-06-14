@@ -212,8 +212,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else
             {
-                var items = groups["DID"];
-                var matchedControls = items.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
+                var matchedControls = ucItems.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
                 if (matchedControls == null)
                     return false;
 
@@ -227,6 +226,25 @@ namespace AutosarBCM.Forms.Monitor
                 
         }
 
+        /// <summary>
+        /// Handle transmitted data.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
+        public bool Sent(short address)
+        {
+            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address);
+            if (matchedControls == null)
+                return false;
+
+            foreach (var ucItem in matchedControls)
+            {
+                ucItem.HandleMetrics();
+            }
+            
+            return true;
+
+        }
 
         /// <summary>
         /// Timer starting event.
@@ -253,7 +271,6 @@ namespace AutosarBCM.Forms.Monitor
             DrawTime();
         }
 
-
         /// <summary>
         /// Handle timer values event.
         /// </summary>
@@ -276,6 +293,5 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
-
     }
 }

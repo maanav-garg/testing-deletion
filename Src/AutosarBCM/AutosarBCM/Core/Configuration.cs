@@ -109,7 +109,7 @@ namespace AutosarBCM.Core
             var payloads = new List<Payload>();
             var responseIndex = serviceInfo.ResponseIndex;
 
-            foreach (var pInfo in Responses.Where(a => a.ServiceID == serviceInfo.ResponseID).First()?.Payloads)
+            foreach (var pInfo in Responses.First()?.Payloads)
             {
                 var pDef = ASContext.Configuration.GetPayloadInfoByType(pInfo.TypeName);
                 if (pDef == null) continue;

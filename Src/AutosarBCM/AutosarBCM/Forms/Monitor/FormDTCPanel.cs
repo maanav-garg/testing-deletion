@@ -57,6 +57,12 @@ namespace AutosarBCM.Forms.Monitor
             return false;
         }
 
+        public bool Sent(short address)
+        {
+            return false;
+            //throw new NotImplementedException();
+        }
+
         internal void FilterItems(string text)
         {
             pnlMonitor.SuspendLayout();
