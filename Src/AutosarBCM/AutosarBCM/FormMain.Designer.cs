@@ -370,8 +370,8 @@ namespace AutosarBCM
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1881, 893);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Size = new System.Drawing.Size(1409, 722);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Trace";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -379,11 +379,11 @@ namespace AutosarBCM
             // txtTrace
             // 
             this.txtTrace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtTrace.Location = new System.Drawing.Point(3, 29);
-            this.txtTrace.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtTrace.Location = new System.Drawing.Point(2, 29);
+            this.txtTrace.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtTrace.Name = "txtTrace";
             this.txtTrace.ReadOnly = true;
-            this.txtTrace.Size = new System.Drawing.Size(1875, 862);
+            this.txtTrace.Size = new System.Drawing.Size(1405, 691);
             this.txtTrace.TabIndex = 10;
             this.txtTrace.Text = "";
             // 
@@ -456,8 +456,8 @@ namespace AutosarBCM
             this.tsbMonitorLoad,
             this.tsbSession,
             this.tsbECUReset,
-            this.tsbActivateDiagSession,
             this.btnStart,
+            this.tsbActivateDiagSession,
             this.btnClear,
             this.toolStripSeparator1,
             this.toolStripLabel1,
@@ -529,6 +529,7 @@ namespace AutosarBCM
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(64, 25);
             this.btnStart.Text = "Start";
+            this.btnStart.Visible = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // btnClear
@@ -688,8 +689,7 @@ namespace AutosarBCM
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(1357, 920);
+            this.MinimumSize = new System.Drawing.Size(1022, 755);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TransparencyKey = System.Drawing.Color.White;

@@ -95,6 +95,19 @@ namespace AutosarBCM.Core
         }
     }
 
+    public class NegativeResponse : Service
+    {
+        public NegativeResponse() : base(ServiceInfo.NegativeResponse) { }
+
+        internal static NegativeResponse Receive(ASResponse response)
+        {
+            return new NegativeResponse()
+            {
+                Response = response
+            };
+        }
+    }
+
     public class TesterPresent : Service
     {
         public TesterPresent() : base(ServiceInfo.TesterPresent) { }
