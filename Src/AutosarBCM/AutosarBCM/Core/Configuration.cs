@@ -94,6 +94,8 @@ namespace AutosarBCM.Core
                                 bytes.Add(0x0);
                         }
                     }
+                    Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed), "", "");
+
                 }
 
                 bitIndex++;
