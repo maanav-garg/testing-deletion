@@ -156,9 +156,12 @@ namespace AutosarBCM.UserControls.Monitor
         /// <summary>
         /// Change DTC of the input window regarding to read data from the device.
         /// </summary>
-        public void ChangeDtc()
+        public void ChangeDtc(string dtc)
         {
-
+            lblDtcStatus.BeginInvoke((MethodInvoker)delegate ()
+            {
+                lblDtcStatus.Text = dtc;
+            });
         }
 
         /// <summary>

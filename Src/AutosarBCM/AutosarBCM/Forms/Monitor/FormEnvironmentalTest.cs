@@ -230,6 +230,8 @@ namespace AutosarBCM.Forms.Monitor
             {
                 foreach (var dtcValue in dtcService.Values)
                 {
+                    if (dtcValue.Mask != 80)
+                        continue;
                     if (!dtcList.ContainsKey(dtcValue.Code))
                         continue;
                     var control = dtcList[dtcValue.Code];
@@ -237,11 +239,8 @@ namespace AutosarBCM.Forms.Monitor
                     if (payload == null)
                         continue;
                     var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
-                    uc?.ChangeDtc();
+                    uc?.ChangeDtc(dtcValue.Description);
                 }
-
-
-
             }
             return false;
         }
