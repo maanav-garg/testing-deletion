@@ -797,12 +797,14 @@ namespace AutosarBCM
                 {
                     if (!ConnectionUtil.BaseConnection())
                         return;
+                    StartTesterPresent();
                 }
                 else if (openConnection.Text == "Stop Connection")
                 {
                     if (IsTestRunning)
                         btnStart_Click(null, null);
                     ConnectionUtil.Disconnect();
+                    StopTesterPresent();
                 }
             }
             catch (Exception ex)
