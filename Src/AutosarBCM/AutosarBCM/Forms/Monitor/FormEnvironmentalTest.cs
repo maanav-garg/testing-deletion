@@ -216,31 +216,38 @@ namespace AutosarBCM.Forms.Monitor
             {
                 var items = groups["DID"];
                 var matchedControls = items.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
-                totalMessagesReceived++;
                 if (matchedControls == null)
                     return false;
-
+                totalMessagesReceived++;
                 foreach (var uc in matchedControls)
                 {
                     uc.ChangeStatus(service);
-                    tslTransmitted.GetCurrentParent().Invoke((MethodInvoker)delegate ()
-                    {
-                        tslTransmitted.Text = totalMessagesTransmitted.ToString();
-                    });
-                    tslReceived.GetCurrentParent().Invoke((MethodInvoker)delegate ()
-                    {
-                        tslReceived.Text = totalMessagesReceived.ToString();
-                    });
-                    tslDiff.GetCurrentParent().Invoke((MethodInvoker)delegate ()
-                    {
-                        double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
-                        tslDiff.Text = (diff * 100).ToString("F2") + "%";
-                        tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
-                    });
                 }
+                UpdateCounters();
                 return true;
             }
 
+        }
+
+        /// <summary>
+        /// Updates TX/RX counters on UI
+        /// </summary>
+        private void UpdateCounters()
+        {
+            tslTransmitted.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            {
+                tslTransmitted.Text = totalMessagesTransmitted.ToString();
+            });
+            tslReceived.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            {
+                tslReceived.Text = totalMessagesReceived.ToString();
+            });
+            tslDiff.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            {
+                double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
+                tslDiff.Text = (diff * 100).ToString("F2") + "%";
+                tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+            });
         }
 
         /// <summary>
