@@ -208,12 +208,14 @@ namespace AutosarBCM.Forms.Monitor
         {
             var service = (IOControlByIdentifierService)baseService;
             if(service == null)
-            {
                 return false;
-            }
             else
             {
-                var items = groups["DID"];
+                for (int i = 0; i < service.Payloads.Count; i++)
+                {
+                    Helper.WriteCycleMessageToLogFile(service.ControlInfo.Name, service.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", service.Payloads[i].FormattedValue);
+                }
+                    var items = groups["DID"];
                 var matchedControls = items.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
                 if (matchedControls == null)
                     return false;

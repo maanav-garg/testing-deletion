@@ -398,7 +398,7 @@ namespace AutosarBCM
         /// <param name="data">Additional data related to the message.</param>
         public static void WriteCycleMessageToLogFile(string itemName, string itemType, string operation,string comment = "",string escapeChars = "",string data = "")
         {
-            if (FormMain.IsTestRunning && FormMain.MonitorTestTypeClone == MonitorTestType.Environmental)
+            if (FormMain.IsTestRunning)
             {
                 if (String.IsNullOrEmpty(comment))
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")};{itemName};{itemType};{operation};{data};{escapeChars}");

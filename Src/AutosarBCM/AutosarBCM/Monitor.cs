@@ -276,12 +276,12 @@ namespace AutosarBCM
 
             var timer = new MMTimer(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleTime, 0, MMTimer.EventType.Repeating, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
 
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
             timer.Start();
             while (!cancellationToken.IsCancellationRequested)
                 ThreadSleep(250);
             timer.Stop();
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
         }
 
         private static void StopEnvironmentalTest(Dictionary<string, Core.ControlInfo> dictMapping)
@@ -357,12 +357,12 @@ namespace AutosarBCM
             var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
 
             //TODO to be checked
-            //if (cycleIndex == 0 && reboots == 0)
-            //    Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
+            if (cycleIndex == 0 && reboots == 0)
+                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
             Console.WriteLine(Constants.StartProcessStarted);
 
             //TODO to be checked
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
             Console.WriteLine($"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}");
 
 
@@ -372,8 +372,8 @@ namespace AutosarBCM
                 StartCycle(cycle, dictMapping);
             }
 
-            //if (cycleIndex == startCycleIndex - 1 && reboots == 0)
-            //    Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
+            if (cycleIndex == startCycleIndex - 1 && reboots == 0)
+                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
             Console.WriteLine(Constants.StartProcessCompleted);
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
@@ -396,7 +396,7 @@ namespace AutosarBCM
             //    }
             //}                
 
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
             Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}"); 
 
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
