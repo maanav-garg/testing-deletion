@@ -210,6 +210,10 @@ namespace AutosarBCM.Forms.Monitor
                 return false;
             else
             {
+                for (int i = 0; i < service.Payloads.Count; i++)
+                {
+                    Helper.WriteCycleMessageToLogFile(service.ControlInfo.Name, service.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", service.Payloads[i].FormattedValue);
+                }
                 var matchedControls = ucItems.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
                 if (matchedControls == null)
                     return false;
