@@ -53,11 +53,11 @@ namespace AutosarBCM
 
             // load fields
             textBoxUserName.Text = Settings.Default.UserName;
-            txtTransmitAdress.Text = Settings.Default.TransmitAdress;
-            txtReceiveAdress.Text = Settings.Default.ReceiveAdress;
-            txtBlockSize.Text = Settings.Default.BlockSize;
-            txtStMin.Text = Settings.Default.StMin;
-            txtPaddingByte.Text = Settings.Default.PaddingByte;
+            txtTransmitAdress.Text = Settings.Default.TransmitAdress.Substring(2);
+            txtReceiveAdress.Text = Settings.Default.ReceiveAdress.Substring(2);
+            txtBlockSize.Text = Settings.Default.BlockSize.Substring(2);
+            txtStMin.Text = Settings.Default.StMin.Substring(2);
+            txtPaddingByte.Text = Settings.Default.PaddingByte.Substring(2);
             cmbSerialPortType.SelectedItem = Settings.Default.SerialPortType;
             txtPort.Text = Settings.Default.SerialPort;
             numBaudRate.Value = Settings.Default.SerialBaudRate;
@@ -180,11 +180,11 @@ namespace AutosarBCM
 
             // save fields
             Settings.Default.UserName = textBoxUserName.Text;
-            Settings.Default.TransmitAdress = txtTransmitAdress.Text;
-            Settings.Default.ReceiveAdress = txtReceiveAdress.Text;
-            Settings.Default.BlockSize = txtBlockSize.Text;
-            Settings.Default.StMin = txtStMin.Text;
-            Settings.Default.PaddingByte = txtPaddingByte.Text;
+            Settings.Default.TransmitAdress = "0x"+txtTransmitAdress.Text;
+            Settings.Default.ReceiveAdress = "0x"+ txtReceiveAdress.Text;
+            Settings.Default.BlockSize = "0x" + txtBlockSize.Text;
+            Settings.Default.StMin = "0x" + txtStMin.Text;
+            Settings.Default.PaddingByte = "0x" + txtPaddingByte.Text;
             Settings.Default.SerialPortType = (SerialPortType)cmbSerialPortType.SelectedItem;
             Settings.Default.SerialPort = txtPort.Text;
             Settings.Default.SerialBaudRate = (int)numBaudRate.Value;
@@ -213,7 +213,46 @@ namespace AutosarBCM
             Settings.Default.KvaserDevice = kvaserDevice;
 
             Settings.Default.Save();
+         
+
         }
+
+        private void txtTransmitAdress_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Uri.IsHexDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+        private void txtReceiveAdress_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Uri.IsHexDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+        private void txtBlockSize_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Uri.IsHexDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+        private void txtStMin_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Uri.IsHexDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+        private void txtPaddingByte_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Uri.IsHexDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Event handler for the selection change in the "Device" combo box in the "Can Hardware" tab.
@@ -329,12 +368,12 @@ namespace AutosarBCM
                 return;
             }
 
-            // Allow only letters and digits, and limit the length to 3 characters
-            if (!Uri.IsHexDigit(e.KeyChar) || tbFilter.Text.Length >= 3)
+            // Allow only letters and digits, and limit the length to 2 characters
+            if (!Uri.IsHexDigit(e.KeyChar) || tbFilter.Text.Length >= 2)
             {
                 e.Handled = true;
             }
         }
     }
-    #endregion
+    
 }
