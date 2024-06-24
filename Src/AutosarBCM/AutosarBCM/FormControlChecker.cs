@@ -1,5 +1,6 @@
 using AutosarBCM.Config;
 using AutosarBCM.Core;
+using AutosarBCM.Core.Enums;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections;
@@ -21,7 +22,7 @@ namespace AutosarBCM
     public partial class FormControlChecker : Form
     {
         #region Variables
-
+        private UCItem ucItem;
         enum ControlOrder
         {
             Horizontal,
@@ -184,22 +185,24 @@ namespace AutosarBCM
         private void TransmitListedData(List<MainList> list)
         {
             List<ToBeTransmittedList> resultList = AggregateByteValues(list);
-
+            byte controlByte = 0x0;
+            int bitIndex = 0;
+            var bytes = new List<byte> { (byte)InputControlParameter.ShortTermAdjustment };
             foreach (var item in resultList)
             {
-                Console.WriteLine($"Address: {item.Address}, ByteValues: {BitConverter.ToString(item.ByteValue)}, isMasked: {item.isMaskedValue}");
+                if(item.isMaskedValue == true)
+                {
+
+                }
             }
+            //foreach (var item in resultList)
+            //{
+            //    Console.WriteLine($"Address: {item.Address}, ByteValues: {BitConverter.ToString(item.ByteValue)}, isMasked: {item.isMaskedValue}");
+            //}
 
         }
         public static List<ToBeTransmittedList> AggregateByteValues(List<MainList> mainList)
         {
-            //return mainList
-            //    .GroupBy(x => x.Address)
-            //    .Select(g => new ToBeTransmittedList(
-            //        g.Key,
-            //        g.SelectMany(x => x.ByteValue).ToArray()
-            //    ))
-            //    .ToList();
             return mainList
             .GroupBy(x => x.Address)
             .Select(g => new ToBeTransmittedList(
