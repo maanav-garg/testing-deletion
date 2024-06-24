@@ -1076,14 +1076,14 @@
       <Responses>
         <Response serviceId="62">
           <Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte">
-            <Payload name="7 Door Ajar Switch - Driver   " typeName="DID_Bits_On_Off" />
-            <Payload name="6 Door Ajar Switch - Passenger" typeName="DID_Bits_On_Off" />
-            <Payload name="5 Cabin Lock" typeName="DID_Bits_On_Off" />
-            <Payload name="4 Cabin Unlock" typeName="DID_Bits_On_Off" />
-            <Payload name="3 FrontResetLeftSwitch" typeName="DID_Bits_On_Off" />
-            <Payload name="2 FrontResetRightSwitch" typeName="DID_Bits_On_Off" />
-            <Payload name="1 FrontSetLeftSwitch" typeName="DID_Bits_On_Off" />
-            <Payload name="0 FrontSetRightSwitch" typeName="DID_Bits_On_Off" />
+            <Payload name="7 Door Ajar Switch - Driver   " dtcCode="91E9" typeName="DID_Bits_On_Off" />
+            <Payload name="6 Door Ajar Switch - Passenger" dtcCode="91EA" typeName="DID_Bits_On_Off" />
+            <Payload name="5 Cabin Lock" dtcCode="908F" typeName="DID_Bits_On_Off" />
+            <Payload name="4 Cabin Unlock" dtcCode="9F39" typeName="DID_Bits_On_Off" />
+            <Payload name="3 FrontResetLeftSwitch" dtcCode="BA85" typeName="DID_Bits_On_Off" />
+            <Payload name="2 FrontResetRightSwitch" dtcCode="93A3" typeName="DID_Bits_On_Off" />
+            <Payload name="1 FrontSetLeftSwitch" dtcCode="939D" typeName="DID_Bits_On_Off" />
+            <Payload name="0 FrontSetRightSwitch" dtcCode="BA86" typeName="DID_Bits_On_Off" />
           </Payload>
         </Response>
       </Responses>
@@ -1148,12 +1148,12 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="MainRightMirrorUpCtrl" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="MainRightMirrorRightCtrl" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="MainRightMirrorDownLeftCtrl" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="MainLeftMirrorUpCtrl" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="MainLeftMirrorRightCtrl" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="MainLeftMirrorDownLeftCtrl" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="MainRightMirrorUpCtrl" dtcCode="9F2E" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="MainRightMirrorRightCtrl" dtcCode="9F2F" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="MainRightMirrorDownLeftCtrl" dtcCode="9F30" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="MainLeftMirrorUpCtrl" dtcCode="9F31" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="MainLeftMirrorRightCtrl" dtcCode="9F32" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="MainLeftMirrorDownLeftCtrl" dtcCode="9F33" typeName="DID_Byte_Present_notPresent"></Payload>
         </Response>
         <Response serviceId ="6F">
         </Response>
@@ -1259,18 +1259,18 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="HornTypeSelectionSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="AxleLifting1Switch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="LowLinerSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="RockingSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="TrailerTagAxleLifting" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="CabinTiltSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="InteriorLampOffSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="TrailerDetectionSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="DamperConnectionSwitch" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="EraglonassGlobalMute" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="AlternatorChargingStatus" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="EHPASInput" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="HornTypeSelectionSwitch" dtcCode="9324" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="AxleLifting1Switch" dtcCode="6100" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="LowLinerSwitch" dtcCode="6103" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="RockingSwitch" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="TrailerTagAxleLifting" dtcCode="6101" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="CabinTiltSwitch" dtcCode="9F0E" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="InteriorLampOffSwitch" dtcCode="9F3D" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="TrailerDetectionSwitch" dtcCode="90A1" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="DamperConnectionSwitch" dtcCode="9F4B" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="EraglonassGlobalMute" dtcCode="921E" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="AlternatorChargingStatus" dtcCode="1246" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="EHPASInput" dtcCode="35DF" typeName="DID_Byte_Present_notPresent"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1364,30 +1364,30 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Spare Switch 29" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 28" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 27" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 25" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 24" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 22" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 21" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 19" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 18" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 17" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 16" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 15" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 14" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 12" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 11" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 10" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 9" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 7" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 6" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 5" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 4" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 3" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare Switch 1" typeName="DID_Byte_Present_notPresent"></Payload>
-          <Payload name="Spare1 Config Switch" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 29" dtcCode="BA7A" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 28" dtcCode="BA7B" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 27" dtcCode="BA7C" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 25" dtcCode="BA7E" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 24" dtcCode="BA80" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 22" dtcCode="BA81" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 21" dtcCode="BA82" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 19" dtcCode="BA83" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 18" dtcCode="BA84" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 17" dtcCode="9F54" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 16" dtcCode="9F46" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 15" dtcCode="BA7D" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 14" dtcCode="9F4D" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 12" dtcCode="9F47" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 11" dtcCode="9F44" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 10" dtcCode="9F51" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 9" dtcCode="9F4E" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 7" dtcCode="9F58" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 6" dtcCode="9F56" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 5" dtcCode="9F55" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 4" dtcCode="BA88" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 3" dtcCode="BA89" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare Switch 1" dtcCode="9F45" typeName="DID_Byte_Present_notPresent"></Payload>
+          <Payload name="Spare1 Config Switch" dtcCode="9F57" typeName="DID_Byte_Present_notPresent"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1554,7 +1554,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="BraleLightRelaySupply" typeName="DID_Byte_Activate_Inactivate"></Payload>
+          <Payload name="BrakeLightRelaySupply" typeName="DID_Byte_Activate_Inactivate"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1747,8 +1747,8 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Passenger Power Window Motor Up" typeName="DID_PWM"></Payload>
-          <Payload name="Passenger Power Window Motor Down" typeName="DID_PWM"></Payload>
+          <Payload name="Passenger Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"></Payload>
+          <Payload name="Passenger Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1761,7 +1761,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Left Front Fog Lamps Output" typeName="DID_41EC_0"></Payload>
+          <Payload name="Left Front Fog Lamps Output" dtcCode="9147" typeName="DID_41EC_0"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1789,7 +1789,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Rear Fog Lamps Output" typeName="DID_41F1_0"></Payload>
+          <Payload name="Rear Fog Lamps Output" dtcCode="9A79" typeName="DID_41F1_0"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1815,7 +1815,7 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Turn Indicator Switch Input" typeName="DID_4253_0"></Payload>
+          <Payload name="Turn Indicator Switch Input" dtcCode="9F3D" typeName="DID_4253_0"></Payload>
         </Response>
       </Responses>
     </Control>
@@ -1827,8 +1827,8 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="DDRLSupplyLeft" typeName="DID_4255_Daytime_Running_Light"></Payload>
-          <Payload name="DDRLSupplyRight" typeName="DID_4255_Daytime_Running_Light"></Payload>
+          <Payload name="DDRLSupplyLeft" dtcCode="924B" typeName="DID_4255_Daytime_Running_Light"></Payload>
+          <Payload name="DDRLSupplyRight" dtcCode="924A" typeName="DID_4255_Daytime_Running_Light"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1841,8 +1841,8 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="High Beam Left" typeName="DID_42A0_0"></Payload>
-          <Payload name="High Beam Left" typeName="DID_42A0_0"></Payload>
+          <Payload name="High Beam Left" dtcCode="956A" typeName="DID_42A0_0"></Payload>
+          <Payload name="High Beam Left" dtcCode="956A" typeName="DID_42A0_0"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
@@ -1881,7 +1881,7 @@
       <Services>22;2F</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Right Front Low Beam Output Control" typeName="DID_40E8_0"></Payload>
+          <Payload name="Right Front Low Beam Output Control" dtcCode="9D01" typeName="DID_40E8_0"></Payload>
         </Response>
         <Response serviceId="6F"></Response>
       </Responses>
