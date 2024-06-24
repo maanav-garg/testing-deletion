@@ -70,6 +70,7 @@ namespace AutosarBCM.Core
             var service = new IOControlByIdentifierService();
 
             service.ControlInfo = ASContext.Configuration.GetControlByAddress(BitConverter.ToUInt16(response.Data.Skip(1).Take(2).Reverse().ToArray(), 0));
+
             service.Payloads = service.ControlInfo.GetPayloads(service.ServiceInfo, response.Data);
             service.Response = response;
             return service;
@@ -94,6 +95,19 @@ namespace AutosarBCM.Core
         }
     }
 
+    public class NegativeResponse : Service
+    {
+        public NegativeResponse() : base(ServiceInfo.NegativeResponse) { }
+
+        internal static NegativeResponse Receive(ASResponse response)
+        {
+            return new NegativeResponse()
+            {
+                Response = response
+            };
+        }
+    }
+
     public class TesterPresent : Service
     {
         public TesterPresent() : base(ServiceInfo.TesterPresent) { }
@@ -101,7 +115,7 @@ namespace AutosarBCM.Core
         public void Transmit()
         {
             if (ServiceInfo == null) return;
-            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0 });
+            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0x80 });
         }
 
         internal static TesterPresent Receive(ASResponse response)
@@ -154,7 +168,27 @@ namespace AutosarBCM.Core
             };
         }
     }
+   
+    public class ClearDTCInformation : Service
+    {
+        public ClearDTCInformation() : base(ServiceInfo.ClearDTCInformation) { }
+        
+        public void Transmit()
+        {
+            if (ServiceInfo == null) return;
+            //All DTCs
+            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0xFF, 0xFF, 0xFF });
+        }
 
+        public static ClearDTCInformation Receive(ASResponse response)
+        {
+            var service = new ClearDTCInformation();
+
+            service.Response = response;
+            return service;
+        }
+    }
+    
     public class DTCValue
     {
         public string Code { get; set; }

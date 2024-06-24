@@ -43,18 +43,33 @@ namespace AutosarBCM.Forms.Monitor
 
         public bool Receive(Service baseService)
         {
-            var service = (ReadDTCInformationService)baseService;
-
-            foreach (var dtcValue in service.Values)
-                foreach (var ucItem in ucItems)
-                    if (dtcValue.Code == ucItem.PayloadInfo.DTCCode)
+            if(baseService is ReadDTCInformationService service)
+            {
+                if (service != null)
+                {
+                    foreach (var dtcValue in service.Values)
+                        foreach (var ucItem in ucItems)
+                            if (dtcValue.Code == ucItem.PayloadInfo.DTCCode)
+                            {
+                                ucItem.ChangeStatus(dtcValue);
+                            }
+                    return true;
+                }
+                return false;
+            }
+            else if(baseService is ClearDTCInformation clearDTCService)
+            {
+                if (clearDTCService != null)
+                {
+                    foreach(var ucItem in ucItems)
                     {
-                        ucItem.ChangeStatus(dtcValue);
-                        break;
+                        ucItem.ClearDTCData();
                     }
-            return true;
+                    return true;
+                }
+            }
+            return false;
         }
-
         internal void FilterItems(string text)
         {
             pnlMonitor.SuspendLayout();
@@ -75,6 +90,20 @@ namespace AutosarBCM.Forms.Monitor
 
             LoadConfiguration();
             new ReadDTCInformationService().Transmit();
+        }
+        
+        private void btnClearDTC_Click(object sender, EventArgs e)
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+
+            new ClearDTCInformation().Transmit();
+        }
+
+        public bool Sent(short address)
+        {
+            return true;
+            //throw new NotImplementedException();
         }
     }
 }

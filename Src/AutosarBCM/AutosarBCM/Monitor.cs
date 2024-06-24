@@ -198,12 +198,12 @@ namespace AutosarBCM
                             dictMapping.Add(mapping.Output.Name, controlItem);
                         }
 
-
-                        //foreach (var funcName in monitorConfig.EnvironmentalMonitorConfiguration.MappingSection.ContinousReadList)
-                        //{
-                        //    var inputItem = inputItems.Where(x => x.Name.Equals(funcName)).FirstOrDefault();
-                        //    continousReadList.Add(inputItem);
-                        //}
+                        foreach (var funcName in ASContext.Configuration.EnvironmentalTest.ContinousReadList)
+                        {
+                            var controlItem = controlItems.Where(x => x.Name.Equals(funcName.Parent)).FirstOrDefault();
+                            continousReadList.Add(controlItem);
+                        }
+                        continousReadList = continousReadList.Distinct().ToList();
 
                         //TODO to be checked
                         //foreach (var func in ASContext.Configuration.EnvironmentalTest.ContinousReadList)
@@ -276,12 +276,12 @@ namespace AutosarBCM
 
             var timer = new MMTimer(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleTime, 0, MMTimer.EventType.Repeating, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
 
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
             timer.Start();
             while (!cancellationToken.IsCancellationRequested)
                 ThreadSleep(250);
             timer.Stop();
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
         }
 
         private static void StopEnvironmentalTest(Dictionary<string, Core.ControlInfo> dictMapping)
@@ -357,12 +357,12 @@ namespace AutosarBCM
             var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
 
             //TODO to be checked
-            //if (cycleIndex == 0 && reboots == 0)
-            //    Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
+            if (cycleIndex == 0 && reboots == 0)
+                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
             Console.WriteLine(Constants.StartProcessStarted);
 
             //TODO to be checked
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
             Console.WriteLine($"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}");
 
 
@@ -372,21 +372,21 @@ namespace AutosarBCM
                 StartCycle(cycle, dictMapping);
             }
 
-            //if (cycleIndex == startCycleIndex - 1 && reboots == 0)
-            //    Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
+            if (cycleIndex == startCycleIndex - 1 && reboots == 0)
+                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
             Console.WriteLine(Constants.StartProcessCompleted);
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
 
-            //if (cycleIndex >= startCycleIndex - 1)
-            //{
-            //    if(cycleIndex % 4 == 0)
-            //    {
-            //        foreach (var item in continousReadList)
-            //        {
-            //            item.Transmit(txInterval, Constants.ContinousRead);
-            //        }
-            //    }
+            if (cycleIndex >= startCycleIndex - 1)
+            {
+               if(cycleIndex % 4 == 0)
+               {
+                   foreach (var item in continousReadList)
+                   {
+                       item.Transmit(ServiceInfo.ReadDataByIdentifier);
+                   }
+               }
 
             //    if(softContinuousDiagList.Count > 0)
             //    {
@@ -394,9 +394,9 @@ namespace AutosarBCM
             //        foreach (var softDiag in softDiagList)
             //            softDiag.Transmit(softDiag.ReadDiagData, softDiag.MessageIdOrDefault, txInterval, Constants.SendDiagData);
             //    }
-            //}                
+            }                
 
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
             Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}"); 
 
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
@@ -436,18 +436,22 @@ namespace AutosarBCM
                 controlItem.Switch(affectedPayloads, true);
 
 
-                //TODO to be checked
-                //if (dictMapping.TryGetValue(ouputItem.Name, out inputItem))
-                //{
-                //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
-                //    {
-                //        if (errorLogDetect.ChcekIsError())
-                //            Helper.WriteErrorMessageToLogFile(inputItem.Name, inputItem.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item2, errorLogDetect.InputResponse)}");
+                Core.ControlInfo mappedItem;
+                foreach (var payload in affectedPayloads)
+                    if (dictMapping.TryGetValue(payload, out mappedItem))
+                    {
+                        //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
+                        //    {
+                        //        if (errorLogDetect.ChcekIsError())
+                        //            Helper.WriteErrorMessageToLogFile(inputItem.Name, inputItem.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item2, errorLogDetect.InputResponse)}");
 
-                //        Program.MappingStateDict.Remove(inputItem.Name);
-                //    }
-                //    Program.MappingStateDict.Add(ouputItem.Name, inputItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
-                //}
+                        //        Program.MappingStateDict.Remove(inputItem.Name);
+                        //    }
+                        //    Program.MappingStateDict.Add(ouputItem.Name, inputItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
+
+                        mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
+                        break;
+                    }
 
                 //ouputItem.Open(pwmDuty, pwmFreq);
                 ThreadSleep(txInterval);
@@ -500,19 +504,23 @@ namespace AutosarBCM
 
                 controlItem.Switch(affectedPayloads, false);
 
-                //TODO to be checked
-                //if (dictMapping.TryGetValue(ouputItem.Name, out controlInfo))
-                //{
-                //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
-                //    {
-                //        //TODO to be checked
-                //        //if (errorLogDetect.ChcekIsError())
-                //        //    Helper.WriteErrorMessageToLogFile(controlInfo.Name, controlInfo.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item2, errorLogDetect.InputResponse)}");
+                Core.ControlInfo mappedItem;
+                foreach (var payload in affectedPayloads)
+                    if (dictMapping.TryGetValue(payload, out mappedItem))
+                    {
+                        //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
+                        //    {
+                        //        //TODO to be checked
+                        //        //if (errorLogDetect.ChcekIsError())
+                        //        //    Helper.WriteErrorMessageToLogFile(controlInfo.Name, controlInfo.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item2, errorLogDetect.InputResponse)}");
 
-                //        Program.MappingStateDict.Remove(controlInfo.Name);
-                //    }
-                //    Program.MappingStateDict.Add(ouputItem.Name, controlInfo.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
-                //}
+                        //        Program.MappingStateDict.Remove(controlInfo.Name);
+                        //    }
+                        //    Program.MappingStateDict.Add(ouputItem.Name, controlInfo.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
+
+                        mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
+                        break;
+                    }
 
                 //controlItem.Close(pwmDuty, pwmFreq);
                 ThreadSleep(txInterval);

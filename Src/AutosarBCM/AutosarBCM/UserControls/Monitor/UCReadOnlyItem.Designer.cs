@@ -55,10 +55,10 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblStatus.Location = new System.Drawing.Point(78, 46);
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblStatus.Location = new System.Drawing.Point(72, 49);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(13, 18);
+            this.lblStatus.Size = new System.Drawing.Size(11, 15);
             this.lblStatus.TabIndex = 1;
             this.lblStatus.Text = "-";
             // 
@@ -123,7 +123,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(192, 50);
+            this.label4.Location = new System.Drawing.Point(200, 50);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 13);
             this.label4.TabIndex = 17;
@@ -132,10 +132,10 @@
             // lblWriteStatus
             // 
             this.lblWriteStatus.AutoSize = true;
-            this.lblWriteStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblWriteStatus.Location = new System.Drawing.Point(267, 46);
+            this.lblWriteStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblWriteStatus.Location = new System.Drawing.Point(266, 49);
             this.lblWriteStatus.Name = "lblWriteStatus";
-            this.lblWriteStatus.Size = new System.Drawing.Size(13, 18);
+            this.lblWriteStatus.Size = new System.Drawing.Size(11, 15);
             this.lblWriteStatus.TabIndex = 16;
             this.lblWriteStatus.Text = "-";
             // 

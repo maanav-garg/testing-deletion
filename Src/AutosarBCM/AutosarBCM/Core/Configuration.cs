@@ -31,6 +31,9 @@ namespace AutosarBCM.Core
         public static ServiceInfo TesterPresent { get => ASContext.Configuration?.GetServiceByRequestID(0x3E); }
         public static ServiceInfo ECUReset { get => ASContext.Configuration?.GetServiceByRequestID(0x11); }
         public static ServiceInfo ReadDTCInformation { get => ASContext.Configuration?.GetServiceByRequestID(0x19); }
+        public static ServiceInfo NegativeResponse { get => ASContext.Configuration?.GetServiceByResponseID(0x7F); }
+
+        public static ServiceInfo ClearDTCInformation { get => ASContext.Configuration?.GetServiceByRequestID(0x14); }
     }
 
     public class ControlInfo
@@ -67,7 +70,7 @@ namespace AutosarBCM.Core
                     bytes.Add(0x0);
                 else //Payload match
                 {
-                    controlByte |= (byte)(1 << bitIndex);
+                    controlByte |= (byte)(1 << (7- bitIndex));
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;
@@ -92,6 +95,8 @@ namespace AutosarBCM.Core
                                 bytes.Add(0x0);
                         }
                     }
+                    Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed), "", "");
+
                 }
 
                 bitIndex++;
@@ -107,7 +112,7 @@ namespace AutosarBCM.Core
             var payloads = new List<Payload>();
             var responseIndex = serviceInfo.ResponseIndex;
 
-            foreach (var pInfo in Responses.Where(a => a.ServiceID == serviceInfo.ResponseID).First()?.Payloads)
+            foreach (var pInfo in Responses.First()?.Payloads)
             {
                 var pDef = ASContext.Configuration.GetPayloadInfoByType(pInfo.TypeName);
                 if (pDef == null) continue;

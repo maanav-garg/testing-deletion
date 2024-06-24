@@ -228,7 +228,6 @@ namespace AutosarBCM
             cycleLogMessageTimer.Start();
 
             Receivers.Add(formMonitorGenericInput);
-            Receivers.Add(formEnvironmentalTest);
             Receivers.Add(formDTCPanel);
 
         }
@@ -798,12 +797,14 @@ namespace AutosarBCM
                 {
                     if (!ConnectionUtil.BaseConnection())
                         return;
+                    StartTesterPresent();
                 }
                 else if (openConnection.Text == "Stop Connection")
                 {
                     if (IsTestRunning)
                         btnStart_Click(null, null);
                     ConnectionUtil.Disconnect();
+                    StopTesterPresent();
                 }
             }
             catch (Exception ex)
@@ -1039,7 +1040,7 @@ namespace AutosarBCM
         /// <param name="e">The event arguments.</param>
         private void dockMonitor_ActiveDocumentChanged(object sender, EventArgs e)
         {
-            if (tspFilterTxb.Enabled && !string.IsNullOrWhiteSpace(tspFilterTxb.Text))
+            if (tspFilterTxb.Enabled)
                 tspFilterTxb_TextChanged(sender, e);
         }
 
@@ -1207,6 +1208,7 @@ namespace AutosarBCM
                 if (formEnvironmentalTest == null || formEnvironmentalTest.IsDisposed)
                 {
                     formEnvironmentalTest = new FormEnvironmentalTest();
+                    Receivers.Add(formEnvironmentalTest);
                     formEnvironmentalTest.Show();
                 }
                 else

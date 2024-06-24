@@ -25,9 +25,8 @@ namespace AutosarBCM.Forms.Monitor
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
         private CancellationTokenSource cancellationTokenSource;
-        int timeCs, timeSec, timeMin, timeHour;
+        int timeSec, timeMin, timeHour;
         bool isActive;
-
         #endregion
 
         #region Constructor
@@ -106,6 +105,12 @@ namespace AutosarBCM.Forms.Monitor
 
 
         #endregion
+
+        /// <summary>
+        /// Handles cycle and loop value.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         internal void SetCounter(int cycleCounter, int loopCounter)
         {
             BeginInvoke(new Action(() =>
@@ -113,11 +118,16 @@ namespace AutosarBCM.Forms.Monitor
                 lblCycleVal.Text = cycleCounter.ToString();
                 lblLoopVal.Text = loopCounter.ToString();
             }));
-            
+
         }
+
+        /// <summary>
+        /// Handle time value to default value event.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         private void ResetTime()
         {
-            timeCs = 0;
             timeSec = 0;
             timeMin = 0;
             timeHour = 0;
@@ -145,7 +155,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else
             {
-                isActive=false;
+                isActive = false;
                 btnStart.Text = "Start";
                 btnStart.ForeColor = Color.Green;
             }
@@ -191,47 +201,102 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
+        private int totalMessagesReceived = 0;
+        private int totalMessagesTransmitted = 0;
 
         public bool Receive(Service baseService)
         {
             var service = (IOControlByIdentifierService)baseService;
-            var items = groups[service.ControlInfo.Name];
-            foreach (var uc in items)
+            if(service == null)
+                return false;
+            else
             {
-                uc.ChangeStatus(service);
+                for (int i = 0; i < service.Payloads.Count; i++)
+                {
+                    Helper.WriteCycleMessageToLogFile(service.ControlInfo.Name, service.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", service.Payloads[i].FormattedValue);
+                }
+                var matchedControls = ucItems.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
+                if (matchedControls == null)
+                    return false;
+                totalMessagesReceived++;
+                foreach (var uc in matchedControls)
+                {
+                    uc.ChangeStatus(service);
+                }
+                UpdateCounters();
                 return true;
             }
-            return false;
+        }
+        /// <summary>
+        /// Updates TX/RX counters on UI
+        /// </summary>
+        private void UpdateCounters()
+        {
+            tslTransmitted.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            {
+                tslTransmitted.Text = totalMessagesTransmitted.ToString();
+            });
+            tslReceived.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            {
+                tslReceived.Text = totalMessagesReceived.ToString();
+            });
+            tslDiff.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            {
+                double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
+                tslDiff.Text = (diff * 100).ToString("F2") + "%";
+                tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+            });
         }
 
+        /// <summary>
+        /// Handle transmitted data.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
+        public bool Sent(short address)
+        {
+            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address);
+            if (matchedControls == null)
+                return false;
+
+            foreach (var ucItem in matchedControls)
+            {
+                ucItem.HandleMetrics();
+            }
+            return true;
+        }
+        /// <summary>
+        /// Timer starting event.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         private void timer_Tick(object sender, EventArgs e)
         {
             if (isActive)
             {
-                timeCs++;
-                if(timeCs >= 100)
+                timeSec++;
+                if (timeSec >= 60)
                 {
-                    timeSec++;
-                    timeCs = 0;
-
-                    if(timeSec >= 60)
+                    timeMin++;
+                    timeSec = 0;
+                    if (timeMin >= 60)
                     {
-                        timeMin++;
-                        timeSec = 0;
-                        if(timeMin >= 60)
-                        {
-                            timeHour++;
-                            timeMin = 0;
-                        }
+                        timeHour++;
+                        timeMin = 0;
                     }
                 }
+
             }
             DrawTime();
         }
 
+        /// <summary>
+        /// Handle timer values event.
+        /// </summary>
+        /// <param name="sender">Form</param>
+        /// <param name="e">Argument</param>
         private void DrawTime()
         {
-            lblCs.Text = String.Format("{0:00}", timeCs);
             lblSec.Text = String.Format("{0:00}", timeSec);
             lblMin.Text = String.Format("{0:00}", timeMin);
             lblHour.Text = String.Format("{0:00}", timeHour);
@@ -247,6 +312,5 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
-
     }
 }
