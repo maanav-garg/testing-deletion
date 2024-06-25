@@ -133,7 +133,7 @@ namespace AutosarBCM
                     bool isChecked = checkBoxCell.Value is true;
                     if (cInf.Name == row.Cells[1].Value.ToString())
                     {
-                        
+
                         foreach (var response in cInf.Responses.Where(r => r.Payloads != null && r.Payloads.Any())
                         .SelectMany(r => r.Payloads, (r, p) => new { ControlName = cInf.Name, r.ServiceID, PayloadName = p.Name, PayloadTypeName = p.TypeName }))
                         {
@@ -150,17 +150,17 @@ namespace AutosarBCM
                                     {
                                         if (isOpenValue != null)
                                         {
-                                            list.Add(new MainList(x, isOpenValue, isControlMaskActive));
+                                            list.Add(new MainList(x, isOpenValue, isControlMaskActive, cInf));
                                         }
                                     }
                                     else
                                     {
                                         if (isCloseValue != null)
                                         {
-                                            list.Add(new MainList(x, isCloseValue, isControlMaskActive));
+                                            list.Add(new MainList(x, isCloseValue, isControlMaskActive, cInf));
                                         }
                                     }
-                                    
+
                                 }
                             }
                         }
@@ -187,14 +187,31 @@ namespace AutosarBCM
             List<ToBeTransmittedList> resultList = AggregateByteValues(list);
             byte controlByte = 0x0;
             int bitIndex = 0;
-            var bytes = new List<byte> { (byte)InputControlParameter.ShortTermAdjustment };
+            var bytes = new List<byte>();
+            byte[] by = { };
+            //{ (byte)InputControlParameter.ShortTermAdjustment };
             foreach (var item in resultList)
             {
-                if(item.isMaskedValue == true)
+                bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
+                if (item.isMaskedValue == true)
                 {
-
+                    bytes.AddRange(item.ByteValue);
+                    while (bitIndex < item.ByteValue.Length)
+                    {
+                        controlByte |= (byte)(1 << (7 - bitIndex));
+                        bitIndex++;
+                    }
+                    bitIndex = 0;
+                    bytes.Add(controlByte);
+                    by = bytes.ToArray();
+                    item.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, by);
+                    Console.WriteLine(BitConverter.ToString(bytes.ToArray()));
                 }
+                controlByte = 0x0;
+                bytes.Clear();
+
             }
+
             //foreach (var item in resultList)
             //{
             //    Console.WriteLine($"Address: {item.Address}, ByteValues: {BitConverter.ToString(item.ByteValue)}, isMasked: {item.isMaskedValue}");
@@ -208,7 +225,8 @@ namespace AutosarBCM
             .Select(g => new ToBeTransmittedList(
                 g.Key,
                 g.SelectMany(x => x.ByteValue).ToArray(),
-                g.Count() > 1
+                g.Count() > 1,
+                g.First().ControlInfo
             ))
             .ToList();
         }

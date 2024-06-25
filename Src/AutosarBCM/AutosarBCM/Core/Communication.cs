@@ -56,11 +56,13 @@ namespace AutosarBCM.Core
         public ushort Address { get; set; }
         public byte[] ByteValue { get; set; }
         public bool isMaskedValue { get; set; }
-        public ToBeTransmittedList(ushort stringValue, byte[] byteVal, bool isMaskedVal)
+        public ControlInfo ControlInfo { get; set; }
+        public ToBeTransmittedList(ushort stringValue, byte[] byteVal, bool isMaskedVal, ControlInfo controlInfo)
         {
             Address = stringValue;
             ByteValue = byteVal;
             isMaskedValue = isMaskedVal;
+            ControlInfo = controlInfo;
         }
     }
     public class MainList
@@ -68,12 +70,14 @@ namespace AutosarBCM.Core
         public ushort Address { get; set; }
         public byte[] ByteValue { get; set; }
         public bool isMaskedValue { get; set; }
+        public ControlInfo ControlInfo { get; set; }
 
-        public MainList(ushort stringValue, byte[] byteVal, bool isMaskedVal)
+        public MainList(ushort stringValue, byte[] byteVal, bool isMaskedVal, ControlInfo controlInfo)
         {
             Address = stringValue;
             ByteValue = byteVal;
             isMaskedValue = isMaskedVal;
+            ControlInfo = controlInfo;
         }
     }
     public class ASResponse
