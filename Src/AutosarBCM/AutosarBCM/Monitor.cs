@@ -303,7 +303,7 @@ namespace AutosarBCM
         /// Creates a dictionary which includes cycle index and cycle.
         /// </summary>
         /// <param name="cycles">List of cycles.</param>
-        private static Dictionary<int,Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
+        public static Dictionary<int,Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
         {   
             var cycleDict = new Dictionary<int, Core.Cycle>();
             foreach (var cycle in cycles)

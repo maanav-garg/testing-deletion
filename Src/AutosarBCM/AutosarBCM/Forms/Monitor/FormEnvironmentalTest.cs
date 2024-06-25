@@ -21,10 +21,12 @@ namespace AutosarBCM.Forms.Monitor
         #region Variables
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
+        private Dictionary<int, Core.Cycle> cycles;
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
         private CancellationTokenSource cancellationTokenSource;
+
         int timeSec, timeMin, timeHour;
         bool isActive;
 
@@ -53,6 +55,8 @@ namespace AutosarBCM.Forms.Monitor
             }
 
             ResetTime();
+
+            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Cycles);
 
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
@@ -206,16 +210,32 @@ namespace AutosarBCM.Forms.Monitor
         public bool Receive(Service baseService)
         {
             var service = (IOControlByIdentifierService)baseService;
-            if(service == null)
+            if (service == null)
                 return false;
             else
             {
+                int cycleKey;
+                if (!int.TryParse(lblCycleVal.Text, out cycleKey))
+                    return false;
+
+                // Check if the cycle exists
+                if (!cycles.ContainsKey(cycleKey))
+                    return false;
+
+                var cycle = cycles[cycleKey];
+
+                // Loop over payloads and log only matching ones
                 for (int i = 0; i < service.Payloads.Count; i++)
                 {
-                    Helper.WriteCycleMessageToLogFile(service.ControlInfo.Name, service.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", service.Payloads[i].FormattedValue);
+                    if (cycle.Functions.Any(x => x.Name == service.Payloads[i].PayloadInfo.Name))
+                    {
+                        // Log only if payload name matches any function name in the cycle
+                        Helper.WriteCycleMessageToLogFile(service.ControlInfo.Name, service.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", service.Payloads[i].FormattedValue);
+                    }
                 }
+
                 var matchedControls = ucItems.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
-                if (matchedControls == null)
+                if (matchedControls == null || !matchedControls.Any())
                     return false;
 
                 foreach (var uc in matchedControls)
@@ -225,7 +245,6 @@ namespace AutosarBCM.Forms.Monitor
 
                 return true;
             }
-                
         }
 
         /// <summary>
