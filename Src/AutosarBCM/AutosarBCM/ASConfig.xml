@@ -904,7 +904,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name=" Left Front Turn Lamp Outage Feedback" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C3.8_Left Front Turn Lamp Outage Feedback" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -918,7 +918,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Right Front Turn Lamp Outage Feedback" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C3.21_Right Front Turn Lamp Outage Feedback" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -945,7 +945,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Hazar Warning Switch" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C5.10_Hazar Warning Switch" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -1080,7 +1080,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte">
+						<Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte">
 						<Payload name="C5.28_7 Door Ajar Switch - Driver   " typeName="DID_Bits_On_Off" />
 						<Payload name="C5.33_6 Door Ajar Switch - Passenger" typeName="DID_Bits_On_Off" />
 						<Payload name="C6.31_5 Cabin Lock" typeName="DID_Bits_On_Off" />
@@ -1533,7 +1533,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="StepLightsSupply" typeName="DID_Byte_Activate_Inactivate"></Payload>
+					<Payload name="C4.19_StepLightsSupply" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -1713,7 +1713,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Left Rear Turn Signal Lamp Control" typeName="DID_Byte_Lamp_Control"></Payload>
+					<Payload name="C2.7_Left Rear Turn Signal Lamp Control" typeName="DID_Byte_Lamp_Control"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1725,7 +1725,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Right Rear Turn Signal Lamp Control" typeName="DID_Byte_Lamp_Control"></Payload>
+					<Payload name="C3.13_Right Rear Turn Signal Lamp Control" typeName="DID_Byte_Lamp_Control"></Payload>
 				</Response>
 			</Responses>
 		</Control>
