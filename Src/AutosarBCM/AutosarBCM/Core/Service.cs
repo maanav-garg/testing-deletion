@@ -115,6 +115,7 @@ namespace AutosarBCM.Core
         public void Transmit()
         {
             if (ServiceInfo == null) return;
+            //80 is suppress pos resp. ecu won't send pos response8
             ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0x80 });
         }
 
@@ -135,6 +136,25 @@ namespace AutosarBCM.Core
         {
             if (ServiceInfo == null) return;
             ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0x1 });
+        }
+    }
+
+    public class ClearDTCInformation : Service
+    {
+        public ClearDTCInformation() : base(ServiceInfo.ClearDTCInformation) { }
+
+        public void Transmit()
+        {
+            if (ServiceInfo == null) return;
+            //All DTCs
+            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0xFF, 0xFF, 0xFF });
+        }
+        public static ClearDTCInformation Receive(ASResponse response)
+        {
+            var service = new ClearDTCInformation();
+
+            service.Response = response;
+            return service;
         }
     }
 
@@ -166,26 +186,6 @@ namespace AutosarBCM.Core
                 Values = result,
                 Response = response
             };
-        }
-    }
-   
-    public class ClearDTCInformation : Service
-    {
-        public ClearDTCInformation() : base(ServiceInfo.ClearDTCInformation) { }
-        
-        public void Transmit()
-        {
-            if (ServiceInfo == null) return;
-            //All DTCs
-            ConnectionUtil.TransmitData(new byte[] { ServiceInfo.RequestID, 0xFF, 0xFF, 0xFF });
-        }
-
-        public static ClearDTCInformation Receive(ASResponse response)
-        {
-            var service = new ClearDTCInformation();
-
-            service.Response = response;
-            return service;
         }
     }
     

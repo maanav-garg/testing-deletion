@@ -32,7 +32,6 @@ namespace AutosarBCM.Core
         public static ServiceInfo ECUReset { get => ASContext.Configuration?.GetServiceByRequestID(0x11); }
         public static ServiceInfo ReadDTCInformation { get => ASContext.Configuration?.GetServiceByRequestID(0x19); }
         public static ServiceInfo NegativeResponse { get => ASContext.Configuration?.GetServiceByResponseID(0x7F); }
-
         public static ServiceInfo ClearDTCInformation { get => ASContext.Configuration?.GetServiceByRequestID(0x14); }
     }
 
