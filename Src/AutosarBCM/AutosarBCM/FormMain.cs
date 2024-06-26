@@ -230,6 +230,9 @@ namespace AutosarBCM
             Receivers.Add(formMonitorGenericInput);
             Receivers.Add(formDTCPanel);
 
+            TesterPresentTimer = new System.Timers.Timer(1000) { };
+            TesterPresentTimer.Elapsed += (s, e) => TesterPresent.Transmit();
+
         }
 
         #endregion
@@ -328,9 +331,11 @@ namespace AutosarBCM
         }
         public void StartTesterPresent()
         {
+            activeToolStripMenuItem.Checked = true;
+            inactiveToolStripMenuItem.Checked = false;
+            testerPresentDropDownButton.Image = Resources.pass;
+
             TesterPresent = new TesterPresent();
-            TesterPresentTimer = new System.Timers.Timer(1000) { AutoReset = true };
-            TesterPresentTimer.Elapsed += (s, e) => TesterPresent.Transmit();
             TesterPresentTimer.Start();
         }
 
@@ -675,18 +680,13 @@ namespace AutosarBCM
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
-
-            activeToolStripMenuItem.Checked = true;
-            inactiveToolStripMenuItem.Checked = false;
-            testerPresentDropDownButton.Image = Resources.pass;
+           
             StartTesterPresent();
         }
 
         private void inactiveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeToolStripMenuItem.Checked = false;
-            inactiveToolStripMenuItem.Checked = true;
-            testerPresentDropDownButton.Image = Resources.reset;
+           
             StopTesterPresent();
         }
 
@@ -803,8 +803,8 @@ namespace AutosarBCM
                 {
                     if (IsTestRunning)
                         btnStart_Click(null, null);
-                    ConnectionUtil.Disconnect();
                     StopTesterPresent();
+                    ConnectionUtil.Disconnect();
                 }
             }
             catch (Exception ex)
@@ -814,9 +814,12 @@ namespace AutosarBCM
             }
         }
 
-
         private void StopTesterPresent()
         {
+            activeToolStripMenuItem.Checked = false;
+            inactiveToolStripMenuItem.Checked = true;
+            testerPresentDropDownButton.Image = Resources.reset;
+
             TesterPresentTimer?.Stop();
         }
         /// <summary>
