@@ -218,18 +218,19 @@ namespace AutosarBCM.Forms.Monitor
                 if (!int.TryParse(lblCycleVal.Text, out cycleKey))
                     return false;
 
-                // Check if the cycle exists
-                if (!cycles.ContainsKey(cycleKey))
+                int loopVal;
+                if (!int.TryParse(lblLoopVal.Text, out loopVal))
                     return false;
 
-                var cycle = cycles[cycleKey];
+                if (!cycles.ContainsKey(loopVal))
+                    return false;
 
-                // Loop over payloads and log only matching ones
+                var cycle = cycles[loopVal];
+
                 for (int i = 0; i < service.Payloads.Count; i++)
                 {
                     if (cycle.Functions.Any(x => x.Name == service.Payloads[i].PayloadInfo.Name))
-                    {
-                        // Log only if payload name matches any function name in the cycle
+                    {                  
                         Helper.WriteCycleMessageToLogFile(service.ControlInfo.Name, service.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", service.Payloads[i].FormattedValue);
                     }
                 }
