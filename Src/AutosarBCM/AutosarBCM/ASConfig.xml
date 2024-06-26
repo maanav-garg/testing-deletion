@@ -2141,7 +2141,7 @@
 	</DTCFailureTypes>
 	<EnvironmentalTest>
 		<EnvironmentalConfig>
-			<CycleTime>500</CycleTime>
+			<CycleTime>3000</CycleTime>
 			<TxInterval>10</TxInterval>
 			<StartCycleIndex>1</StartCycleIndex>
 			<EndCycleIndex>20</EndCycleIndex>
