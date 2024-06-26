@@ -214,10 +214,6 @@ namespace AutosarBCM.Forms.Monitor
                 return false;
             else
             {
-                int cycleKey;
-                if (!int.TryParse(lblCycleVal.Text, out cycleKey))
-                    return false;
-
                 int loopVal;
                 if (!int.TryParse(lblLoopVal.Text, out loopVal))
                     return false;
@@ -230,20 +226,16 @@ namespace AutosarBCM.Forms.Monitor
                 for (int i = 0; i < service.Payloads.Count; i++)
                 {
                     if (cycle.Functions.Any(x => x.Name == service.Payloads[i].PayloadInfo.Name))
-                    {                  
+                    {
                         Helper.WriteCycleMessageToLogFile(service.ControlInfo.Name, service.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", service.Payloads[i].FormattedValue);
+
+                        var matchedControls = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == service.Payloads[i].PayloadInfo.Name);
+                        if (matchedControls == null)
+                            return false;
+
+                        matchedControls.ChangeStatus(service);
                     }
                 }
-
-                var matchedControls = ucItems.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
-                if (matchedControls == null || !matchedControls.Any())
-                    return false;
-
-                foreach (var uc in matchedControls)
-                {
-                    uc.ChangeStatus(service);
-                }
-
                 return true;
             }
         }
@@ -255,17 +247,31 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="e">Argument</param>
         public bool Sent(short address)
         {
-            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address);
-            if (matchedControls == null)
+            if (!int.TryParse(lblLoopVal.Text, out int loopVal))
                 return false;
 
-            foreach (var ucItem in matchedControls)
-            {
-                ucItem.HandleMetrics();
-            }
-            
-            return true;
+            if (!cycles.ContainsKey(loopVal))
+                return false;
 
+            var cycle = cycles[loopVal];
+
+            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address).ToList();
+            if (!matchedControls.Any())
+                return false;
+
+            foreach (var uc in matchedControls)
+            {
+                foreach (var function in cycle.Functions)
+                {
+                    if (uc.PayloadInfo.Name == function.Name)
+                    {
+                        uc.HandleMetrics();
+                        break;
+                    }
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
