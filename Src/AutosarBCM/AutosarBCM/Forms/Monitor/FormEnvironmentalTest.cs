@@ -233,23 +233,13 @@ namespace AutosarBCM.Forms.Monitor
                     if (cycle.Functions.Any(x => x.Name == ioService.Payloads[i].PayloadInfo.Name))
                     {
                         Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
+                        var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
+                        if (matchedControl == null)
+                            return false;
+                        matchedControl.ChangeStatus(ioService);
                     }
                 }
-                var matchedControls = ucItems.Where(c => c.ControlInfo.Name == ioService.ControlInfo.Name);
-                if (matchedControls.Any())
-                    return false;
                 totalMessagesReceived++;
-                foreach (var uc in matchedControls)
-                {
-                    foreach (var function in cycle.Functions)
-                    {
-                        if (uc.PayloadInfo.Name == function.Name)
-                        {
-                            uc.ChangeStatus(ioService);
-                            break;
-                        }
-                    }
-                }
                 UpdateCounters();
                 return true;
             }
