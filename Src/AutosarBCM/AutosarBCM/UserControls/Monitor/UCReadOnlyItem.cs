@@ -132,7 +132,8 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(IOControlByIdentifierService service)
         {
-
+            if (Program.MappingStateDict.TryGetValue(ControlInfo.Name, out var errorLogDetect))
+                Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, GetMappingLogState(errorLogDetect.Operation)));
 
             lblReceived.BeginInvoke((MethodInvoker)delegate ()
             {
