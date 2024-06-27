@@ -236,12 +236,19 @@ namespace AutosarBCM.Forms.Monitor
                     }
                 }
                 var matchedControls = ucItems.Where(c => c.ControlInfo.Name == ioService.ControlInfo.Name);
-                if (matchedControls == null)
+                if (matchedControls.Any())
                     return false;
                 totalMessagesReceived++;
                 foreach (var uc in matchedControls)
                 {
-                    uc.ChangeStatus(ioService);
+                    foreach (var function in cycle.Functions)
+                    {
+                        if (uc.PayloadInfo.Name == function.Name)
+                        {
+                            uc.ChangeStatus(ioService);
+                            break;
+                        }
+                    }
                 }
                 UpdateCounters();
                 return true;
