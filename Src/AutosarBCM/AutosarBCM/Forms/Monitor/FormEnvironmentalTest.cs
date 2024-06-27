@@ -24,11 +24,12 @@ namespace AutosarBCM.Forms.Monitor
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
         private Dictionary<string, Core.ControlInfo> dtcList = new Dictionary<string, Core.ControlInfo>();
-
+        private Dictionary<int, Core.Cycle> cycles;
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
         private CancellationTokenSource cancellationTokenSource;
+
         int timeSec, timeMin, timeHour;
         bool isActive;
         #endregion
@@ -56,6 +57,8 @@ namespace AutosarBCM.Forms.Monitor
             }
 
             ResetTime();
+
+            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Cycles);
 
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
@@ -217,18 +220,26 @@ namespace AutosarBCM.Forms.Monitor
         {
             if (baseService is IOControlByIdentifierService ioService)
             {
-                for (int i = 0; i < ioService.Payloads.Count; i++)
-                {
-                    Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
-                }
-                var matchedControls = ucItems.Where(c => c.ControlInfo.Name == ioService.ControlInfo.Name);
-                if (matchedControls == null)
+                int loopVal;
+                if (!int.TryParse(lblLoopVal.Text, out loopVal))
                     return false;
-                totalMessagesReceived++;
-                foreach (var uc in matchedControls)
+
+                if (!cycles.ContainsKey(loopVal))
+                    return false;
+
+                var cycle = cycles[loopVal];
+                for (var i = 0; i < ioService.Payloads.Count; i++)
                 {
-                    uc.ChangeStatus(ioService);
+                    if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
+                    {
+                        Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
+                        var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
+                        if (matchedControl == null)
+                            return false;
+                        matchedControl.ChangeStatus(ioService);
+                    }
                 }
+                totalMessagesReceived++;
                 UpdateCounters();
                 return true;
             }
@@ -278,13 +289,28 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="e">Argument</param>
         public bool Sent(short address)
         {
-            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address);
-            if (matchedControls == null)
+            if (!int.TryParse(lblLoopVal.Text, out int loopVal))
                 return false;
 
-            foreach (var ucItem in matchedControls)
+            if (!cycles.ContainsKey(loopVal))
+                return false;
+
+            var cycle = cycles[loopVal];
+
+            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address).ToList();
+            if (!matchedControls.Any())
+                return false;
+
+            foreach (var uc in matchedControls)
             {
-                ucItem.HandleMetrics();
+                foreach (var payload in cycle.Functions.SelectMany(p => p.Payloads))
+                {
+                    if (uc.PayloadInfo.Name == payload)
+                    {
+                        uc.HandleMetrics();
+                        break;
+                    }
+                }
             }
             return true;
         }
