@@ -273,7 +273,8 @@ namespace AutosarBCM
             //}
 
             var groupedSoftContinuousDiagList = Helper.GroupList(softContinuousDiagList, (endCycleIndex - startCycleIndex + 1) > softContinuousDiagList.Count ? softContinuousDiagList.Count : (endCycleIndex - startCycleIndex + 1));
-
+            FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
+            formEnvTest.SetCounter(1, startCycleIndex);
             var timer = new MMTimer(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleTime, 0, MMTimer.EventType.Repeating, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
@@ -303,8 +304,8 @@ namespace AutosarBCM
         /// Creates a dictionary which includes cycle index and cycle.
         /// </summary>
         /// <param name="cycles">List of cycles.</param>
-        private static Dictionary<int, Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
-        {
+        public static Dictionary<int, Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
+        {   
             var cycleDict = new Dictionary<int, Core.Cycle>();
             foreach (var cycle in cycles)
             {
@@ -397,8 +398,8 @@ namespace AutosarBCM
                 //    }
                 //}                
 
-                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
-                Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
+            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
 
                 FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
                 formEnvTest.SetCounter(reboots + 1, cycleIndex + 1);
