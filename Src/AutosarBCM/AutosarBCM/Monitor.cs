@@ -410,17 +410,18 @@ namespace AutosarBCM
                     foreach (var payload in function.Payloads)
                         if (dictMapping.TryGetValue(payload, out mappedItem))
                         {
-                                if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
-                                {
-                                    if (errorLogDetect.ChcekIsError())
-                                        Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
+                            /*if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
+                            {
+                                if (errorLogDetect.ChcekIsError())
+                                    Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
 
-                                    Program.MappingStateDict.Remove(mappedItem.Name);
-                                }
-                                Program.MappingStateDict.Add(function.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
-
+                                Program.MappingStateDict.Remove(mappedItem.Name);
+                            }
+                            Program.MappingStateDict.Add(function.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
+                            */
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
-                            break;
+                            Helper.WriteCycleMessageToLogFile(mappedItem.Name, mappedItem.Type, (Constants.MappingRead));
+                        break;
                         }
 
                     //ouputItem.Open(pwmDuty, pwmFreq);
@@ -471,15 +472,15 @@ namespace AutosarBCM
                     foreach (var payload in function.Payloads)
                         if (dictMapping.TryGetValue(payload, out mappedItem))
                         {
-                                if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
-                                {
+                                //if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
+                                //{
                                     //TODO to be checked
-                                    if (errorLogDetect.ChcekIsError())
-                                        Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
+                                //    if (errorLogDetect.ChcekIsError())
+                                //        Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
 
-                                    Program.MappingStateDict.Remove(mappedItem.Name);
-                                }
-                                Program.MappingStateDict.Add(function.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
+                                //    Program.MappingStateDict.Remove(mappedItem.Name);
+                                //}
+                                //Program.MappingStateDict.Add(function.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
                             break;
