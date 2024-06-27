@@ -442,14 +442,14 @@ namespace AutosarBCM
                     foreach (var payload in affectedPayloads)
                         if (dictMapping.TryGetValue(payload, out mappedItem))
                         {
-                            //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
-                            //    {
-                            //        if (errorLogDetect.ChcekIsError())
-                            //            Helper.WriteErrorMessageToLogFile(inputItem.Name, inputItem.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item2, errorLogDetect.InputResponse)}");
+                                if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
+                                {
+                                    if (errorLogDetect.ChcekIsError())
+                                        Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
 
-                            //        Program.MappingStateDict.Remove(inputItem.Name);
-                            //    }
-                            //    Program.MappingStateDict.Add(ouputItem.Name, inputItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
+                                    Program.MappingStateDict.Remove(mappedItem.Name);
+                                }
+                                Program.MappingStateDict.Add(controlItem.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
                             break;
@@ -458,7 +458,7 @@ namespace AutosarBCM
                     //ouputItem.Open(pwmDuty, pwmFreq);
                     ThreadSleep(txInterval);
                     //ReadDiagAdcCurrent(ouputItem, txInterval);
-
+                    
                     //if (inputItem != null)
                     //{
                     //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
@@ -510,15 +510,15 @@ namespace AutosarBCM
                     foreach (var payload in affectedPayloads)
                         if (dictMapping.TryGetValue(payload, out mappedItem))
                         {
-                            //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
-                            //    {
-                            //        //TODO to be checked
-                            //        //if (errorLogDetect.ChcekIsError())
-                            //        //    Helper.WriteErrorMessageToLogFile(controlInfo.Name, controlInfo.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item2, errorLogDetect.InputResponse)}");
+                                if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
+                                {
+                                    //TODO to be checked
+                                    if (errorLogDetect.ChcekIsError())
+                                        Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
 
-                            //        Program.MappingStateDict.Remove(controlInfo.Name);
-                            //    }
-                            //    Program.MappingStateDict.Add(ouputItem.Name, controlInfo.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
+                                    Program.MappingStateDict.Remove(mappedItem.Name);
+                                }
+                                Program.MappingStateDict.Add(controlItem.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
                             break;
