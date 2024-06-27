@@ -292,13 +292,28 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="e">Argument</param>
         public bool Sent(short address)
         {
-            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address);
-            if (matchedControls == null)
+            if (!int.TryParse(lblLoopVal.Text, out int loopVal))
                 return false;
 
-            foreach (var ucItem in matchedControls)
+            if (!cycles.ContainsKey(loopVal))
+                return false;
+
+            var cycle = cycles[loopVal];
+
+            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address).ToList();
+            if (!matchedControls.Any())
+                return false;
+
+            foreach (var uc in matchedControls)
             {
-                ucItem.HandleMetrics();
+                foreach (var function in cycle.Functions)
+                {
+                    if (uc.PayloadInfo.Name == function.Name)
+                    {
+                        uc.HandleMetrics();
+                        break;
+                    }
+                }
             }
             return true;
         }
