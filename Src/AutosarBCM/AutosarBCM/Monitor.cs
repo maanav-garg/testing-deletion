@@ -417,7 +417,7 @@ namespace AutosarBCM
 
                                     Program.MappingStateDict.Remove(mappedItem.Name);
                                 }
-                                Program.MappingStateDict.Add(controlItem.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
+                                Program.MappingStateDict.Add(function.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
                             break;
@@ -479,7 +479,7 @@ namespace AutosarBCM
 
                                     Program.MappingStateDict.Remove(mappedItem.Name);
                                 }
-                                Program.MappingStateDict.Add(controlItem.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
+                                Program.MappingStateDict.Add(function.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
                             break;
