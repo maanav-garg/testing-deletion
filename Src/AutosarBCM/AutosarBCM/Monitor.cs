@@ -162,28 +162,6 @@ namespace AutosarBCM
                         //var continousReadList = new List<InputMonitorItem>();
                         var continousReadList = new List<Core.ControlInfo>();
 
-
-                        //Find cycle items
-                        foreach (var cycle in cycles)
-                        {
-                            foreach (var func in cycle.Functions)
-                            {
-                                var ci = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == func.Parent);
-                                if (ci == null) continue;
-
-                                foreach (var payload in ci.Responses.FirstOrDefault().Payloads)
-                                {
-                                    if (func.Name == payload.Name)
-                                    {
-                                        cycle.Items.Add(ci);
-                                        cycle.PayloadItems.Add(payload);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-
                         var cycleDict = GetCycleDict(cycles);
 
                         //foreach (var mapping in monitorConfig.EnvironmentalMonitorConfiguration.MappingSection.ConnectionMappings)
@@ -194,14 +172,15 @@ namespace AutosarBCM
 
                         foreach (var mapping in ASContext.Configuration.EnvironmentalTest.ConnectionMappings)
                         {
-                            var controlItem = controlItems.Where(x => x.Name.Equals(mapping.Input.Parent)).FirstOrDefault();
+                            var controlItem = controlItems.Where(x => x.Name.Equals(mapping.Input.Control)).FirstOrDefault();
                             dictMapping.Add(mapping.Output.Name, controlItem);
                         }
 
                         foreach (var funcName in ASContext.Configuration.EnvironmentalTest.ContinousReadList)
                         {
-                            var controlItem = controlItems.Where(x => x.Name.Equals(funcName.Parent)).FirstOrDefault();
-                            continousReadList.Add(controlItem);
+                            var controlItem = controlItems.Where(x => x.Name.Equals(funcName.Control)).FirstOrDefault();
+                            if (controlItem != null)
+                                continousReadList.Add(controlItem);
                         }
                         continousReadList = continousReadList.Distinct().ToList();
 
@@ -311,15 +290,12 @@ namespace AutosarBCM
             {
                 if (cycleDict.ContainsKey(cycle.OpenAt))
                 {
-                    cycleDict[cycle.OpenAt].OpenItems.UnionWith(cycle.Items);
-                    cycleDict[cycle.OpenAt].PayloadOpenItems.UnionWith(cycle.PayloadItems);
-
+                    cycleDict[cycle.OpenAt].OpenItems.UnionWith(cycle.Functions);
                 }
                 else
                 {
                     cycleDict.Add(cycle.OpenAt, new Core.Cycle(cycle));
-                    cycleDict[cycle.OpenAt].OpenItems.UnionWith(cycle.Items);
-                    cycleDict[cycle.OpenAt].PayloadOpenItems.UnionWith(cycle.PayloadItems);
+                    cycleDict[cycle.OpenAt].OpenItems.UnionWith(cycle.Functions);
                 }
 
                 if (cycle.CloseAt == -1)
@@ -327,14 +303,12 @@ namespace AutosarBCM
 
                 if (cycleDict.ContainsKey(cycle.CloseAt))
                 {
-                    cycleDict[cycle.CloseAt].CloseItems.UnionWith(cycle.Items);
-                    cycleDict[cycle.CloseAt].PayloadCloseItems.UnionWith(cycle.PayloadItems);
+                    cycleDict[cycle.CloseAt].CloseItems.UnionWith(cycle.Functions);
                 }
                 else
                 {
                     cycleDict.Add(cycle.CloseAt, new Core.Cycle(cycle));
-                    cycleDict[cycle.CloseAt].CloseItems.UnionWith(cycle.Items);
-                    cycleDict[cycle.CloseAt].PayloadCloseItems.UnionWith(cycle.PayloadItems);
+                    cycleDict[cycle.CloseAt].CloseItems.UnionWith(cycle.Functions);
                 }
             }
 
@@ -424,23 +398,16 @@ namespace AutosarBCM
                 var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
                 var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue;
                 var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqOpenValue;
-                foreach (var controlItem in cycle.OpenItems)
+                foreach (var function in cycle.OpenItems)
                 {
                     if (cancellationToken.IsCancellationRequested)
                         return;
 
-                    var affectedPayloads = new List<string>();
-                    foreach (var openPayload in cycle.PayloadOpenItems)
-                    {
-                        if (controlItem.Responses[0].Payloads.Any(p => p.Name == openPayload.Name))
-                            affectedPayloads.Add(openPayload.Name);
-                    }
-
-                    controlItem.Switch(affectedPayloads, true);
+                    function.ControlInfo.Switch(function.Payloads, true);
 
 
                     Core.ControlInfo mappedItem;
-                    foreach (var payload in affectedPayloads)
+                    foreach (var payload in function.Payloads)
                         if (dictMapping.TryGetValue(payload, out mappedItem))
                         {
                             //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
@@ -496,19 +463,12 @@ namespace AutosarBCM
                 var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue;
                 var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqCloseValue;
 
-                foreach (var controlItem in cycle.CloseItems)
+                foreach (var function in cycle.CloseItems)
                 {
-                    var affectedPayloads = new List<string>();
-                    foreach (var closePayload in cycle.PayloadCloseItems)
-                    {
-                        if (controlItem.Responses[0].Payloads.Any(p => p.Name == closePayload.Name))
-                            affectedPayloads.Add(closePayload.Name);
-                    }
-
-                    controlItem.Switch(affectedPayloads, false);
+                    function.ControlInfo.Switch(function.Payloads, false);
 
                     Core.ControlInfo mappedItem;
-                    foreach (var payload in affectedPayloads)
+                    foreach (var payload in function.Payloads)
                         if (dictMapping.TryGetValue(payload, out mappedItem))
                         {
                             //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
