@@ -51,35 +51,7 @@ namespace AutosarBCM.Core
             ConnectionUtil.TransmitData(Data);
         }
     }
-    public class ToBeTransmittedList
-    {
-        public ushort Address { get; set; }
-        public byte[] ByteValue { get; set; }
-        public bool isMaskedValue { get; set; }
-        public ControlInfo ControlInfo { get; set; }
-        public ToBeTransmittedList(ushort stringValue, byte[] byteVal, bool isMaskedVal, ControlInfo controlInfo)
-        {
-            Address = stringValue;
-            ByteValue = byteVal;
-            isMaskedValue = isMaskedVal;
-            ControlInfo = controlInfo;
-        }
-    }
-    public class MainList
-    {
-        public ushort Address { get; set; }
-        public byte[] ByteValue { get; set; }
-        public bool isMaskedValue { get; set; }
-        public ControlInfo ControlInfo { get; set; }
-
-        public MainList(ushort stringValue, byte[] byteVal, bool isMaskedVal, ControlInfo controlInfo)
-        {
-            Address = stringValue;
-            ByteValue = byteVal;
-            isMaskedValue = isMaskedVal;
-            ControlInfo = controlInfo;
-        }
-    }
+    
     public class ASResponse
     {
         public byte[] Data { get; private set; }

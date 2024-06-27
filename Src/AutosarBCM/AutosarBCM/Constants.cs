@@ -85,6 +85,8 @@ namespace AutosarBCM
         internal const string Form_Monitor_Generic_Input = "FormMonitorGenericInput";
         internal const string Form_Monitor_Generic_Output = "FormMonitorGenericOutput";
         internal const string Form_Environmental_Test = "FormEnvironmentalTest";
+        internal const string Form_Control_Checker = "FormControlChecker";
+
 
         #endregion
     }
