@@ -128,7 +128,7 @@ namespace AutosarBCM
                 {
                     if (monitorTestType == MonitorTestType.Generic)
                     {
-                        var genericMonitorItems = ASContext.Configuration.Controls.Where(c=> c.Group == "DID" && c.Services.Contains((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER));
+                        var genericMonitorItems = ASContext.Configuration.Controls.Where(c => c.Group == "DID" && c.Services.Contains((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER));
                         ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txInterval);
                         ASContext.Configuration.Settings.TryGetValue("ReadInterval", out string readInterval);
 
@@ -136,12 +136,12 @@ namespace AutosarBCM
                         {
                             foreach (var item in genericMonitorItems)
                             {
-                                
+
                                 bool defaultSessionMatch = item.Services.Any(service => ASContext.CurrentSession.AvailableServices.Contains(service));
                                 bool activeExceptionMatch = item.SessionActiveException.Any(exception => exception == ASContext.CurrentSession.ID);
                                 bool inactiveExceptionMatch = item.SessionInactiveException.Any(exception => exception == ASContext.CurrentSession.ID);
 
-                                if (((defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch) )
+                                if (((defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch))
                                 {
                                     ThreadSleep(int.Parse(txInterval));
                                     item.Transmit(ServiceInfo.ReadDataByIdentifier);
@@ -170,7 +170,7 @@ namespace AutosarBCM
                             {
                                 var ci = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == func.Parent);
                                 if (ci == null) continue;
-                                
+
                                 foreach (var payload in ci.Responses.FirstOrDefault().Payloads)
                                 {
                                     if (func.Name == payload.Name)
@@ -182,7 +182,7 @@ namespace AutosarBCM
                                 }
                             }
                         }
-                           
+
 
                         var cycleDict = GetCycleDict(cycles);
 
@@ -191,7 +191,7 @@ namespace AutosarBCM
                         //    var inputItem = inputItems.Where(x => x.Name.Equals(mapping.InputName)).FirstOrDefault();
                         //    dictMapping.Add(mapping.OutputName, inputItem);
                         //}
-                        
+
                         foreach (var mapping in ASContext.Configuration.EnvironmentalTest.ConnectionMappings)
                         {
                             var controlItem = controlItems.Where(x => x.Name.Equals(mapping.Input.Parent)).FirstOrDefault();
@@ -303,8 +303,8 @@ namespace AutosarBCM
         /// Creates a dictionary which includes cycle index and cycle.
         /// </summary>
         /// <param name="cycles">List of cycles.</param>
-        private static Dictionary<int,Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
-        {   
+        private static Dictionary<int, Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
+        {
             var cycleDict = new Dictionary<int, Core.Cycle>();
             foreach (var cycle in cycles)
             {
@@ -349,7 +349,7 @@ namespace AutosarBCM
         /// <param name="continousReadList">List of items for continuous reading.</param>
         /// <param name="cycleIndex">Reference to the current cycle index.</param>
         /// <param name="reboots">Reference to the count of reboots.</param>
-        private static void TickHandler(List<List<OutputMonitorItem>> softContinuousDiagList, Dictionary<int, Core.Cycle> cycleDict, int startCycleIndex, int endCycleIndex,Dictionary<string, Core.ControlInfo> dictMapping, List<Core.ControlInfo> continousReadList, ref int cycleIndex, ref int reboots)
+        private static void TickHandler(List<List<OutputMonitorItem>> softContinuousDiagList, Dictionary<int, Core.Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, Core.ControlInfo> dictMapping, List<Core.ControlInfo> continousReadList, ref int cycleIndex, ref int reboots)
         {
             if (cancellationToken.IsCancellationRequested)
                 return;
@@ -380,277 +380,279 @@ namespace AutosarBCM
 
             if (cycleIndex >= startCycleIndex - 1)
             {
-               if(cycleIndex % 4 == 0)
-               {
-                   foreach (var item in continousReadList)
-                   {
-                       item.Transmit(ServiceInfo.ReadDataByIdentifier);
-                   }
-               }
+                if (cycleIndex % 4 == 0)
+                {
+                    new ReadDTCInformationService().Transmit();
+                    foreach (var item in continousReadList)
+                    {
+                        item.Transmit(ServiceInfo.ReadDataByIdentifier);
+                    }
+                }
 
-            //    if(softContinuousDiagList.Count > 0)
-            //    {
-            //        var softDiagList = softContinuousDiagList[(cycleIndex + 1 - startCycleIndex) % softContinuousDiagList.Count];
-            //        foreach (var softDiag in softDiagList)
-            //            softDiag.Transmit(softDiag.ReadDiagData, softDiag.MessageIdOrDefault, txInterval, Constants.SendDiagData);
-            //    }
-            }                
+                //    if(softContinuousDiagList.Count > 0)
+                //    {
+                //        var softDiagList = softContinuousDiagList[(cycleIndex + 1 - startCycleIndex) % softContinuousDiagList.Count];
+                //        foreach (var softDiag in softDiagList)
+                //            softDiag.Transmit(softDiag.ReadDiagData, softDiag.MessageIdOrDefault, txInterval, Constants.SendDiagData);
+                //    }
+                //}                
 
-            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
-            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}"); 
+                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
+                Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
 
-            FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
-            formEnvTest.SetCounter( reboots + 1, cycleIndex + 1);
+                FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
+                formEnvTest.SetCounter(reboots + 1, cycleIndex + 1);
 
-            if (cycleIndex >= endCycleIndex - 1)
-            {
-                Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
+                if (cycleIndex >= endCycleIndex - 1)
+                {
+                    Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
+                }
+                else
+                    Interlocked.Increment(ref cycleIndex);
             }
-            else
-                Interlocked.Increment(ref cycleIndex);
         }
 
-        /// <summary>
-        /// Starts a monitoring cycle, opening items and initiating transmissions.
-        /// </summary>
-        /// <param name="monitorConfig">Configuration for the monitor.</param>
-        /// <param name="cycle">The cycle to start.</param>
-        /// <param name="dictMapping">Mapping dictionary for input monitor items.</param>
-        private static void StartCycle(Core.Cycle cycle, Dictionary<string, Core.ControlInfo> dictMapping)
-        {
-            var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
-            var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue;
-            var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqOpenValue;
-            foreach (var controlItem in cycle.OpenItems)
+            /// <summary>
+            /// Starts a monitoring cycle, opening items and initiating transmissions.
+            /// </summary>
+            /// <param name="monitorConfig">Configuration for the monitor.</param>
+            /// <param name="cycle">The cycle to start.</param>
+            /// <param name="dictMapping">Mapping dictionary for input monitor items.</param>
+            private static void StartCycle(Core.Cycle cycle, Dictionary<string, Core.ControlInfo> dictMapping)
             {
-                if (cancellationToken.IsCancellationRequested)
+                var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
+                var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue;
+                var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqOpenValue;
+                foreach (var controlItem in cycle.OpenItems)
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
+
+                    var affectedPayloads = new List<string>();
+                    foreach (var openPayload in cycle.PayloadOpenItems)
+                    {
+                        if (controlItem.Responses[0].Payloads.Any(p => p.Name == openPayload.Name))
+                            affectedPayloads.Add(openPayload.Name);
+                    }
+
+                    controlItem.Switch(affectedPayloads, true);
+
+
+                    Core.ControlInfo mappedItem;
+                    foreach (var payload in affectedPayloads)
+                        if (dictMapping.TryGetValue(payload, out mappedItem))
+                        {
+                            //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
+                            //    {
+                            //        if (errorLogDetect.ChcekIsError())
+                            //            Helper.WriteErrorMessageToLogFile(inputItem.Name, inputItem.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item2, errorLogDetect.InputResponse)}");
+
+                            //        Program.MappingStateDict.Remove(inputItem.Name);
+                            //    }
+                            //    Program.MappingStateDict.Add(ouputItem.Name, inputItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
+
+                            mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
+                            break;
+                        }
+
+                    //ouputItem.Open(pwmDuty, pwmFreq);
+                    ThreadSleep(txInterval);
+                    //ReadDiagAdcCurrent(ouputItem, txInterval);
+
+                    //if (inputItem != null)
+                    //{
+                    //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
+                    //        Program.MappingStateDict.UpdateValue(inputItem.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
+
+                    //    inputItem.Transmit(txInterval, Constants.MappingRead);
+                    //}
+
+                    //if (ouputItem.ItemType == Constants.PEPS)
+                    //{
+                    //    //if(RssiDictionary.TryGetValue(ouputItem.Name, out var udsMessage))
+                    //    //{
+                    //    //    if(udsMessage != null)
+                    //    //    {
+                    //    //        udsMessage.Transmit();
+                    //    //        Helper.WriteCycleMessageToLogFile(ouputItem.Name, ouputItem.ItemType, Constants.PEPS);
+                    //    //    }
+                    //    //}
+                    //}
+                }
+            }
+
+            /// <summary>
+            /// Stops a monitoring cycle, closing items and finishing transmissions.
+            /// </summary>
+            /// <param name="monitorConfig">Configuration for the monitor.</param>
+            /// <param name="cycle">The cycle to stop.</param>
+            /// <param name="dictMapping">Mapping dictionary for input monitor items.</param>
+            private static void StopCycle(Core.Cycle cycle, Dictionary<string, Core.ControlInfo> dictMapping, bool isTestClosing = false)
+            {
+                var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
+                txInterval = isTestClosing ? txInterval * 2 : txInterval;
+
+                var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue;
+                var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqCloseValue;
+
+                foreach (var controlItem in cycle.CloseItems)
+                {
+                    var affectedPayloads = new List<string>();
+                    foreach (var closePayload in cycle.PayloadCloseItems)
+                    {
+                        if (controlItem.Responses[0].Payloads.Any(p => p.Name == closePayload.Name))
+                            affectedPayloads.Add(closePayload.Name);
+                    }
+
+                    controlItem.Switch(affectedPayloads, false);
+
+                    Core.ControlInfo mappedItem;
+                    foreach (var payload in affectedPayloads)
+                        if (dictMapping.TryGetValue(payload, out mappedItem))
+                        {
+                            //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
+                            //    {
+                            //        //TODO to be checked
+                            //        //if (errorLogDetect.ChcekIsError())
+                            //        //    Helper.WriteErrorMessageToLogFile(controlInfo.Name, controlInfo.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item2, errorLogDetect.InputResponse)}");
+
+                            //        Program.MappingStateDict.Remove(controlInfo.Name);
+                            //    }
+                            //    Program.MappingStateDict.Add(ouputItem.Name, controlInfo.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
+
+                            mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
+                            break;
+                        }
+
+                    //controlItem.Close(pwmDuty, pwmFreq);
+                    ThreadSleep(txInterval);
+                    //ReadDiagAdcCurrent(controlItem, txInterval);
+
+                    //if (controlInfo != null)
+                    //{
+                    //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
+                    //        Program.MappingStateDict.UpdateValue(controlInfo.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
+
+                    //    controlInfo.Transmit(txInterval, Constants.MappingRead);
+                    //}
+                }
+            }
+
+            /// <summary>
+            /// Reads diagnostic and ADC data for a given output monitor item.
+            /// </summary>
+            /// <param name="item">The output monitor item to read data from.</param>
+            /// <param name="sleepTime">The sleep time between data reads.</param>
+            private static void ReadDiagAdcCurrent(OutputMonitorItem item, int sleepTime)
+            {
+                if (item.ReadDiagData?.Length > 0)
+                {
+                    item.Transmit(item.ReadDiagData, item.MessageIdOrDefault, sleepTime, Constants.SendDiagData);
+                }
+                //Read adc if current not exists
+                if (item.ReadCurrentData?.Length > 0)
+                {
+                    item.Transmit(item.ReadCurrentData, item.MessageIdOrDefault, sleepTime, Constants.SendCurrentData);
+                }
+                else if (item.ReadADCData?.Length > 0)
+                {
+                    item.Transmit(item.ReadADCData, item.MessageIdOrDefault, sleepTime, Constants.SendADCData);
+                }
+            }
+
+            /// <summary>
+            /// Invokes the environmental monitor progress event with updated information.
+            /// </summary>
+            /// <param name="reboots">The current reboot count.</param>
+            /// <param name="cycleIndex">The current cycle index.</param>
+            private static void OnEnvMonitorProgress(int reboots, int cycleIndex)
+            {
+                EnvMonitorProgress?.Invoke(new EnvironmentalEventArgs
+                {
+                    ElapsedTime = DateTime.Now - StartTime,
+                    Loop = cycleIndex,
+                    Reboots = reboots
+                });
+            }
+
+            /// <summary>
+            /// Retrieves and prepares the RSSI message for transmission based on monitor configuration.
+            /// </summary>
+            /// <param name="monitorConfig">Configuration for the monitor.</param>
+            /// <returns>A prepared UdsMessage for RSSI measurement.</returns>
+            private static void GetRssiMessage(AutosarBcmConfiguration monitorConfig)
+            {
+                var pepsGroup = monitorConfig.GenericMonitorConfiguration.OutputSection.Groups.Where(x => x.Name == Constants.PEPS).FirstOrDefault();
+                if (pepsGroup == null)
                     return;
 
-                var affectedPayloads = new List<string>();
-                foreach (var openPayload in cycle.PayloadOpenItems)
-                {
-                    if (controlItem.Responses[0].Payloads.Any(p => p.Name == openPayload.Name))
-                        affectedPayloads.Add(openPayload.Name);
-                }
-                
-                controlItem.Switch(affectedPayloads, true);
+                var getKeyList = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Get_Key_List).FirstOrDefault();
+                if (getKeyList == null)
+                    return;
+                //RssiDictionary[Constants.PEPS_Get_Key_List] = new UdsMessage { Id = getKeyList.MessageIdOrDefault, Data = getKeyList.PEPSData };
 
+                //var immobilizer = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Immobilizer).FirstOrDefault();
+                //if (immobilizer != null)
+                //    RssiDictionary[Constants.PEPS_Immobilizer] = new UdsMessage { Id = immobilizer.MessageIdOrDefault, Data = immobilizer.PEPSData };
 
-                Core.ControlInfo mappedItem;
-                foreach (var payload in affectedPayloads)
-                    if (dictMapping.TryGetValue(payload, out mappedItem))
-                    {
-                        //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
-                        //    {
-                        //        if (errorLogDetect.ChcekIsError())
-                        //            Helper.WriteErrorMessageToLogFile(inputItem.Name, inputItem.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item2, errorLogDetect.InputResponse)}");
+                //var readKeyfob = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Read_Keyfob).FirstOrDefault();
+                //if (readKeyfob != null)
+                //    RssiDictionary[Constants.PEPS_Read_Keyfob] = new UdsMessage { Id = readKeyfob.MessageIdOrDefault, Data = readKeyfob.PEPSData };
 
-                        //        Program.MappingStateDict.Remove(inputItem.Name);
-                        //    }
-                        //    Program.MappingStateDict.Add(ouputItem.Name, inputItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
+                //var temperature = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Temperature_Measurement).FirstOrDefault();
+                //if (temperature != null)
+                //    RssiDictionary[Constants.PEPS_Temperature_Measurement] = new UdsMessage { Id = temperature.MessageIdOrDefault, Data = temperature.PEPSData };
 
-                        mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
-                        break;
-                    }
+                //var rssiMesurement = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Get_RSSI_Measurement).FirstOrDefault();
+                //if (rssiMesurement == null) 
+                //    return;
 
-                //ouputItem.Open(pwmDuty, pwmFreq);
-                ThreadSleep(txInterval);
-                //ReadDiagAdcCurrent(ouputItem, txInterval);
+                //RssiDictionary[Constants.PEPS_Get_Key_List].Transmit();
 
-                //if (inputItem != null)
-                //{
-                //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
-                //        Program.MappingStateDict.UpdateValue(inputItem.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
+                Thread.Sleep(5000);
+                if (KeyList == null)
+                    return;
 
-                //    inputItem.Transmit(txInterval, Constants.MappingRead);
-                //}
-
-                //if (ouputItem.ItemType == Constants.PEPS)
-                //{
-                //    //if(RssiDictionary.TryGetValue(ouputItem.Name, out var udsMessage))
-                //    //{
-                //    //    if(udsMessage != null)
-                //    //    {
-                //    //        udsMessage.Transmit();
-                //    //        Helper.WriteCycleMessageToLogFile(ouputItem.Name, ouputItem.ItemType, Constants.PEPS);
-                //    //    }
-                //    //}
-                //}
+                //var data = rssiMesurement.PEPSData;
+                //KeyList.CopyTo(data, 3);
+                //RssiDictionary[Constants.PEPS_Get_RSSI_Measurement] = new UdsMessage { Id = rssiMesurement.MessageIdOrDefault, Data = data };
             }
+
+            /// <summary>
+            /// Pauses the thread for a specified duration.
+            /// </summary>
+            /// <param name="threadSleep">The time in milliseconds for the thread to sleep.</param>
+            private static void ThreadSleep(int threadSleep)
+            {
+                if (threadSleep > 0)
+                    Thread.Sleep(threadSleep);
+            }
+
+            #endregion
         }
 
         /// <summary>
-        /// Stops a monitoring cycle, closing items and finishing transmissions.
+        /// Custom event arguments class for environmental events, providing details like elapsed time, loop count, and reboot count.
         /// </summary>
-        /// <param name="monitorConfig">Configuration for the monitor.</param>
-        /// <param name="cycle">The cycle to stop.</param>
-        /// <param name="dictMapping">Mapping dictionary for input monitor items.</param>
-        private static void StopCycle(Core.Cycle cycle, Dictionary<string, Core.ControlInfo> dictMapping,bool isTestClosing = false)
+        public class EnvironmentalEventArgs : EventArgs
         {
-            var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
-            txInterval = isTestClosing ? txInterval * 2 : txInterval;
+            #region Properties
 
-            var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue;
-            var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqCloseValue;
+            /// <summary>
+            /// Represents the elapsed time for a particular process or operation.
+            /// </summary>
+            public TimeSpan ElapsedTime { get; set; }
 
-            foreach (var controlItem in cycle.CloseItems)
-            {
-                var affectedPayloads = new List<string>();
-                foreach (var closePayload in cycle.PayloadCloseItems)
-                {
-                    if (controlItem.Responses[0].Payloads.Any(p => p.Name == closePayload.Name))
-                        affectedPayloads.Add(closePayload.Name);
-                }
+            /// <summary>
+            /// Indicates the current loop or iteration number in a process.
+            /// </summary>
+            public int Loop { get; set; }
 
-                controlItem.Switch(affectedPayloads, false);
+            /// <summary>
+            /// Counts the number of reboots or restarts that have occurred during a process.
+            /// </summary>
+            public int Reboots { get; set; }
 
-                Core.ControlInfo mappedItem;
-                foreach (var payload in affectedPayloads)
-                    if (dictMapping.TryGetValue(payload, out mappedItem))
-                    {
-                        //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
-                        //    {
-                        //        //TODO to be checked
-                        //        //if (errorLogDetect.ChcekIsError())
-                        //        //    Helper.WriteErrorMessageToLogFile(controlInfo.Name, controlInfo.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item2, errorLogDetect.InputResponse)}");
-
-                        //        Program.MappingStateDict.Remove(controlInfo.Name);
-                        //    }
-                        //    Program.MappingStateDict.Add(ouputItem.Name, controlInfo.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
-
-                        mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
-                        break;
-                    }
-
-                //controlItem.Close(pwmDuty, pwmFreq);
-                ThreadSleep(txInterval);
-                //ReadDiagAdcCurrent(controlItem, txInterval);
-
-                //if (controlInfo != null)
-                //{
-                //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
-                //        Program.MappingStateDict.UpdateValue(controlInfo.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
-
-                //    controlInfo.Transmit(txInterval, Constants.MappingRead);
-                //}
-            }
+            #endregion
         }
-
-        /// <summary>
-        /// Reads diagnostic and ADC data for a given output monitor item.
-        /// </summary>
-        /// <param name="item">The output monitor item to read data from.</param>
-        /// <param name="sleepTime">The sleep time between data reads.</param>
-        private static void ReadDiagAdcCurrent(OutputMonitorItem item,int sleepTime)
-        {
-            if (item.ReadDiagData?.Length > 0)
-            {
-                item.Transmit(item.ReadDiagData, item.MessageIdOrDefault, sleepTime, Constants.SendDiagData);
-            }
-            //Read adc if current not exists
-            if (item.ReadCurrentData?.Length > 0)
-            {
-                item.Transmit(item.ReadCurrentData, item.MessageIdOrDefault, sleepTime, Constants.SendCurrentData);
-            }
-            else if (item.ReadADCData?.Length > 0)
-            {
-                item.Transmit(item.ReadADCData, item.MessageIdOrDefault, sleepTime, Constants.SendADCData);
-            }
-        }
-
-        /// <summary>
-        /// Invokes the environmental monitor progress event with updated information.
-        /// </summary>
-        /// <param name="reboots">The current reboot count.</param>
-        /// <param name="cycleIndex">The current cycle index.</param>
-        private static void OnEnvMonitorProgress(int reboots, int cycleIndex)
-        {
-            EnvMonitorProgress?.Invoke(new EnvironmentalEventArgs
-            {
-                ElapsedTime = DateTime.Now - StartTime,
-                Loop = cycleIndex,
-                Reboots = reboots
-            });
-        }
-
-        /// <summary>
-        /// Retrieves and prepares the RSSI message for transmission based on monitor configuration.
-        /// </summary>
-        /// <param name="monitorConfig">Configuration for the monitor.</param>
-        /// <returns>A prepared UdsMessage for RSSI measurement.</returns>
-        private static void GetRssiMessage(AutosarBcmConfiguration monitorConfig)
-        {
-            var pepsGroup = monitorConfig.GenericMonitorConfiguration.OutputSection.Groups.Where(x => x.Name == Constants.PEPS).FirstOrDefault();
-            if (pepsGroup == null) 
-                return;
-
-            var getKeyList = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Get_Key_List).FirstOrDefault();
-            if (getKeyList == null)
-                return;
-            //RssiDictionary[Constants.PEPS_Get_Key_List] = new UdsMessage { Id = getKeyList.MessageIdOrDefault, Data = getKeyList.PEPSData };
-
-            //var immobilizer = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Immobilizer).FirstOrDefault();
-            //if (immobilizer != null)
-            //    RssiDictionary[Constants.PEPS_Immobilizer] = new UdsMessage { Id = immobilizer.MessageIdOrDefault, Data = immobilizer.PEPSData };
-
-            //var readKeyfob = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Read_Keyfob).FirstOrDefault();
-            //if (readKeyfob != null)
-            //    RssiDictionary[Constants.PEPS_Read_Keyfob] = new UdsMessage { Id = readKeyfob.MessageIdOrDefault, Data = readKeyfob.PEPSData };
-
-            //var temperature = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Temperature_Measurement).FirstOrDefault();
-            //if (temperature != null)
-            //    RssiDictionary[Constants.PEPS_Temperature_Measurement] = new UdsMessage { Id = temperature.MessageIdOrDefault, Data = temperature.PEPSData };
-
-            //var rssiMesurement = pepsGroup.OutputItemList.Where(x => x.Name == Constants.PEPS_Get_RSSI_Measurement).FirstOrDefault();
-            //if (rssiMesurement == null) 
-            //    return;
-
-            //RssiDictionary[Constants.PEPS_Get_Key_List].Transmit();
-
-            Thread.Sleep(5000);
-            if (KeyList == null) 
-                return;
-
-            //var data = rssiMesurement.PEPSData;
-            //KeyList.CopyTo(data, 3);
-            //RssiDictionary[Constants.PEPS_Get_RSSI_Measurement] = new UdsMessage { Id = rssiMesurement.MessageIdOrDefault, Data = data };
-        }
-
-        /// <summary>
-        /// Pauses the thread for a specified duration.
-        /// </summary>
-        /// <param name="threadSleep">The time in milliseconds for the thread to sleep.</param>
-        private static void ThreadSleep(int threadSleep)
-        {
-            if (threadSleep > 0)
-                Thread.Sleep(threadSleep);
-        }
-
-        #endregion
     }
-
-    /// <summary>
-    /// Custom event arguments class for environmental events, providing details like elapsed time, loop count, and reboot count.
-    /// </summary>
-    public class EnvironmentalEventArgs : EventArgs
-    {
-        #region Properties
-
-        /// <summary>
-        /// Represents the elapsed time for a particular process or operation.
-        /// </summary>
-        public TimeSpan ElapsedTime { get; set; }
-
-        /// <summary>
-        /// Indicates the current loop or iteration number in a process.
-        /// </summary>
-        public int Loop { get; set; }
-
-        /// <summary>
-        /// Counts the number of reboots or restarts that have occurred during a process.
-        /// </summary>
-        public int Reboots { get; set; }
-
-        #endregion
-    }
-}

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.lblName = new System.Windows.Forms.Label();
-            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblDtcStatus = new System.Windows.Forms.Label();
             this.lblDiff = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblReceived = new System.Windows.Forms.Label();
@@ -52,15 +52,15 @@
             this.lblName.Text = "label1";
             this.lblName.Click += new System.EventHandler(this.lblName_Click);
             // 
-            // lblStatus
+            // lblDtcStatus
             // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblStatus.Location = new System.Drawing.Point(72, 49);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(11, 15);
-            this.lblStatus.TabIndex = 1;
-            this.lblStatus.Text = "-";
+            this.lblDtcStatus.AutoSize = true;
+            this.lblDtcStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblDtcStatus.Location = new System.Drawing.Point(78, 46);
+            this.lblDtcStatus.Name = "lblDtcStatus";
+            this.lblDtcStatus.Size = new System.Drawing.Size(13, 18);
+            this.lblDtcStatus.TabIndex = 1;
+            this.lblDtcStatus.Text = "-";
             // 
             // lblDiff
             // 
@@ -116,9 +116,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 50);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 13);
+            this.label3.Size = new System.Drawing.Size(65, 13);
             this.label3.TabIndex = 15;
-            this.label3.Text = "Read Status:";
+            this.label3.Text = "DTC Status:";
             // 
             // label4
             // 
@@ -164,7 +164,7 @@
             this.Controls.Add(this.lblReceived);
             this.Controls.Add(this.lblTransmitted);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.lblDtcStatus);
             this.Controls.Add(this.lblName);
             this.Name = "UCReadOnlyItem";
             this.Size = new System.Drawing.Size(329, 67);
@@ -176,7 +176,7 @@
         #endregion
 
         private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label lblDtcStatus;
         private System.Windows.Forms.Label lblDiff;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblReceived;

@@ -33,7 +33,6 @@ namespace AutosarBCM.Core
         public static ServiceInfo ECUReset { get => ASContext.Configuration?.GetServiceByRequestID(0x11); }
         public static ServiceInfo ReadDTCInformation { get => ASContext.Configuration?.GetServiceByRequestID(0x19); }
         public static ServiceInfo NegativeResponse { get => ASContext.Configuration?.GetServiceByResponseID(0x7F); }
-
         public static ServiceInfo ClearDTCInformation { get => ASContext.Configuration?.GetServiceByRequestID(0x14); }
     }
 
@@ -105,12 +104,8 @@ namespace AutosarBCM.Core
             if (isControlMaskActive)
                 bytes.Add(controlByte);
             Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
-            Task.Run(async() =>
-            {
-                Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
-                await Task.Delay(5);
-
-            });
+            Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            
         }
 
         internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data)

@@ -156,8 +156,8 @@ namespace AutosarBCM
         private void StartOutputControls()
         {
             ClearResponse(3, dgvOutput);
-            ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txIntervalValue);
-            int txInterval = int.TryParse(txIntervalValue, out int interval) ? interval : 0;
+            ASContext.Configuration.Settings.TryGetValue("TxIntervalForControlChecker", out string txIntervalValue);
+            int txIntervalCC = int.TryParse(txIntervalValue, out int interval) ? interval : 0;
             var payloadList = new List<string>(); Dictionary<Core.ControlInfo, List<string>> ciDict = new Dictionary<Core.ControlInfo, List<string>>();
             foreach (DataGridViewRow row in dgvOutput.Rows)
             {
@@ -174,18 +174,27 @@ namespace AutosarBCM
                         (ciDict[cInf] as List<string>).Add(row.Cells[2].Value.ToString());
                     }
                 }
-
             }
 
             if (rdoHorizontal.Checked)
             {
 
-                foreach (var item in ciDict)
+                Task.Run(async () =>
                 {
-                    item.Key.Switch(item.Value, true);
-                    //item.Key.Switch(item.Value, false);
+                    //foreach (var item in ciDict)
+                    //{
+                    //    item.Key.Switch(item.Value, true);
+                    //    await Task.Delay(txIntervalCC);
 
-                }
+                    //}
+                    Thread.Sleep(1000);
+                    foreach (var item in ciDict)
+                    {
+                        item.Key.Switch(item.Value, false);
+                        await Task.Delay(txIntervalCC);
+
+                    }
+                });
 
                 LogDataToDGV("Horizontal");
             }
@@ -196,12 +205,13 @@ namespace AutosarBCM
                     foreach (var item in ciDict)
                     {
                         item.Key.Switch(item.Value, true);
-                        await Task.Delay(txInterval);
+                        await Task.Delay(txIntervalCC);
                     }
+                    
                     foreach (var item in ciDict)
                     {
                         item.Key.Switch(item.Value, false);
-                        await Task.Delay(txInterval);
+                        await Task.Delay(txIntervalCC);
                     }
                 });
                 LogDataToDGV("Vertical");
@@ -209,6 +219,8 @@ namespace AutosarBCM
         }
         private void LogDataToDGV(string controlOrderType)
         {
+            ASContext.Configuration.Settings.TryGetValue("ReadInterval", out string readIntervalValue);
+            int readIntervalCC = int.TryParse(readIntervalValue, out int interval) ? interval : 0;
             foreach (DataGridViewRow row in dgvOutput.Rows)
             {
                 if (row.Cells[0] is DataGridViewCheckBoxCell chkCell && chkCell.Value is true)
@@ -235,8 +247,12 @@ namespace AutosarBCM
 
                             if (isOpenValue != null && isCloseValue != null && controlOrderType == "Horizontal")
                             {
-                                row.Cells[3].Value = BitConverter.ToString(isOpenValue);
-                                row.Cells[4].Value = BitConverter.ToString(isCloseValue);
+                                Task.Run(async () =>
+                                {
+                                    row.Cells[3].Value = BitConverter.ToString(isOpenValue);
+                                    await Task.Delay(readIntervalCC);
+                                    row.Cells[4].Value = BitConverter.ToString(isCloseValue);
+                                });
                             }
                         }
                     }

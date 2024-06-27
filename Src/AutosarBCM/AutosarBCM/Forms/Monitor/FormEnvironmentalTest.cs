@@ -11,16 +11,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Configuration;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 
 namespace AutosarBCM.Forms.Monitor
 {
-    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver
+    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver, IDTCReceiver
     {
 
         #region Variables
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
+        private Dictionary<string, Core.ControlInfo> dtcList = new Dictionary<string, Core.ControlInfo>();
+
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
@@ -60,6 +64,11 @@ namespace AutosarBCM.Forms.Monitor
                 {
                     var ucItem = new UCReadOnlyItem(ctrl, payload);
                     ucItems.Add(ucItem);
+
+                    //DTC init
+                    if (string.IsNullOrEmpty(payload.DTCCode))
+                        continue;
+                    dtcList[payload.DTCCode] = ctrl;
                 }
                 groups["DID"] = ucItems;
             }
@@ -206,26 +215,40 @@ namespace AutosarBCM.Forms.Monitor
 
         public bool Receive(Service baseService)
         {
-            var service = (IOControlByIdentifierService)baseService;
-            if(service == null)
-                return false;
-            else
+            if (baseService is IOControlByIdentifierService ioService)
             {
-                for (int i = 0; i < service.Payloads.Count; i++)
+                for (int i = 0; i < ioService.Payloads.Count; i++)
                 {
-                    Helper.WriteCycleMessageToLogFile(service.ControlInfo.Name, service.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", service.Payloads[i].FormattedValue);
+                    Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
                 }
-                var matchedControls = ucItems.Where(c => c.ControlInfo.Name == service.ControlInfo.Name);
+                var matchedControls = ucItems.Where(c => c.ControlInfo.Name == ioService.ControlInfo.Name);
                 if (matchedControls == null)
                     return false;
                 totalMessagesReceived++;
                 foreach (var uc in matchedControls)
                 {
-                    uc.ChangeStatus(service);
+                    uc.ChangeStatus(ioService);
                 }
                 UpdateCounters();
                 return true;
             }
+            else if (baseService is ReadDTCInformationService dtcService)
+            {
+                foreach (var dtcValue in dtcService.Values)
+                {
+                    if (dtcValue.Mask != 80)
+                        continue;
+                    if (!dtcList.ContainsKey(dtcValue.Code))
+                        continue;
+                    var control = dtcList[dtcValue.Code];
+                    var payload = control.Responses?[0].Payloads.First(p => p.DTCCode == dtcValue.Code);
+                    if (payload == null)
+                        continue;
+                    var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
+                    uc?.ChangeDtc(dtcValue.Description);
+                }
+            }
+            return false;
         }
         /// <summary>
         /// Updates TX/RX counters on UI
