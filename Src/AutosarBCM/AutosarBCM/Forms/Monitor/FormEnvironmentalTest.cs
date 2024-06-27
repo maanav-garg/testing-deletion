@@ -230,7 +230,7 @@ namespace AutosarBCM.Forms.Monitor
                 var cycle = cycles[loopVal];
                 for (var i = 0; i < ioService.Payloads.Count; i++)
                 {
-                    if (cycle.Functions.Any(x => x.Name == ioService.Payloads[i].PayloadInfo.Name))
+                    if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
                     {
                         Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
                         var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
@@ -303,9 +303,9 @@ namespace AutosarBCM.Forms.Monitor
 
             foreach (var uc in matchedControls)
             {
-                foreach (var function in cycle.Functions)
+                foreach (var payload in cycle.Functions.SelectMany(p => p.Payloads))
                 {
-                    if (uc.PayloadInfo.Name == function.Name)
+                    if (uc.PayloadInfo.Name == payload)
                     {
                         uc.HandleMetrics();
                         break;
