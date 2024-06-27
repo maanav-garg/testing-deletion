@@ -361,6 +361,7 @@ namespace AutosarBCM
                     foreach (var item in continousReadList)
                     {
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
+                        Helper.WriteCycleMessageToLogFile(item.Name, item.Type, Constants.ContinousRead);
                     }
                 }
 
