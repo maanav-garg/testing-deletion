@@ -1751,8 +1751,8 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Driver Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"/>
-					<Payload name="Driver Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"/>
+					<Payload name="Driver Power Window Motor Up" dtcCode="9F25" typeName="DID_PWM"/>
+					<Payload name="Driver Power Window Motor Down" dtcCode="9F2A" typeName="DID_PWM"/>
 				</Response>
 				<Response serviceId="6F"/>
 			</Responses>
@@ -1860,7 +1860,7 @@
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="High Beam Left" dtcCode="956A" typeName="DID_42A0_0"/>
-					<Payload name="High Beam Left" dtcCode="956A" typeName="DID_42A0_0"/>
+					<Payload name="High Beam Right" dtcCode="9567" typeName="DID_42A0_0"/>
 				</Response>
 				<Response serviceId="6F"/>
 			</Responses>
