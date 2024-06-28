@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace AutosarBCM.Forms.Monitor
 {
-    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver, IDTCReceiver
+    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver, IDTCReceiver, IReadDataByIdenReceiver
     {
 
         #region Variables
@@ -25,6 +25,8 @@ namespace AutosarBCM.Forms.Monitor
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
         private Dictionary<string, Core.ControlInfo> dtcList = new Dictionary<string, Core.ControlInfo>();
         private Dictionary<int, Core.Cycle> cycles;
+        private List<Mapping> mappingData;
+        private List<Function> continuousReadData;
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
@@ -59,6 +61,8 @@ namespace AutosarBCM.Forms.Monitor
             ResetTime();
 
             cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Cycles);
+            mappingData = (ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
+            continuousReadData = (ASContext.Configuration.EnvironmentalTest.ContinousReadList);
 
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
@@ -228,17 +232,17 @@ namespace AutosarBCM.Forms.Monitor
                     return false;
 
                 var cycle = cycles[loopVal];
+                UCReadOnlyItem matchedControl = null;
                 for (var i = 0; i < ioService.Payloads.Count; i++)
                 {
                     if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
-                    {
                         Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
-                        var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
-                        if (matchedControl == null)
-                            return false;
-                        matchedControl.ChangeStatus(ioService);
-                    }
+
+                    matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
+                    if (matchedControl == null)
+                        return false;
                 }
+                matchedControl.ChangeStatus(ioService);
                 totalMessagesReceived++;
                 UpdateCounters();
                 return true;
@@ -259,8 +263,34 @@ namespace AutosarBCM.Forms.Monitor
                     uc?.ChangeDtc(dtcValue.Description);
                 }
             }
-            return false;
+            else if (baseService is ReadDataByIdenService readByIdenService)
+            {
+                int loopVal;
+                if (!int.TryParse(lblLoopVal.Text, out loopVal))
+                    return false;
+
+                if (!cycles.ContainsKey(loopVal))
+                    return false;
+                var cycle = cycles[loopVal];
+                UCReadOnlyItem matchedControl = null;
+                for (var i = 0; i < readByIdenService.Payloads.Count; i++)
+                {
+                    if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
+                        Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue);
+                    if (mappingData.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
+                        Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue);
+                    if (continuousReadData.Any(p => p.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
+                        Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "sss", "", "", readByIdenService.Payloads[i].FormattedValue);
+
+                    matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == readByIdenService.Payloads[i].PayloadInfo.Name);
+                    if (matchedControl == null)
+                        return false;
+                }
+            }
+                
+                return false;
         }
+
         /// <summary>
         /// Updates TX/RX counters on UI
         /// </summary>
