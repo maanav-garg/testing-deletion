@@ -2169,9 +2169,13 @@
 				<OpenAt>1</OpenAt>
 				<CloseAt>5</CloseAt>
 				<Functions>
-					<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
-					<FuncName parent="TCCM_Input">KL15Relay2</FuncName>
-					<FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+					<Function control="TCCM_Input">
+						<Payload>KL15Relay1</Payload>
+						<Payload>KL15Relay2</Payload>
+					</Function>
+					<Function control="Horn_Output_Control">
+						<Payload>Horn Output Control</Payload>
+					</Function>
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -2179,9 +2183,13 @@
 				<OpenAt>6</OpenAt>
 				<CloseAt>11</CloseAt>
 				<Functions>
-					<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
-					<FuncName parent="TCCM_Input">KL15Relay2</FuncName>
-					<FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+					<Function control="TCCM_Input">
+						<Payload>KL15Relay1</Payload>
+						<Payload>KL15Relay2</Payload>
+					</Function>
+					<Function control="Horn_Output_Control">
+						<Payload>Horn Output Control</Payload>
+					</Function>
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -2189,9 +2197,13 @@
 				<OpenAt>12</OpenAt>
 				<CloseAt>18</CloseAt>
 				<Functions>
-					<FuncName parent="TCCM_Input">KL15Relay1</FuncName>
-					<FuncName parent="TCCM_Input">KL15Relay2</FuncName>
-					<FuncName parent="Horn_Output_Control">Horn Output Control</FuncName>
+					<Function control="TCCM_Input">
+						<Payload>KL15Relay1</Payload>
+						<Payload>KL15Relay2</Payload>
+					</Function>
+					<Function control="Horn_Output_Control">
+						<Payload>Horn Output Control</Payload>
+					</Function>
 				</Functions>
 			</Cycle>
 		</Cycles>

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -176,7 +176,7 @@ namespace AutosarBCM
                         productName = ((AssemblyTitleAttribute)attributes[0]).Title;
                     
                     var version = Assembly.GetExecutingAssembly().GetName().Version;
-                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, " Alpha-1");
+                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, " Alpha-2");
                 }
                 catch { }
                 return "";
@@ -471,11 +471,19 @@ namespace AutosarBCM
             StringBuilder sb = new StringBuilder();
             var delimiter = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
 
-            foreach (DataGridViewColumn column in grid.Columns)
+            ExportToCSV(grid.Columns, grid.Rows.OfType<DataGridViewRow>().ToList());
+        }
+
+        internal static void ExportToCSV(DataGridViewColumnCollection columns, List<DataGridViewRow> rows)
+        {
+            StringBuilder sb = new StringBuilder();
+            var delimiter = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+
+            foreach (DataGridViewColumn column in columns)
                 sb.Append($"{column.HeaderText}{delimiter}");
 
             sb.AppendLine();
-            foreach (DataGridViewRow row in grid.Rows)
+            foreach (DataGridViewRow row in rows)
                 sb.AppendLine(row.Cells.OfType<DataGridViewCell>().Aggregate(new StringBuilder(), (x, y) => x.Append($"{y.Value}{delimiter}")).ToString());
 
             using (var dialog = new SaveFileDialog())
