@@ -39,6 +39,10 @@
 			<Sessions>01;02;03</Sessions>
 		</Service>
 		</Service>
+		<Service responseID="7F">
+			<Name>NegativeResponse</Name>
+			<Sessions>01;03</Sessions>
+		</Service>
 	</Services>
 	<Sessions>
 		<Session>

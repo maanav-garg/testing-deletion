@@ -361,6 +361,7 @@ namespace AutosarBCM
                     foreach (var item in continousReadList)
                     {
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
+                        Helper.WriteCycleMessageToLogFile(item.Name, item.Type, Constants.ContinousRead);
                     }
                 }
 
@@ -420,6 +421,7 @@ namespace AutosarBCM
                                Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
+                        Helper.WriteCycleMessageToLogFile(mappedItem.Name, mappedItem.Type, (Constants.MappingRead));
                             break;
                         }
 
@@ -481,7 +483,7 @@ namespace AutosarBCM
                                 Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
-                            break;
+                        break;
                         }
 
                     //controlItem.Close(pwmDuty, pwmFreq);
