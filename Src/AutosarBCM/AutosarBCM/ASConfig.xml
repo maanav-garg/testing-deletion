@@ -1088,7 +1088,7 @@
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte">
-						<Payload name="C5.28_7 Door Ajar Switch - Driver   " dtcCode="91E9" typeName="DID_Bits_On_Off" />
+						<Payload name="C5.28_7 Door Ajar Switch - Driver" dtcCode="91E9" typeName="DID_Bits_On_Off" />
 						<Payload name="C5.33_6 Door Ajar Switch - Passenger" dtcCode="91EA" typeName="DID_Bits_On_Off" />
 						<Payload name="C6.31_5 Cabin Lock" dtcCode="908F" typeName="DID_Bits_On_Off" />
 						<Payload name="C6.41_4 Cabin Unlock" dtcCode="9F39" typeName="DID_Bits_On_Off" />
@@ -2163,8 +2163,12 @@
 		</ContinousReadList>
 		<ConnectionMappings>
 			<Mapping>
-				<Output parent="TCCM_Input">KL15Relay1</Output>
-				<Input parent="Horn_Switch">Horn Switch</Input>
+				<Output parent="Sunroof_Motor">C1.6_MOT-B</Output>
+				<Input parent="Input_Switches">C5.47_LowLinerSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Sunroof_Motor">C1.8_MOT-A</Output>
+				<Input parent="Spare_Switch">C5.49_Spare Switch 16</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Windscreen_Wipers_System_Output_Signal">C1.9_Wiper High Relay</Output>
@@ -2295,40 +2299,12 @@
 				<Input parent="Cruise_Control_Switches">C6.27_Cruise Time Gap minus Switch</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent="Power_Mirror_Control">C4.22_MainLeftMirrorDownLeftCtrl</Output>
-				<Input parent=""></Input>
-			</Mapping>
-			<Mapping>
-				<Output parent="Power_Mirror_Control">C4.23_MainLeftMirrorUpCtrl</Output>
-				<Input parent=""></Input>
-			</Mapping>
-			<Mapping>
-				<Output parent="Power_Mirror_Control">C4.24_MainRightMirrorUpCtrl</Output>
-				<Input parent=""></Input>
-			</Mapping>
-			<Mapping>
-				<Output parent="Power_Mirror_Control">C4.25_MainLeftMirrorRightCtrl</Output>
-				<Input parent=""></Input>
-			</Mapping>
-			<Mapping>
-				<Output parent="Power_Mirror_Control">C4.26_MainRightMirrorRightCtrl</Output>
-				<Input parent=""></Input>
-			</Mapping>
-			<Mapping>
-				<Output parent="Power_Mirror_Control">C4.27_MainRightMirrorDownLeftCtrl</Output>
-				<Input parent=""></Input>
-			</Mapping>
-			<Mapping>
 				<Output parent="Hall_Sensor_Supply">C4.28_HallSensorLeftSupply</Output>
 				<Input parent="Spare_Switch">C5.17_Spare Switch 3</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="PTO_Valve_Supply">C4.37_PTO2ValveSupply</Output>
 				<Input parent="Cruise_Control_Switches">C6.46_Cruise Off Switch</Input>
-			</Mapping>
-			<Mapping>
-				<Output parent="CabinTiltValveSupply">C4.38_CabinTiltValveSupply</Output>
-				<Input parent=""></Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="TrailerTagAxleLifting1Supply">C4.39_TrailerTagAxleLifting1Supply</Output>
@@ -2343,36 +2319,48 @@
 				<Input parent="Spare_Switch">C5.48_Spare Switch 9</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent=""></Output>
-				<Input parent=""></Input>
+				<Output parent="Hall_Sensor_Supply">C4.46_HallSensorRightSupply</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.28_7 Door Ajar Switch - Driver</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent=""></Output>
-				<Input parent=""></Input>
+				<Output parent="WCInhibit">C4.47_WCInhibit</Output>
+				<Input parent="Spare_Switch">C5.29_Spare Switch 5</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent=""></Output>
-				<Input parent=""></Input>
+				<Output parent="Interior12VLightDimmingSupply">C5.1_Interior12VLightDimmingSupply</Output>
+				<Input parent="Spare_Switch">C5.30_Spare Switch 6</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent=""></Output>
-				<Input parent=""></Input>
+				<Output parent="TCCM_Input">C5.2_KL15Relay2</Output>
+				<Input parent="Input_Switches">C6.37_AlternatorChargingStatus</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent=""></Output>
-				<Input parent=""></Input>
+				<Output parent="TCCM_Input">C5.3_KL50Output</Output>
+				<Input parent="Spare_Switch">C6.40_Spare Switch 27</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent=""></Output>
-				<Input parent=""></Input>
+				<Output parent="TCCM_Input">C5.5_KL15Relay1</Output>
+				<Input parent="Input_Switches">C6.42_DamperConnectionSwitch</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent=""></Output>
-				<Input parent=""></Input>
+				<Output parent="TCCM_Input">C5.6_KL75Relay1</Output>
+				<Input parent="Input_Switches">C6.43_TrailerTagAxleLifting</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent=""></Output>
-				<Input parent=""></Input>
+				<Output parent="LowLinerFrontSideLiftedValveSupply">C5.8_LowLinerFrontSideLiftedValveSupply</Output>
+				<Input parent="Cruise_Control_Switches">C6.45_Cruise Set + Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="SteeringColumnSwitchIlluminationSupply">C5.9_SteeringColumnSwitchIlluminationSupply</Output>
+				<Input parent="PTO_Switches">C5.31_PTO2AcknowledgementSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="PWM_StartStopIllimunation12VLED">C5.19_PWM_StartStopIllimunation12VLED</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.32_0 FrontSetRightSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="DoorLockIndicatorSupply">C5.37_DoorLockIndicatorSupply</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.33_6 Door Ajar Switch - Passenger</Input>
 			</Mapping>
 			
 		</ConnectionMappings>
