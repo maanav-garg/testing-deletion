@@ -215,7 +215,7 @@ namespace AutosarBCM
                     || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
-                    if (receiver.Receive(service)) break;
+                    if (receiver.Receive(service)) continue;
             }
             if (service?.ServiceInfo == ServiceInfo.DiagnosticSessionControl)
             {
