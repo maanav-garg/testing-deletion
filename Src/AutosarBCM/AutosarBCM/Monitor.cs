@@ -421,8 +421,8 @@ namespace AutosarBCM
                                Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
-                        Helper.WriteCycleMessageToLogFile(mappedItem.Name, mappedItem.Type, (Constants.MappingRead));
-                            break;
+                            Helper.WriteCycleMessageToLogFile(mappedItem.Name, mappedItem.Responses[0].Payloads[0].Name, (Constants.MappingRead));
+                        break;
                         }
 
                     //ouputItem.Open(pwmDuty, pwmFreq);
