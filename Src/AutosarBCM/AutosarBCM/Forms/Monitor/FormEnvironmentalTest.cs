@@ -331,6 +331,7 @@ namespace AutosarBCM.Forms.Monitor
             if (!matchedControls.Any())
                 return false;
 
+          
             foreach (var uc in matchedControls)
             {
                 foreach (var payload in cycle.Functions.SelectMany(p => p.Payloads))
@@ -338,6 +339,7 @@ namespace AutosarBCM.Forms.Monitor
                     if (uc.PayloadInfo.Name == payload)
                     {
                         uc.HandleMetrics();
+                        totalMessagesTransmitted++;
                         break;
                     }
                 }

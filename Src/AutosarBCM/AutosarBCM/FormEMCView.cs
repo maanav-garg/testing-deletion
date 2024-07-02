@@ -41,6 +41,8 @@ namespace AutosarBCM
         /// </summary>
         private Dictionary<string, Dictionary<string, byte>> dtcValueList = new Dictionary<string, Dictionary<string, byte>>();
 
+        List<DataGridViewRow> excelData = new List<DataGridViewRow>();
+
         #endregion
 
         #region Constructor
@@ -89,7 +91,7 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments.</param>
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Helper.ExportToCSV(dgvData);
+            Helper.ExportToCSV(dgvData.Columns, excelData);            
         }
 
         /// <summary>
@@ -190,6 +192,12 @@ namespace AutosarBCM
             Invoke(new Action(() =>
             {
                 dgvData.FirstDisplayedScrollingRowIndex = dgvData.Rows.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), control?.Name, payload?.Name, controlValue, dtcValue);
+                foreach (DataGridViewRow data in dgvData.Rows)
+                {
+                    excelData.Add(data);
+                }
+                if (dgvData.Rows.Count >= 1000)
+                    dgvData.Rows.Clear();
             }));
             return true;
         }

@@ -1,9 +1,9 @@
 ﻿<Configuration>
 	<Settings>
-		<Entry key="namesPadding" value="30"/>
-		<Entry key="TxInterval" value="5"/>
-		<Entry key="ReadInterval" value="5"/>
-		<Entry key="DTCWaitingTime" value="8000"/>
+		<Entry key="namesPadding" value="30" />
+		<Entry key="TxInterval" value="5" />
+		<Entry key="ReadInterval" value="5" />
+		<Entry key="DTCWaitingTime" value="8000" />
 	</Settings>
 	<Services>
 		<Service requestID="10" responseID="50">
@@ -34,6 +34,14 @@
 		<Service requestID="19" responseID="59">
 			<Name>ReadDtcInformation</Name>
 			<Sessions>01;03</Sessions>
+		<Service responseID="7F">
+			<Name>NegativeResponse</Name>
+			<Sessions>01;02;03</Sessions>
+		</Service>
+		</Service>
+		<Service responseID="7F">
+			<Name>NegativeResponse</Name>
+			<Sessions>01;03</Sessions>
 		</Service>
 		<Service responseID="7F">
 			<Name>NegativeResponse</Name>
@@ -49,7 +57,7 @@
 		<Session>
 			<ID>02</ID>
 			<Name>Programming Session</Name>
-			<AvailableServices/>
+			<AvailableServices></AvailableServices>
 		</Session>
 		<Session>
 			<ID>03</ID>
@@ -61,19 +69,19 @@
 		<Control>
 			<Address>DE00</Address>
 			<Name>DE00</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Transmission" typeName="DID_DE00_0"/>
-					<Payload name="Auto CAB Tilt" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Differential Lock" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Water Pump" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Emission Level" typeName="DID_DE00_4"/>
-					<Payload name="PTO_AMT" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="A/C Compressor Control" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Low Liner" typeName="DID_Byte_Enable_Disable"/>
+					<Payload name="Transmission" typeName="DID_DE00_0"></Payload>
+					<Payload name="Auto CAB Tilt" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Differential Lock" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Water Pump" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Emission Level" typeName="DID_DE00_4"></Payload>
+					<Payload name="PTO_AMT" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="A/C Compressor Control" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Low Liner" typeName="DID_Byte_Enable_Disable"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -82,19 +90,19 @@
 		<Control>
 			<Address>DE01</Address>
 			<Name>DE01</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Heated Windshield" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Front Fog Lamps" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Corner Lighting" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Liter of Engine" typeName="DID_DE01_3"/>
-					<Payload name="Auxiliary Heater" typeName="DID_DE01_4"/>
-					<Payload name="C6AS_Truck" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="DPF Systems" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="F-Sight" typeName="DID_Byte_Present_notPresent"/>
+					<Payload name="Heated Windshield" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Front Fog Lamps" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Corner Lighting" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Liter of Engine" typeName="DID_DE01_3"></Payload>
+					<Payload name="Auxiliary Heater" typeName="DID_DE01_4"></Payload>
+					<Payload name="C6AS_Truck" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="DPF Systems" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="F-Sight" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -103,19 +111,19 @@
 		<Control>
 			<Address>DE02</Address>
 			<Name>DE02</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Era Glonass" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="One Touch Up/Global Open-Close" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Heated Mirror" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Power Mirror" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Remote Door Control" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Ambiance Light" typeName="HexDump_1Byte"/>
-					<Payload name="Autolock" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Vehicle Type" typeName="DID_DE02_7"/>
+					<Payload name="Era Glonass" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="One Touch Up/Global Open-Close" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Heated Mirror" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Power Mirror" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Remote Door Control" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Ambiance Light" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Autolock" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Vehicle Type" typeName="DID_DE02_7"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -124,19 +132,19 @@
 		<Control>
 			<Address>DE03</Address>
 			<Name>DE03</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Vehicle Line" typeName="DID_DE03_0"/>
-					<Payload name="Trailer Tag Axle Lifting" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="SVO Garbage Truck" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="SVO Concrete Pump" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="SVO Fire Truck" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="SVO Damper" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Extra High Roof" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Rain Sensor" typeName="DID_Byte_Present_notPresent"/>
+					<Payload name="Vehicle Line" typeName="DID_DE03_0"></Payload>
+					<Payload name="Trailer Tag Axle Lifting" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="SVO Garbage Truck" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="SVO Concrete Pump" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="SVO Fire Truck" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="SVO Damper" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Extra High Roof" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Rain Sensor" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -145,19 +153,19 @@
 		<Control>
 			<Address>DE04</Address>
 			<Name>DE04</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Active Emergency Breaking System" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Active Emergency Breaking System" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Trailer Detection" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Sunroof" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Climate Control Module" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Multimedia" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Intarder" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Brake System" typeName="DID_DE04_7"/>
+					<Payload name="Active Emergency Breaking System" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Active Emergency Breaking System" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Trailer Detection" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Sunroof" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Climate Control Module" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Multimedia" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Intarder" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Brake System" typeName="DID_DE04_7"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -167,12 +175,12 @@
 		<Control>
 			<Address>DE05</Address>
 			<Name>VIN</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="VIN" typeName="Unsigned_1Byte"/>
+					<Payload name="VIN" typeName="Unsigned_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -182,19 +190,19 @@
 		<Control>
 			<Address>DE06</Address>
 			<Name>DE06</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="ADR Vehicle" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Momentary Turn Signal Flash Count" typeName="DID_DE06_1"/>
-					<Payload name="Adaptive Cruise Control" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Battery Change" typeName="DID_DE06_3"/>
-					<Payload name="Battery U0 Min" typeName="Unsigned_1Byte"/>
-					<Payload name="Battery U0 Max" typeName="Unsigned_1Byte"/>
-					<Payload name="Battery C Nominal" typeName="Unsigned_1Byte"/>
-					<Payload name="Battery CCA Nominal" typeName="Unsigned_1Byte"/>
+					<Payload name="ADR Vehicle" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Momentary Turn Signal Flash Count" typeName="DID_DE06_1"></Payload>
+					<Payload name="Adaptive Cruise Control" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Battery Change" typeName="DID_DE06_3"></Payload>
+					<Payload name="Battery U0 Min" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="Battery U0 Max" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="Battery C Nominal" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="Battery CCA Nominal" typeName="Unsigned_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -204,17 +212,17 @@
 		<Control>
 			<Address>DE07</Address>
 			<Name>DE07</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Battery Technology Range" typeName="HexDump_1Byte"/>
-					<Payload name="BMS Availability" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Turn Signal On Time" typeName="HexDump_2Bytes"/>
-					<Payload name="Turn Signal Off Time" typeName="HexDump_2Bytes"/>
-					<Payload name="Dimming Usr TransTime" typeName="HexDump_1Byte"/>
-					<Payload name="Dimming Amb Up TransTime" typeName="HexDump_1Byte"/>
+					<Payload name="Battery Technology Range" typeName="HexDump_1Byte"></Payload>
+					<Payload name="BMS Availability" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Turn Signal On Time" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Turn Signal Off Time" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Dimming Usr TransTime" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Dimming Amb Up TransTime" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -224,19 +232,19 @@
 		<Control>
 			<Address>DE08</Address>
 			<Name>DE08</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Gateway for CAN Lines" typeName="HexDump_1Byte"/>
-					<Payload name="Headlamp Switch Type" typeName="HexDump_1Byte"/>
-					<Payload name="Disc/Drum Brake" typeName="HexDump_1Byte"/>
-					<Payload name="Apu Pressure Switch" typeName="HexDump_1Byte"/>
-					<Payload name="PTO Activation Trial Count" typeName="HexDump_1Byte"/>
-					<Payload name="Regen Inhibition Button Press Time" typeName="HexDump_1Byte"/>
-					<Payload name="Truck Type" typeName="DID_DE08_7"/>
-					<Payload name="Vehicle Speed" typeName="HexDump_1Byte"/>
+					<Payload name="Gateway for CAN Lines" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Headlamp Switch Type" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Disc/Drum Brake" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Apu Pressure Switch" typeName="HexDump_1Byte"></Payload>
+					<Payload name="PTO Activation Trial Count" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Regen Inhibition Button Press Time" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Truck Type" typeName="DID_DE08_7"></Payload>
+					<Payload name="Vehicle Speed" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -246,19 +254,19 @@
 		<Control>
 			<Address>DE09</Address>
 			<Name>DE09</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="FARID_BrakeValve_Active" typeName="HexDump_1Byte"/>
-					<Payload name="Window Motor On Time" typeName="HexDump_1Byte"/>
-					<Payload name="Window Motor Inhibition Time" typeName="HexDump_1Byte"/>
-					<Payload name="Window Motor On Counter" typeName="HexDump_1Byte"/>
-					<Payload name="Vehicle Horn" typeName="HexDump_1Byte"/>
-					<Payload name="Passive Start" typeName="HexDump_1Byte"/>
-					<Payload name="Vehicle Speed for Corner Lights" typeName="DID_Byte_Kmph"/>
-					<Payload name="Vehicle Speed for Garbage Truck" typeName="DID_Byte_Kmph"/>
+					<Payload name="FARID_BrakeValve_Active" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Window Motor On Time" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Window Motor Inhibition Time" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Window Motor On Counter" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Vehicle Horn" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Passive Start" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Vehicle Speed for Corner Lights" typeName="DID_Byte_Kmph"></Payload>
+					<Payload name="Vehicle Speed for Garbage Truck" typeName="DID_Byte_Kmph"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -268,17 +276,17 @@
 		<Control>
 			<Address>DE0B</Address>
 			<Name>DE0B</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Configurable % of IRC for PowerwindowLeft_Threshold" typeName="DID_DE0B_1"/>
-					<Payload name="Configurable % of IRC for PowerwindowRight_Threshold" typeName="DID_DE0B_1"/>
-					<Payload name="Configurable % of IRC for SunroofMotor_Threshold" typeName="DID_DE0B_1"/>
-					<Payload name="Configurable Detection time for PowerWindowLeft" typeName="HexDump_2Bytes"/>
-					<Payload name="Configurable Detection time for PowerWindowRight" typeName="HexDump_2Bytes"/>
-					<Payload name="Configurable Detection time for SunroofMotor" typeName="HexDump_2Bytes"/>
+					<Payload name="Configurable % of IRC for PowerwindowLeft_Threshold" typeName="DID_DE0B_1"></Payload>
+					<Payload name="Configurable % of IRC for PowerwindowRight_Threshold" typeName="DID_DE0B_1"></Payload>
+					<Payload name="Configurable % of IRC for SunroofMotor_Threshold" typeName="DID_DE0B_1"></Payload>
+					<Payload name="Configurable Detection time for PowerWindowLeft" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Configurable Detection time for PowerWindowRight" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Configurable Detection time for SunroofMotor" typeName="HexDump_2Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -288,19 +296,19 @@
 		<Control>
 			<Address>DE0C</Address>
 			<Name>DE0C</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Vehicle Speed for Differential Lock" typeName="DID_Byte_Kmph"/>
-					<Payload name="Vehicle Speed for Low Liner" typeName="DID_Byte_Kmph"/>
-					<Payload name="Vehicle Speed for PTO" typeName="DID_Byte_Kmph"/>
-					<Payload name="Vehicle Speed for Damper" typeName="DID_Byte_Kmph"/>
-					<Payload name="ECAS Vehicle Type" typeName="HexDump_1Byte"/>
-					<Payload name="Spare DID 8" typeName="DID_Byte_Enable_Disable"/>
-					<Payload name="Spare DID 9" typeName="HexDump_1Byte"/>
-					<Payload name="Adjustable Speed Limiter" typeName="DID_Byte_Enable_Disable"/>
+					<Payload name="Vehicle Speed for Differential Lock" typeName="DID_Byte_Kmph"></Payload>
+					<Payload name="Vehicle Speed for Low Liner" typeName="DID_Byte_Kmph"></Payload>
+					<Payload name="Vehicle Speed for PTO" typeName="DID_Byte_Kmph"></Payload>
+					<Payload name="Vehicle Speed for Damper" typeName="DID_Byte_Kmph"></Payload>
+					<Payload name="ECAS Vehicle Type" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Spare DID 8" typeName="DID_Byte_Enable_Disable"></Payload>
+					<Payload name="Spare DID 9" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Adjustable Speed Limiter" typeName="DID_Byte_Enable_Disable"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -309,17 +317,17 @@
 		<Control>
 			<Address>DE0D</Address>
 			<Name>DE0D</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Spare DID 10" typeName="HexDump_2Bytes"/>
-					<Payload name="FARID_Speed_S1" typeName="HexDump_1Byte"/>
-					<Payload name="FARID_Speed_S2" typeName="HexDump_1Byte"/>
-					<Payload name="Headlamp Selection" typeName="HexDump_1Byte"/>
-					<Payload name="Battery Spare Byte1" typeName="HexDump_1Byte"/>
-					<Payload name="Battery Spare Byte2" typeName="HexDump_1Byte"/>
+					<Payload name="Spare DID 10" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="FARID_Speed_S1" typeName="HexDump_1Byte"></Payload>
+					<Payload name="FARID_Speed_S2" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Headlamp Selection" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Battery Spare Byte1" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Battery Spare Byte2" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -328,12 +336,12 @@
 		<Control>
 			<Address>DE0E</Address>
 			<Name>Spare_DID_2</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Spare DID 2" typeName="HexDump_16Bytes"/>
+					<Payload name="Spare DID 2" typeName="HexDump_16Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -342,12 +350,12 @@
 		<Control>
 			<Address>DE0F</Address>
 			<Name>Spare_DID_3</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Spare DID 3" typeName="HexDump_16Bytes"/>
+					<Payload name="Spare DID 3" typeName="HexDump_16Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -356,20 +364,20 @@
 		<Control>
 			<Address>DE10</Address>
 			<Name>DE10</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="RearL_bNL_a1" typeName="HexDump_4Bytes"/>
-					<Payload name="RearL_bNL_b1" typeName="HexDump_4Bytes"/>
-					<Payload name="RearL_aNL_a1" typeName="HexDump_4Bytes"/>
-					<Payload name="RearL_aNL_b1" typeName="HexDump_4Bytes"/>
-					<Payload name="RearR_bNL_a1" typeName="HexDump_4Bytes"/>
-					<Payload name="RearR_bNL_b1" typeName="HexDump_4Bytes"/>
-					<Payload name="RearR_aNL_a1" typeName="HexDump_4Bytes"/>
-					<Payload name="RearR_aNL_b1" typeName="HexDump_4Bytes"/>
+					<Payload name="RearL_bNL_a1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RearL_bNL_b1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RearL_aNL_a1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RearL_aNL_b1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RearR_bNL_a1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RearR_bNL_b1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RearR_aNL_a1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RearR_aNL_b1" typeName="HexDump_4Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -378,21 +386,21 @@
 		<Control>
 			<Address>DE11</Address>
 			<Name>DE11</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Rear_Load_uplimit" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_Load_lowlimit" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_Load_corrfactor_bNL" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_Load_corrfactor_aNL" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_Load_a1" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_Load_b1" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_height_uplevel_limit" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_height_lowlevel_limit" typeName="HexDump_4Bytes"/>
-					<Payload name="SAS_configured" typeName="HexDump_1Bytes"/>
+					<Payload name="Rear_Load_uplimit" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_Load_lowlimit" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_Load_corrfactor_bNL" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_Load_corrfactor_aNL" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_Load_a1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_Load_b1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_height_uplevel_limit" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_height_lowlevel_limit" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="SAS_configured" typeName="HexDump_1Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -401,20 +409,20 @@
 		<Control>
 			<Address>DE12</Address>
 			<Name>DE12</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Rear_height_M1_level" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_height_M2_level" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_HS_Controller_Kp_nominal" typeName="HexDump_2Bytes"/>
-					<Payload name="Rear_HS_Controller_Kd_nominal" typeName="HexDump_2Bytes"/>
-					<Payload name="Rear_HS_Saved_NL_left" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_HS_Saved_NL_right" typeName="HexDump_4Bytes"/>
-					<Payload name="Diag_Sensor_Calibration_cmd" typeName="HexDump_1Byte"/>
-					<Payload name="Rear_Sensor_Calibration_Active" typeName="HexDump_1Byte"/>
+					<Payload name="Rear_height_M1_level" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_height_M2_level" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_HS_Controller_Kp_nominal" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Rear_HS_Controller_Kd_nominal" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Rear_HS_Saved_NL_left" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_HS_Saved_NL_right" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Diag_Sensor_Calibration_cmd" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Rear_Sensor_Calibration_Active" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -423,61 +431,61 @@
 		<Control>
 			<Address>DE13</Address>
 			<Name>DE13</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="RearL_PS_Saved_Zero_Value" typeName="HexDump_4Bytes"/>
-					<Payload name="RearR_PS_Saved_Zero_Value" typeName="HexDump_4Bytes"/>
-					<Payload name="RLSM_calibration" typeName="HexDump_1Byte"/>
-					<Payload name="RLSM_calibration_status" typeName="HexDump_1Byte"/>
-					<Payload name="Left_Window_OTU_Calibration_EngOff" typeName="HexDump_1Byte"/>
-					<Payload name="Left_Window_OTU_Calibration_Status_EngOff" typeName="HexDump_1Byte"/>
-					<Payload name="Left_Window_OTU_MinToEnd_EngOff" typeName="HexDump_1Byte"/>
-					<Payload name="Left_Window_OTU_UnitCount_EngOff" typeName="HexDump_4Bytes"/>
-					<Payload name="Left_Window_OTU_Calibration_EngOn" typeName="HexDump_1Byte"/>
-					<Payload name="Left_Window_OTU_Calibration_Status_EngOn" typeName="HexDump_1Byte"/>
-					<Payload name="Left_Window_OTU_MinToEnd_EngOn" typeName="HexDump_1Byte"/>
-					<Payload name="Left_Window_OTU_UnitCount_EngOn" typeName="HexDump_4Bytes"/>
-					<Payload name="Right_Window_OTU_Calibration_EngOff" typeName="HexDump_1Byte"/>
-					<Payload name="Right_Window_OTU_Calibration_Status_EngOff" typeName="HexDump_1Byte"/>
-					<Payload name="Right_Window_OTU_MinToEnd_EngOff" typeName="HexDump_1Byte"/>
-					<Payload name="Right_Window_OTU_UnitCount_EngOff" typeName="HexDump_4Bytes"/>
-					<Payload name="Right_Window_OTU_Calibration_EngOn" typeName="HexDump_1Byte"/>
-					<Payload name="Right_Window_OTU_Calibration_Status_EngOn" typeName="HexDump_1Byte"/>
-					<Payload name="Right_Window_OTU_MinToEnd_EngOn" typeName="HexDump_1Byte"/>
-					<Payload name="Right_Window_OTU_UnitCount_EngOn" typeName="HexDump_4Bytes"/>
-					<Payload name="Left_Window_Last_Position" typeName="HexDump_2Bytes"/>
-					<Payload name="Right_Window_Last_Position" typeName="HexDump_2Bytes"/>
-					<Payload name="Left_Window_Stuck_Count" typeName="HexDump_1Byte"/>
-					<Payload name="Right_Window_Stuck_Count" typeName="HexDump_1Byte"/>
-					<Payload name="Power_Windows_OTU_Stuck_Limit" typeName="HexDump_1Byte"/>
-					<Payload name="Left_Window_Protection" typeName="HexDump_1Byte"/>
-					<Payload name="Right_Window_Protection" typeName="HexDump_1Byte"/>
-					<Payload name="Power_Windows_Motor_Protection" typeName="HexDump_1Byte"/>
-					<Payload name="Power_Windows_Spare_Bytes" typeName="HexDump_2Bytes"/>
+					<Payload name="RearL_PS_Saved_Zero_Value" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RearR_PS_Saved_Zero_Value" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RLSM_calibration" typeName="HexDump_1Byte"></Payload>
+					<Payload name="RLSM_calibration_status" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Left_Window_OTU_Calibration_EngOff" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Left_Window_OTU_Calibration_Status_EngOff" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Left_Window_OTU_MinToEnd_EngOff" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Left_Window_OTU_UnitCount_EngOff" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Left_Window_OTU_Calibration_EngOn" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Left_Window_OTU_Calibration_Status_EngOn" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Left_Window_OTU_MinToEnd_EngOn" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Left_Window_OTU_UnitCount_EngOn" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Right_Window_OTU_Calibration_EngOff" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Right_Window_OTU_Calibration_Status_EngOff" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Right_Window_OTU_MinToEnd_EngOff" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Right_Window_OTU_UnitCount_EngOff" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Right_Window_OTU_Calibration_EngOn" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Right_Window_OTU_Calibration_Status_EngOn" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Right_Window_OTU_MinToEnd_EngOn" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Right_Window_OTU_UnitCount_EngOn" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Left_Window_Last_Position" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Right_Window_Last_Position" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Left_Window_Stuck_Count" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Right_Window_Stuck_Count" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Power_Windows_OTU_Stuck_Limit" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Left_Window_Protection" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Right_Window_Protection" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Power_Windows_Motor_Protection" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Power_Windows_Spare_Bytes" typeName="HexDump_2Bytes"></Payload>
 				</Response>
-				<Response serviceId="6E"/>
+				<Response serviceId="6E"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DE14</Address>
 			<Name>DE14</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Rear_height_RideHeight" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_height_NL2" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_height_previous" typeName="HexDump_4Bytes"/>
-					<Payload name="ECAS_calibration_session_mode" typeName="HexDump_4Bytes"/>
-					<Payload name="Diag_Sensor_Calibration_resp" typeName="HexDump_4Bytes"/>
-					<Payload name="Rear_HS_Calibration_Status" typeName="HexDump_1Byte"/>
-					<Payload name="Rear_PS_Calibration_Status" typeName="HexDump_1Byte"/>
+					<Payload name="Rear_height_RideHeight" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_height_NL2" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_height_previous" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="ECAS_calibration_session_mode" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Diag_Sensor_Calibration_resp" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Rear_HS_Calibration_Status" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Rear_PS_Calibration_Status" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -486,16 +494,16 @@
 		<Control>
 			<Address>DE15</Address>
 			<Name>DE15</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="DPF_Inhibit_Counter" typeName="HexDump_4Bytes"/>
-					<Payload name="DPF_Manual_Regen_Counter" typeName="HexDump_4Bytes"/>
-					<Payload name="LDWS_Counter" typeName="HexDump_4Bytes"/>
-					<Payload name="AEBS_Counter" typeName="HexDump_4Bytes"/>
+					<Payload name="DPF_Inhibit_Counter" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="DPF_Manual_Regen_Counter" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="LDWS_Counter" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="AEBS_Counter" typeName="HexDump_4Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -504,13 +512,13 @@
 		<Control>
 			<Address>DE16</Address>
 			<Name>Total_Distance_SS_Axle_Lifted</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Total_Distance_SS_Axle_Lifted" typeName="HexDump_4Bytes"/>
+					<Payload name="Total_Distance_SS_Axle_Lifted" typeName="HexDump_4Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -519,13 +527,13 @@
 		<Control>
 			<Address>DE17</Address>
 			<Name>Total_Distance_TA_Axle_Lifted</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Total_Distance_TA_Axle_Lifted" typeName="HexDump_4Bytes"/>
+					<Payload name="Total_Distance_TA_Axle_Lifted" typeName="HexDump_4Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -534,13 +542,13 @@
 		<Control>
 			<Address>DE18</Address>
 			<Name>Total_Distance_SS_TA_Axle_Lifted</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Total_Distance_SS_TA_Axle_Lifted" typeName="HexDump_4Bytes"/>
+					<Payload name="Total_Distance_SS_TA_Axle_Lifted" typeName="HexDump_4Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -549,12 +557,12 @@
 		<Control>
 			<Address>DE19</Address>
 			<Name>Spare_DID_7</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Spare DID 7" typeName="Unsigned_1Byte"/>
+					<Payload name="Spare DID 7" typeName="Unsigned_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -563,22 +571,22 @@
 		<Control>
 			<Address>DE20</Address>
 			<Name>DE20</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Min_Comp_Pressure" typeName="HexDump_2Bytes"/>
-					<Payload name="Max_Comp_Pressure" typeName="HexDump_2Bytes"/>
-					<Payload name="Min_Comp_Reactivate_Pressure" typeName="HexDump_2Bytes"/>
-					<Payload name="Max_Comp_Reactivate_Pressure" typeName="HexDump_2Bytes"/>
-					<Payload name="EngOffRpm" typeName="HexDump_1Byte"/>
-					<Payload name="MinOatTempAuxPmp" typeName="HexDump_1Byte"/>
-					<Payload name="MaxOatTempAuxPmp" typeName="HexDump_1Byte"/>
-					<Payload name="MinCoolntTemp" typeName="HexDump_1Byte"/>
-					<Payload name="InCarTempOffset" typeName="HexDump_1Byte"/>
-					<Payload name="Forced_Recirc_Max_Temp_Thr" typeName="HexDump_1Byte"/>
-					<Payload name="Forced_Recirc_Max_Temp_Time" typeName="HexDump_1Byte"/>
+					<Payload name="Min_Comp_Pressure" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Max_Comp_Pressure" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Min_Comp_Reactivate_Pressure" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Max_Comp_Reactivate_Pressure" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="EngOffRpm" typeName="HexDump_1Byte"></Payload>
+					<Payload name="MinOatTempAuxPmp" typeName="HexDump_1Byte"></Payload>
+					<Payload name="MaxOatTempAuxPmp" typeName="HexDump_1Byte"></Payload>
+					<Payload name="MinCoolntTemp" typeName="HexDump_1Byte"></Payload>
+					<Payload name="InCarTempOffset" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Forced_Recirc_Max_Temp_Thr" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Forced_Recirc_Max_Temp_Time" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -587,24 +595,24 @@
 		<Control>
 			<Address>DE21</Address>
 			<Name>DE21</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Rear_ECAS_parameter_checksum" typeName="HexDump_2Bytes"/>
-					<Payload name="Rear_HS_calibration_checksum" typeName="HexDump_2Bytes"/>
-					<Payload name="Rear_PS_calibration_checksum" typeName="HexDump_2Bytes"/>
-					<Payload name="Rear_valve_check_validated" typeName="HexDump_1Byte"/>
-					<Payload name="Rear_ECAS_axle_load_checksum" typeName="HexDump_4Bytes"/>
-					<Payload name="ECAS_calibration_spareDID2" typeName="HexDump_4Bytes"/>
-					<Payload name="ECAS_calibration_spareDID3" typeName="HexDump_4Bytes"/>
-					<Payload name="ECAS_calibration_spareDID4" typeName="HexDump_4Bytes"/>
-					<Payload name="ECAS_calibration_spareDID5" typeName="HexDump_4Bytes"/>
-					<Payload name="ECAS_calibration_spareDID6" typeName="HexDump_4Bytes"/>
-					<Payload name="ECAS_calibration_spareDID7" typeName="HexDump_4Bytes"/>
-					<Payload name="ECAS_calibration_spareDID8" typeName="HexDump_4Bytes"/>
+					<Payload name="Rear_ECAS_parameter_checksum" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Rear_HS_calibration_checksum" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Rear_PS_calibration_checksum" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="Rear_valve_check_validated" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Rear_ECAS_axle_load_checksum" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="ECAS_calibration_spareDID2" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="ECAS_calibration_spareDID3" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="ECAS_calibration_spareDID4" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="ECAS_calibration_spareDID5" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="ECAS_calibration_spareDID6" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="ECAS_calibration_spareDID7" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="ECAS_calibration_spareDID8" typeName="HexDump_4Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -613,12 +621,12 @@
 		<Control>
 			<Address>DE22</Address>
 			<Name>Spare_DID_4</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Spare DID 4" typeName="Unsigned_2Bytes"/>
+					<Payload name="Spare DID 4" typeName="Unsigned_2Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -627,12 +635,12 @@
 		<Control>
 			<Address>DE24</Address>
 			<Name>Keyfob_Battery_Status</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Keyfob battery status" typeName="HexDump_2Bytes"/>
+					<Payload name="Keyfob battery status" typeName="HexDump_2Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -641,13 +649,13 @@
 		<Control>
 			<Address>DE23</Address>
 			<Name>DTC_Configuration</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="DTC_Configuration" typeName="HexDump_4Bytes"/>
+					<Payload name="DTC_Configuration" typeName="HexDump_4Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -656,16 +664,16 @@
 		<Control>
 			<Address>DE25</Address>
 			<Name>DE25</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Spare DID 11" typeName="HexDump_1Byte"/>
-					<Payload name="Spare DID 5" typeName="HexDump_1Byte"/>
-					<Payload name="LowLiner_State" typeName="HexDump_1Byte"/>
-					<Payload name="Damper_Configuration" typeName="HexDump_1Byte"/>
+					<Payload name="Spare DID 11" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Spare DID 5" typeName="HexDump_1Byte"></Payload>
+					<Payload name="LowLiner_State" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Damper_Configuration" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -674,22 +682,22 @@
 		<Control>
 			<Address>DE26</Address>
 			<Name>DE26</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="PBL_version" typeName="DID_DE26"/>
-					<Payload name="SBL_version" typeName="DID_DE26"/>
-					<Payload name="BSW_version" typeName="DID_DE26"/>
-					<Payload name="Cdd_version" typeName="DID_DE26"/>
-					<Payload name="VCAN_dbc_version" typeName="DID_DE26"/>
-					<Payload name="MSCAN_dbc_version" typeName="DID_DE26"/>
-					<Payload name="LIN3_ldf_version" typeName="DID_DE26"/>
-					<Payload name="HSCAN_dbc_version" typeName="DID_DE26"/>
-					<Payload name="LIN1_ldf_version" typeName="DID_DE26"/>
-					<Payload name="LIN2_ldf_version" typeName="DID_DE26"/>
-					<Payload name="LIN4_ldf_version" typeName="DID_DE26"/>
+					<Payload name="PBL_version"  typeName="DID_DE26"></Payload>
+					<Payload name="SBL_version" typeName="DID_DE26"></Payload>
+					<Payload name="BSW_version" typeName="DID_DE26"></Payload>
+					<Payload name="Cdd_version" typeName="DID_DE26"></Payload>
+					<Payload name="VCAN_dbc_version" typeName="DID_DE26"></Payload>
+					<Payload name="MSCAN_dbc_version" typeName="DID_DE26"></Payload>
+					<Payload name="LIN3_ldf_version" typeName="DID_DE26"></Payload>
+					<Payload name="HSCAN_dbc_version" typeName="DID_DE26"></Payload>
+					<Payload name="LIN1_ldf_version" typeName="DID_DE26"></Payload>
+					<Payload name="LIN2_ldf_version" typeName="DID_DE26"></Payload>
+					<Payload name="LIN4_ldf_version" typeName="DID_DE26"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -698,15 +706,15 @@
 		<Control>
 			<Address>DE27</Address>
 			<Name>DE27</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="RemoteControlDefaultKey" typeName="HexDump_4Bytes"/>
-					<Payload name="RemoteControlPinNumber" typeName="HexDump_4Bytes"/>
-					<Payload name="RemoteControl_SpareDID" typeName="HexDump_4Bytes"/>
+					<Payload name="RemoteControlDefaultKey" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RemoteControlPinNumber" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="RemoteControl_SpareDID" typeName="HexDump_4Bytes"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -715,16 +723,16 @@
 		<Control>
 			<Address>DE28</Address>
 			<Name>DomeLampDimmingLevelStatus</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Dome Lamp Dimming Level Status" typeName="HexDump_1Byte"/>
-					<Payload name="Driver Map Reading Lamp Dimming Level Status" typeName="HexDump_1Byte"/>
-					<Payload name="Passenger Map Reading Lamp Dimming Level Status" typeName="HexDump_1Byte"/>
-					<Payload name="Ambient Light Dimming Level Status" typeName="HexDump_1Byte"/>
+					<Payload name="Dome Lamp Dimming Level Status" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Driver Map Reading Lamp Dimming Level Status" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Passenger Map Reading Lamp Dimming Level Status" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Ambient Light Dimming Level Status" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -733,33 +741,33 @@
 		<Control>
 			<Address>DE3A</Address>
 			<Name>DE3A</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="distance_front_first_value_km" typeName="HexDump_4Bytes"/>
-					<Payload name="distance_front_calc_start_km" typeName="HexDump_4Bytes"/>
-					<Payload name="blr_fl_first_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_fl_calc_start_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_fl_previous_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_fr_first_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_fr_calc_start_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_fr_previous_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="displayed_front_predicted_km" typeName="HexDump_2Bytes"/>
-					<Payload name="blr_message_front_previous" typeName="HexDump_1Byte"/>
-					<Payload name="distance_rear1_first_value_km" typeName="HexDump_4Bytes"/>
-					<Payload name="distance_rear1_calc_start_km" typeName="HexDump_4Bytes"/>
-					<Payload name="blr_r1l_first_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r1l_calc_start_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r1l_previous_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r1r_first_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r1r_calc_start_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r1r_previous_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="Rear_HS_Calibration_Status" typeName="HexDump_1Byte"/>
-					<Payload name="displayed_rear1_predicted_km" typeName="HexDump_2Bytes"/>
-					<Payload name="blr_message_rear1_previous" typeName="HexDump_1Byte"/>
+					<Payload name="distance_front_first_value_km" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="distance_front_calc_start_km" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="blr_fl_first_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_fl_calc_start_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_fl_previous_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_fr_first_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_fr_calc_start_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_fr_previous_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="displayed_front_predicted_km" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="blr_message_front_previous" typeName="HexDump_1Byte"></Payload>
+					<Payload name="distance_rear1_first_value_km" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="distance_rear1_calc_start_km" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="blr_r1l_first_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r1l_calc_start_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r1l_previous_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r1r_first_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r1r_calc_start_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r1r_previous_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="Rear_HS_Calibration_Status" typeName="HexDump_1Byte"></Payload>
+					<Payload name="displayed_rear1_predicted_km" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="blr_message_rear1_previous" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -768,32 +776,32 @@
 		<Control>
 			<Address>DE3B</Address>
 			<Name>DE3B</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="distance_rear2_first_value_km" typeName="HexDump_4Bytes"/>
-					<Payload name="distance_rear2_calc_start_km" typeName="HexDump_4Bytes"/>
-					<Payload name="blr_r2l_first_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r2l_calc_start_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r2l_previous_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r2r_first_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r2r_calc_start_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r2r_previous_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="displayed_rear2_predicted_km" typeName="HexDump_2Bytes"/>
-					<Payload name="blr_message_rear2_previous" typeName="HexDump_1Byte"/>
-					<Payload name="distance_rear3_first_value_km" typeName="HexDump_4Bytes"/>
-					<Payload name="distance_rear3_calc_start_km" typeName="HexDump_4Bytes"/>
-					<Payload name="blr_r3l_first_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r3l_calc_start_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r3l_previous_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r3r_first_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r3r_calc_start_perc" typeName="HexDump_1Byte"/>
-					<Payload name="blr_r3r_previous_value_perc" typeName="HexDump_1Byte"/>
-					<Payload name="displayed_rear3_predicted_km" typeName="HexDump_2Bytes"/>
-					<Payload name="blr_message_rear3_previous" typeName="HexDump_1Byte"/>
+					<Payload name="distance_rear2_first_value_km" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="distance_rear2_calc_start_km" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="blr_r2l_first_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r2l_calc_start_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r2l_previous_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r2r_first_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r2r_calc_start_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r2r_previous_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="displayed_rear2_predicted_km" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="blr_message_rear2_previous" typeName="HexDump_1Byte"></Payload>
+					<Payload name="distance_rear3_first_value_km" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="distance_rear3_calc_start_km" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="blr_r3l_first_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r3l_calc_start_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r3l_previous_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r3r_first_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r3r_calc_start_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="blr_r3r_previous_value_perc" typeName="HexDump_1Byte"></Payload>
+					<Payload name="displayed_rear3_predicted_km" typeName="HexDump_2Bytes"></Payload>
+					<Payload name="blr_message_rear3_previous" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -802,13 +810,13 @@
 		<Control>
 			<Address>DE3C</Address>
 			<Name>ECOMode</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="ECOMode" typeName="HexDump_1Byte"/>
+					<Payload name="ECOMode" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -817,13 +825,13 @@
 		<Control>
 			<Address>DE3D</Address>
 			<Name>ECOMode</Name>
-			<Type/>
+			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
 			<SessionActiveException>02</SessionActiveException>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="ECOModeSwitch" typeName="HexDump_1Byte"/>
+					<Payload name="ECOModeSwitch" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E">
 				</Response>
@@ -833,12 +841,12 @@
 		<Control>
 			<Address>099B</Address>
 			<Name>ACCutOffSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="ACCutOffSupply" dtcCode="8171" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C3.5_ACCutOffSupply" dtcCode="8171" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -847,15 +855,15 @@
 		<Control>
 			<Address>1983</Address>
 			<Name>TCCM_Input</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="KL15Relay1" dtcCode="912A" typeName="DID_Bytes_High_Low"/>
-					<Payload name="KL15Relay2" dtcCode="90E7" typeName="DID_Bytes_High_Low"/>
-					<Payload name="KL50Output" dtcCode="93CF" typeName="DID_Bytes_High_Low"/>
-					<Payload name="KL75Relay1" dtcCode="90FF" typeName="DID_Bytes_High_Low"/>
+					<Payload name="C5.5_KL15Relay1" dtcCode="912A" typeName="DID_Bytes_High_Low"></Payload>
+					<Payload name="C5.2_KL15Relay2" dtcCode="90E7" typeName="DID_Bytes_High_Low"></Payload>
+					<Payload name="C5.3_KL50Output" dtcCode="93CF" typeName="DID_Bytes_High_Low"></Payload>
+					<Payload name="C5.6_KL75Relay1" dtcCode="90FF" typeName="DID_Bytes_High_Low"></Payload>
 				</Response>
 				<Response serviceId="6F"/>
 			</Responses>
@@ -863,37 +871,37 @@
 		<Control>
 			<Address>40ED</Address>
 			<Name>Horn_Output_Control</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Horn Output Control" dtcCode="9C55" typeName="HexDump_1Byte"/>
+					<Payload name="C1.11_Horn Output Control" dtcCode="9C55" typeName="HexDump_1Byte"></Payload>
 				</Response>
-				<Response serviceId="6F"></Response>
+				<Response serviceId ="6F"> </Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>4129</Address>
 			<Name>Horn_Switch</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Horn Switch" dtcCode="9323" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C5.53_Horn Switch" dtcCode="9323" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>41DA</Address>
 			<Name>Ambient_Light_LED_Power_Supply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Ambient Light LED Power Supply" dtcCode="9F3A" typeName="DID_PWM"/>
+					<Payload name="Ambient Light LED Power Supply" dtcCode="9F3A" typeName="DID_PWM"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -902,12 +910,12 @@
 		<Control>
 			<Address>41E1</Address>
 			<Name>Left_Front_Turn_Lamp_Outage_Feedback</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Left Front Turn Lamp Outage Feedback" dtcCode="9D06" typeName="DID_Byte_On_Off"/>
+					<Payload name="C3.8_Left Front Turn Lamp Outage Feedback" dtcCode="9D06" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -916,25 +924,25 @@
 		<Control>
 			<Address>41E3</Address>
 			<Name>Right_Front_Turn_Lamp_Outage_Feedback</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Right Front Turn Lamp Outage Feedback" dtcCode="9D07" typeName="DID_Byte_On_Off"/>
+					<Payload name="C3.21_Right Front Turn Lamp Outage Feedback" dtcCode="9D07" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>7160</Address>
 			<Name>Ajar_On_Off_Control</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Ajar On Off Control" dtcCode="9175" typeName="DID_Byte_On_Off"/>
+					<Payload name="C6.49_Ajar On Off Control" dtcCode="9175" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -943,12 +951,12 @@
 		<Control>
 			<Address>7150</Address>
 			<Name>Hazard_Warning_Switch</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Hazar Warning Switch" dtcCode="9D35" typeName="DID_Byte_On_Off"/>
+					<Payload name="C5.10_Hazar Warning Switch" dtcCode="9D35" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -957,12 +965,12 @@
 		<Control>
 			<Address>9857</Address>
 			<Name>Blower_Switch</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Blower Switch" dtcCode="9F24" typeName="DID_Byte_On_Off"/>
+					<Payload name="C5.54_Blower Switch" dtcCode="9F24" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -971,12 +979,12 @@
 		<Control>
 			<Address>99A2</Address>
 			<Name>Blower_Control_Relay_Supply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Blower Control Relay Supply" dtcCode="9F06" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C3.9_Blower Control Relay Supply" dtcCode="9F06" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -985,113 +993,113 @@
 		<Control>
 			<Address>A195</Address>
 			<Name>Battery_Saver_System_Output_Signals</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Battery Saver Set Control" dtcCode="9F2C" typeName="DID_Byte_On_Off"/>
-					<Payload name="Battery Saver Reset Control" dtcCode="9F2D" typeName="DID_Byte_On_Off"/>
+					<Payload name="C4.54_Battery Saver Set Control" dtcCode="9F2C" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C4.52_Battery Saver Reset Control" dtcCode="9F2D" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>A45F</Address>
 			<Name>Key_Switch_System_Input_Signal</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Ignition/Crank" dtcCode="F00D" typeName="DID_Byte_On_Off"/>
-					<Payload name="Ignition Switch" dtcCode="F00E" typeName="DID_Byte_On_Off"/>
+					<Payload name="Ignition/Crank" dtcCode="F00D" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="Ignition Switch" dtcCode="F00E" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>A460</Address>
 			<Name>WiperParkPositionSwitch</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="WiperParkPositionSwitch" dtcCode="9C44" typeName="DID_Byte_On_Off"/>
+					<Payload name="C6.10_WiperParkPositionSwitch" dtcCode="9C44" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>A461</Address>
 			<Name>Windscreen_Wipers_System_Output_Signal</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Wiper Low Relay" dtcCode="9F36" typeName="DID_Byte_On_Off"/>
-					<Payload name="Wiper High Relay" dtcCode="9096" typeName="DID_Byte_On_Off"/>
+					<Payload name="C1.18_Wiper Low Relay" dtcCode="9F36" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C1.9_Wiper High Relay" dtcCode="9096" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>A463</Address>
 			<Name>Washer_Pump_Front_Relay</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Washer Pump Front Relay" dtcCode="9C79" typeName="DID_Byte_On_Off"/>
+					<Payload name="Washer Pump Front Relay" dtcCode="9C79" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>A492</Address>
 			<Name>Sunroof_Switch</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Sunroof Close Switch" dtcCode="9F04" typeName="DID_Byte_On_Off"/>
-					<Payload name="Sunroof Open Switch" dtcCode="9F03" typeName="DID_Byte_On_Off"/>
+					<Payload name="C5.45_Sunroof Close Switch" dtcCode="9F04" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C5.27_Sunroof Open Switch" dtcCode="9F03" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>A493</Address>
 			<Name>Sunroof_Motor</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="MOT-B" dtcCode="9F17" typeName="DID_Byte_On_Off"/>
-					<Payload name="MOT-A" dtcCode="9F18" typeName="DID_Byte_On_Off"/>
+					<Payload name="C1.6_MOT-B" dtcCode="9F17" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C1.8_MOT-A" dtcCode="9F18" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>C150</Address>
 			<Name>All_Doors_Lock_and_Ajar_Input_Signal</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte">
-						<Payload name="7 Door Ajar Switch - Driver   " dtcCode="91E9" typeName="DID_Bits_On_Off"/>
-						<Payload name="6 Door Ajar Switch - Passenger" dtcCode="91EA" typeName="DID_Bits_On_Off"/>
-						<Payload name="5 Cabin Lock" dtcCode="908F" typeName="DID_Bits_On_Off"/>
-						<Payload name="4 Cabin Unlock" dtcCode="9F39" typeName="DID_Bits_On_Off"/>
-						<Payload name="3 FrontResetLeftSwitch" dtcCode="BA85" typeName="DID_Bits_On_Off"/>
-						<Payload name="2 FrontResetRightSwitch" dtcCode="93A3" typeName="DID_Bits_On_Off"/>
-						<Payload name="1 FrontSetLeftSwitch" dtcCode="939D" typeName="DID_Bits_On_Off"/>
-						<Payload name="0 FrontSetRightSwitch" dtcCode="BA86" typeName="DID_Bits_On_Off"/>
+						<Payload name="C5.28_7 Door Ajar Switch - Driver   " dtcCode="91E9" typeName="DID_Bits_On_Off" />
+						<Payload name="C5.33_6 Door Ajar Switch - Passenger" dtcCode="91EA" typeName="DID_Bits_On_Off" />
+						<Payload name="C6.31_5 Cabin Lock" dtcCode="908F" typeName="DID_Bits_On_Off" />
+						<Payload name="C6.41_4 Cabin Unlock" dtcCode="9F39" typeName="DID_Bits_On_Off" />
+						<Payload name="C5.36_3 FrontResetLeftSwitch" dtcCode="BA85" typeName="DID_Bits_On_Off" />
+						<Payload name="C6.3_2 FrontResetRightSwitch" dtcCode="93A3" typeName="DID_Bits_On_Off" />
+						<Payload name="C5.13_1 FrontSetLeftSwitch" dtcCode="939D" typeName="DID_Bits_On_Off" />
+						<Payload name="C5.32_0 FrontSetRightSwitch" dtcCode="BA86" typeName="DID_Bits_On_Off" />
 					</Payload>
 				</Response>
 			</Responses>
@@ -1099,549 +1107,549 @@
 		<Control>
 			<Address>C151</Address>
 			<Name>All_Doors_Lock_and_Ajar_Output_Signal</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="All Doors Lock and Ajar Output Signal Status" typeName="HexDump_1Byte"/>
+					<Payload name="All Doors Lock and Ajar Output Signal Status" typeName="HexDump_1Byte"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF00</Address>
 			<Name>Differential_Control_Input</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="DiffLock1DriverRequestSwitch" dtcCode="34F2" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="DiffLock1FeedbackSwitch" dtcCode="34F3" typeName="DID_Byte_Present_notPresent"/>
+					<Payload name="C5.12_DiffLock1DriverRequestSwitch" dtcCode="34F2" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.39_DiffLock1FeedbackSwitch" dtcCode="34F3" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF06</Address>
 			<Name>Power_Window_Switch_Input</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="PowerWindowPASSDownSwitch" dtcCode="93E6" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="PowerWindowPASSUpSwitch" dtcCode="93E5" typeName="DID_Byte_Present_notPresent"/>
+					<Payload name="C6.29_PowerWindowPASSDownSwitch" dtcCode="93E6" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.11_PowerWindowPASSUpSwitch" dtcCode="93E5" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF07</Address>
 			<Name>Spare_PWM_Inputs</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="SparePWM3" dtcCode="9D9E" typeName="DID_PWM"/>
-					<Payload name="SparePWM4" dtcCode="9D9D" typeName="DID_PWM"/>
+					<Payload name="SparePWM3" dtcCode="9D9E" typeName="DID_PWM"></Payload>
+					<Payload name="C4.7_SparePWM4" dtcCode="9D9D" typeName="DID_PWM"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF12</Address>
 			<Name>Power_Mirror_Control</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="MainRightMirrorUpCtrl" dtcCode="9F2E" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="MainRightMirrorRightCtrl" dtcCode="9F2F" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="MainRightMirrorDownLeftCtrl" dtcCode="9F30" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="MainLeftMirrorUpCtrl" dtcCode="9F31" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="MainLeftMirrorRightCtrl" dtcCode="9F32" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="MainLeftMirrorDownLeftCtrl" dtcCode="9F33" typeName="DID_Byte_Present_notPresent"/>
+					<Payload name="C4.24_MainRightMirrorUpCtrl" dtcCode="9F2E" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C4.26_MainRightMirrorRightCtrl" dtcCode="9F2F" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C4.27_MainRightMirrorDownLeftCtrl" dtcCode="9F30" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C4.23_MainLeftMirrorUpCtrl" dtcCode="9F31" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C4.25_MainLeftMirrorRightCtrl" dtcCode="9F32" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C4.22_MainLeftMirrorDownLeftCtrl" dtcCode="9F33" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
-				<Response serviceId="6F">
+				<Response serviceId ="6F">
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF14</Address>
 			<Name>DomeLightSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="DomeLightSupply" dtcCode="9F37" typeName="DID_PWM"/>
+					<Payload name="C2.2_DomeLightSupply" dtcCode="9F37" typeName="DID_PWM"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF2F</Address>
 			<Name>FrontParkingLightSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="FrontParkingLightSupply" dtcCode="9446" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C3.4_FrontParkingLightSupply" dtcCode="9446" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF30</Address>
 			<Name>SteeringColumnSwitchIlluminationSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="SteeringColumnSwitchIlluminationSupply" dtcCode="9F1E" typeName="DID_PWM"/>
+					<Payload name="C5.9_SteeringColumnSwitchIlluminationSupply" dtcCode="9F1E" typeName="DID_PWM"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF31</Address>
 			<Name>Interior12VLightDimmingSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Interior12VLightDimmingSupply" dtcCode="96F9" typeName="DID_PWM"/>
+					<Payload name="C5.1_Interior12VLightDimmingSupply" dtcCode="96F9" typeName="DID_PWM"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF34</Address>
 			<Name>BedAreaLightingSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="BedAreaLightingSupply" dtcCode="9F43" typeName="DID_PWM"/>
+					<Payload name="C4.40_BedAreaLightingSupply" dtcCode="9F43" typeName="DID_PWM"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF43</Address>
 			<Name>Spare_Analog_Input</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="SpareAnalogInput2" typeName="HexDump_1Byte"/>
-					<Payload name="SpareAnalogInput1" typeName="HexDump_1Byte"/>
+					<Payload name="SpareAnalogInput2" typeName="HexDump_1Byte"></Payload>
+					<Payload name="SpareAnalogInput1" typeName="HexDump_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF44</Address>
 			<Name>Spare_Digital_Outputs</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="SpareDigitalOutput2" dtcCode="9D9B" typeName="HexDump_1Byte"/>
-					<Payload name="SpareDigitalOutput3" dtcCode="9A8C" typeName="HexDump_1Byte"/>
+					<Payload name="C4.5_SpareDigitalOutput2" dtcCode="9D9B" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C4.48_SpareDigitalOutput3" dtcCode="9A8C" typeName="HexDump_1Byte"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF46</Address>
 			<Name>Input_Switches</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="HornTypeSelectionSwitch" dtcCode="9324" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="AxleLifting1Switch" dtcCode="6100" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="LowLinerSwitch" dtcCode="6103" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="RockingSwitch" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="TrailerTagAxleLifting" dtcCode="6101" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="CabinTiltSwitch" dtcCode="9F0E" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="InteriorLampOffSwitch" dtcCode="9F3D" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="TrailerDetectionSwitch" dtcCode="90A1" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="DamperConnectionSwitch" dtcCode="9F4B" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="EraglonassGlobalMute" dtcCode="921E" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="AlternatorChargingStatus" dtcCode="1246" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="EHPASInput" dtcCode="35DF" typeName="DID_Byte_Present_notPresent"/>
+					<Payload name="HornTypeSelectionSwitch" dtcCode="9324" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.2_AxleLifting1Switch" dtcCode="6100" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.47_LowLinerSwitch" dtcCode="6103" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="RockingSwitch" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.43_TrailerTagAxleLifting" dtcCode="6101" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C4.9_CabinTiltSwitch" dtcCode="9F0E" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.15_InteriorLampOffSwitch" dtcCode="9F3D" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.4_TrailerDetectionSwitch" dtcCode="90A1" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.42_DamperConnectionSwitch" dtcCode="9F4B" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.26_EraglonassGlobalMute" dtcCode="921E" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.37_AlternatorChargingStatus" dtcCode="1246" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="EHPASInput" dtcCode="35DF" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF48</Address>
 			<Name>PTO_Switches</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="MainPTOAckSwitch" dtcCode="34F9" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="PTO1AcknowledgementSwitch" dtcCode="34FA" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="PTO2AcknowledgementSwitch" dtcCode="BA87" typeName="DID_Byte_Present_notPresent"/>
+					<Payload name="C6.19_MainPTOAckSwitch" dtcCode="34F9" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.20_PTO1AcknowledgementSwitch" dtcCode="34FA" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.31_PTO2AcknowledgementSwitch" dtcCode="BA87" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF49</Address>
 			<Name>Start_Stop_Switches</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Start Stop Switch 3" dtcCode="05BC" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Start Stop Switch 2" dtcCode="05BF" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Start Stop Switch 1" dtcCode="05BE" typeName="DID_Byte_Present_notPresent"/>
+					<Payload name="C5.14_Start Stop Switch 3" dtcCode="05BC" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.24_Start Stop Switch 2" dtcCode="05BF" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.32_Start Stop Switch 1" dtcCode="05BE" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF4B</Address>
 			<Name>PWM_StartStopIllimunation12VLED</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="PWM_StartStopIllimunation12VLED" dtcCode="06F4" typeName="DID_PWM"/>
+					<Payload name="C5.19_PWM_StartStopIllimunation12VLED" dtcCode="06F4" typeName="DID_PWM"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF4C</Address>
 			<Name>DoorLockIndicatorSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="DoorLockIndicatorSupply" dtcCode="93CA" typeName="DID_PWM"/>
+					<Payload name="C5.37_DoorLockIndicatorSupply" dtcCode="93CA" typeName="DID_PWM"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF4D</Address>
 			<Name>WCInhibit</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="WCInhibit" dtcCode="9A92" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.47_WCInhibit" dtcCode="9A92" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF4E</Address>
 			<Name>LED_Outputs</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="BlendingFuncIlluminationLED" dtcCode="45AD" typeName="DID_Byte_Activate_Inactivate"/>
-					<Payload name="ESPOffOutputLED" dtcCode="93C9" typeName="DID_Byte_Activate_Inactivate"/>
-					<Payload name="LDWSFuncIlluminationLED" dtcCode="93A8" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.51_BlendingFuncIlluminationLED" dtcCode="45AD" typeName="DID_Byte_Activate_Inactivate"></Payload>
+					<Payload name="C4.50_ESPOffOutputLED" dtcCode="93C9" typeName="DID_Byte_Activate_Inactivate"></Payload>
+					<Payload name="C4.49_LDWSFuncIlluminationLED" dtcCode="93A8" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF50</Address>
 			<Name>Spare_Switch</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Spare Switch 29" dtcCode="BA7A" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 28" dtcCode="BA7B" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 27" dtcCode="BA7C" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 25" dtcCode="BA7E" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 24" dtcCode="BA80" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 22" dtcCode="BA81" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 21" dtcCode="BA82" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 19" dtcCode="BA83" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 18" dtcCode="BA84" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 17" dtcCode="9F54" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 16" dtcCode="9F46" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 15" dtcCode="BA7D" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 14" dtcCode="9F4D" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 12" dtcCode="9F47" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 11" dtcCode="9F44" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 10" dtcCode="9F51" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 9" dtcCode="9F4E" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 7" dtcCode="9F58" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 6" dtcCode="9F56" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 5" dtcCode="9F55" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 4" dtcCode="BA88" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 3" dtcCode="BA89" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare Switch 1" dtcCode="9F45" typeName="DID_Byte_Present_notPresent"/>
-					<Payload name="Spare1 Config Switch" dtcCode="9F57" typeName="DID_Byte_Present_notPresent"/>
+					<Payload name="C6.48_Spare Switch 29" dtcCode="BA7A" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="Spare Switch 28" dtcCode="BA7B" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.40_Spare Switch 27" dtcCode="BA7C" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.30_Spare Switch 25" dtcCode="BA7E" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.28_Spare Switch 24" dtcCode="BA80" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.23_Spare Switch 22" dtcCode="BA81" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.22_Spare Switch 21" dtcCode="BA82" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.13_Spare Switch 19" dtcCode="BA83" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.12_Spare Switch 18" dtcCode="BA84" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.8_Spare Switch 17" dtcCode="9F54" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.49_Spare Switch 16" dtcCode="9F46" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C4.21_Spare Switch 15" dtcCode="BA7D" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.1_Spare Switch 14" dtcCode="9F4D" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.52_Spare Switch 12" dtcCode="9F47" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.51_Spare Switch 11" dtcCode="9F44" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.50_Spare Switch 10" dtcCode="9F51" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.48_Spare Switch 9" dtcCode="9F4E" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.34_Spare Switch 7" dtcCode="9F58" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.30_Spare Switch 6" dtcCode="9F56" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.29_Spare Switch 5" dtcCode="9F55" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.18_Spare Switch 4" dtcCode="BA88" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.17_Spare Switch 3" dtcCode="BA89" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.11_Spare Switch 1" dtcCode="9F45" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.25_Spare1 Config Switch" dtcCode="9F57" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF51</Address>
 			<Name>AirHornActivateSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="AirHornActivateSupply" dtcCode="9D98" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.16_AirHornActivateSupply" dtcCode="9D98" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF53</Address>
 			<Name>DifferentialLockValve1Supply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="DifferentialLockValve1Supply" dtcCode="350C" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C3.1_DifferentialLockValve1Supply" dtcCode="350C" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF54</Address>
 			<Name>EngineBrakeSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="EngineBrakeSupply" dtcCode="6104" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C2.6_EngineBrakeSupply" dtcCode="6104" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF55</Address>
 			<Name>InterLockValveSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="InterLockValveSupply" dtcCode="350E" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.44_InterLockValveSupply" dtcCode="350E" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF56</Address>
 			<Name>LowLinerFrontSideLiftedValveSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="LowLinerFrontSideLiftedValveSupply" dtcCode="6106" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C5.8_LowLinerFrontSideLiftedValveSupply" dtcCode="6106" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF57</Address>
 			<Name>PTO_Valve_Supply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="PTO1ValveSupply" dtcCode="6107" typeName="DID_Byte_Activate_Inactivate"/>
-					<Payload name="PTO2ValveSupply" dtcCode="350F" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C5.7_PTO1ValveSupply" dtcCode="6107" typeName="DID_Byte_Activate_Inactivate"></Payload>
+					<Payload name="C4.37_PTO2ValveSupply" dtcCode="350F" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF59</Address>
 			<Name>CabinTiltValveSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="CabinTiltValveSupply" dtcCode="9F26" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.38_CabinTiltValveSupply" dtcCode="9F26" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF5A</Address>
 			<Name>HeatedMirrorSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="HeatedMirrorSupply" dtcCode="9F3F" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.1_HeatedMirrorSupply" dtcCode="9F3F" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF5B</Address>
 			<Name>HeatedWindshieldSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="HeatedWindshieldSupply" dtcCode="9F40" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.2_HeatedWindshieldSupply" dtcCode="9F40" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF5C</Address>
 			<Name>ReverseGearSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="ReverseGearSupply" dtcCode="9277" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C3.15_ReverseGearSupply" dtcCode="9277" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF5D</Address>
 			<Name>StepLightsSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="StepLightsSupply" dtcCode="9F5C" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.19_StepLightsSupply" dtcCode="9F5C" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF5E</Address>
 			<Name>WaterPumpSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="WaterPumpSupply" dtcCode="92D8" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C3.18_WaterPumpSupply" dtcCode="92D8" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF5F</Address>
 			<Name>BrakeLightRelaySupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="BrakeLightRelaySupply" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.6_BrakeLightRelaySupply" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF60</Address>
 			<Name>Hall_Sensor_Supply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="HallSensorLeftSupply" dtcCode="9F21" typeName="DID_Byte_Activate_Inactivate"/>
-					<Payload name="HallSensorRightSupply" dtcCode="9F20" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.28_HallSensorLeftSupply" dtcCode="9F21" typeName="DID_Byte_Activate_Inactivate"></Payload>
+					<Payload name="C4.46_HallSensorRightSupply" dtcCode="9F20" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF62</Address>
 			<Name>TrailerTagAxleLifting1Supply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="TrailerTagAxleLifting1Supply" dtcCode="6125" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.39_TrailerTagAxleLifting1Supply" dtcCode="6125" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF63</Address>
 			<Name>InteriorLightDimmingSupply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="InteriorLightDimmingSupply" dtcCode="9313" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C3.17_InteriorLightDimmingSupply" dtcCode="9313" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF64</Address>
 			<Name>Map_Lamp_PWM_Supply</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="MapLampDriverPWMSupply" dtcCode="9F05" typeName="DID_Byte_Activate_Inactivate"/>
-					<Payload name="MapLampPassengerPWMSupply" dtcCode="9F01" typeName="DID_Byte_Activate_Inactivate"/>
+					<Payload name="C4.41_MapLampDriverPWMSupply" dtcCode="9F05" typeName="DID_Byte_Activate_Inactivate"></Payload>
+					<Payload name="C4.45_MapLampPassengerPWMSupply" dtcCode="9F01" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF65</Address>
 			<Name>Stowage_Box_Reminder</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Left Side Stowage Box" dtcCode="8009" typeName="HexDump_1Byte"/>
-					<Payload name="Right Side Stowage Box" dtcCode="8008" typeName="HexDump_1Byte"/>
+					<Payload name="C5.16_Left Side Stowage Box" dtcCode="8009" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C5.35_Right Side Stowage Box" dtcCode="8008" typeName="HexDump_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF66</Address>
 			<Name>Emc_Swc_LifeCycle</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="SWC LifeCycle" typeName="HexDump_4Bytes"/>
+					<Payload name="SWC LifeCycle" typeName="HexDump_4Bytes"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -1650,14 +1658,14 @@
 		<Control>
 			<Address>DFFF</Address>
 			<Name>Test_Data</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Test_Data" typeName="HexDump_4Bytes"/>
+					<Payload name="Test_Data" typeName="HexDump_4Bytes"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<!--Important: deactivated because there was no response in the control.-->
@@ -1685,188 +1693,188 @@
 		<Control>
 			<Address>40C6</Address>
 			<Name>Right_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Right Rear Turn Lamp/LED Outage Feedback" dtcCode="9F34" typeName="DID_Lamp_Status"/>
+					<Payload name="Right Rear Turn Lamp/LED Outage Feedback" dtcCode="9F34" typeName="DID_Lamp_Status"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>40C7</Address>
 			<Name>Left_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Left Rear Turn Lamp/LED Outage Feedback" dtcCode="9F35" typeName="DID_Lamp_Status"/>
+					<Payload name="Left Rear Turn Lamp/LED Outage Feedback" dtcCode="9F35" typeName="DID_Lamp_Status"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>40E2</Address>
 			<Name>Left_Rear_Turn_Signal_Lamp_Control</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Left Rear Turn Signal Lamp Control" dtcCode="9329" typeName="DID_Byte_Lamp_Control"/>
+					<Payload name="C2.7_Left Rear Turn Signal Lamp Control" dtcCode="9329" typeName="DID_Byte_Lamp_Control"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>40E0</Address>
 			<Name>Right_Rear_Turn_Signal_Lamp_Control</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Right Rear Turn Signal Lamp Control" dtcCode="932A" typeName="DID_Byte_Lamp_Control"/>
+					<Payload name="C3.13_Right Rear Turn Signal Lamp Control" dtcCode="932A" typeName="DID_Byte_Lamp_Control"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>4128</Address>
 			<Name>Cruise_Control_Switches</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Cruise Set + Switch" dtcCode="056A" typeName="DID_Byte_On_Off"/>
-					<Payload name="Cruise Resume Switch" dtcCode="0567" typeName="DID_Byte_On_Off"/>
-					<Payload name="Cruise Off Switch" dtcCode="0566" typeName="DID_Byte_On_Off"/>
-					<Payload name="Cruise Time Gap minus Switch" dtcCode="056B" typeName="DID_Byte_On_Off"/>
+					<Payload name="C6.45_Cruise Set + Switch" dtcCode="056A" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C6.9_Cruise Resume Switch" dtcCode="0567" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C6.46_Cruise Off Switch" dtcCode="0566" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C6.27_Cruise Time Gap minus Switch" dtcCode="056B" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>41C7</Address>
 			<Name>Driver_Power_Window_Motor</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Driver Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"/>
-					<Payload name="Driver Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"/>
+					<Payload name="Driver Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"></Payload>
+					<Payload name="Driver Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>41C9</Address>
 			<Name>Passenger_Power_Window_Motor</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Passenger Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"/>
-					<Payload name="Passenger Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"/>
+					<Payload name="Passenger Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"></Payload>
+					<Payload name="Passenger Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>41EC</Address>
 			<Name>Left_Front_Fog_Lamps_Output</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Left Front Fog Lamps Output" dtcCode="9147" typeName="DID_41EC_0"/>
+					<Payload name="C2.8_Left Front Fog Lamps Output" dtcCode="9147" typeName="DID_41EC_0"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>41EF</Address>
 			<Name>Rear_Park_Lamps_Output</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="RearParkingLightLeftSupply" dtcCode="9D99" typeName="DID_41EF_0"/>
-					<Payload name="RearParkingLightRightSupply" dtcCode="9D9A" typeName="DID_41EF_0"/>
-					<Payload name="RearParkingLightTrailerSupply" dtcCode="9445" typeName="DID_41EF_0"/>
+					<Payload name="C4.3_RearParkingLightLeftSupply" dtcCode="9D99" typeName="DID_41EF_0"></Payload>
+					<Payload name="C4.4_RearParkingLightRightSupply" dtcCode="9D9A" typeName="DID_41EF_0"></Payload>
+					<Payload name="C1.13_RearParkingLightTrailerSupply" dtcCode="9445" typeName="DID_41EF_0"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>41F1</Address>
 			<Name>Rear_Fog_Lamps_Output</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Rear Fog Lamps Output" dtcCode="9A79" typeName="DID_41F1_0"/>
+					<Payload name="C2.4_Rear Fog Lamps Output" dtcCode="9A79" typeName="DID_41F1_0"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>41F3</Address>
 			<Name>Right_Front_Fog_Lamps_Output</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Right Front Log Lamps Output" dtcCode="9148" typeName="DID_41F3_0"/>
+					<Payload name="C2.1_Right Front Fog Lamps Output" dtcCode="9148" typeName="DID_41F3_0"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>4253</Address>
 			<Name>Turn_Indicator_Switch_Input</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Turn Indicator Switch Input" dtcCode="9F3D" typeName="DID_4253_0"/>
+					<Payload name="Turn Indicator Switch Input" dtcCode="9F3D" typeName="DID_4253_0"></Payload>
 				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>4255</Address>
 			<Name>Daytime_Running_Light_Output</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="DDRLSupplyLeft" dtcCode="924B" typeName="DID_4255_Daytime_Running_Light"/>
-					<Payload name="DDRLSupplyRight" dtcCode="924A" typeName="DID_4255_Daytime_Running_Light"/>
+					<Payload name="C2.9_DDRLSupplyLeft" dtcCode="924B" typeName="DID_4255_Daytime_Running_Light"></Payload>
+					<Payload name="C2.3_DDRLSupplyRight" dtcCode="924A" typeName="DID_4255_Daytime_Running_Light"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>42A0</Address>
 			<Name>Headlamp_High_Beam_Output_Control</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="High Beam Left" dtcCode="956A" typeName="DID_42A0_0"/>
-					<Payload name="High Beam Left" dtcCode="956A" typeName="DID_42A0_0"/>
+					<Payload name="C3.7_High Beam Left" dtcCode="956A" typeName="DID_42A0_0"></Payload>
+					<Payload name="C3.16_High Beam Right" dtcCode="956A" typeName="DID_42A0_0"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<!--Important: deactivated because there was no response in the control.-->
@@ -1898,68 +1906,68 @@
 		<Control>
 			<Address>40E8</Address>
 			<Name>Right_Front_Low_Beam_Output_Control</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Right Front Low Beam Output Control" dtcCode="9D01" typeName="DID_40E8_0"/>
+					<Payload name="C3.14_Right Front Low Beam Output Control" dtcCode="9D01" typeName="DID_40E8_0"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>40E7</Address>
 			<Name>Left_Front_Low_Beam_Output_Contro</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Left Front Low Beam Output Control" dtcCode="9D00" typeName="DID_40E7_0"/>
+					<Payload name="C1.14_Left Front Low Beam Output Control" dtcCode="9D00" typeName="DID_40E7_0"></Payload>
 				</Response>
-				<Response serviceId="6F"/>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>F1F0</Address>
 			<Name>Vestel_Internal_Software_Version</Name>
-			<Type/>
+			<Type></Type>
 			<Group>DID</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Vestel Internal Software Version" typeName="Internal_Version"/>
+					<Payload name="Vestel Internal Software Version" typeName="Internal_Version"></Payload>
 				</Response>
 			</Responses>
 		</Control>
-		<!--<Control>
-      <Address>DF47</Address>
-      <Name>LIN_PWS_and_HLS_Switch</Name>
-      <Type></Type>
-      <Services>22;2F</Services>
-      <Responses>
-        <Response serviceId="62"></Response>
-      </Responses>
-    </Control>
-    <Control>
-      <Address>42C0</Address>
-      <Name>Left_Front_Low_Beam_Output</Name>
-      <Type></Type>
-      <Services>22;2F</Services>
-      <Responses>
-        <Response serviceId="62"></Response>
-      </Responses>
-    </Control>
-    <Control>
-      <Address>42C1</Address>
-      <Name>Right_Front_Low_Beam_Output</Name>
-      <Type></Type>
-      <Services>22;2F</Services>
-      <Responses>
-        <Response serviceId="62"></Response>
-      </Responses>
-    </Control>-->
+		<Control>
+			<Address>DF47</Address>
+			<Name>LIN_PWS_and_HLS_Switch</Name>
+			<Type></Type>
+			<Services>22;2F</Services>
+			<Responses>
+				<Response serviceId="62"></Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>42C0</Address>
+			<Name>Left_Front_Low_Beam_Output</Name>
+			<Type></Type>
+			<Services>22;2F</Services>
+			<Responses>
+				<Response serviceId="62"></Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>42C1</Address>
+			<Name>Right_Front_Low_Beam_Output</Name>
+			<Type></Type>
+			<Services>22;2F</Services>
+			<Responses>
+				<Response serviceId="62"></Response>
+			</Responses>
+		</Control>
 	</Controls>
 	<Payloads>
 		<Payload length="1" typeName="DID_Byte_Enable_Disable">
@@ -2107,20 +2115,20 @@
 			<Value value="32">50 kmph</Value>
 			<Value value="FF">Not Used</Value>
 		</Payload>
-		<Payload length="1" typeName="Unsigned_1Byte"/>
-		<Payload length="4" typeName="DID_F166_0"/>
-		<Payload length="4" typeName="Internal_Version"/>
-		<Payload length="2" typeName="DID_PWM"/>
-		<Payload length="1" typeName="HexDump_1Byte"/>
-		<Payload length="2" typeName="HexDump_2Bytes"/>
-		<Payload length="4" typeName="HexDump_4Bytes"/>
-		<Payload length="16" typeName="HexDump_16Bytes"/>
-		<Payload length="16" typeName="DID_DE26"/>
-		<Payload length="1" typeName="DID_DE04_7"/>
-		<Payload length="1" typeName="DID_DE06_1"/>
-		<Payload length="1" typeName="DID_DE06_3"/>
-		<Payload length="1" typeName="DID_DE0B_1"/>
-		<Payload length="1" typeName="Unsigned_2Bytes"/>
+		<Payload length="1" typeName="Unsigned_1Byte" />
+		<Payload length="4" typeName="DID_F166_0" />
+		<Payload length="4" typeName="Internal_Version" />
+		<Payload length="2" typeName="DID_PWM" />
+		<Payload length="1" typeName="HexDump_1Byte" />
+		<Payload length="2" typeName="HexDump_2Bytes" />
+		<Payload length="4" typeName="HexDump_4Bytes" />
+		<Payload length="16" typeName="HexDump_16Bytes" />
+		<Payload length="16" typeName="DID_DE26" />
+		<Payload length="1" typeName="DID_DE04_7" />
+		<Payload length="1" typeName="DID_DE06_1" />
+		<Payload length="1" typeName="DID_DE06_3" />
+		<Payload length="1" typeName="DID_DE0B_1" />
+		<Payload length="1" typeName="Unsigned_2Bytes" />
 	</Payloads>
 	<DTCFailureTypes>
 		<Type value="11">Circuit Short To Ground</Type>
@@ -2145,8 +2153,8 @@
 		<EnvironmentalConfig>
 			<CycleTime>3000</CycleTime>
 			<TxInterval>10</TxInterval>
-			<StartCycleIndex>1</StartCycleIndex>
-			<EndCycleIndex>20</EndCycleIndex>
+			<StartCycleIndex>16</StartCycleIndex>
+			<EndCycleIndex>90</EndCycleIndex>
 			<PWMDutyOpenValue>100</PWMDutyOpenValue>
 			<PWMDutyCloseValue>0</PWMDutyCloseValue>
 			<PWMFreqOpenValue>200</PWMFreqOpenValue>
@@ -2167,7 +2175,7 @@
 			<Cycle>
 				<Name>SoftContinuous 1</Name>
 				<OpenAt>1</OpenAt>
-				<CloseAt>3</CloseAt>
+				<CloseAt>5</CloseAt>
 				<Functions>
 					<Function control="TCCM_Input">
 						<Payload>KL15Relay1</Payload>
@@ -2180,8 +2188,8 @@
 			</Cycle>
 			<Cycle>
 				<Name>SoftContinuous 2</Name>
-				<OpenAt>4</OpenAt>
-				<CloseAt>6</CloseAt>
+				<OpenAt>6</OpenAt>
+				<CloseAt>11</CloseAt>
 				<Functions>
 					<Function control="TCCM_Input">
 						<Payload>KL15Relay1</Payload>
@@ -2194,8 +2202,8 @@
 			</Cycle>
 			<Cycle>
 				<Name>SoftContinuous 3</Name>
-				<OpenAt>7</OpenAt>
-				<CloseAt>9</CloseAt>
+				<OpenAt>12</OpenAt>
+				<CloseAt>18</CloseAt>
 				<Functions>
 					<Function control="TCCM_Input">
 						<Payload>KL15Relay1</Payload>
