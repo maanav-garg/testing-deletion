@@ -95,7 +95,7 @@ namespace AutosarBCM.Core
                                 bytes.Add(0x0);
                         }
                     }
-                    Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed), "", "");
+                    Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
 
                 }
 
@@ -103,7 +103,7 @@ namespace AutosarBCM.Core
             }
             if (isControlMaskActive)
                 bytes.Add(controlByte);
-            Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
+            //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
             Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
             
         }
@@ -298,20 +298,20 @@ namespace AutosarBCM.Core
                                 .Select(f => new Function
                                 {
                                     Name = f.Value,
-                                    Parent = f.Attribute("parent")?.Value ?? null,
+                                    Control = f.Attribute("parent")?.Value ?? null,
                                 }).First(),
                             Output = m.Elements("Output")
                                 .Select(f => new Function
                                 {
                                     Name = f.Value,
-                                    Parent = f.Attribute("parent")?.Value ?? null,
+                                    Control = f.Attribute("parent")?.Value ?? null,
                                 }).First(),
                         }).ToList(),
                     ContinousReadList = t.Element("ContinousReadList").Elements("Func")
                          .Select(f => new Function
                          {
                              Name = f.Value,
-                             Parent = f.Attribute("parent")?.Value ?? null,
+                             Control = f.Attribute("parent")?.Value ?? null,
                          }).ToList(),
                     Cycles = t.Element("Cycles").Elements("Cycle")
                         .Select(c => new Cycle
@@ -319,11 +319,12 @@ namespace AutosarBCM.Core
                             Name = c.Element("Name").Value,
                             OpenAt = int.Parse(c.Element("OpenAt").Value),
                             CloseAt = int.Parse(c.Element("CloseAt").Value),
-                            Functions = c.Element("Functions").Elements("FuncName")
+                            Functions = c.Element("Functions").Elements("Function")
                                 .Select(f => new Function
                                 {
-                                    Name = f.Value,
-                                    Parent = f.Attribute("parent")?.Value ?? null,
+                                    Control = f.Attribute("control")?.Value,
+                                    ControlInfo = controls.FirstOrDefault(x => x.Name == f.Attribute("control")?.Value),
+                                    Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
                                 }).ToList(),
                         }).ToList()
                 }).First();
@@ -478,16 +479,9 @@ namespace AutosarBCM.Core
         /// List of functions
         /// </summary>
         public List<Function> Functions { get; set; }
-        /// <summary>
-        /// List of items
-        /// </summary>
-        public HashSet<ControlInfo> Items { get; set; } = new HashSet<ControlInfo>();
-        public HashSet<PayloadInfo> PayloadItems { get; set; } = new HashSet<PayloadInfo>();
 
-        public HashSet<ControlInfo> CloseItems { get; set; } = new HashSet<ControlInfo>();
-        public HashSet<PayloadInfo> PayloadCloseItems { get; set; } = new HashSet<PayloadInfo>();
-        public HashSet<ControlInfo> OpenItems { get; set; } = new HashSet<ControlInfo>();
-        public HashSet<PayloadInfo> PayloadOpenItems { get; set; } = new HashSet<PayloadInfo>();
+        public HashSet<Function> CloseItems { get; set; } = new HashSet<Function>();
+        public HashSet<Function> OpenItems { get; set; } = new HashSet<Function>();
 
         #endregion
 
@@ -504,7 +498,9 @@ namespace AutosarBCM.Core
     public class Function
     {
         public string Name { get; set; }
-        public string Parent { get; set; }
+        public string Control { get; set; }
+        public ControlInfo ControlInfo { get; set; }
+        public List<string> Payloads { get; set; }
     }
 
 }
