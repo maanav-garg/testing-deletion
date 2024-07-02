@@ -1,5 +1,6 @@
 using AutosarBCM.Config;
 using AutosarBCM.Core;
+using AutosarBCM.Forms.Monitor;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections.Generic;
@@ -43,8 +44,6 @@ namespace AutosarBCM
         /// Control order of the execution
         /// </summary>
         private ControlOrder controlOrder;
-
-
         #endregion
 
         #region Constructor
@@ -81,15 +80,24 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments</param>
         private void btnStart_Click(object sender, EventArgs e)
         {
+            FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
+            if (mainForm.tsbSession.Text != "Session: Extended Diagnostic Session")
+            {
+                Helper.ShowWarningMessageBox("Must be in Extended Diagnostic Session.");
+                return;
+            }
+
             if (!FormMain.ControlChecker)
             {
                 if (!ConnectionUtil.CheckConnection())
                     return;
+              
                 if (Config == null)
                 {
                     Helper.ShowWarningMessageBox("Please, load the configuration file first.");
                     return;
                 }
+              
                 Task.Run(() => Start());
             }
             RefreshUI(!FormMain.ControlChecker);

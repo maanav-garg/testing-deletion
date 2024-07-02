@@ -689,7 +689,6 @@ namespace AutosarBCM
             testerPresentDropDownButton.Image = Resources.reset;
             StopTesterPresent();
         }
-
         private bool CheckConfigurationFile()
         {
             if (ASContext.Configuration == null)
