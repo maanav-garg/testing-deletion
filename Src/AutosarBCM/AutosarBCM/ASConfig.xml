@@ -1092,7 +1092,7 @@
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte">
-						<Payload name="C5.28_7 Door Ajar Switch - Driver   " dtcCode="91E9" typeName="DID_Bits_On_Off" />
+						<Payload name="C5.28_7 Door Ajar Switch - Driver" dtcCode="91E9" typeName="DID_Bits_On_Off" />
 						<Payload name="C5.33_6 Door Ajar Switch - Passenger" dtcCode="91EA" typeName="DID_Bits_On_Off" />
 						<Payload name="C6.31_5 Cabin Lock" dtcCode="908F" typeName="DID_Bits_On_Off" />
 						<Payload name="C6.41_4 Cabin Unlock" dtcCode="9F39" typeName="DID_Bits_On_Off" />
@@ -2167,9 +2167,206 @@
 		</ContinousReadList>
 		<ConnectionMappings>
 			<Mapping>
-				<Output parent="TCCM_Input">KL15Relay1</Output>
-				<Input parent="Horn_Switch">Horn Switch</Input>
+				<Output parent="Sunroof_Motor">C1.6_MOT-B</Output>
+				<Input parent="Input_Switches">C5.47_LowLinerSwitch</Input>
 			</Mapping>
+			<Mapping>
+				<Output parent="Sunroof_Motor">C1.8_MOT-A</Output>
+				<Input parent="Spare_Switch">C5.49_Spare Switch 16</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Windscreen_Wipers_System_Output_Signal">C1.9_Wiper High Relay</Output>
+				<Input parent="Spare_Switch">C6.1_Spare Switch 14</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Horn_Output_Control">C1.11_Horn Output Control</Output>
+				<Input parent="Blower_Switch">C5.54_Blower Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Rear_Park_Lamps_Output">C1.13_RearParkingLightTrailerSupply</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C6.3_2 FrontResetRightSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Left_Front_Low_Beam_Output_Contro">C1.14_Left Front Low Beam Output Control</Output>
+				<Input parent="Input_Switches">C6.2_AxleLifting1Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Windscreen_Wipers_System_Output_Signal">C1.18_Wiper Low Relay</Output>
+				<Input parent="WiperParkPositionSwitch">C6.10_WiperParkPositionSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Right_Front_Fog_Lamps_Output">C2.1_Right Front Fog Lamps Output</Output>
+				<Input parent="Power_Window_Switch_Input">C6.11_PowerWindowPASSUpSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="DomeLightSupply">C2.2_DomeLightSupply</Output>
+				<Input parent="Spare_Switch">C6.12_Spare Switch 18</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Daytime_Running_Light_Output">C2.3_DDRLSupplyRight</Output>
+				<Input parent="Spare_Switch">C6.13_Spare Switch 19</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Rear_Fog_Lamps_Output">C2.4_Rear Fog Lamps Output</Output>
+				<Input parent="PTO_Switches">C6.20_PTO1AcknowledgementSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Left_Rear_Turn_Signal_Lamp_Control">C2.7_Left Rear Turn Signal Lamp Control</Output>
+				<Input parent="Spare_Switch">C6.22_Spare Switch 21</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Daytime_Running_Light_Output">C2.9_DDRLSupplyLeft</Output>
+				<Input parent="Spare_Switch">C6.28_Spare Switch 24</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="DifferentialLockValve1Supply">C3.1_DifferentialLockValve1Supply</Output>
+				<Input parent="Differential_Control_Input">C6.39_DiffLock1FeedbackSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="FrontParkingLightSupply">C3.4_FrontParkingLightSupply</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C6.41_4 Cabin Unlock</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="ACCutOffSupply">C3.5_ACCutOffSupply</Output>
+				<Input parent="Spare_Switch">C5.11_Spare Switch 1</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Headlamp_High_Beam_Output_Control">C3.7_High Beam Left</Output>
+				<Input parent="Input_Switches">C5.15_InteriorLampOffSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Left_Front_Turn_Lamp_Outage_Feedback">C3.8_Left Front Turn Lamp Outage Feedback</Output>
+				<Input parent="Stowage_Box_Reminder">C5.16_Left Side Stowage Box</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Blower_Control_Relay_Supply">C3.9_Blower Control Relay Supply</Output>
+				<Input parent="Spare_Switch">C5.18_Spare Switch 4</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Right_Rear_Turn_Signal_Lamp_Control">C3.13_Right Rear Turn Signal Lamp Control</Output>
+				<Input parent="Sunroof_Switch">C5.27_Sunroof Open Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Right_Front_Low_Beam_Output_Control">C3.14_Right Front Low Beam Output Control</Output>
+				<Input parent="Spare_Switch">C5.34_Spare Switch 7</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="ReverseGearSupply">C3.15_ReverseGearSupply</Output>
+				<Input parent="Stowage_Box_Reminder">C5.35_Right Side Stowage Box</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Headlamp_High_Beam_Output_Control">C3.16_High Beam Right</Output>
+				<Input parent="Sunroof_Switch">C5.45_Sunroof Close Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="InteriorLightDimmingSupply">C3.17_InteriorLightDimmingSupply</Output>
+				<Input parent="Spare_Switch">C5.50_Spare Switch 10</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="WaterPumpSupply">C3.18_WaterPumpSupply</Output>
+				<Input parent="Spare_Switch">C5.51_Spare Switch 11</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Right_Front_Turn_Lamp_Outage_Feedback">C3.21_Right Front Turn Lamp Outage Feedback</Output>
+				<Input parent="Spare_Switch">C5.52_Spare Switch 12</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="HeatedMirrorSupply">C4.1_HeatedMirrorSupply</Output>
+				<Input parent="Horn_Switch">C5.53_Horn Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="HeatedWindshieldSupply">C4.2_HeatedWindshieldSupply</Output>
+				<Input parent="Input_Switches">C4.9_CabinTiltSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Rear_Park_Lamps_Output">C4.4_RearParkingLightRightSupply</Output>
+				<Input parent="Spare_Switch">C6.8_Spare Switch 17</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Spare_Digital_Outputs">C4.5_SpareDigitalOutput2</Output>
+				<Input parent="Cruise_Control_Switches">C6.9_Cruise Resume Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="BrakeLightRelaySupply">C4.6_BrakeLightRelaySupply</Output>
+				<Input parent="PTO_Switches">C6.19_MainPTOAckSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Spare_PWM_Inputs">C4.7_SparePWM4</Output>
+				<Input parent="Spare_Switch">C6.23_Spare Switch 22</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="AirHornActivateSupply">C4.16_AirHornActivateSupply</Output>
+				<Input parent="Input_Switches">C6.26_EraglonassGlobalMute</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="StepLightsSupply">C4.19_StepLightsSupply</Output>
+				<Input parent="Cruise_Control_Switches">C6.27_Cruise Time Gap minus Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Hall_Sensor_Supply">C4.28_HallSensorLeftSupply</Output>
+				<Input parent="Spare_Switch">C5.17_Spare Switch 3</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="PTO_Valve_Supply">C4.37_PTO2ValveSupply</Output>
+				<Input parent="Cruise_Control_Switches">C6.46_Cruise Off Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="TrailerTagAxleLifting1Supply">C4.39_TrailerTagAxleLifting1Supply</Output>
+				<Input parent="Spare_Switch">C6.48_Spare Switch 29</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="BedAreaLightingSupply">C4.40_BedAreaLightingSupply</Output>
+				<Input parent="Ajar_On_Off_Control">C6.49_Ajar On Off Control</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Map_Lamp_PWM_Supply">C4.41_MapLampDriverPWMSupply</Output>
+				<Input parent="Spare_Switch">C5.48_Spare Switch 9</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Hall_Sensor_Supply">C4.46_HallSensorRightSupply</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.28_7 Door Ajar Switch - Driver</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="WCInhibit">C4.47_WCInhibit</Output>
+				<Input parent="Spare_Switch">C5.29_Spare Switch 5</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Interior12VLightDimmingSupply">C5.1_Interior12VLightDimmingSupply</Output>
+				<Input parent="Spare_Switch">C5.30_Spare Switch 6</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="TCCM_Input">C5.2_KL15Relay2</Output>
+				<Input parent="Input_Switches">C6.37_AlternatorChargingStatus</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="TCCM_Input">C5.3_KL50Output</Output>
+				<Input parent="Spare_Switch">C6.40_Spare Switch 27</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="TCCM_Input">C5.5_KL15Relay1</Output>
+				<Input parent="Input_Switches">C6.42_DamperConnectionSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="TCCM_Input">C5.6_KL75Relay1</Output>
+				<Input parent="Input_Switches">C6.43_TrailerTagAxleLifting</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="LowLinerFrontSideLiftedValveSupply">C5.8_LowLinerFrontSideLiftedValveSupply</Output>
+				<Input parent="Cruise_Control_Switches">C6.45_Cruise Set + Switch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="SteeringColumnSwitchIlluminationSupply">C5.9_SteeringColumnSwitchIlluminationSupply</Output>
+				<Input parent="PTO_Switches">C5.31_PTO2AcknowledgementSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="PWM_StartStopIllimunation12VLED">C5.19_PWM_StartStopIllimunation12VLED</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.32_0 FrontSetRightSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="DoorLockIndicatorSupply">C5.37_DoorLockIndicatorSupply</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.33_6 Door Ajar Switch - Passenger</Input>
+			</Mapping>
+			
 		</ConnectionMappings>
 		<Cycles>
 			<Cycle>
