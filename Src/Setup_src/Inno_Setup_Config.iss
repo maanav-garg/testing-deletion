@@ -53,8 +53,8 @@ Source: "{#ReleaseDir}\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}"; Flag
 Source: "{#ReleaseDir}\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#ReleaseDir}\Confused\LicenseHelper.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; Source: "{#ReleaseDir}\Connection.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "..\..\Doc\AutosarBCM-UserManual.pdf"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "..\..\Doc\LicenseClient-UserGuide.pdf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\Doc\AutosarBCM-UserManual.pdf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\Doc\LicenseClient-UserGuide.pdf"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

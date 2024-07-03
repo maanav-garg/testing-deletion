@@ -1233,7 +1233,7 @@ namespace AutosarBCM
         {
             try
             {
-                Process.Start(@".\AutosarBCM-UserManual.pdf");
+                Process.Start(@".\DiagBox-AutosarBCM-UserManual.pdf");
             }
             catch (Exception ex)
             {
