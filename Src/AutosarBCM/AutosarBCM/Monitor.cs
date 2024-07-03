@@ -406,7 +406,6 @@ namespace AutosarBCM
 
                     function.ControlInfo.Switch(function.Payloads, true);
 
-
                     Core.ControlInfo mappedItem = null;
                     foreach (var payload in function.Payloads)
                         if (dictMapping.TryGetValue(payload, out mappedItem))

@@ -4,6 +4,8 @@
 		<Entry key="TxInterval" value="5" />
 		<Entry key="ReadInterval" value="5" />
 		<Entry key="DTCWaitingTime" value="8000" />
+		<Entry key="TxIntervalForControlChecker" value="50"/>
+    	<Entry key="ReadIntervalForControlChecker" value="20"/>
 	</Settings>
 	<Services>
 		<Service requestID="10" responseID="50">

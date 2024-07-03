@@ -51,7 +51,7 @@ namespace AutosarBCM.Core
             ConnectionUtil.TransmitData(Data);
         }
     }
-
+    
     public class ASResponse
     {
         public byte[] Data { get; private set; }
