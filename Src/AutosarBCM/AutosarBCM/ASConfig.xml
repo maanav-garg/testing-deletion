@@ -903,7 +903,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Ambient Light LED Power Supply" dtcCode="9F3A" typeName="DID_PWM"></Payload>
+					<Payload name="C4.42_Ambient Light LED Power Supply" dtcCode="9F3A" typeName="DID_PWM"></Payload>
 				</Response>
 				<Response serviceId="6F">
 				</Response>
@@ -955,12 +955,10 @@
 			<Name>Hazard_Warning_Switch</Name>
 			<Type></Type>
 			<Group>DID</Group>
-			<Services>22;2F</Services>
+			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="C5.10_Hazar Warning Switch" dtcCode="9D35" typeName="DID_Byte_On_Off"></Payload>
-				</Response>
-				<Response serviceId="6F">
 				</Response>
 			</Responses>
 		</Control>
@@ -969,12 +967,10 @@
 			<Name>Blower_Switch</Name>
 			<Type></Type>
 			<Group>DID</Group>
-			<Services>22;2F</Services>
+			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="C5.54_Blower Switch" dtcCode="9F24" typeName="DID_Byte_On_Off"></Payload>
-				</Response>
-				<Response serviceId="6F">
 				</Response>
 			</Responses>
 		</Control>
@@ -1011,11 +1007,11 @@
 			<Name>Key_Switch_System_Input_Signal</Name>
 			<Type></Type>
 			<Group>DID</Group>
-			<Services>22;2F</Services>
+			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Ignition/Crank" dtcCode="F00D" typeName="DID_Byte_On_Off"></Payload>
-					<Payload name="Ignition Switch" dtcCode="F00E" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C6.44_Ignition/Crank" dtcCode="F00D" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C6.19_Ignition Switch" dtcCode="F00E" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1053,7 +1049,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Washer Pump Front Relay" dtcCode="9C79" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C2.8_Washer Pump Front Relay" dtcCode="9C79" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -1063,7 +1059,7 @@
 			<Name>Sunroof_Switch</Name>
 			<Type></Type>
 			<Group>DID</Group>
-			<Services>22;2F</Services>
+			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="C5.45_Sunroof Close Switch" dtcCode="9F04" typeName="DID_Byte_On_Off"></Payload>
@@ -1115,8 +1111,57 @@
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="All Doors Lock and Ajar Output Signal Status" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C1.7_Driver Door Lock Relay" typeName="DID_Bits_On_Off"></Payload>
+					<Payload name="C1.11_Passanger Door Lock Relay" typeName="DID_Bits_On_Off"></Payload>
+					<Payload name="C1.4_Door Unlock Relay - Driver's Side" typeName="DID_Bits_On_Off"></Payload>
+					<Payload name="C1.5_Door Unlock Relay - Passenger's Side" typeName="DID_Bits_On_Off"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>C197</Address>
+			<Name>Remote_Key_Identification</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Transmitter Identification Code 1" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Transmitter Identification Code 2" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Transmitter Identification Code 3" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Transmitter Identification Code 4" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Transmitter Identification Code 5" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Transmitter Identification Code 6" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Transmitter Identification Code 7" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Transmitter Identification Code 8" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Transmitter Identification Code 9" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="Transmitter Identification Code 10" typeName="HexDump_4Bytes"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>C211</Address>
+			<Name>Last_Received_Transmitter_ID_Code_Value</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Last Received Transmitter Id Code Value" typeName="HexDump_4Bytes"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>C257</Address>
+			<Name>Last_Received_Transmitter_Button_Press</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Last Received Transmitter Button Press" typeName="DID_C257_0"></Payload>
+				</Response>
 			</Responses>
 		</Control>
 		<Control>
@@ -1153,7 +1198,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="SparePWM3" dtcCode="9D9E" typeName="DID_PWM"></Payload>
+					<Payload name="C4.8_SparePWM3" dtcCode="9D9E" typeName="DID_PWM"></Payload>
 					<Payload name="C4.7_SparePWM4" dtcCode="9D9D" typeName="DID_PWM"></Payload>
 				</Response>
 			</Responses>
@@ -1179,7 +1224,7 @@
 		</Control>
 		<Control>
 			<Address>DF14</Address>
-			<Name>DomeLightSupply</Name>
+			<Name>Dome_Light_Supply</Name>
 			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
@@ -1188,6 +1233,18 @@
 					<Payload name="C2.2_DomeLightSupply" dtcCode="9F37" typeName="DID_PWM"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>DF22</Address>
+			<Name>Ambient_Light_Sensor</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="C5.20_Ambient Light Sensor" typeName="HexDump_3Bytes"></Payload>
+				</Response>
 			</Responses>
 		</Control>
 		<Control>
@@ -1243,6 +1300,19 @@
 			</Responses>
 		</Control>
 		<Control>
+			<Address>DF42</Address>
+			<Name>Power_Window_Direction_Hall_Sensor</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="C4.18_PowerWindowDirectionLeftHallSensor" typeName="DID_Byte_Activate_Inactivate"></Payload>
+					<Payload name="C4.34_PowerWindowDirectionRightHallSensor" typeName="DID_Byte_Activate_Inactivate"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
 			<Address>DF43</Address>
 			<Name>Spare_Analog_Input</Name>
 			<Type></Type>
@@ -1250,8 +1320,8 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="SpareAnalogInput2" typeName="HexDump_1Byte"></Payload>
-					<Payload name="SpareAnalogInput1" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C5.40_SpareAnalogInput2" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C5.39_SpareAnalogInput1" typeName="HexDump_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1265,8 +1335,26 @@
 				<Response serviceId="62">
 					<Payload name="C4.5_SpareDigitalOutput2" dtcCode="9D9B" typeName="HexDump_1Byte"></Payload>
 					<Payload name="C4.48_SpareDigitalOutput3" dtcCode="9A8C" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C4.8_SpareDigitalOutput4" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>DF45</Address>
+			<Name>Clock_Spring_Sensor</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="C5.42_ClockSpring1LHSensor" typeName="HexDump_3Byte"></Payload>
+					<Payload name="C5.43_ClockSpring1RHSensor" typeName="HexDump_3Byte"></Payload>
+					<Payload name="C5.23_ClockSpring2LHSensor 1" typeName="HexDump_3Byte"></Payload>
+					<Payload name="C5.22_ClockSpring2RHSensor 1" typeName="HexDump_3Byte"></Payload>
+					<Payload name="C5.25_ClockSpring3LHSensor" typeName="HexDump_3Byte"></Payload>
+					<Payload name="C5.26_ClockSpring3RHSensor" typeName="HexDump_3Byte"></Payload>
+				</Response>
 			</Responses>
 		</Control>
 		<Control>
@@ -1277,10 +1365,10 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="HornTypeSelectionSwitch" dtcCode="9324" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.42_HornTypeSelectionSwitch" dtcCode="9324" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.2_AxleLifting1Switch" dtcCode="6100" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.47_LowLinerSwitch" dtcCode="6103" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="RockingSwitch" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.21_RockingSwitch" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.43_TrailerTagAxleLifting" dtcCode="6101" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C4.9_CabinTiltSwitch" dtcCode="9F0E" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.15_InteriorLampOffSwitch" dtcCode="9F3D" typeName="DID_Byte_Present_notPresent"></Payload>
@@ -1288,7 +1376,7 @@
 					<Payload name="C6.42_DamperConnectionSwitch" dtcCode="9F4B" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.26_EraglonassGlobalMute" dtcCode="921E" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.37_AlternatorChargingStatus" dtcCode="1246" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="EHPASInput" dtcCode="35DF" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.38_EHPASInput" dtcCode="35DF" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1317,6 +1405,19 @@
 					<Payload name="C5.14_Start Stop Switch 3" dtcCode="05BC" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.24_Start Stop Switch 2" dtcCode="05BF" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.32_Start Stop Switch 1" dtcCode="05BE" typeName="DID_Byte_Present_notPresent"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>DF4A</Address>
+			<Name>Door_Cap_Sensor</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="C4.17_DoorCapSensor1" typeName="DID_PWM"></Payload>
+					<Payload name="C5.41_DoorCapSensor2" typeName="DID_PWM"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1382,8 +1483,9 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
+					<Payload name="C5.46_Spare Switch 30" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.48_Spare Switch 29" dtcCode="BA7A" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="Spare Switch 28" dtcCode="BA7B" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.47_Spare Switch 28" dtcCode="BA7B" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.40_Spare Switch 27" dtcCode="BA7C" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.30_Spare Switch 25" dtcCode="BA7E" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.28_Spare Switch 24" dtcCode="BA80" typeName="DID_Byte_Present_notPresent"></Payload>
@@ -1404,6 +1506,7 @@
 					<Payload name="C5.29_Spare Switch 5" dtcCode="9F55" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.18_Spare Switch 4" dtcCode="BA88" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.17_Spare Switch 3" dtcCode="BA89" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.21_Spare Switch 2" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.11_Spare Switch 1" dtcCode="9F45" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.25_Spare1 Config Switch" dtcCode="9F57" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
@@ -1449,7 +1552,7 @@
 		</Control>
 		<Control>
 			<Address>DF55</Address>
-			<Name>InterLockValveSupply</Name>
+			<Name>Inter_Lock_Valve_Supply</Name>
 			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
@@ -1484,11 +1587,13 @@
 					<Payload name="C5.7_PTO1ValveSupply" dtcCode="6107" typeName="DID_Byte_Activate_Inactivate"></Payload>
 					<Payload name="C4.37_PTO2ValveSupply" dtcCode="350F" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
+				<Response serviceId="6F">
+				</Response>
 			</Responses>
 		</Control>
 		<Control>
 			<Address>DF59</Address>
-			<Name>CabinTiltValveSupply</Name>
+			<Name>Cabin_Tilt_Valve_Supply</Name>
 			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
@@ -1574,6 +1679,7 @@
 				<Response serviceId="62">
 					<Payload name="C4.6_BrakeLightRelaySupply" typeName="DID_Byte_Activate_Inactivate"></Payload>
 				</Response>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
@@ -1653,8 +1759,6 @@
 				<Response serviceId="62">
 					<Payload name="SWC LifeCycle" typeName="HexDump_4Bytes"></Payload>
 				</Response>
-				<Response serviceId="6F">
-				</Response>
 			</Responses>
 		</Control>
 		<Control>
@@ -1662,12 +1766,12 @@
 			<Name>Test_Data</Name>
 			<Type></Type>
 			<Group>DID</Group>
-			<Services>22;2F</Services>
+			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="Test_Data" typeName="HexDump_4Bytes"></Payload>
 				</Response>
-				<Response serviceId="6F"></Response>
+				<Response serviceId="6E"></Response>
 			</Responses>
 		</Control>
 		<!--Important: deactivated because there was no response in the control.-->
@@ -1679,19 +1783,40 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
         </Response>
       </Responses>
     </Control>-->
+		<Control>
+			<Address>4096</Address>
+			<Name>Remote_Key_Rolling_Counter</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Remote Key 1 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+					<Payload name="Remote Key 2 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+					<Payload name="Remote Key 3 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+					<Payload name="Remote Key 4 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+					<Payload name="Remote Key 5 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+					<Payload name="Remote Key 6 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+					<Payload name="Remote Key 7 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+					<Payload name="Remote Key 8 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+					<Payload name="Remote Key 9 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+					<Payload name="Remote Key 10 Rolling Counter" typeName="Unsigned_2Bytes"></Payload>
+				</Response>
+			</Responses>
+		</Control>
 		<Control>
 			<Address>40C6</Address>
 			<Name>Right_Rear_Turn_Lamp_LED_Outage_Feedback</Name>
@@ -1700,7 +1825,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Right Rear Turn Lamp/LED Outage Feedback" dtcCode="9F34" typeName="DID_Lamp_Status"></Payload>
+					<Payload name="C2.12_Right Rear Turn Lamp/LED Outage Feedback" dtcCode="9F34" typeName="DID_Lamp_Status"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -1713,7 +1838,7 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Left Rear Turn Lamp/LED Outage Feedback" dtcCode="9F35" typeName="DID_Lamp_Status"></Payload>
+					<Payload name="C2.15_Left Rear Turn Lamp/LED Outage Feedback" dtcCode="9F35" typeName="DID_Lamp_Status"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -1728,6 +1853,7 @@
 				<Response serviceId="62">
 					<Payload name="C2.7_Left Rear Turn Signal Lamp Control" dtcCode="9329" typeName="DID_Byte_Lamp_Control"></Payload>
 				</Response>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
@@ -1740,6 +1866,7 @@
 				<Response serviceId="62">
 					<Payload name="C3.13_Right Rear Turn Signal Lamp Control" dtcCode="932A" typeName="DID_Byte_Lamp_Control"></Payload>
 				</Response>
+				<Response serviceId="6F"></Response>
 			</Responses>
 		</Control>
 		<Control>
@@ -1758,6 +1885,30 @@
 			</Responses>
 		</Control>
 		<Control>
+			<Address>412E</Address>
+			<Name>Remote_Key_Signal_Strength_Learning_Threshold</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Remote Key Signal Strength Learning Threshold" typeName="HexDump_1Byte"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>4131</Address>
+			<Name>Number_Of_Programmed_Remote_Keys</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Number Of Programmed Remote Keys" typeName="HexDump_1Byte"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
 			<Address>41C7</Address>
 			<Name>Driver_Power_Window_Motor</Name>
 			<Type></Type>
@@ -1765,8 +1916,8 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Driver Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"></Payload>
-					<Payload name="Driver Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"></Payload>
+					<Payload name="C2.14_Driver Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"></Payload>
+					<Payload name="C2.13_Driver Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -1779,8 +1930,8 @@
 			<Services>22;2F</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Passenger Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"></Payload>
-					<Payload name="Passenger Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"></Payload>
+					<Payload name="C1.1_Passenger Power Window Motor Up" dtcCode="9F23" typeName="DID_PWM"></Payload>
+					<Payload name="C1.2_Passenger Power Window Motor Down" dtcCode="9F28" typeName="DID_PWM"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -1847,7 +1998,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Turn Indicator Switch Input" dtcCode="9F3D" typeName="DID_4253_0"></Payload>
+					<Payload name="C5.15_Turn Indicator Switch Input" dtcCode="9F3D" typeName="DID_4253_0"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1943,33 +2094,6 @@
 				</Response>
 			</Responses>
 		</Control>
-		<Control>
-			<Address>DF47</Address>
-			<Name>LIN_PWS_and_HLS_Switch</Name>
-			<Type></Type>
-			<Services>22;2F</Services>
-			<Responses>
-				<Response serviceId="62"></Response>
-			</Responses>
-		</Control>
-		<Control>
-			<Address>42C0</Address>
-			<Name>Left_Front_Low_Beam_Output</Name>
-			<Type></Type>
-			<Services>22;2F</Services>
-			<Responses>
-				<Response serviceId="62"></Response>
-			</Responses>
-		</Control>
-		<Control>
-			<Address>42C1</Address>
-			<Name>Right_Front_Low_Beam_Output</Name>
-			<Type></Type>
-			<Services>22;2F</Services>
-			<Responses>
-				<Response serviceId="62"></Response>
-			</Responses>
-		</Control>
 	</Controls>
 	<Payloads>
 		<Payload length="1" typeName="DID_Byte_Enable_Disable">
@@ -1998,6 +2122,17 @@
 		<Payload length="1" typeName="DID_Byte_Present_notPresent">
 			<Value isClose="true" value="00" color="Red">Not Present</Value>
 			<Value isOpen="true" value="01" color="Green">Present</Value>
+		</Payload>
+		<Payload length="1" typeName="DID_C257_0">
+			<Value value="00">Button Data Cleared</Value>
+			<Value value="02">PLG_PTC</Value>
+			<Value value="04">LPSD</Value>
+			<Value value="08">Panic</Value>
+			<Value value="10">Lock</Value>
+			<Value value="20">Unlock</Value>
+			<Value value="40">Trk_Gate_RPSD</Value>
+			<Value value="80">Remote Start</Value>
+			<Value value="FF">Multiple Buttons</Value>
 		</Payload>
 		<Payload length="1" typeName="OnOffState">
 			<Value isOpen="true" value="00">On</Value>
@@ -2169,8 +2304,28 @@
 		</ContinousReadList>
 		<ConnectionMappings>
 			<Mapping>
+				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.5_Door Unlock Relay - Passenger's Side</Output>
+				<Input parent="Differential_Control_Input">C5.12_DiffLock1DriverRequestSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Passenger_Power_Window_Motor">C1.1_Passenger Power Window Motor Up</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.36_3 FrontResetLeftSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Passenger_Power_Window_Motor">C1.2_Passenger Power Window Motor Down</Output>
+				<Input parent="Spare_Switch">C5.46_Spare Switch 30</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.11_Passanger Door Lock Relay</Output>
+				<Input parent="Start_Stop_Switches">C5.14_Start Stop Switch 3</Input>
+			</Mapping>
+			<Mapping>
 				<Output parent="Sunroof_Motor">C1.6_MOT-B</Output>
 				<Input parent="Input_Switches">C5.47_LowLinerSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.4_Door Unlock Relay - Driver's Side</Output>
+				<Input parent="Hazard_Warning_Switch">C5.10_Hazar Warning Switch</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Sunroof_Motor">C1.8_MOT-A</Output>
@@ -2179,6 +2334,10 @@
 			<Mapping>
 				<Output parent="Windscreen_Wipers_System_Output_Signal">C1.9_Wiper High Relay</Output>
 				<Input parent="Spare_Switch">C6.1_Spare Switch 14</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.7_Driver Door Lock Relay</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.13_1 FrontSetLeftSwitch</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Horn_Output_Control">C1.11_Horn Output Control</Output>
@@ -2213,12 +2372,28 @@
 				<Input parent="PTO_Switches">C6.20_PTO1AcknowledgementSwitch</Input>
 			</Mapping>
 			<Mapping>
+				<Output parent="EngineBrakeSupply">C2.6_EngineBrakeSupply</Output>
+				<Input parent="Spare_Switch">C6.21_Spare Switch 2</Input>
+			</Mapping>		
+			<Mapping>
 				<Output parent="Left_Rear_Turn_Signal_Lamp_Control">C2.7_Left Rear Turn Signal Lamp Control</Output>
 				<Input parent="Spare_Switch">C6.22_Spare Switch 21</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Daytime_Running_Light_Output">C2.9_DDRLSupplyLeft</Output>
 				<Input parent="Spare_Switch">C6.28_Spare Switch 24</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Right_Rear_Turn_Lamp_LED_Outage_Feedback">C2.12_Right Rear Turn Lamp/LED Outage Feedback</Output>
+				<Input parent="Power_Window_Switch_Input">C6.29_PowerWindowPASSDownSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Driver_Power_Window_Motor">C2.13_Driver Power Window Motor Down</Output>
+				<Input parent="Spare_Switch">C6.30_Spare Switch 25</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Driver_Power_Window_Motor">C2.14_Driver Power Window Motor Up</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C6.31_5 Cabin Lock</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="DifferentialLockValve1Supply">C3.1_DifferentialLockValve1Supply</Output>
@@ -2295,6 +2470,10 @@
 			<Mapping>
 				<Output parent="Spare_PWM_Inputs">C4.7_SparePWM4</Output>
 				<Input parent="Spare_Switch">C6.23_Spare Switch 22</Input>
+			</Mapping>		
+			<Mapping>
+				<Output parent="Spare_Digital_Outputs">C4.8_SpareDigitalOutput4</Output>
+				<Input parent="Spare_Switch">C6.25_Spare1 Config Switch</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="AirHornActivateSupply">C4.16_AirHornActivateSupply</Output>
@@ -2313,6 +2492,10 @@
 				<Input parent="Cruise_Control_Switches">C6.46_Cruise Off Switch</Input>
 			</Mapping>
 			<Mapping>
+				<Output parent="Cabin_Tilt_Valve_Supply">C4.38_CabinTiltValveSupply</Output>
+				<Input parent="Spare_Switch">C6.47_Spare Switch 28</Input>
+			</Mapping>
+			<Mapping>
 				<Output parent="TrailerTagAxleLifting1Supply">C4.39_TrailerTagAxleLifting1Supply</Output>
 				<Input parent="Spare_Switch">C6.48_Spare Switch 29</Input>
 			</Mapping>
@@ -2323,6 +2506,14 @@
 			<Mapping>
 				<Output parent="Map_Lamp_PWM_Supply">C4.41_MapLampDriverPWMSupply</Output>
 				<Input parent="Spare_Switch">C5.48_Spare Switch 9</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Ambient_Light_LED_Power_Supply">C4.42_Ambient Light LED Power Supply</Output>
+				<Input parent="Spare_Switch">C4.21_Spare Switch 15</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Inter_Lock_Valve_Supply">C4.44_InterLockValveSupply</Output>
+				<Input parent="Input_Switches">C6.38_EHPASInput</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Hall_Sensor_Supply">C4.46_HallSensorRightSupply</Output>
@@ -2368,7 +2559,6 @@
 				<Output parent="DoorLockIndicatorSupply">C5.37_DoorLockIndicatorSupply</Output>
 				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.33_6 Door Ajar Switch - Passenger</Input>
 			</Mapping>
-			
 		</ConnectionMappings>
 		<Cycles>
 			<Cycle>
