@@ -166,7 +166,7 @@ namespace AutosarBCM.Core
 
         public void Transmit()
         {
-            new ASRequest(ServiceInfo, new byte[] { ServiceInfo.RequestID, 0x02, 0x40 }).Execute();
+            new ASRequest(ServiceInfo, new byte[] { ServiceInfo.RequestID, 0x02, 0x8F }).Execute();
         }
 
         public static ReadDTCInformationService Receive(ASResponse response)
