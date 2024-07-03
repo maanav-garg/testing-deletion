@@ -234,6 +234,7 @@ namespace AutosarBCM
             }
 
 
+
             //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 
             ////HandleGeneralMessages(bytes);
