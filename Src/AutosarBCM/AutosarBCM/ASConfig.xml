@@ -1329,6 +1329,7 @@
 				<Response serviceId="62">
 					<Payload name="C4.5_SpareDigitalOutput2" dtcCode="9D9B" typeName="HexDump_1Byte"></Payload>
 					<Payload name="C4.48_SpareDigitalOutput3" dtcCode="9A8C" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C4.8_SpareDigitalOutput4" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -1476,6 +1477,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
+					<Payload name="C5.46_Spare Switch 30" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.48_Spare Switch 29" dtcCode="BA7A" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.47_Spare Switch 28" dtcCode="BA7B" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.40_Spare Switch 27" dtcCode="BA7C" typeName="DID_Byte_Present_notPresent"></Payload>
@@ -1498,6 +1500,7 @@
 					<Payload name="C5.29_Spare Switch 5" dtcCode="9F55" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.18_Spare Switch 4" dtcCode="BA88" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.17_Spare Switch 3" dtcCode="BA89" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.21_Spare Switch 2" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.11_Spare Switch 1" dtcCode="9F45" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.25_Spare1 Config Switch" dtcCode="9F57" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
@@ -1543,7 +1546,7 @@
 		</Control>
 		<Control>
 			<Address>DF55</Address>
-			<Name>InterLockValveSupply</Name>
+			<Name>Inter_Lock_Valve_Supply</Name>
 			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
@@ -1584,7 +1587,7 @@
 		</Control>
 		<Control>
 			<Address>DF59</Address>
-			<Name>CabinTiltValveSupply</Name>
+			<Name>Cabin_Tilt_Valve_Supply</Name>
 			<Type></Type>
 			<Group>DID</Group>
 			<Services>22;2F</Services>
@@ -2295,8 +2298,28 @@
 		</ContinousReadList>
 		<ConnectionMappings>
 			<Mapping>
+				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.5_Door Unlock Relay - Passenger's Side</Output>
+				<Input parent="Differential_Control_Input">C5.12_DiffLock1DriverRequestSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Passenger_Power_Window_Motor">C1.1_Passenger Power Window Motor Up</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.36_3 FrontResetLeftSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Passenger_Power_Window_Motor">C1.2_Passenger Power Window Motor Down</Output>
+				<Input parent="Spare_Switch">C5.46_Spare Switch 30</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.11_Passanger Door Lock Relay</Output>
+				<Input parent="Start_Stop_Switches">C5.14_Start Stop Switch 3</Input>
+			</Mapping>
+			<Mapping>
 				<Output parent="Sunroof_Motor">C1.6_MOT-B</Output>
 				<Input parent="Input_Switches">C5.47_LowLinerSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.4_Door Unlock Relay - Driver's Side</Output>
+				<Input parent="Hazard_Warning_Switch">C5.10_Hazar Warning Switch</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Sunroof_Motor">C1.8_MOT-A</Output>
@@ -2305,6 +2328,10 @@
 			<Mapping>
 				<Output parent="Windscreen_Wipers_System_Output_Signal">C1.9_Wiper High Relay</Output>
 				<Input parent="Spare_Switch">C6.1_Spare Switch 14</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.7_Driver Door Lock Relay</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.13_1 FrontSetLeftSwitch</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Horn_Output_Control">C1.11_Horn Output Control</Output>
@@ -2339,12 +2366,28 @@
 				<Input parent="PTO_Switches">C6.20_PTO1AcknowledgementSwitch</Input>
 			</Mapping>
 			<Mapping>
+				<Output parent="EngineBrakeSupply">C2.6_EngineBrakeSupply</Output>
+				<Input parent="Spare_Switch">C6.21_Spare Switch 2</Input>
+			</Mapping>		
+			<Mapping>
 				<Output parent="Left_Rear_Turn_Signal_Lamp_Control">C2.7_Left Rear Turn Signal Lamp Control</Output>
 				<Input parent="Spare_Switch">C6.22_Spare Switch 21</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Daytime_Running_Light_Output">C2.9_DDRLSupplyLeft</Output>
 				<Input parent="Spare_Switch">C6.28_Spare Switch 24</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Right_Rear_Turn_Lamp_LED_Outage_Feedback">C2.12_Right Rear Turn Lamp/LED Outage Feedback</Output>
+				<Input parent="Power_Window_Switch_Input">C6.29_PowerWindowPASSDownSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Driver_Power_Window_Motor">C2.13_Driver Power Window Motor Down</Output>
+				<Input parent="Spare_Switch">C6.30_Spare Switch 25</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Driver_Power_Window_Motor">C2.14_Driver Power Window Motor Up</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C6.31_5 Cabin Lock</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="DifferentialLockValve1Supply">C3.1_DifferentialLockValve1Supply</Output>
@@ -2421,6 +2464,10 @@
 			<Mapping>
 				<Output parent="Spare_PWM_Inputs">C4.7_SparePWM4</Output>
 				<Input parent="Spare_Switch">C6.23_Spare Switch 22</Input>
+			</Mapping>		
+			<Mapping>
+				<Output parent="Spare_Digital_Outputs">C4.8_SpareDigitalOutput4</Output>
+				<Input parent="Spare_Switch">C6.25_Spare1 Config Switch</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="AirHornActivateSupply">C4.16_AirHornActivateSupply</Output>
@@ -2439,6 +2486,10 @@
 				<Input parent="Cruise_Control_Switches">C6.46_Cruise Off Switch</Input>
 			</Mapping>
 			<Mapping>
+				<Output parent="Cabin_Tilt_Valve_Supply">C4.38_CabinTiltValveSupply</Output>
+				<Input parent="Spare_Switch">C6.47_Spare Switch 28</Input>
+			</Mapping>
+			<Mapping>
 				<Output parent="TrailerTagAxleLifting1Supply">C4.39_TrailerTagAxleLifting1Supply</Output>
 				<Input parent="Spare_Switch">C6.48_Spare Switch 29</Input>
 			</Mapping>
@@ -2449,6 +2500,14 @@
 			<Mapping>
 				<Output parent="Map_Lamp_PWM_Supply">C4.41_MapLampDriverPWMSupply</Output>
 				<Input parent="Spare_Switch">C5.48_Spare Switch 9</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Ambient_Light_LED_Power_Supply">C4.42_Ambient Light LED Power Supply</Output>
+				<Input parent="Spare_Switch">C4.21_Spare Switch 15</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Inter_Lock_Valve_Supply">C4.44_InterLockValveSupply</Output>
+				<Input parent="Input_Switches">C6.38_EHPASInput</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Hall_Sensor_Supply">C4.46_HallSensorRightSupply</Output>
@@ -2494,7 +2553,6 @@
 				<Output parent="DoorLockIndicatorSupply">C5.37_DoorLockIndicatorSupply</Output>
 				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.33_6 Door Ajar Switch - Passenger</Input>
 			</Mapping>
-			
 		</ConnectionMappings>
 		<Cycles>
 			<Cycle>
