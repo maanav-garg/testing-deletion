@@ -88,9 +88,10 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments</param>
         private void btnStart_Click(object sender, EventArgs e)
         {
+            
             Task.Run(async () =>
             {
-                GetExtendedDiagSession();
+                GetExtendedDiagSessionFromControlChecker();
                 await Task.Delay(1000);
             });
             Start();
@@ -759,10 +760,11 @@ namespace AutosarBCM
         #endregion
 
         #region Public Methods
-        public void GetExtendedDiagSession()
+        public void GetExtendedDiagSessionFromControlChecker()
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
+            FormMain.ControlChecker = true;
             var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session");
             ASContext.CurrentSession = sessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
