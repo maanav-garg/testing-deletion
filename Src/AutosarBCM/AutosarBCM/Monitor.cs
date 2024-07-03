@@ -128,7 +128,7 @@ namespace AutosarBCM
                 {
                     if (monitorTestType == MonitorTestType.Generic)
                     {
-                        var genericMonitorItems = ASContext.Configuration.Controls.Where(c => c.Group == "DID" && c.Services.Contains((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER));
+                        var genericMonitorItems = ASContext.Configuration.Controls.Where(c => c.Group == "DID" && c.Services.Contains((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER_REQ));
                         ASContext.Configuration.Settings.TryGetValue("TxInterval", out string txInterval);
                         ASContext.Configuration.Settings.TryGetValue("ReadInterval", out string readInterval);
 

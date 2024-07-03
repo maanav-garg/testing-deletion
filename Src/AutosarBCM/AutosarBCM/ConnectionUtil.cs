@@ -196,8 +196,11 @@ namespace AutosarBCM
 
             if (FormMain.ControlChecker)
             {
-                if (e.Data[0] == 0x6F)
-                    SendDataToControlChecker((IOControlByIdentifierService)service);
+                if (e.Data[0] == (byte)SIDDescription.SID_INPUT_OUTPUT_CONTROL_BY_IDENTIFIER_RESP ||
+                    e.Data[0] == (byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER_RESP)
+                {
+                    SendDataToControlChecker(service);
+                }
             }
 
             if (FormMain.EMCMonitoring)
@@ -247,7 +250,7 @@ namespace AutosarBCM
 
 
         }
-        public void SendDataToControlChecker(IOControlByIdentifierService service)
+        public void SendDataToControlChecker(Service service)
         {
             FormControlChecker formChecker = Application.OpenForms[Constants.Form_Control_Checker] as FormControlChecker;
             if (formChecker != null)
