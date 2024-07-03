@@ -566,7 +566,7 @@ namespace AutosarBCM
             {
                 SetSelectAllControls(dgvOutput, new DataGridViewCellMouseEventArgs(0, 0, 0, 0, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0)));
                 dgvOutput.Rows.Clear();
-                foreach (var control in ASContext.Configuration.Controls.Where(c => c.Services.Contains((byte)SIDDescription.SID_INPUT_OUTPUT_CONTROL_BY_IDENTIFIER_REQ) && c.Group == "DID"))
+                foreach (var control in ASContext.Configuration.Controls.Where(c => c.Services.Contains((byte)SIDDescription.SID_INPUT_OUTPUT_CONTROL_BY_IDENTIFIER) && c.Group == "DID"))
                 {
                     foreach (var response in control.Responses.Where(r => r.Payloads != null && r.Payloads.Any())
                     .SelectMany(r => r.Payloads, (r, p) => new { ControlName = control.Name, r.ServiceID, PayloadName = p.Name, PayloadTypeName = p.TypeName }))
@@ -580,7 +580,7 @@ namespace AutosarBCM
             {
                 SetSelectAllControls(dgvInput, new DataGridViewCellMouseEventArgs(0, 0, 0, 0, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0)));
                 dgvInput.Rows.Clear();
-                foreach (var control in ASContext.Configuration.Controls.Where(c => c.Services.Contains((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER_REQ) && c.Group == "DID"))
+                foreach (var control in ASContext.Configuration.Controls.Where(c => c.Services.Contains((byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER) && c.Group == "DID"))
                 {
                     foreach (var response in control.Responses.Where(r => r.Payloads != null && r.Payloads.Any())
                     .SelectMany(r => r.Payloads, (r, p) => new { ControlName = control.Name, r.ServiceID, PayloadName = p.Name, PayloadTypeName = p.TypeName }))
