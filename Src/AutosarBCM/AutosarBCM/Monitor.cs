@@ -361,6 +361,7 @@ namespace AutosarBCM
                     foreach (var item in continousReadList)
                     {
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
+                        Helper.WriteCycleMessageToLogFile(item.Name, item.Type, Constants.ContinousRead);
                     }
                 }
 
@@ -405,35 +406,35 @@ namespace AutosarBCM
 
                     function.ControlInfo.Switch(function.Payloads, true);
 
-
-                    Core.ControlInfo mappedItem;
+                    Core.ControlInfo mappedItem = null;
                     foreach (var payload in function.Payloads)
                         if (dictMapping.TryGetValue(payload, out mappedItem))
                         {
-                            //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
-                            //    {
-                            //        if (errorLogDetect.ChcekIsError())
-                            //            Helper.WriteErrorMessageToLogFile(inputItem.Name, inputItem.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(inputItem.Name).Item2, errorLogDetect.InputResponse)}");
+                               if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
+                               {
+                                   if (errorLogDetect.ChcekIsError())
+                                       Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
 
-                            //        Program.MappingStateDict.Remove(inputItem.Name);
-                            //    }
-                            //    Program.MappingStateDict.Add(ouputItem.Name, inputItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
+                                   Program.MappingStateDict.Remove(mappedItem.Name);
+                               }
+                               Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
-                            break;
+                            Helper.WriteCycleMessageToLogFile(mappedItem.Name, mappedItem.Responses[0].Payloads[0].Name, (Constants.MappingRead));
+                        break;
                         }
 
                     //ouputItem.Open(pwmDuty, pwmFreq);
                     ThreadSleep(txInterval);
                     //ReadDiagAdcCurrent(ouputItem, txInterval);
 
-                    //if (inputItem != null)
-                    //{
-                    //    if (Program.MappingStateDict.TryGetValue(inputItem.Name, out var errorLogDetect))
-                    //        Program.MappingStateDict.UpdateValue(inputItem.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
+                    if (mappedItem != null)
+                    {
+                        if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
+                            Program.MappingStateDict.UpdateValue(mappedItem.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
 
-                    //    inputItem.Transmit(txInterval, Constants.MappingRead);
-                    //}
+                        //mappedItem.Transmit(txInterval, Constants.MappingRead);
+                    }
 
                     //if (ouputItem.ItemType == Constants.PEPS)
                     //{
@@ -467,36 +468,35 @@ namespace AutosarBCM
                 {
                     function.ControlInfo.Switch(function.Payloads, false);
 
-                    Core.ControlInfo mappedItem;
+                    Core.ControlInfo mappedItem = null;
                     foreach (var payload in function.Payloads)
                         if (dictMapping.TryGetValue(payload, out mappedItem))
                         {
-                            //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
-                            //    {
-                            //        //TODO to be checked
-                            //        //if (errorLogDetect.ChcekIsError())
-                            //        //    Helper.WriteErrorMessageToLogFile(controlInfo.Name, controlInfo.ItemType, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(controlInfo.Name).Item2, errorLogDetect.InputResponse)}");
+                                if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
+                                {
+                                    if (errorLogDetect.ChcekIsError())
+                                        Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
 
-                            //        Program.MappingStateDict.Remove(controlInfo.Name);
-                            //    }
-                            //    Program.MappingStateDict.Add(ouputItem.Name, controlInfo.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
+                                    Program.MappingStateDict.Remove(mappedItem.Name);
+                                }
+                                Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
 
                             mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
-                            break;
+                        break;
                         }
 
                     //controlItem.Close(pwmDuty, pwmFreq);
                     ThreadSleep(txInterval);
                     //ReadDiagAdcCurrent(controlItem, txInterval);
 
-                    //if (controlInfo != null)
-                    //{
-                    //    if (Program.MappingStateDict.TryGetValue(controlInfo.Name, out var errorLogDetect))
-                    //        Program.MappingStateDict.UpdateValue(controlInfo.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
+                    if (mappedItem != null)
+                    {
+                        if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
+                            Program.MappingStateDict.UpdateValue(mappedItem.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
 
-                    //    controlInfo.Transmit(txInterval, Constants.MappingRead);
-                    //}
-                }
+                        //controlInfo.Transmit(txInterval, Constants.MappingRead);
+                    }
+            }
             }
 
             /// <summary>

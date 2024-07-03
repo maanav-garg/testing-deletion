@@ -210,18 +210,18 @@ namespace AutosarBCM
             if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
-                    if (receiver.Receive(service)) break;
+                    if (receiver.Receive(service)) continue;
             }
             else if (service?.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
-                    if (receiver.Receive(service)) break;
+                    if (receiver.Receive(service)) continue ;
             }
             else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
                     || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
-                    if (receiver.Receive(service)) break;
+                    if (receiver.Receive(service)) continue;
             }
             if (service?.ServiceInfo == ServiceInfo.DiagnosticSessionControl)
             {
