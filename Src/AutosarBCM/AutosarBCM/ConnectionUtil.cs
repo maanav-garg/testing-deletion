@@ -49,7 +49,7 @@ namespace AutosarBCM
         /// A synchronization object used for locking critical sections of code to ensure thread safety.
         /// </summary>
         private static object lockObj = new object();
-       
+
         #endregion
 
         #region Public Methods
@@ -157,7 +157,7 @@ namespace AutosarBCM
                 || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
+                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0))) ;
             }
 
 
@@ -194,6 +194,12 @@ namespace AutosarBCM
                 return;
             }
 
+            if (FormMain.ControlChecker)
+            {
+                if (e.Data[0] == 0x6F)
+                    SendDataToControlChecker((IOControlByIdentifierService)service);
+            }
+
             if (FormMain.EMCMonitoring)
             {
                 AppendTrace(rxRead, time);
@@ -204,26 +210,30 @@ namespace AutosarBCM
             if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
-                    if (receiver.Receive(service)) break;
+                    if (receiver.Receive(service)) continue;
             }
             else if (service?.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
-                    if (receiver.Receive(service)) break;
+                    if (receiver.Receive(service)) continue ;
             }
-            else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation 
+            else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
                     || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
-                    if (receiver.Receive(service)) break;
+                    if (receiver.Receive(service)) continue;
             }
             if (service?.ServiceInfo == ServiceInfo.DiagnosticSessionControl)
             {
-                FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                    formInput.SessionFiltering();
+                if (!FormMain.ControlChecker)
+                {
+                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                        formInput.SessionFiltering();
+                }
             }
-             
+
+
 
             //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 
@@ -234,8 +244,16 @@ namespace AutosarBCM
                 AppendTrace(rxRead, time);
                 AppendTraceRx(rxRead, time);
             }
-            
 
+
+        }
+        public void SendDataToControlChecker(IOControlByIdentifierService service)
+        {
+            FormControlChecker formChecker = Application.OpenForms[Constants.Form_Control_Checker] as FormControlChecker;
+            if (formChecker != null)
+            {
+                formChecker.LogDataToDGV(service);
+            }
         }
 
         /// <summary>

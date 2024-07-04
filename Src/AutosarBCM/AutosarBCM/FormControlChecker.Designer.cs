@@ -203,13 +203,13 @@
             // Column16
             // 
             this.Column16.FillWeight = 80.92103F;
-            this.Column16.HeaderText = "Data";
+            this.Column16.HeaderText = "Open";
             this.Column16.Name = "Column16";
             // 
             // Column13
             // 
             this.Column13.FillWeight = 103.3683F;
-            this.Column13.HeaderText = "Value";
+            this.Column13.HeaderText = "Close";
             this.Column13.Name = "Column13";
             this.Column13.ReadOnly = true;
             this.Column13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -346,6 +346,7 @@
             this.Name = "FormControlChecker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Control Checker";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormControlChecker_FormClosing);
             this.Load += new System.EventHandler(this.FormControlChecker_Load);
             this.grpType.ResumeLayout(false);
             this.grpType.PerformLayout();

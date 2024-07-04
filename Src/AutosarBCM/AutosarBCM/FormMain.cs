@@ -168,6 +168,9 @@ namespace AutosarBCM
         /// </summary>
         internal static bool EMCMonitoring;
 
+        internal static bool FormGenericInput;
+
+
         internal static List<IReceiver> Receivers = new List<IReceiver>();
         internal static ASContext ASContext;
 
@@ -1233,7 +1236,7 @@ namespace AutosarBCM
         {
             try
             {
-                Process.Start(@".\AutosarBCM-UserManual.pdf");
+                Process.Start(@".\DiagBox-AutosarBCM-UserManual.pdf");
             }
             catch (Exception ex)
             {
@@ -1258,7 +1261,7 @@ namespace AutosarBCM
             foreach (var session in ASContext.Configuration.Sessions)
                 tsbSession.DropDownItems.Add(new ToolStripMenuItem(session.Name, null, new EventHandler(tsbSession_Click)) { Tag = session });
         }
-        internal void CheckSession()
+        public void CheckSession()
         {
             if (dockMonitor.ActiveDocument is IPeriodicTest formInput)
                 formInput.SessionFiltering();
@@ -1267,6 +1270,7 @@ namespace AutosarBCM
 
         private void tsbSession_Click(object sender, EventArgs e)
         {
+            FormMain.ControlChecker = false;
             if (!ConnectionUtil.CheckConnection())
                 return;
             var sessionInfo = (sender as ToolStripMenuItem).Tag as SessionInfo;
