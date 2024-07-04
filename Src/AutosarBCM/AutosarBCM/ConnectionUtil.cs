@@ -196,8 +196,9 @@ namespace AutosarBCM
 
             if (FormMain.ControlChecker)
             {
-                if (e.Data[0] == 0x6F)
-                    SendDataToControlChecker((IOControlByIdentifierService)service);
+                AppendTrace(rxRead, time);
+                SendDataToControlChecker(service);
+                return;
             }
 
             if (FormMain.EMCMonitoring)
@@ -247,8 +248,10 @@ namespace AutosarBCM
 
 
         }
-        public void SendDataToControlChecker(IOControlByIdentifierService service)
+        public void SendDataToControlChecker(Service service)
         {
+            if (!(service is ReadDataByIdenService || service is IOControlByIdentifierService))
+                return;
             FormControlChecker formChecker = Application.OpenForms[Constants.Form_Control_Checker] as FormControlChecker;
             if (formChecker != null)
             {
