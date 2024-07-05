@@ -2288,17 +2288,17 @@
 	</DTCFailureTypes>
 	<EnvironmentalTest>
 		<EnvironmentalConfig>
-			<CycleTime>3000</CycleTime>
-			<TxInterval>10</TxInterval>
-			<StartCycleIndex>16</StartCycleIndex>
-			<EndCycleIndex>90</EndCycleIndex>
+			<CycleTime>1000</CycleTime>
+			<TxInterval>50</TxInterval>
+			<StartCycleIndex>1</StartCycleIndex>
+			<EndCycleIndex>18</EndCycleIndex>
 			<PWMDutyOpenValue>100</PWMDutyOpenValue>
 			<PWMDutyCloseValue>0</PWMDutyCloseValue>
 			<PWMFreqOpenValue>200</PWMFreqOpenValue>
 			<PWMFreqCloseValue>200</PWMFreqCloseValue>
 		</EnvironmentalConfig>
 		<ContinousReadList>
-			<Func parent="TCCM_Input">KL75Relay1</Func>
+			<Func parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.32_0 FrontSetRightSwitch</Func>
 			<Func>C1.3_VehicleConverter12VSupply</Func>
 			<Func>C1.3_VehicleConverter12VSupply</Func>
 		</ContinousReadList>
@@ -2567,11 +2567,11 @@
 				<CloseAt>5</CloseAt>
 				<Functions>
 					<Function control="TCCM_Input">
-						<Payload>KL15Relay1</Payload>
-						<Payload>KL15Relay2</Payload>
+						<Payload>C5.5_KL15Relay1</Payload>
+						<Payload>C5.2_KL15Relay2</Payload>
 					</Function>
 					<Function control="Horn_Output_Control">
-						<Payload>Horn Output Control</Payload>
+						<Payload>C1.11_Horn Output Control</Payload>
 					</Function>
 				</Functions>
 			</Cycle>
@@ -2581,11 +2581,11 @@
 				<CloseAt>11</CloseAt>
 				<Functions>
 					<Function control="TCCM_Input">
-						<Payload>KL15Relay1</Payload>
-						<Payload>KL15Relay2</Payload>
+						<Payload>C5.5_KL15Relay1</Payload>
+						<Payload>C5.2_KL15Relay2</Payload>
 					</Function>
 					<Function control="Horn_Output_Control">
-						<Payload>Horn Output Control</Payload>
+						<Payload>C1.11_Horn Output Control</Payload>
 					</Function>
 				</Functions>
 			</Cycle>
@@ -2595,11 +2595,11 @@
 				<CloseAt>18</CloseAt>
 				<Functions>
 					<Function control="TCCM_Input">
-						<Payload>KL15Relay1</Payload>
-						<Payload>KL15Relay2</Payload>
+						<Payload>C5.5_KL15Relay1</Payload>
+						<Payload>C5.2_KL15Relay2</Payload>
 					</Function>
 					<Function control="Horn_Output_Control">
-						<Payload>Horn Output Control</Payload>
+						<Payload>C1.11_Horn Output Control</Payload>
 					</Function>
 				</Functions>
 			</Cycle>

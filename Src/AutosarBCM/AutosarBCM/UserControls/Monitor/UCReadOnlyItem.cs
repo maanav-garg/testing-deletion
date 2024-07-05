@@ -306,9 +306,9 @@ namespace AutosarBCM.UserControls.Monitor
 
         private MappingResponse GetMappingLogState(MappingOperation operation)
         {
-            if (operation == MappingOperation.Open && (currentValue.Item1 == "ON" || currentValue.Item1 == "SET"))
+            if (operation == MappingOperation.Open && (currentValue?.Item1 == "ON" || currentValue?.Item1 == "SET"))
                 return MappingResponse.OutputOpen;
-            else if (operation == MappingOperation.Close && (currentValue.Item1 == "OFF" || ((Item.PwmTag == "XS4200" && currentValue.Item1 == "ON") || currentValue.Item1 == "SET")))
+            else if (operation == MappingOperation.Close && (currentValue?.Item1 == "OFF" || ((Item?.PwmTag == "XS4200" && currentValue?.Item1 == "ON") || currentValue?.Item1 == "SET")))
                 return MappingResponse.OutputClose;
             else
                 return MappingResponse.OutputError;

@@ -147,23 +147,27 @@ namespace AutosarBCM
         }
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
-
             // Tester present
             if (e.Data[0] == ServiceInfo.TesterPresent.RequestID)
                 return;
+
+            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
+            var time = new DateTime((long)e.Timestamp);
+
+            if (FormMain.EMCMonitoring || FormMain.ControlChecker)
+            {
+                AppendTrace(txRead, time, Color.Black);
+                return;
+            }
 
             // Handle transmitted data -TX-
             if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID
                 || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0))) ;
+                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
             }
-
-
-            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
-            var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
-            var time = new DateTime((long)e.Timestamp);
 
             if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
                 AppendTrace(txRead, time, Color.Black);
@@ -216,7 +220,7 @@ namespace AutosarBCM
             else if (service?.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
-                    if (receiver.Receive(service)) continue ;
+                    if (receiver.Receive(service)) continue;
             }
             else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
                     || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)

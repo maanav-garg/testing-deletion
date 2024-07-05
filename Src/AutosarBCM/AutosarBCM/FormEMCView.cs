@@ -75,6 +75,10 @@ namespace AutosarBCM
             {
                 foreach (var payload in control.Responses?[0].Payloads)
                 {
+                    foreach (var bitPayload in payload.Bits)
+                    {
+                        payloadValueList[bitPayload.Name] = string.Empty;
+                    }
                     payloadValueList[payload.Name] = string.Empty;
                     if (string.IsNullOrEmpty(payload.DTCCode))
                         continue;
@@ -147,10 +151,14 @@ namespace AutosarBCM
                         {
                             foreach (var control in controls)
                             {
+                                if (!start)
+                                    break;
                                 ThreadSleep(int.Parse(txInterval));
                                 control.Transmit(ServiceInfo.ReadDataByIdentifier);
                             }
                             ThreadSleep(int.Parse(txInterval));
+                            if (!start)
+                                break;
                             new ReadDTCInformationService().Transmit();
                             Thread.Sleep(int.Parse(dtcWaitingTime));
                         }
@@ -160,8 +168,21 @@ namespace AutosarBCM
                         FormMain.EMCMonitoring = false;
                         timer?.Stop();
                     }
-                    btnStart.Text = start ? "Stop" : "Start";
-                    btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
+
+
+                    if (btnStart.InvokeRequired)
+                    {
+                        btnStart.BeginInvoke((MethodInvoker)delegate ()
+                        {
+                            btnStart.Text = start ? "Stop" : "Start";
+                            btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
+                        });
+                    }
+                    else
+                    {
+                        btnStart.Text = start ? "Stop" : "Start";
+                        btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
+                    } 
                 }
                 finally
                 {
@@ -283,7 +304,11 @@ namespace AutosarBCM
         private bool IsInformativeRX(Payload payload)
         {
             //TODO to be checked
-            lblElapsedTime.Text = payload.FormattedValue;
+            Invoke(new Action(() =>
+            {
+                lblElapsedTime.Text = payload.FormattedValue;
+            }));
+            
             //if (Config.CommonConfig.EMCLifecycle.Skip(2).Take(2).SequenceEqual(response.RawData.Skip(4).Take(2)))
             //{
             //    lblElapsedTime.Text = TimeSpan.FromMinutes(BitConverter.ToInt16(response.RawData, 8)).ToString(@"hh\:mm\:ss\.fff");
