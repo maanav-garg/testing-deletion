@@ -340,7 +340,9 @@ namespace AutosarBCM
 
             //TODO to be checked
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
-            //Console.WriteLine($"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}");
+            Console.WriteLine($"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}");
+            FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
+            formEnvTest.SetCounter(reboots + 1, cycleIndex + 1);
 
 
             if (cycleDict.TryGetValue(cycleIndex + 1, out Core.Cycle cycle))
@@ -379,10 +381,9 @@ namespace AutosarBCM
             }
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
-            //Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
+            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
 
-            FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
-            formEnvTest.SetCounter(reboots + 1, cycleIndex + 1);
+        
 
             if (cycleIndex >= endCycleIndex - 1)
             {
