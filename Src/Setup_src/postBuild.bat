@@ -2,6 +2,7 @@
 SET RELEASE_DIR=..\AutosarBCM\AutosarBCM\bin\x64\Release
 SET EXE_NAME=AutosarBCM.exe
 SET ILMERGE_BIN_DIR=.\ILMerge_bin
+SET INNOSETUP_BIN_DIR=.\innosetup\app
 SET CONFUSER_BIN=.\confuser_ex\Confuser.CLI.exe
 SET DLL_DIR=..\Dlls
 SET MSBUILD_DIR="C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
@@ -44,7 +45,7 @@ ECHO Start Confuser
 %CONFUSER_BIN% confuser.crproj
 
 ECHO InnoSetup - Compiling ...
-"C:\Program Files (x86)\Inno Setup 6\Compil32.exe" /cc "Inno_Setup_Config.iss" 
+%INNOSETUP_BIN_DIR%\Compil32.exe /cc "Inno_Setup_Config.iss" 
 
 REM if Not exist "%RELEASE_DIR%\Confused\" (
 	REM ECHO Create Obfuscated dir
