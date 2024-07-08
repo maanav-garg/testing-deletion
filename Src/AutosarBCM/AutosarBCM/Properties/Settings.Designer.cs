@@ -48,7 +48,22 @@ namespace AutosarBCM.Properties {
                 this["UserName"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public string EmcDataLimit
+        {
+            get
+            {
+                return ((string)(this["EmcDataLimit"]));
+            }
+            set
+            {
+                this["EmcDataLimit"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]

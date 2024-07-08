@@ -13,6 +13,7 @@ using AutosarBCM;
 using AutosarBCM.Core;
 using System.Threading;
 using System.Web.UI;
+using AutosarBCM.Properties;
 
 namespace AutosarBCM
 {
@@ -42,6 +43,8 @@ namespace AutosarBCM
         private Dictionary<string, Dictionary<string, byte>> dtcValueList = new Dictionary<string, Dictionary<string, byte>>();
 
         List<DataGridViewRow> excelData = new List<DataGridViewRow>();
+
+        private string EMCDataLimit = Settings.Default.EmcDataLimit;
 
         #endregion
 
@@ -196,7 +199,7 @@ namespace AutosarBCM
                 {
                     excelData.Add(data);
                 }
-                if (dgvData.Rows.Count >= 1000)
+                if (dgvData.Rows.Count >= int.Parse(EMCDataLimit))
                     dgvData.Rows.Clear();
             }));
             return true;
