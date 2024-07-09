@@ -1,4 +1,5 @@
 ﻿using AutosarBCM.Config;
+using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         public string MessageID { get; set; }
 
-        public Core.ControlInfo ControlInfo { get; set; }
+        public ControlInfo ControlInfo { get; set; }
 
         /// <summary>
         /// Gets or sets the group name associated with the control.
@@ -69,7 +70,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="item">The InputMonitorItem associated with this control.</param>
         /// <param name="commonConfig">The CommonConfig object used for configuration (optional).</param>
         //public UCItem(InputMonitorItem item, CommonConfig commonConfig = null)
-        public UCItem(Core.ControlInfo controlInfo)
+        public UCItem(ControlInfo controlInfo)
         {
             InitializeComponent();
 

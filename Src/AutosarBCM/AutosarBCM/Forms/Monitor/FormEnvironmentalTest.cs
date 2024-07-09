@@ -1,4 +1,5 @@
-﻿using AutosarBCM.Core;
+﻿using AutosarBCM.Core.Config;
+using AutosarBCM.Core;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,8 @@ namespace AutosarBCM.Forms.Monitor
         #region Variables
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
-        private Dictionary<string, Core.ControlInfo> dtcList = new Dictionary<string, Core.ControlInfo>();
-        private Dictionary<int, Core.Cycle> cycles;
+        private Dictionary<string, ControlInfo> dtcList = new Dictionary<string, ControlInfo>();
+        private Dictionary<int, Cycle> cycles;
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
 

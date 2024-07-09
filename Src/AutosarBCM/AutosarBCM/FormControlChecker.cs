@@ -1,6 +1,6 @@
 using AutosarBCM.Config;
 using AutosarBCM.Core;
-using AutosarBCM.Core.Enums;
+using AutosarBCM.Core.Config;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections;
@@ -46,11 +46,11 @@ namespace AutosarBCM
         /// Control order of the execution
         /// </summary>
         private ControlOrder controlOrder;
-        public Core.ControlInfo ControlInfo { get; set; }
+        public ControlInfo ControlInfo { get; set; }
 
-        private Dictionary<Core.ControlInfo, (List<string>, bool)> ciDict;
+        private Dictionary<ControlInfo, (List<string>, bool)> ciDict;
 
-        private Dictionary<Core.ControlInfo, List<string>> ciDict2;
+        private Dictionary<ControlInfo, List<string>> ciDict2;
 
 
 
@@ -151,7 +151,7 @@ namespace AutosarBCM
             ClearResponse(3, dgvInput);
             int txIntervalCC = Convert.ToInt32(numInterval.Value);
             var payloadList = new List<string>();
-            ciDict2 = new Dictionary<Core.ControlInfo, List<string>>();
+            ciDict2 = new Dictionary<ControlInfo, List<string>>();
             foreach (DataGridViewRow row in dgvInput.Rows)
             {
                 if (row.Cells[0] is DataGridViewCheckBoxCell checkBoxCell)
@@ -159,7 +159,7 @@ namespace AutosarBCM
                     bool isChecked = checkBoxCell.Value is true;
                     if (isChecked)
                     {
-                        var cInf = (Core.ControlInfo)row.Tag;
+                        var cInf = (ControlInfo)row.Tag;
                         if (ciDict2.Keys.Where(x => x.Address == cInf.Address).Count() == 0)
                         {
                             ciDict2.Add(cInf, (new List<string>()));
@@ -197,7 +197,7 @@ namespace AutosarBCM
             //ASContext.Configuration.Settings.TryGetValue("TxIntervalForControlChecker", out string txIntervalValue);
             int txIntervalCC = Convert.ToInt32(numInterval.Value);
             var payloadList = new List<string>();
-            ciDict = new Dictionary<Core.ControlInfo, (List<string>, bool)>();
+            ciDict = new Dictionary<ControlInfo, (List<string>, bool)>();
             foreach (DataGridViewRow row in dgvOutput.Rows)
             {
                 if (row.Cells[0] is DataGridViewCheckBoxCell checkBoxCell)
@@ -205,7 +205,7 @@ namespace AutosarBCM
                     bool isChecked = checkBoxCell.Value is true;
                     if (isChecked)
                     {
-                        var cInf = (AutosarBCM.Core.ControlInfo)row.Tag;
+                        var cInf = (ControlInfo)row.Tag;
                         if (ciDict.Keys.Where(x => x.Address == cInf.Address).Count() == 0)
                         {
                             ciDict.Add(cInf, (new List<string>(), false));
@@ -276,7 +276,7 @@ namespace AutosarBCM
                     if (row.Cells[0] is DataGridViewCheckBoxCell chkCell)
                     {
                         bool isSelected = chkCell.Value is true;
-                        var controlInfo = (Core.ControlInfo)row.Tag;
+                        var controlInfo = (ControlInfo)row.Tag;
 
                         if ((ciDict.TryGetValue(controlInfo, out (List<string>, bool) dictContent)))
                         {
@@ -315,7 +315,7 @@ namespace AutosarBCM
                     if (row.Cells[0] is DataGridViewCheckBoxCell chkCell)
                     {
                         bool isSelected = chkCell.Value is true;
-                        var controlInfo = (Core.ControlInfo)row.Tag;
+                        var controlInfo = (ControlInfo)row.Tag;
 
                         if ((ciDict2.TryGetValue(controlInfo, out List<string> dictContent)))
                         {
@@ -356,7 +356,7 @@ namespace AutosarBCM
         //            if (row.Cells[0] is DataGridViewCheckBoxCell chkCell)
         //            {
         //                bool isSelected = chkCell.Value is true;
-        //                var controlInfo = (Core.ControlInfo)row.Tag;
+        //                var controlInfo = (ControlInfo)row.Tag;
         //                if (controlInfo.Address == address)
         //                {
         //                    for (int i = 0; i < payloadValues.Length; i++)
@@ -409,7 +409,7 @@ namespace AutosarBCM
         /// <returns>true if the values were successfully updated; otherwise, false.</returns>
         private bool HandleOutputResponse(DataGridViewRow row, GenericResponse response)
         {
-            var cInfo = (ControlInfo)row.Tag;
+            var cInfo = (ControlInfoCC)row.Tag;
 
             if (!cInfo.Closing && cInfo.IsOpenResponse(response)) UpdateValue(row, 4, response.FormattedResult());
             else if (!cInfo.Closing && cInfo.IsDiagResponse(response)) UpdateValue(row, 5, UCDigitalOutputItem.GetDigitalReadDiagResponseData(response.RegisterGroup, response.ResponseData));
@@ -528,7 +528,7 @@ namespace AutosarBCM
         /// <param name="row">The DataGridViewRow containing the cell to be formatted.</param>
         /// <param name="cInfo">A reference to the control information as a ControlInfo.</param>
         /// <param name="response">A reference to the response as a GenericResponse.</param>
-        private void ApplyOutputColors(DataGridViewRow row, ControlInfo cInfo, GenericResponse response)
+        private void ApplyOutputColors(DataGridViewRow row, ControlInfoCC cInfo, GenericResponse response)
         {
             var id = response.RawData.Skip(4).Take(3);
 

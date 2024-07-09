@@ -512,10 +512,10 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="config">A reference to the monitor configuration instance</param>
         /// <returns>A list of custom controls for all output controls</returns>
-        internal static List<ControlInfo> GetControlsExtended(AutosarBcmConfiguration config)
+        internal static List<ControlInfoCC> GetControlsExtended(AutosarBcmConfiguration config)
         {
             var mapping = GetInOutMapping(config);
-            var controls = new List<ControlInfo>();
+            var controls = new List<ControlInfoCC>();
 
             foreach (var output in config.GenericMonitorConfiguration.OutputSection.Groups.SelectMany(x => x.OutputItemList))
                 controls.AddRange(GetControls(output, config));
@@ -546,32 +546,32 @@ namespace AutosarBCM
         /// <param name="output">A reference to the output item as an OutputMonitorItem</param>
         /// <param name="config">A reference to the monitor configuration instance</param>
         /// <returns>A list of ControlInfo instances representing the custom controls for the specified output item</returns>
-        private static List<ControlInfo> GetControls(OutputMonitorItem output, AutosarBcmConfiguration config)
+        private static List<ControlInfoCC> GetControls(OutputMonitorItem output, AutosarBcmConfiguration config)
         {
-            var result = new List<ControlInfo>();
+            var result = new List<ControlInfoCC>();
 
             if (output.ItemType == "Digital" && output.PwmTag != "XS4200")
-                result.Add(new ControlInfo(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
+                result.Add(new ControlInfoCC(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
                 {
                     Open = output.OpenData,
                     Close = output.CloseData,
                 });
             else if (output.ItemType == "PWM" || (output.ItemType == "Digital" && output.PwmTag == "XS4200"))
-                result.Add(new ControlInfo(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
+                result.Add(new ControlInfoCC(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
                 {
                     Open = output.GetPWMMessage(config.EnvironmentalMonitorConfiguration.OutputSection.CommonConfig.PWMDutyOpenValue, config.EnvironmentalMonitorConfiguration.OutputSection.CommonConfig.PWMFreqOpenValue),
                     Close = output.GetPWMMessage(config.EnvironmentalMonitorConfiguration.OutputSection.CommonConfig.PWMDutyCloseValue, config.EnvironmentalMonitorConfiguration.OutputSection.CommonConfig.PWMFreqCloseValue),
                 });
             else if (output.ItemType == "DoorControl")
                 result.AddRange(new[] {
-                    new ControlInfo(output, output.DoorControl.ReadDoorLockDiag, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.DoorControl.ReadDoorLockDiag, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.DoorControl.DoorLockEnable,
                         Close = output.DoorControl.DoorLockDisable,
 
                         Name = output.Name.Replace("_", "_LOCK_")
                     },
-                    new ControlInfo(output, output.DoorControl.ReadDoorUnlockDiag, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.DoorControl.ReadDoorUnlockDiag, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.DoorControl.DoorUnlockEnable,
                         Close = output.DoorControl.DoorUnlockDisable,
@@ -580,28 +580,28 @@ namespace AutosarBCM
                     }});
             else if (output.ItemType == "Wiper")
                 result.AddRange(new[] {
-                    new ControlInfo(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.WiperCase.StopLow,
                         Close = output.WiperCase.LowStop,
 
                         Name = "Set_Wiper_Case_Stop_2_Low"
                     },
-                    new ControlInfo(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.WiperCase.StopLow,
                         Close = output.WiperCase.LowStop,
 
                         Name = "Set_Wiper_Case_Low_2_Stop"
                     },
-                    new ControlInfo(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.WiperCase.StopHigh,
                         Close = output.WiperCase.HighStop,
 
                         Name = "Set_Wiper_Case_Stop_2_High"
                     },
-                    new ControlInfo(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.ReadDiagData, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.WiperCase.StopHigh,
                         Close = output.WiperCase.HighStop,
@@ -610,28 +610,28 @@ namespace AutosarBCM
                     }});
             else if (output.ItemType == "Power Mirror")
                 result.AddRange(new[] {
-                    new ControlInfo(output, output.PowerMirror.ReadUp, null, null)
+                    new ControlInfoCC(output, output.PowerMirror.ReadUp, null, null)
                     {
                         Open = output.PowerMirror.SetOpenUp,
                         Close = output.PowerMirror.SetCloseUp,
 
                         Name = $"{output.Name}_UP"
                     },
-                    new ControlInfo(output, output.PowerMirror.ReadLeftDown, null, null)
+                    new ControlInfoCC(output, output.PowerMirror.ReadLeftDown, null, null)
                     {
                         Open = output.PowerMirror.SetOpenDown,
                         Close = output.PowerMirror.SetCloseDown,
 
                         Name = $"{output.Name}_DOWN"
                     },
-                    new ControlInfo(output, output.PowerMirror.ReadLeftDown, null, null)
+                    new ControlInfoCC(output, output.PowerMirror.ReadLeftDown, null, null)
                     {
                         Open = output.PowerMirror.SetOpenLeft,
                         Close = output.PowerMirror.SetCloseLeft,
 
                         Name = $"{output.Name}_LEFT"
                     },
-                    new ControlInfo(output, output.PowerMirror.ReadRight, null, null)
+                    new ControlInfoCC(output, output.PowerMirror.ReadRight, null, null)
                     {
                         Open = output.PowerMirror.SetOpenRight,
                         Close = output.PowerMirror.SetCloseRight,
@@ -640,14 +640,14 @@ namespace AutosarBCM
                     }});
             else if (output.ItemType == "Power Window")
                 result.AddRange(new[] {
-                    new ControlInfo(output, output.PowerWindow.ReadUpDiagData, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.PowerWindow.ReadUpDiagData, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.PowerWindow.EnableUpData,
                         Close = output.PowerWindow.DisableUpData,
 
                         Name = $"{output.Name}_UP"
                     },
-                    new ControlInfo(output, output.PowerWindow.ReadDownDiagData, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.PowerWindow.ReadDownDiagData, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.PowerWindow.EnableDownData,
                         Close = output.PowerWindow.DisableDownData,
@@ -656,14 +656,14 @@ namespace AutosarBCM
                     }});
             else if (output.ItemType == "Sunroof")
                 result.AddRange(new[] {
-                    new ControlInfo(output, output.Sunroof.ReadOpenDiagData, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.Sunroof.ReadOpenDiagData, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.Sunroof.EnableOpenData,
                         Close = output.Sunroof.DisableOpenData,
 
                         Name = $"{output.Name}_OPEN"
                     },
-                    new ControlInfo(output, output.Sunroof.ReadCloseDiagData, output.ReadADCData, output.ReadCurrentData)
+                    new ControlInfoCC(output, output.Sunroof.ReadCloseDiagData, output.ReadADCData, output.ReadCurrentData)
                     {
                         Open = output.Sunroof.EnableCloseData,
                         Close = output.Sunroof.DisableCloseData,
@@ -678,7 +678,7 @@ namespace AutosarBCM
     /// <summary>
     /// Represents a custom control for a specific output item.
     /// </summary>
-    public class ControlInfo
+    public class ControlInfoCC
     {
         /// <summary>
         /// Gets or sets the output item as an OutputMonitorItem.
@@ -724,7 +724,7 @@ namespace AutosarBCM
         /// <param name="diag">The diagnostic data as a byte array.</param>
         /// <param name="adc">The ADC data as a byte array.</param>
         /// <param name="current">The current data as a byte array.</param>
-        public ControlInfo(OutputMonitorItem output, byte[] diag, byte[] adc, byte[] current)
+        public ControlInfoCC(OutputMonitorItem output, byte[] diag, byte[] adc, byte[] current)
         {
             Output = output;
             Diag = diag;

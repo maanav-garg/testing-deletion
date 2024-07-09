@@ -1,5 +1,5 @@
 ﻿using AutosarBCM.Core;
-using AutosarBCM.Core.Enums;
+using AutosarBCM.Core.Config;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

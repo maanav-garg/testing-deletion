@@ -13,6 +13,7 @@ using Connection.Hardware.Can;
 using Connection.Hardware.SP;
 using AutosarBCM.Common;
 using AutosarBCM.Properties;
+using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 using Connection.Protocol.Uds;
 using AutosarBCM.Config;

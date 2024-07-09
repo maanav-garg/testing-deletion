@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using static AutosarBCM.Core.ControlInfo;
 using System.Xml.Serialization;
-using AutosarBCM.Core.Enums;
 using AutosarBCM.UserControls.Monitor;
 using System.Threading.Tasks;
+using AutosarBCM.Core.Config;
 
 namespace AutosarBCM.Core
 {
@@ -129,7 +128,7 @@ namespace AutosarBCM.Core
 
         private static Payload InitializeType(PayloadInfo payloadInfo, byte[] value, int? index = null)
         {
-            return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.{payloadInfo.TypeName}"))).Parse(payloadInfo, value, index);
+            return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.{payloadInfo.TypeName}"))).Parse(payloadInfo, value, index);
         }
     }
 

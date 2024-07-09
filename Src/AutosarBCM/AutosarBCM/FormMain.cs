@@ -16,6 +16,7 @@ using AutosarBCM.Properties;
 using AutosarBCM.UserControls.Monitor;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Forms;
+using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 
 namespace AutosarBCM

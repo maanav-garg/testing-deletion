@@ -1,4 +1,5 @@
-﻿using AutosarBCM.Config;
+﻿using AutosarBCM.Core.Config;
+using AutosarBCM.Config;
 using AutosarBCM.Core;
 using AutosarBCM.Forms.Monitor;
 using System;
@@ -24,7 +25,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// <summary>
         /// Represents a control item associated with this control.
         /// </summary>
-        public Core.ControlInfo ControlInfo { get; set; }
+        public ControlInfo ControlInfo { get; set; }
         public PayloadInfo PayloadInfo { get; set; }
         /// <summary>
         /// Gets or sets the group name of the control.
@@ -103,7 +104,7 @@ namespace AutosarBCM.UserControls.Monitor
             currentValue = new Tuple<string, Color>(lblDtcStatus.Text, lblDtcStatus.ForeColor);
         }
 
-        public UCReadOnlyItem(Core.ControlInfo controlInfo, PayloadInfo payloadInfo)
+        public UCReadOnlyItem(ControlInfo controlInfo, PayloadInfo payloadInfo)
         {
             InitializeComponent();
             ControlInfo = controlInfo;
