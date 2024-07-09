@@ -1,4 +1,4 @@
-using AutosarBCM.Config;
+using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 using AutosarBCM.Forms.Monitor;
 using System;
@@ -158,9 +158,9 @@ namespace AutosarBCM
                         var startCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.StartCycleIndex;
                         var endCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.EndCycleIndex;
                         //var dictMapping = new Dictionary<string, InputMonitorItem>();
-                        var dictMapping = new Dictionary<string, Core.ControlInfo>();
+                        var dictMapping = new Dictionary<string, ControlInfo>();
                         //var continousReadList = new List<InputMonitorItem>();
-                        var continousReadList = new List<Core.ControlInfo>();
+                        var continousReadList = new List<ControlInfo>();
 
                         var cycleDict = GetCycleDict(cycles);
 
@@ -235,12 +235,12 @@ namespace AutosarBCM
 
         #region Private Methods
 
-        private static void StartEnvironmentalTest(Dictionary<int, Core.Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, Core.ControlInfo> dictMapping, List<Core.ControlInfo> continousReadList)
+        private static void StartEnvironmentalTest(Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, ControlInfo> dictMapping, List<ControlInfo> continousReadList)
         {
             var cycleIndex = 0;
             var reboots = 0;
 
-            List<OutputMonitorItem> softContinuousDiagList = new List<OutputMonitorItem>();
+            List<Config.OutputMonitorItem> softContinuousDiagList = new List<Config.OutputMonitorItem>();
 
             //TODO to be checked
             //for (int i = 0; i < startCycleIndex; i++)
@@ -264,7 +264,7 @@ namespace AutosarBCM
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
         }
 
-        private static void StopEnvironmentalTest(Dictionary<string, Core.ControlInfo> dictMapping)
+        private static void StopEnvironmentalTest(Dictionary<string, ControlInfo> dictMapping)
         {
             //Program.MainForm.ChangeTabControlStatus(false);
             //FormMain.IsTestRunning = true;
@@ -283,9 +283,9 @@ namespace AutosarBCM
         /// Creates a dictionary which includes cycle index and cycle.
         /// </summary>
         /// <param name="cycles">List of cycles.</param>
-        public static Dictionary<int, Core.Cycle> GetCycleDict(List<Core.Cycle> cycles)
+        public static Dictionary<int, Cycle> GetCycleDict(List<Cycle> cycles)
         {
-            var cycleDict = new Dictionary<int, Core.Cycle>();
+            var cycleDict = new Dictionary<int, Cycle>();
             foreach (var cycle in cycles)
             {
                 if (cycleDict.ContainsKey(cycle.OpenAt))
@@ -294,7 +294,7 @@ namespace AutosarBCM
                 }
                 else
                 {
-                    cycleDict.Add(cycle.OpenAt, new Core.Cycle(cycle));
+                    cycleDict.Add(cycle.OpenAt, new Cycle(cycle));
                     cycleDict[cycle.OpenAt].OpenItems.UnionWith(cycle.Functions);
                 }
 
@@ -307,7 +307,7 @@ namespace AutosarBCM
                 }
                 else
                 {
-                    cycleDict.Add(cycle.CloseAt, new Core.Cycle(cycle));
+                    cycleDict.Add(cycle.CloseAt, new Cycle(cycle));
                     cycleDict[cycle.CloseAt].CloseItems.UnionWith(cycle.Functions);
                 }
             }
@@ -324,7 +324,7 @@ namespace AutosarBCM
         /// <param name="continousReadList">List of items for continuous reading.</param>
         /// <param name="cycleIndex">Reference to the current cycle index.</param>
         /// <param name="reboots">Reference to the count of reboots.</param>
-        private static void TickHandler(List<List<OutputMonitorItem>> softContinuousDiagList, Dictionary<int, Core.Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, Core.ControlInfo> dictMapping, List<Core.ControlInfo> continousReadList, ref int cycleIndex, ref int reboots)
+        private static void TickHandler(List<List<Config.OutputMonitorItem>> softContinuousDiagList, Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, ControlInfo> dictMapping, List<ControlInfo> continousReadList, ref int cycleIndex, ref int reboots)
         {
             if (cancellationToken.IsCancellationRequested)
                 return;
@@ -341,7 +341,7 @@ namespace AutosarBCM
             Console.WriteLine($"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}");
 
 
-            if (cycleDict.TryGetValue(cycleIndex + 1, out Core.Cycle cycle))
+            if (cycleDict.TryGetValue(cycleIndex + 1, out Cycle cycle))
             {
                 StopCycle(cycle, dictMapping);
                 StartCycle(cycle, dictMapping);
@@ -394,7 +394,7 @@ namespace AutosarBCM
         /// <param name="monitorConfig">Configuration for the monitor.</param>
         /// <param name="cycle">The cycle to start.</param>
         /// <param name="dictMapping">Mapping dictionary for input monitor items.</param>
-        private static void StartCycle(Core.Cycle cycle, Dictionary<string, Core.ControlInfo> dictMapping)
+        private static void StartCycle(Cycle cycle, Dictionary<string, ControlInfo> dictMapping)
         {
             var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
             var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue;
@@ -406,7 +406,7 @@ namespace AutosarBCM
 
                 function.ControlInfo.Switch(function.Payloads, true);
 
-                Core.ControlInfo mappedItem = null;
+                ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
                     if (dictMapping.TryGetValue(payload, out mappedItem))
                     {
@@ -456,7 +456,7 @@ namespace AutosarBCM
         /// <param name="monitorConfig">Configuration for the monitor.</param>
         /// <param name="cycle">The cycle to stop.</param>
         /// <param name="dictMapping">Mapping dictionary for input monitor items.</param>
-        private static void StopCycle(Core.Cycle cycle, Dictionary<string, Core.ControlInfo> dictMapping, bool isTestClosing = false)
+        private static void StopCycle(Cycle cycle, Dictionary<string, ControlInfo> dictMapping, bool isTestClosing = false)
         {
             var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
             txInterval = isTestClosing ? txInterval * 2 : txInterval;
@@ -468,7 +468,7 @@ namespace AutosarBCM
             {
                 function.ControlInfo.Switch(function.Payloads, false);
 
-                Core.ControlInfo mappedItem = null;
+                ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
                     if (dictMapping.TryGetValue(payload, out mappedItem))
                     {
@@ -504,7 +504,7 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="item">The output monitor item to read data from.</param>
         /// <param name="sleepTime">The sleep time between data reads.</param>
-        private static void ReadDiagAdcCurrent(OutputMonitorItem item, int sleepTime)
+        private static void ReadDiagAdcCurrent(Config.OutputMonitorItem item, int sleepTime)
         {
             if (item.ReadDiagData?.Length > 0)
             {
@@ -541,7 +541,7 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="monitorConfig">Configuration for the monitor.</param>
         /// <returns>A prepared UdsMessage for RSSI measurement.</returns>
-        private static void GetRssiMessage(AutosarBcmConfiguration monitorConfig)
+        private static void GetRssiMessage(Config.AutosarBcmConfiguration monitorConfig)
         {
             var pepsGroup = monitorConfig.GenericMonitorConfiguration.OutputSection.Groups.Where(x => x.Name == Constants.PEPS).FirstOrDefault();
             if (pepsGroup == null)

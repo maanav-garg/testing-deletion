@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AutosarBCM.Config;
+using AutosarBCM.Core.Config;
 using AutosarBCM.UserControls.Monitor;
 using AutosarBCM;
 using AutosarBCM.Core;
@@ -27,11 +27,11 @@ namespace AutosarBCM
         /// A reference to the timer that updates the time elapsed
         /// </summary>
         private System.Windows.Forms.Timer timer;
-        public Core.ControlInfo emcTimeControl { get; set; }
+        public ControlInfo emcTimeControl { get; set; }
         /// <summary>
         /// Keeps the relation with dtc and it's parent control
         /// </summary>
-        private Dictionary<string, Core.ControlInfo> dtcList = new Dictionary<string, Core.ControlInfo>();
+        private Dictionary<string, ControlInfo> dtcList = new Dictionary<string, ControlInfo>();
         /// <summary>
         /// Keeps the values of DID payloads. It will be used to determine the changed data
         /// </summary>
@@ -187,7 +187,7 @@ namespace AutosarBCM
         /// <param name="controlValue">The Control value if applicable.</param>
         /// <param name="dtcValue">The DTC value if applicable.</param>
         /// <returns>true if the row was added successfully; otherwise, false.</returns>
-        private bool AddDataRow(Core.ControlInfo control, Core.PayloadInfo payload, string controlValue, string dtcValue)
+        private bool AddDataRow(ControlInfo control, PayloadInfo payload, string controlValue, string dtcValue)
         {
             Invoke(new Action(() =>
             {

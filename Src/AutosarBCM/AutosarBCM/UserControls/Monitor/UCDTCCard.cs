@@ -1,4 +1,5 @@
-﻿using AutosarBCM.Core;
+﻿using AutosarBCM.Core.Config;
+using AutosarBCM.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,10 +14,10 @@ namespace AutosarBCM.UserControls.Monitor
 {
     public partial class UCDTCCard : UserControl
     {
-        public Core.ControlInfo ControlInfo { get; }
+        public ControlInfo ControlInfo { get; }
         public PayloadInfo PayloadInfo { get; }
 
-        public UCDTCCard(Core.ControlInfo controlInfo, PayloadInfo payloadInfo)
+        public UCDTCCard(ControlInfo controlInfo, PayloadInfo payloadInfo)
         {
             InitializeComponent();
 
