@@ -304,13 +304,16 @@ namespace AutosarBCM
             //TODO to be checked
             Invoke(new Action(() =>
             {
-                lblElapsedTime.Text = payload.FormattedValue;
+                var hour = payload.Value[payload.Value.Length - 2];
+                var minute = payload.Value[payload.Value.Length - 1];
+
+                int hourInt = (int)hour;
+                int minuteInt = (int)minute;
+
+                string timeFormatted = $"{hourInt:D2}:{minuteInt:D2}";
+
+                lblElapsedTime.Text = timeFormatted;
             }));
-            //if (Config.CommonConfig.EMCLifecycle.Skip(2).Take(2).SequenceEqual(response.RawData.Skip(4).Take(2)))
-            //{
-            //    lblElapsedTime.Text = TimeSpan.FromMinutes(BitConverter.ToInt16(response.RawData, 8)).ToString(@"hh\:mm\:ss\.fff");
-            //    return true;
-            //}
             return false;
         }
 
