@@ -73,26 +73,44 @@ namespace AutosarBCM.Core
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;
-
+                    
                     //Check if control has enum
                     if (resultPayload.Values?.Count > 0)
                     {
                         var data = new List<byte>();
+                        
                         if (isOpen)
                             data = resultPayload.Values.FirstOrDefault(v => v.IsOpen).Value.ToList();
                         else
                             data = resultPayload.Values.FirstOrDefault(v => v.IsClose).Value.ToList();
+
                         bytes.AddRange(data);
+                        
                     }
-                    else //
+                    else 
                     {
-                        for (int i = 0; i < resultPayload.Length; i++)
+                        if (resultPayload.TypeName == "DID_PWM")
                         {
+                            byte[] pwmBytes;
                             if (isOpen)
-                                bytes.Add(0x1);
+                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue);
                             else
-                                bytes.Add(0x0);
+                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue);
+
+                            Array.Reverse(pwmBytes);
+                            bytes.AddRange(pwmBytes);
                         }
+                        else
+                        {
+                            for (int i = 0; i < resultPayload.Length; i++)
+                            {
+                                if (isOpen)
+                                    bytes.Add(0x1);
+                                else
+                                    bytes.Add(0x0);
+                            }
+                        }
+                        
                     }
                     Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
 

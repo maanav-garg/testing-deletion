@@ -194,6 +194,6 @@ namespace AutosarBCM.Core
         public string Code { get; set; }
         public byte FailureType { get; set; }
         public byte Mask { get; set; }
-        public string Description { get => DTCFailure.GetByValue(FailureType).Description; }
+        public string Description { get => DTCFailure.GetByValue(FailureType)?.Description; }
     }
 }

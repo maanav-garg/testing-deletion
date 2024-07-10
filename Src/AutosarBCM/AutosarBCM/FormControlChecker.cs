@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,7 +91,7 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments</param>
         private void btnStart_Click(object sender, EventArgs e)
         {
-            
+
             Task.Run(async () =>
             {
                 GetExtendedDiagSessionFromControlChecker();
@@ -121,7 +122,7 @@ namespace AutosarBCM
                 this.Close();
                 return;
             }
-            LoadData(true);
+            LoadData();
         }
 
         /// <summary>
@@ -131,10 +132,10 @@ namespace AutosarBCM
         {
             try
             {
-                //RefreshUI(true);
                 Thread.Sleep(1000);
                 if (rdoOutput.Checked) StartOutputControls();
                 else if (rdoInput.Checked) StartInputControls();
+                Thread.Sleep(1000);
             }
             finally
             {
@@ -230,7 +231,7 @@ namespace AutosarBCM
                         {
                             item.Switch(ciDict[item].Item1, true);
                             await Task.Delay(txIntervalCC);
-                            Thread.Sleep(50);
+                            Thread.Sleep(100);
                             ciDict[item] = (ciDict[item].Item1, true);
                             item.Switch(ciDict[item].Item1, false);
                             await Task.Delay(txIntervalCC);
@@ -286,22 +287,32 @@ namespace AutosarBCM
                                     if (isSelected != false)
                                     {
                                         var all_values = ASContext.Configuration.GetPayloadInfoByType(pl.PayloadInfo.TypeName).Values;
-                                        var val = all_values.FirstOrDefault(x => x.Value.SequenceEqual(pl.Value));
-                                        if (val != null)
+                                        var matchingValue = all_values.FirstOrDefault(x => x.Value.SequenceEqual(pl.Value));
+                                        if (pl.PayloadInfo.TypeName == "DID_PWM")
                                         {
-                                            byte[] isOpenValue = val.IsOpen ? val.Value : null;
-                                            byte[] isCloseValue = val.IsClose ? val.Value : null;
                                             if (rdoHorizontal.Checked)
                                             {
-                                                if (!dictContent.Item2)
-                                                    row.Cells[3].Value = isCloseValue != null ? BitConverter.ToString(isCloseValue) : val.FormattedValue;
-                                                else
-                                                    row.Cells[4].Value = isOpenValue != null ? BitConverter.ToString(isOpenValue) : val.FormattedValue;
+                                                row.Cells[dictContent.Item2 ? 4 : 3].Value = pl.FormattedValue;
                                             }
                                         }
+                                        else
+                                        {
+                                            if (matchingValue != null)
+                                            {
+                                                byte[] isOpenValue = matchingValue.IsOpen ? matchingValue.Value : null;
+                                                byte[] isCloseValue = matchingValue.IsClose ? matchingValue.Value : null;
+                                                if (rdoHorizontal.Checked)
+                                                {
+                                                    if (!dictContent.Item2)
+                                                        row.Cells[3].Value = isCloseValue != null ? BitConverter.ToString(isCloseValue) : matchingValue.FormattedValue;
+                                                    else
+                                                        row.Cells[4].Value = isOpenValue != null ? BitConverter.ToString(isOpenValue) : matchingValue.FormattedValue;
+                                                }
+                                            }
+                                        }
+
                                     }
                                 }
-
                         }
                     }
                 }
@@ -320,27 +331,22 @@ namespace AutosarBCM
                         if ((ciDict2.TryGetValue(controlInfo, out List<string> dictContent)))
                         {
                             foreach (var pl in service.Payloads)
+                            {
                                 if (controlInfo.Address == service.ControlInfo.Address)
                                 {
-                                    if (isSelected != false)
-                                    {
-                                        var all_values = ASContext.Configuration.GetPayloadInfoByType(pl.PayloadInfo.TypeName).Values;
-                                        var val = all_values.FirstOrDefault(x => x.Value.SequenceEqual(pl.Value));
-                                        if (val != null)
-                                        {
-                                            row.Cells[3].Value = val.FormattedValue;
-                                        }
-                                    }
+                                    if (!isSelected)
+                                        continue;
+                                    row.Cells[3].Value = pl.FormattedValue;
                                 }
-
+                            }
                         }
                     }
                 }
             }
-            
+
         }
 
-        
+
 
         //public void LogDataToDGV(byte[] data)
         //{
@@ -542,9 +548,8 @@ namespace AutosarBCM
         /// <summary>
         /// Loads the data from the configuration file and populates the DataGridView controls accordingly.
         /// </summary>
-        /// <param name="all">Indicates whether to load all the data of input and output controls or just the data for the selected type.</param>
         /// <returns>true if the data was successfully loaded; otherwise, false.</returns>
-        private void LoadData(bool all = false)
+        private void LoadData()
         {
             if (ASContext.Configuration == null)
             {
@@ -562,21 +567,32 @@ namespace AutosarBCM
                 MessageBox.Show("TXIntervalForControlChecker key not found in the settings.");
             }
 
-            if (all || rdoOutput.Checked)
+            if (rdoOutput.Checked)
             {
                 SetSelectAllControls(dgvOutput, new DataGridViewCellMouseEventArgs(0, 0, 0, 0, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0)));
                 dgvOutput.Rows.Clear();
                 foreach (var control in ASContext.Configuration.Controls.Where(c => c.Services.Contains((byte)SIDDescription.SID_INPUT_OUTPUT_CONTROL_BY_IDENTIFIER) && c.Group == "DID"))
                 {
-                    foreach (var response in control.Responses.Where(r => r.Payloads != null && r.Payloads.Any())
-                    .SelectMany(r => r.Payloads, (r, p) => new { ControlName = control.Name, r.ServiceID, PayloadName = p.Name, PayloadTypeName = p.TypeName }))
+                    foreach (var response in control.Responses.Where(r => r.Payloads != null)
+                            .SelectMany(r => r.Payloads, (r, p) => new { ControlName = control.Name, r.ServiceID, PayloadName = p.Name, PayloadTypeName = p.TypeName }))
                     {
-                        dgvOutput.Rows[dgvOutput.Rows.Add(true, control.Name, response.PayloadName)].Tag = control;
-                    }
 
+                        var result = ASContext.Configuration.GetPayloadInfoByType(response.PayloadTypeName);
+
+                        foreach (var ctrlRes in result.Values.Where(v => v.IsOpen == true || v.IsClose == true))
+                        {
+                            dgvOutput.Rows[dgvOutput.Rows.Add(true, control.Name, response.PayloadName)].Tag = control;
+                            break;
+                        }
+                        if (response.PayloadTypeName == "DID_PWM")
+                        {
+                            dgvOutput.Rows[dgvOutput.Rows.Add(true, control.Name, response.PayloadName)].Tag = control;
+                        }
+                    }
                 }
 
-            }else if (all || rdoInput.Checked)
+            }
+            else if (rdoInput.Checked)
             {
                 SetSelectAllControls(dgvInput, new DataGridViewCellMouseEventArgs(0, 0, 0, 0, new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0)));
                 dgvInput.Rows.Clear();
@@ -675,7 +691,8 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments.</param>
         private void txtFilter_TextChanged(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in dgvOutput.Rows.OfType<DataGridViewRow>().Union(dgvOutput.Rows.OfType<DataGridViewRow>()))
+            DataGridView dgv = rdoOutput.Checked ? dgvOutput : dgvInput;
+            foreach (DataGridViewRow row in dgv.Rows.OfType<DataGridViewRow>().Union(dgv.Rows.OfType<DataGridViewRow>()))
                 row.Visible = string.IsNullOrEmpty(txtFilter.Text) || row.Cells.OfType<DataGridViewCell>().Any(x => x.Value?.ToString().ToLower().Contains(txtFilter.Text.ToLower()) ?? false);
         }
 
@@ -755,7 +772,7 @@ namespace AutosarBCM
             else
             {
                 lblOrderNote.Text = "Note: Output will be opened at once. Then closed according to wait time.";
-                
+
 
             }
         }
