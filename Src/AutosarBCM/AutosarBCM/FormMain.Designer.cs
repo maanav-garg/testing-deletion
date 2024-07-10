@@ -73,8 +73,8 @@ namespace AutosarBCM
             this.tsbSession = new System.Windows.Forms.ToolStripDropDownButton();
             this.nullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbECUReset = new System.Windows.Forms.ToolStripButton();
-            this.tsbActivateDiagSession = new System.Windows.Forms.ToolStripButton();
             this.btnStart = new System.Windows.Forms.ToolStripButton();
+            this.tsbActivateDiagSession = new System.Windows.Forms.ToolStripButton();
             this.btnClear = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
@@ -370,8 +370,8 @@ namespace AutosarBCM
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1409, 722);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Size = new System.Drawing.Size(1881, 893);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Trace";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -380,10 +380,10 @@ namespace AutosarBCM
             // 
             this.txtTrace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTrace.Location = new System.Drawing.Point(2, 29);
-            this.txtTrace.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTrace.Margin = new System.Windows.Forms.Padding(2);
             this.txtTrace.Name = "txtTrace";
             this.txtTrace.ReadOnly = true;
-            this.txtTrace.Size = new System.Drawing.Size(1405, 691);
+            this.txtTrace.Size = new System.Drawing.Size(1877, 862);
             this.txtTrace.TabIndex = 10;
             this.txtTrace.Text = "";
             // 
@@ -392,9 +392,9 @@ namespace AutosarBCM
             this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbClearLog});
-            this.toolStrip2.Location = new System.Drawing.Point(3, 2);
+            this.toolStrip2.Location = new System.Drawing.Point(2, 2);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(1875, 27);
+            this.toolStrip2.Size = new System.Drawing.Size(1877, 27);
             this.toolStrip2.TabIndex = 11;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -511,16 +511,6 @@ namespace AutosarBCM
             this.tsbECUReset.Text = "ECUReset";
             this.tsbECUReset.Click += new System.EventHandler(this.tsbECUReset_Click);
             // 
-            // tsbActivateDiagSession
-            // 
-            this.tsbActivateDiagSession.Image = global::AutosarBCM.Properties.Resources.DiskDiag_30222_1109286131;
-            this.tsbActivateDiagSession.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbActivateDiagSession.Name = "tsbActivateDiagSession";
-            this.tsbActivateDiagSession.Size = new System.Drawing.Size(172, 25);
-            this.tsbActivateDiagSession.Text = "Activate DiagSession";
-            this.tsbActivateDiagSession.Visible = false;
-            this.tsbActivateDiagSession.Click += new System.EventHandler(this.tsbActivateDiagSession_Click);
-            // 
             // btnStart
             // 
             this.btnStart.Image = global::AutosarBCM.Properties.Resources.play_pause;
@@ -531,6 +521,16 @@ namespace AutosarBCM
             this.btnStart.Text = "Start";
             this.btnStart.Visible = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // tsbActivateDiagSession
+            // 
+            this.tsbActivateDiagSession.Image = global::AutosarBCM.Properties.Resources.DiskDiag_30222_1109286131;
+            this.tsbActivateDiagSession.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbActivateDiagSession.Name = "tsbActivateDiagSession";
+            this.tsbActivateDiagSession.Size = new System.Drawing.Size(172, 25);
+            this.tsbActivateDiagSession.Text = "Activate DiagSession";
+            this.tsbActivateDiagSession.Visible = false;
+            this.tsbActivateDiagSession.Click += new System.EventHandler(this.tsbActivateDiagSession_Click);
             // 
             // btnClear
             // 
@@ -584,7 +584,7 @@ namespace AutosarBCM
             // activeToolStripMenuItem
             // 
             this.activeToolStripMenuItem.Name = "activeToolStripMenuItem";
-            this.activeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.activeToolStripMenuItem.Size = new System.Drawing.Size(143, 26);
             this.activeToolStripMenuItem.Text = "Active";
             this.activeToolStripMenuItem.Click += new System.EventHandler(this.activeToolStripMenuItem_Click);
             // 
@@ -593,7 +593,7 @@ namespace AutosarBCM
             this.inactiveToolStripMenuItem.Checked = true;
             this.inactiveToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.inactiveToolStripMenuItem.Name = "inactiveToolStripMenuItem";
-            this.inactiveToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.inactiveToolStripMenuItem.Size = new System.Drawing.Size(143, 26);
             this.inactiveToolStripMenuItem.Text = "Inactive";
             this.inactiveToolStripMenuItem.Click += new System.EventHandler(this.inactiveToolStripMenuItem_Click);
             // 
@@ -653,7 +653,6 @@ namespace AutosarBCM
             this.btnShowEmbSwVer.Name = "btnShowEmbSwVer";
             this.btnShowEmbSwVer.Size = new System.Drawing.Size(107, 25);
             this.btnShowEmbSwVer.Text = "SW Version";
-            this.btnShowEmbSwVer.Visible = false;
             this.btnShowEmbSwVer.Click += new System.EventHandler(this.btnShowEmbSwVer_Click);
             // 
             // lblEmbSwVer

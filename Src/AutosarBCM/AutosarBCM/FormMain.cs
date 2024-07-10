@@ -975,8 +975,9 @@ namespace AutosarBCM
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
-
+            var versInf = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == "Vestel_Internal_Software_Version");
             //new CanMessage("07E0", "072F619900000000").Transmit();
+            versInf.Transmit(ServiceInfo.ReadDataByIdentifier);
             Thread.Sleep(10);
         }
 

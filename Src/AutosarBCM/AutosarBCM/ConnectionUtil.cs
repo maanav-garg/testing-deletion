@@ -177,7 +177,7 @@ namespace AutosarBCM
 
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
-
+            HandleGeneralMessages(e.Data);
             if (service?.ServiceInfo == ServiceInfo.TesterPresent)
                 return;
 
@@ -649,16 +649,15 @@ namespace AutosarBCM
         /// <param name="data">A byte array represents the data of the received message.</param>
         private void HandleGeneralMessages(byte[] data)
         {
-            if (data[2] == 0x06 && data[3] == 0x6F && data[4] == 0x61 && data[5] == 0x99)
-            {
-                var EmbSwVersion = data.Skip(6).Take(4).ToArray();
+            //
+                //var EmbSwVersion = data.Skip(6).Take(4).ToArray();
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 if (formMain.InvokeRequired)
-                    formMain.Invoke(new MethodInvoker(() => formMain.SetEmbeddedSoftwareVersion(EmbSwVersion)));
+                    formMain.Invoke(new MethodInvoker(() => formMain.SetEmbeddedSoftwareVersion(data)));
                 else
-                    formMain.SetEmbeddedSoftwareVersion(EmbSwVersion);
+                    formMain.SetEmbeddedSoftwareVersion(data);
 
-            }
+            //}
         }
 
         #endregion
