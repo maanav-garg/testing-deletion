@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Config;
+using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 using System.Net;
 using AutosarBCM.Properties;

@@ -1,4 +1,5 @@
-﻿using AutosarBCM.Core;
+﻿using AutosarBCM.Core.Config;
+using AutosarBCM.Core;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections.Generic;
@@ -17,14 +18,17 @@ using System.Windows.Forms;
 
 namespace AutosarBCM.Forms.Monitor
 {
-    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver, IDTCReceiver
+    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver, IDTCReceiver, IReadDataByIdenReceiver
     {
 
         #region Variables
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
-        private Dictionary<string, Core.ControlInfo> dtcList = new Dictionary<string, Core.ControlInfo>();
-        private Dictionary<int, Core.Cycle> cycles;
+        private Dictionary<string, ControlInfo> dtcList = new Dictionary<string, ControlInfo>();
+        private Dictionary<int, Cycle> cycles;
+        private List<Mapping> mappingData;
+        private List<Function> continuousReadData;
+
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
@@ -59,6 +63,8 @@ namespace AutosarBCM.Forms.Monitor
             ResetTime();
 
             cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Cycles);
+            mappingData = (ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
+            continuousReadData = (ASContext.Configuration.EnvironmentalTest.ContinousReadList);
 
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
@@ -220,47 +226,112 @@ namespace AutosarBCM.Forms.Monitor
         {
             if (baseService is IOControlByIdentifierService ioService)
             {
-                int loopVal;
-                if (!int.TryParse(lblLoopVal.Text, out loopVal))
-                    return false;
-
-                if (!cycles.ContainsKey(loopVal))
-                    return false;
-
-                var cycle = cycles[loopVal];
-                for (var i = 0; i < ioService.Payloads.Count; i++)
-                {
-                    if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
-                    {
-                        Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
-                        var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
-                        if (matchedControl == null)
-                            return false;
-                        matchedControl.ChangeStatus(ioService);
-                    }
-                }
-                totalMessagesReceived++;
-                UpdateCounters();
-                return true;
+                return HandleIOControlByIdentifierReceive(ioService);
             }
             else if (baseService is ReadDTCInformationService dtcService)
             {
-                foreach (var dtcValue in dtcService.Values)
-                {
-                    if (dtcValue.Mask != 80)
-                        continue;
-                    if (!dtcList.ContainsKey(dtcValue.Code))
-                        continue;
-                    var control = dtcList[dtcValue.Code];
-                    var payload = control.Responses?[0].Payloads.First(p => p.DTCCode == dtcValue.Code);
-                    if (payload == null)
-                        continue;
-                    var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
-                    uc?.ChangeDtc(dtcValue.Description);
-                }
+                HandleReadDTCInformationReceive(dtcService);
             }
+            else if (baseService is ReadDataByIdenService readByIdenService)
+            {
+                return HandleReadDataByIdenService(readByIdenService);
+            }
+                
             return false;
         }
+
+
+        /// <summary>
+        /// Handles received IOControlByIdentifierService type of data.
+        /// </summary>
+        private bool HandleIOControlByIdentifierReceive(IOControlByIdentifierService ioService)
+        {
+            int loopVal;
+            if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
+            {
+                return false;
+            }
+
+            var cycle = cycles[loopVal];
+            UCReadOnlyItem matchedControl = null;
+            for (var i = 0; i < ioService.Payloads.Count; i++)
+            {
+                if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
+                    Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
+
+                matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
+                if (matchedControl == null)
+                    return false;
+            }
+            matchedControl.ChangeStatus(ioService);
+            totalMessagesReceived++;
+            UpdateCounters();
+            return true;
+        }
+
+        /// <summary>
+        /// Handles received ReadDTCInformationService type of data.
+        /// </summary>
+        private void HandleReadDTCInformationReceive(ReadDTCInformationService dtcService)
+        {
+            foreach (var dtcValue in dtcService.Values)
+            {
+                if (dtcValue.Mask != 80 || !dtcList.ContainsKey(dtcValue.Code))
+                { 
+                    continue; 
+                }
+
+                var control = dtcList[dtcValue.Code];
+                var payload = control.Responses?[0].Payloads.First(p => p.DTCCode == dtcValue.Code);
+                
+                if (payload == null)
+                    continue;
+                var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
+                uc?.ChangeDtc(dtcValue.Description);
+            }
+        }
+
+        /// <summary>
+        /// Handles received ReadDataByIdenService type of data.
+        /// </summary>
+        private bool HandleReadDataByIdenService(ReadDataByIdenService readByIdenService)
+        {
+            int loopVal;
+            if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
+            { 
+                return false; 
+            }
+
+            var cycle = cycles[loopVal];
+            UCReadOnlyItem matchedControl = null;
+
+            for (var i = 0; i < readByIdenService.Payloads.Count; i++)
+            {
+                if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
+                {
+                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue);
+                }
+                    
+                if (mappingData.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name)) 
+                { 
+                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue); 
+                }
+                    
+                if (continuousReadData.Any(p => p.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
+                {
+                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
+                }
+                    
+
+                matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == readByIdenService.Payloads[i].PayloadInfo.Name);
+                if (matchedControl == null)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         /// <summary>
         /// Updates TX/RX counters on UI
         /// </summary>
@@ -301,7 +372,6 @@ namespace AutosarBCM.Forms.Monitor
             if (!matchedControls.Any())
                 return false;
 
-          
             foreach (var uc in matchedControls)
             {
                 foreach (var payload in cycle.Functions.SelectMany(p => p.Payloads))
@@ -309,6 +379,7 @@ namespace AutosarBCM.Forms.Monitor
                     if (uc.PayloadInfo.Name == payload)
                     {
                         uc.HandleMetrics();
+
                         totalMessagesTransmitted++;
                         break;
                     }

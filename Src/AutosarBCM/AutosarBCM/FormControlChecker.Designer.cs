@@ -51,11 +51,17 @@
             this.rdoVertical = new System.Windows.Forms.RadioButton();
             this.rdoHorizontal = new System.Windows.Forms.RadioButton();
             this.lblOrderNote = new System.Windows.Forms.Label();
+            this.dgvInput = new System.Windows.Forms.DataGridView();
+            this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grpType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOutput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numInterval)).BeginInit();
             this.grpOrder.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWaitTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvInput)).BeginInit();
             this.SuspendLayout();
             // 
             // btnStart
@@ -203,13 +209,13 @@
             // Column16
             // 
             this.Column16.FillWeight = 80.92103F;
-            this.Column16.HeaderText = "Data";
+            this.Column16.HeaderText = "Open";
             this.Column16.Name = "Column16";
             // 
             // Column13
             // 
             this.Column13.FillWeight = 103.3683F;
-            this.Column13.HeaderText = "Value";
+            this.Column13.HeaderText = "Close";
             this.Column13.Name = "Column13";
             this.Column13.ReadOnly = true;
             this.Column13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -325,11 +331,65 @@
             this.lblOrderNote.TabIndex = 12;
             this.lblOrderNote.Text = "Note:";
             // 
+            // dgvInput
+            // 
+            this.dgvInput.AllowUserToAddRows = false;
+            this.dgvInput.AllowUserToDeleteRows = false;
+            this.dgvInput.AllowUserToResizeRows = false;
+            this.dgvInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvInput.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvInput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvInput.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewCheckBoxColumn1,
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3});
+            this.dgvInput.Location = new System.Drawing.Point(12, 76);
+            this.dgvInput.Name = "dgvInput";
+            this.dgvInput.RowHeadersVisible = false;
+            this.dgvInput.Size = new System.Drawing.Size(1530, 567);
+            this.dgvInput.TabIndex = 13;
+            // 
+            // dataGridViewCheckBoxColumn1
+            // 
+            this.dataGridViewCheckBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewCheckBoxColumn1.FillWeight = 96.51904F;
+            this.dataGridViewCheckBoxColumn1.HeaderText = "";
+            this.dataGridViewCheckBoxColumn1.MinimumWidth = 39;
+            this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
+            this.dataGridViewCheckBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewCheckBoxColumn1.Width = 39;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.FillWeight = 103.3683F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "DID Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.FillWeight = 103.3683F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Control";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.FillWeight = 80.92103F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "Value";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            // 
             // FormControlChecker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1554, 655);
+            this.Controls.Add(this.dgvInput);
             this.Controls.Add(this.lblOrderNote);
             this.Controls.Add(this.grpOrder);
             this.Controls.Add(this.numInterval);
@@ -346,6 +406,7 @@
             this.Name = "FormControlChecker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Control Checker";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormControlChecker_FormClosing);
             this.Load += new System.EventHandler(this.FormControlChecker_Load);
             this.grpType.ResumeLayout(false);
             this.grpType.PerformLayout();
@@ -354,6 +415,7 @@
             this.grpOrder.ResumeLayout(false);
             this.grpOrder.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWaitTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvInput)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -383,5 +445,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
+        private System.Windows.Forms.DataGridView dgvInput;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
     }
 }

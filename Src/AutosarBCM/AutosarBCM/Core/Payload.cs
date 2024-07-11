@@ -1,4 +1,4 @@
-﻿using AutosarBCM.Config;
+﻿using AutosarBCM.Core.Config;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutosarBCM.Core
+namespace AutosarBCM.Core.Config
 {
     public abstract class Payload
     {
@@ -63,9 +63,7 @@ namespace AutosarBCM.Core
     public class DID_DE01_4 : Payload { }
     public class DID_DE08_7 : Payload { }
     public class DID_Byte_Kmph : Payload { }
-
-
-
+    public class DID_C257_0 : Payload { }
     public class DID_Byte_On_Off : Payload { }
     public class DID_Bits_On_Off : Payload { }
 

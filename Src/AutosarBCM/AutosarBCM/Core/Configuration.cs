@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using static AutosarBCM.Core.ControlInfo;
 using System.Xml.Serialization;
-using AutosarBCM.Core.Enums;
 using AutosarBCM.UserControls.Monitor;
+using System.Threading.Tasks;
+using AutosarBCM.Core.Config;
 
 namespace AutosarBCM.Core
 {
@@ -69,7 +69,7 @@ namespace AutosarBCM.Core
                     bytes.Add(0x0);
                 else //Payload match
                 {
-                    controlByte |= (byte)(1 << (7- bitIndex));
+                    controlByte |= (byte)(1 << (7 - bitIndex));
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;
@@ -102,8 +102,9 @@ namespace AutosarBCM.Core
             }
             if (isControlMaskActive)
                 bytes.Add(controlByte);
-            Console.WriteLine($"DID {Name} {(isOpen?"opened":"closed")}");
+            //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
             Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            
         }
 
         internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data)
@@ -127,7 +128,7 @@ namespace AutosarBCM.Core
 
         private static Payload InitializeType(PayloadInfo payloadInfo, byte[] value, int? index = null)
         {
-            return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.{payloadInfo.TypeName}"))).Parse(payloadInfo, value, index);
+            return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.{payloadInfo.TypeName}"))).Parse(payloadInfo, value, index);
         }
     }
 
@@ -156,6 +157,7 @@ namespace AutosarBCM.Core
         public bool IsClose { get; set; }
         public bool IsOpen { get; set; }
         public byte[] Value { get => Enumerable.Range(0, ValueString.Length).Where(x => x % 2 == 0).Select(y => Convert.ToByte(ValueString.Substring(y, 2), 16)).ToArray(); }
+
     }
 
     public class ResponseInfo
@@ -256,7 +258,7 @@ namespace AutosarBCM.Core
                             ValueString = x.Attribute("value").Value,
                             Color = x.Attribute("color")?.Value ?? null,
                             FormattedValue = x.Value,
-                            IsClose= x.Attribute("isClose")?.Value == "true",
+                            IsClose = x.Attribute("isClose")?.Value == "true",
                             IsOpen = x.Attribute("isOpen")?.Value == "true",
                         }).ToList(),
                 })
@@ -288,7 +290,7 @@ namespace AutosarBCM.Core
                             PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
                             PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
                         }).First(),
-                    ConnectionMappings= t.Element("ConnectionMappings").Elements("Mapping")
+                    ConnectionMappings = t.Element("ConnectionMappings").Elements("Mapping")
                         .Select(m => new Mapping
                         {
                             Input = m.Elements("Input")
@@ -311,8 +313,9 @@ namespace AutosarBCM.Core
                              Control = f.Attribute("parent")?.Value ?? null,
                          }).ToList(),
                     Cycles = t.Element("Cycles").Elements("Cycle")
-                        .Select(c => new Cycle { 
-                            Name= c.Element("Name").Value,
+                        .Select(c => new Cycle
+                        {
+                            Name = c.Element("Name").Value,
                             OpenAt = int.Parse(c.Element("OpenAt").Value),
                             CloseAt = int.Parse(c.Element("CloseAt").Value),
                             Functions = c.Element("Functions").Elements("Function")

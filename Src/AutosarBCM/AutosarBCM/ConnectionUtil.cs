@@ -13,6 +13,7 @@ using Connection.Hardware.Can;
 using Connection.Hardware.SP;
 using AutosarBCM.Common;
 using AutosarBCM.Properties;
+using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 using Connection.Protocol.Uds;
 using AutosarBCM.Config;
@@ -49,7 +50,7 @@ namespace AutosarBCM
         /// A synchronization object used for locking critical sections of code to ensure thread safety.
         /// </summary>
         private static object lockObj = new object();
-       
+
         #endregion
 
         #region Public Methods
@@ -157,7 +158,7 @@ namespace AutosarBCM
                 || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
+                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0))) ;
             }
 
 
@@ -177,7 +178,7 @@ namespace AutosarBCM
 
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
-            HandleGeneralMessages(e.Data);
+            HandleSWVersion(e.Data);
             if (service?.ServiceInfo == ServiceInfo.TesterPresent)
                 return;
 
@@ -194,6 +195,13 @@ namespace AutosarBCM
                 return;
             }
 
+            if (FormMain.ControlChecker)
+            {
+                AppendTrace(rxRead, time);
+                SendDataToControlChecker(service);
+                return;
+            }
+
             if (FormMain.EMCMonitoring)
             {
                 AppendTrace(rxRead, time);
@@ -204,14 +212,14 @@ namespace AutosarBCM
             if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
-                    if (receiver.Receive(service)) break;
+                    if (receiver.Receive(service)) continue;
             }
             else if (service?.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
-                    if (receiver.Receive(service)) break;
+                    if (receiver.Receive(service)) continue ;
             }
-            else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation 
+            else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
                     || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
@@ -219,23 +227,37 @@ namespace AutosarBCM
             }
             if (service?.ServiceInfo == ServiceInfo.DiagnosticSessionControl)
             {
-                FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                    formInput.SessionFiltering();
+                if (!FormMain.ControlChecker)
+                {
+                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                        formInput.SessionFiltering();
+                }
             }
-             
+
+
 
             //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 
-            ////HandleGeneralMessages(bytes);
+            ////HandleSWVersion(bytes);
 
             if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
             {
                 AppendTrace(rxRead, time);
                 AppendTraceRx(rxRead, time);
             }
-            
 
+
+        }
+        public void SendDataToControlChecker(Service service)
+        {
+            if (!(service is ReadDataByIdenService || service is IOControlByIdentifierService))
+                return;
+            FormControlChecker formChecker = Application.OpenForms[Constants.Form_Control_Checker] as FormControlChecker;
+            if (formChecker != null)
+            {
+                formChecker.LogDataToDGV(service);
+            }
         }
 
         /// <summary>
@@ -386,7 +408,7 @@ namespace AutosarBCM
                     //    return;
                     //}
 
-                    HandleGeneralMessages(data);
+                    HandleSWVersion(data);
 
                     AppendTrace(rxRead, time);
                     AppendTraceRx(rxRead, time);
@@ -565,7 +587,7 @@ namespace AutosarBCM
             ////    return;
             ////}
 
-            ////HandleGeneralMessages(bytes);
+            ////HandleSWVersion(bytes);
 
             AppendTrace(rxRead, time);
             AppendTraceRx(rxRead, time);
@@ -647,17 +669,16 @@ namespace AutosarBCM
         /// checks received message
         /// </summary>
         /// <param name="data">A byte array represents the data of the received message.</param>
-        private void HandleGeneralMessages(byte[] data)
+        private void HandleSWVersion(byte[] data)
         {
-            //
-                //var EmbSwVersion = data.Skip(6).Take(4).ToArray();
+            if (data[0] == 0x62 && data[1] == 0xF1 && data[2] == 0xF0) { 
+                var EmbSwVersion = data.Skip(3).Take(4).ToArray();
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 if (formMain.InvokeRequired)
-                    formMain.Invoke(new MethodInvoker(() => formMain.SetEmbeddedSoftwareVersion(data)));
+                    formMain.Invoke(new MethodInvoker(() => formMain.SetEmbeddedSoftwareVersion(EmbSwVersion)));
                 else
-                    formMain.SetEmbeddedSoftwareVersion(data);
-
-            //}
+                    formMain.SetEmbeddedSoftwareVersion(EmbSwVersion);
+            }
         }
 
         #endregion

@@ -1,5 +1,5 @@
 ﻿using AutosarBCM.Core;
-using AutosarBCM.Core.Enums;
+using AutosarBCM.Core.Config;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -100,12 +100,16 @@ namespace AutosarBCM.UserControls.Monitor
                         bitIndex++;
                     }
                 }
-            }
 
+
+            }
             if (isControlMaskActive)
             {
                 bytes.Add(controlByte);
             }
+
+
+
 
             return bytes.ToArray();
         }

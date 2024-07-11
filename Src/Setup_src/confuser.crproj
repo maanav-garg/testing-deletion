@@ -3,7 +3,7 @@
     <protection id="rename" />
     <protection id="resources" />
   </rule>
-  <rule preset="none" pattern="namespace('AutosarBCM.Message') or namespace('AutosarBCM.Core') or match-type-name('LogObject')">
+  <rule preset="none" pattern="namespace('AutosarBCM.Core.Config') or match-type-name('LogObject')">
 	<protection id="rename" action="remove" />
   </rule>
   <rule pattern="namespace('StringUtils')">

@@ -1,4 +1,5 @@
-﻿using AutosarBCM.Core;
+﻿using AutosarBCM.Core.Config;
+using AutosarBCM.Core;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections.Generic;
