@@ -58,7 +58,6 @@ namespace AutosarBCM.Core
         {
             var bitIndex = 0;
             byte bits = 0x0;
-            byte controlByte = 0x0;
             var bytes = new List<byte>();
             bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
 
@@ -75,14 +74,13 @@ namespace AutosarBCM.Core
                         if (isOpen)
                         {
                             bits |= (byte)(1 << (7 - bitIndex));
-                            controlByte |= (byte)(1 << (3 - bitIndex));
                         }
                     }
                     bitIndex++;
                 }
             }
             bytes.Add(bits);
-            bytes.Add(controlByte);
+            bytes.Add(bits);
             Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
         }
 
