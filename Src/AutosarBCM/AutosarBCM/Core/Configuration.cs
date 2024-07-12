@@ -106,7 +106,9 @@ namespace AutosarBCM.Core
             if (isControlMaskActive)
                 bytes.Add(controlByte);
             //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
-            Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            // TODO Will be removed when the bug caused by payload bits is fixed    
+            if (Address != 0xc151)
+                Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
             
         }
 

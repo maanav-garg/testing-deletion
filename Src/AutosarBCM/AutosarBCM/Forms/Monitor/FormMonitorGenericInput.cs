@@ -435,7 +435,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <summary>
         /// Handle transmitted data.
         /// </summary>
-        public bool Sent(short address)
+        public bool Sent(ushort address)
         {
             foreach (var ucItem in uCItems)
                 if (ucItem.ControlInfo.Address == address)

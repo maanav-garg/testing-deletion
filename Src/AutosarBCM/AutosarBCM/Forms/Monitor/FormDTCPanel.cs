@@ -100,7 +100,7 @@ namespace AutosarBCM.Forms.Monitor
             new ClearDTCInformation().Transmit();
         }
 
-        public bool Sent(short address)
+        public bool Sent(ushort address)
         {
             return true;
             //throw new NotImplementedException();

@@ -175,10 +175,10 @@ namespace AutosarBCM
                             var controlItem = controlItems.Where(x => x.Name.Equals(mapping.Input.Control)).FirstOrDefault();
                             dictMapping.Add(mapping.Output.Name, controlItem);
                         }
-                        
+
                         foreach (var funcName in ASContext.Configuration.EnvironmentalTest.ContinousReadList)
                         {
-                            
+
                             var controlItem = controlItems.Where(x => x.Name.Equals(funcName.Control)).FirstOrDefault();
                             if (controlItem != null)
                                 continousReadList.Add(controlItem,funcName.Name);
@@ -200,7 +200,7 @@ namespace AutosarBCM
 
                         ThreadSleep(250);
 
-                        StopEnvironmentalTest(dictMapping);
+                        StopEnvironmentalTest(cycleDict,dictMapping);
                     }
                 }
                 finally
@@ -255,7 +255,7 @@ namespace AutosarBCM
 
             var groupedSoftContinuousDiagList = Helper.GroupList(softContinuousDiagList, (endCycleIndex - startCycleIndex + 1) > softContinuousDiagList.Count ? softContinuousDiagList.Count : (endCycleIndex - startCycleIndex + 1));
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
-            formEnvTest.SetCounter(1, startCycleIndex);
+            formEnvTest.SetCounter(1, 1);
             var timer = new MMTimer(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleTime, 0, MMTimer.EventType.Repeating, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
@@ -263,22 +263,28 @@ namespace AutosarBCM
             while (!cancellationToken.IsCancellationRequested)
                 ThreadSleep(250);
             timer.Stop();
-            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
+            
         }
 
-        private static void StopEnvironmentalTest(Dictionary<string, Core.ControlInfo> dictMapping)
+        private static void StopEnvironmentalTest(Dictionary<int, Core.Cycle> cycleDict, Dictionary<string, Core.ControlInfo> dictMapping)
         {
-            //Program.MainForm.ChangeTabControlStatus(false);
-            //FormMain.IsTestRunning = true;
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsStarted, Constants.DefaultEscapeCharacter);
-            //var closeCyle = new Cycle { CloseItems = monitorConfig.GenericMonitorConfiguration.OutputSection.Groups.SelectMany(x => x.OutputItemList).ToList() };
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsStarted, Constants.DefaultEscapeCharacter);
 
-            //for (int i = 0; i < 3; i++)
-            //    StopCycle(monitorConfig, closeCyle, dictMapping, true);
-
-            //Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsFinished, Constants.DefaultEscapeCharacter);
-            //FormMain.IsTestRunning = false;
-            //Program.MainForm.ChangeTabControlStatus(true);
+            for (int i = 0; i < cycleDict.Count; i++)
+            {
+                if (cycleDict.TryGetValue(i, out Core.Cycle cycle))
+                {
+                    if (cycle.CloseItems.Count > 0)
+                    {
+                        StopCycle(cycle, dictMapping);
+                    }
+                }
+            }
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsFinished, Constants.DefaultEscapeCharacter);
+            FormMain.IsTestRunning = !FormMain.IsTestRunning;
+            FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
+            formEnvTest.SetStartBtnVisual();
         }
 
         /// <summary>
@@ -341,9 +347,9 @@ namespace AutosarBCM
             //TODO to be checked
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
             Console.WriteLine($"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}");
+
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest.SetCounter(reboots + 1, cycleIndex + 1);
-
 
             if (cycleDict.TryGetValue(cycleIndex + 1, out Core.Cycle cycle))
             {
@@ -361,7 +367,7 @@ namespace AutosarBCM
             {
                 if (cycleIndex % 4 == 0)
                 {
-                    //new ReadDTCInformationService().Transmit();
+                    new ReadDTCInformationService().Transmit();
                     foreach (var item in continousReadList.Keys)
                     {
                         ThreadSleep(txInterval);
@@ -383,11 +389,11 @@ namespace AutosarBCM
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
             Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
 
-        
-
             if (cycleIndex >= endCycleIndex - 1)
             {
                 Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
+                new TesterPresent().Transmit();
+                Helper.SendExtendedDiagSession();
             }
             else
                 Interlocked.Increment(ref cycleIndex);
@@ -404,6 +410,7 @@ namespace AutosarBCM
             var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
             var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue;
             var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqOpenValue;
+            var mapControls = new List<Core.ControlInfo>();
             foreach (var function in cycle.OpenItems)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -414,7 +421,7 @@ namespace AutosarBCM
                 Core.ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
                 {
-                     if (dictMapping.TryGetValue(payload, out mappedItem))
+                    if (dictMapping.TryGetValue(payload, out mappedItem))
                     {
                         if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
                         {
@@ -428,26 +435,21 @@ namespace AutosarBCM
                         if (mappedItem != null)
                         {
                             var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
-                            ThreadSleep(txInterval);
-                            mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
                             Console.WriteLine($"Start Send MappedItem {mappedItem.Name} inputName {inputName}");
                             Helper.WriteCycleMessageToLogFile(mappedItem.Name, inputName, (Constants.MappingRead));
+                            if (mapControls.Any(c => c.Name == mappedItem.Name))
+                                continue;
+                            mapControls.Add(mappedItem);
                         }
-                        //break;
                     }
                 }
-                   
 
-                //ouputItem.Open(pwmDuty, pwmFreq);
                 ThreadSleep(txInterval);
-                //ReadDiagAdcCurrent(ouputItem, txInterval);
 
                 if (mappedItem != null)
                 {
                     if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
                         Program.MappingStateDict.UpdateValue(mappedItem.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
-
-                    //mappedItem.Transmit(txInterval, Constants.MappingRead);
                 }
 
                 //if (ouputItem.ItemType == Constants.PEPS)
@@ -461,6 +463,11 @@ namespace AutosarBCM
                 //    //    }
                 //    //}
                 //}
+            }
+            foreach (var mapControl in mapControls)
+            {
+                mapControl.Transmit(ServiceInfo.ReadDataByIdentifier);
+                ThreadSleep(txInterval);
             }
         }
 
@@ -477,6 +484,7 @@ namespace AutosarBCM
 
             var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue;
             var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqCloseValue;
+            var mapControls = new List<Core.ControlInfo>();
 
             foreach (var function in cycle.CloseItems)
             {
@@ -499,16 +507,17 @@ namespace AutosarBCM
                         if (mappedItem != null)
                         {
                             var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
-                            ThreadSleep(txInterval);
-                            mappedItem.Transmit(ServiceInfo.ReadDataByIdentifier);
+                            Console.WriteLine($"Start Send MappedItem {mappedItem.Name} inputName {inputName}");
+                            if (mapControls.Any(c => c.Name == mappedItem.Name))
+                                continue;
+                            mapControls.Add(mappedItem);
                             Console.WriteLine($"Stop Send MappedItem: {mappedItem.Name} inputName: {inputName}");
                             Helper.WriteCycleMessageToLogFile(mappedItem.Name, inputName, (Constants.MappingRead));
                         }
-
                     }
                 }
-                    
 
+                
                 //controlItem.Close(pwmDuty, pwmFreq);
                 ThreadSleep(txInterval);
                 //ReadDiagAdcCurrent(controlItem, txInterval);
@@ -517,9 +526,12 @@ namespace AutosarBCM
                 {
                     if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
                         Program.MappingStateDict.UpdateValue(mappedItem.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
-
-                    //controlInfo.Transmit(txInterval, Constants.MappingRead);
                 }
+            }
+            foreach (var mapControl in mapControls)
+            {
+                mapControl.Transmit(ServiceInfo.ReadDataByIdentifier);
+                ThreadSleep(txInterval);
             }
         }
 

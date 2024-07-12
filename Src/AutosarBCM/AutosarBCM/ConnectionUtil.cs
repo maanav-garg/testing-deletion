@@ -166,7 +166,7 @@ namespace AutosarBCM
                 || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
+                    if (receiver.Sent(BitConverter.ToUInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
             }
 
             if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))

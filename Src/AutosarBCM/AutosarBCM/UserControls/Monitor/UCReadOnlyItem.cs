@@ -135,11 +135,21 @@ namespace AutosarBCM.UserControls.Monitor
             if (Program.MappingStateDict.TryGetValue(ControlInfo.Name, out var errorLogDetect))
                 Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, GetMappingLogState(errorLogDetect.Operation)));
 
-            lblReceived.BeginInvoke((MethodInvoker)delegate ()
+            if (lblReceived.InvokeRequired)
+            {
+                lblReceived.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    MessagesReceived++;
+                    lblReceived.Text = MessagesReceived.ToString();
+                    Calculate();
+                });
+            }
+            else
             {
                 MessagesReceived++;
                 lblReceived.Text = MessagesReceived.ToString();
-            });
+                Calculate();
+            }
 
             if (oldValue != null)
             {
@@ -180,19 +190,8 @@ namespace AutosarBCM.UserControls.Monitor
                     lblWriteStatus.Text = payload?.FormattedValue.ToString();
                 }
             });
-            if (MessagesTransmitted == 0)
-            {
-                lblDiff.Text = "-";
-            }
-            else
-            {
-                lblDiff.BeginInvoke((MethodInvoker)delegate ()
-                {
-                    double diff = (double)MessagesReceived / MessagesTransmitted;
-                    lblDiff.Text = (diff * 100).ToString("F2") + "%";
-                    lblDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
-                });
-            }
+
+            
 
             lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
             {
@@ -210,10 +209,46 @@ namespace AutosarBCM.UserControls.Monitor
         {
             MessagesTransmitted++;
 
-            lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
+            if (lblTransmitted.InvokeRequired)
+            {
+                lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    lblTransmitted.Text = MessagesTransmitted.ToString();
+                });
+            }
+            else
             {
                 lblTransmitted.Text = MessagesTransmitted.ToString();
-            });
+            }
+            Calculate();
+        }
+
+        public void Calculate()
+        {
+            if (MessagesTransmitted == 0 || MessagesReceived == 0)
+            {
+                lblDiff.Text = "-";
+            }
+            else
+            {
+                if (lblDiff.InvokeRequired)
+                {
+                    lblDiff.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        var x = ControlInfo;
+                        double diff = (double)MessagesReceived / MessagesTransmitted;
+                        lblDiff.Text = (diff * 100).ToString("F2") + "%";
+                        lblDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+                    });
+                }
+                else
+                {
+                    var x = ControlInfo;
+                    double diff = (double)MessagesReceived / MessagesTransmitted;
+                    lblDiff.Text = (diff * 100).ToString("F2") + "%";
+                    lblDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+                }
+            }
         }
 
         /// <summary>

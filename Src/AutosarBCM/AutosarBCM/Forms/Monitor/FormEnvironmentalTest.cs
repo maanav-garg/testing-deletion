@@ -156,32 +156,48 @@ namespace AutosarBCM.Forms.Monitor
             if (FormMain.IsTestRunning)
             {
                 cancellationTokenSource.Cancel();
+                btnStart.Enabled = false;
             }
             else //Start Test
             {
                 cancellationTokenSource = new CancellationTokenSource();
+                Task.Run(async () =>
+                {
+                    Helper.SendExtendedDiagSession();
+
+                    await Task.Delay(1000);
+                });
                 StartTest(cancellationTokenSource.Token);
             }
-
-            FormMain.IsTestRunning = !FormMain.IsTestRunning;
-            if (FormMain.IsTestRunning)
-            {
-                ResetTime();
-                isActive = true;
-                btnStart.Text = "Stop";
-                btnStart.ForeColor = Color.Red;
-            }
-            else
-            {
-                isActive = false;
-                btnStart.Text = "Start";
-                btnStart.ForeColor = Color.Green;
-            }
+            SetStartBtnVisual();
         }
+        public void SetStartBtnVisual()
+        {
 
+            BeginInvoke(new Action(() =>
+            {
+                if (FormMain.IsTestRunning)
+                {
+                    ResetTime();
+                    isActive = true;
+                    btnStart.Text = "Stop";
+                    btnStart.ForeColor = Color.Red;
+                }
+                else
+                {
+                    btnStart.Enabled = true;
+                    isActive = false;
+                    btnStart.Text = "Start";
+                    btnStart.ForeColor = Color.Green;
+                }
+            }));
+
+            
+        }
         public void StartTest(CancellationToken cancellationToken)
         {
             MonitorUtil.RunTestPeriodically(cancellationToken, MonitorTestType.Environmental);
+            FormMain.IsTestRunning = !FormMain.IsTestRunning;
         }
 
         public bool CanBeRun()
@@ -270,12 +286,14 @@ namespace AutosarBCM.Forms.Monitor
                     if (matchedControl == null)
                         return false;
 
+                    totalMessagesReceived++;
+
                     matchedControl.ChangeStatus(ioService);
                 }
                    
             }
             
-            totalMessagesReceived++;
+            
             UpdateCounters();
             return true;
         }
@@ -319,27 +337,28 @@ namespace AutosarBCM.Forms.Monitor
 
             var cycle = cycles[loopVal];
             UCReadOnlyItem matchedControl = null;
+            var inputName = mappingData.Where(m => cycle.OpenItems.Any(x => x.Payloads.Contains(m.Output.Name)) || cycle.CloseItems.Any(x => x.Payloads.Contains(m.Output.Name)));
 
             for (var i = 0; i < readByIdenService.Payloads.Count; i++)
             {
                 Console.WriteLine($"Inloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
-                var inputName = mappingData.Where(m => cycle.Functions.Any(x => x.Payloads.Contains(m.Output.Name)));
+                
                 if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
-                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue);
-               
+                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
+                    totalMessagesReceived++;
                 }
                     
                 if (inputName.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name)) 
                 { 
-                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue);
-           
+                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.MappingResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
+                    totalMessagesReceived++;
                 }
                     
                 if (continuousReadData.Any(p => p.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
-                
+                    totalMessagesReceived++;
                 }
              
             }
@@ -351,20 +370,31 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private void UpdateCounters()
         {
-            tslTransmitted.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            if (tslTransmitted.GetCurrentParent().InvokeRequired)
+            {
+                tslTransmitted.GetCurrentParent().BeginInvoke((MethodInvoker)delegate ()
+                {
+                    tslTransmitted.Text = totalMessagesTransmitted.ToString();
+                });
+                tslReceived.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+                {
+                    tslReceived.Text = totalMessagesReceived.ToString();
+                });
+                tslDiff.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+                {
+                    double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
+                    tslDiff.Text = (diff * 100).ToString("F2") + "%";
+                    tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+                });
+            }
+            else
             {
                 tslTransmitted.Text = totalMessagesTransmitted.ToString();
-            });
-            tslReceived.GetCurrentParent().Invoke((MethodInvoker)delegate ()
-            {
                 tslReceived.Text = totalMessagesReceived.ToString();
-            });
-            tslDiff.GetCurrentParent().Invoke((MethodInvoker)delegate ()
-            {
                 double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
                 tslDiff.Text = (diff * 100).ToString("F2") + "%";
                 tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
-            });
+            }
         }
 
         /// <summary>
@@ -372,7 +402,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         /// <param name="sender">Form</param>
         /// <param name="e">Argument</param>
-        public bool Sent(short address)
+        public bool Sent(ushort address)
         {
             if (!int.TryParse(lblLoopVal.Text, out int loopVal))
                 return false;
