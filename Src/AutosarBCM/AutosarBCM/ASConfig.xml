@@ -2296,6 +2296,7 @@
 			<PWMDutyCloseValue>0</PWMDutyCloseValue>
 			<PWMFreqOpenValue>200</PWMFreqOpenValue>
 			<PWMFreqCloseValue>200</PWMFreqCloseValue>
+			<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
 		</EnvironmentalConfig>
 		<ContinousReadList>
 			<Func parent="TCCM_Input">KL75Relay1</Func>
@@ -2560,6 +2561,12 @@
 				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.33_6 Door Ajar Switch - Passenger</Input>
 			</Mapping>
 		</ConnectionMappings>
+		<SensitiveControls>
+			<Function control="TCCM_Input">
+				<Payload>KL15Relay1</Payload>
+				<Payload>KL15Relay2</Payload>
+			</Function>
+		</SensitiveControls>
 		<Cycles>
 			<Cycle>
 				<Name>SoftContinuous 1</Name>

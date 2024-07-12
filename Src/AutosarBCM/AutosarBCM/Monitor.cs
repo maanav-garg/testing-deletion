@@ -406,6 +406,13 @@ namespace AutosarBCM
 
                 function.ControlInfo.Switch(function.Payloads, true);
 
+                var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads.Intersect(function.Payloads).ToList();
+                if (sensitivePayloads?.Count > 0)
+                    Task.Delay(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
+                    {
+                        function.ControlInfo.Switch(sensitivePayloads, false);
+                    });
+
                 ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
                     if (dictMapping.TryGetValue(payload, out mappedItem))
