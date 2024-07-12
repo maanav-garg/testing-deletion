@@ -260,7 +260,8 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         internal void HandleMetrics()
         {
-            MessageTransmitted++;
+            if (!FormMain.IsTestRunning)
+                MessageTransmitted++;
 
             lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
             {

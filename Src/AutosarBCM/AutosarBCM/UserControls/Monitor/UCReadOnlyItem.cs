@@ -64,6 +64,9 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         private float[] rssiValues = new float[3];
 
+        public string CurrentDtcDescription { get; set;}
+
+
         /// <summary>
         /// Gets or sets the previous (old) value of the input item.
         /// </summary>
@@ -216,7 +219,8 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         internal void HandleMetrics()
         {
-            MessagesTransmitted++;
+          
+                MessagesTransmitted++;
             if (lblTransmitted.InvokeRequired)
             {
                 lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
@@ -269,6 +273,7 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 lblDtcStatus.Text = dtc;
             });
+            CurrentDtcDescription = dtc;
         }
 
         /// <summary>

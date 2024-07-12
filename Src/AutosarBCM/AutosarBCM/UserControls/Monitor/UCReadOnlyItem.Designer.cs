@@ -57,7 +57,7 @@
             // 
             this.lblDtcStatus.AutoSize = true;
             this.lblDtcStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblDtcStatus.Location = new System.Drawing.Point(90, 60);
+            this.lblDtcStatus.Location = new System.Drawing.Point(90, 61);
             this.lblDtcStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDtcStatus.Name = "lblDtcStatus";
             this.lblDtcStatus.Size = new System.Drawing.Size(13, 17);
@@ -131,7 +131,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(267, 62);
+            this.label4.Location = new System.Drawing.Point(267, 63);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 16);
