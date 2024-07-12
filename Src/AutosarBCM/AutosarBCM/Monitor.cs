@@ -363,6 +363,7 @@ namespace AutosarBCM
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
                         Helper.WriteCycleMessageToLogFile(item.Name, item.Type, Constants.ContinousRead);
                     }
+                    new ClearDTCInformation().Transmit();
                 }
 
                 //    if(softContinuousDiagList.Count > 0)

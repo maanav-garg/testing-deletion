@@ -260,7 +260,7 @@ namespace AutosarBCM
                         if (!dtcValueList[dtcValue.Code].ContainsKey(dtcValue.Description))
                             dtcValueList[dtcValue.Code].Add(dtcValue.Description, 0);
 
-                        if (dtcValueList[dtcValue.Code][dtcValue.Description] != dtcValue.Mask)
+                        if (dtcValue.Mask == 0x0B)
                         {
                             AddDataRow(control, payload, "", dtcValue.Description);
                             dtcValueList[dtcValue.Code][dtcValue.Description] = dtcValue.Mask;
@@ -272,6 +272,9 @@ namespace AutosarBCM
                     }
                     
                 }
+                new ClearDTCInformation().Transmit();
+                dtcValueList.Clear();
+
             }
         }
 
