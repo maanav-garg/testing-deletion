@@ -109,10 +109,19 @@ namespace AutosarBCM.UserControls.Monitor
             ControlInfo = controlInfo;
             PayloadInfo = payloadInfo;
 
-            if (controlInfo.Name.Length > 30)
-                lblParent.Text = $"{controlInfo.Name.Substring(0, 27)}...";
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(this.lblParent, controlInfo.Name);
+
+            if (controlInfo.Name.Length > 14)
+            {
+                lblParent.Text = $"{controlInfo.Name.Substring(0, 12)}...";
+            }
             else
+            {
                 lblParent.Text = controlInfo.Name;
+            }
+    
+            toolTip.SetToolTip(this.lblName, payloadInfo.Name);
 
             if (payloadInfo.Name.Length > 30)
                 lblName.Text = $"{payloadInfo.Name.Substring(0, 27)}...";
@@ -208,12 +217,12 @@ namespace AutosarBCM.UserControls.Monitor
         internal void HandleMetrics()
         {
             MessagesTransmitted++;
-
             if (lblTransmitted.InvokeRequired)
             {
                 lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
                 {
                     lblTransmitted.Text = MessagesTransmitted.ToString();
+                
                 });
             }
             else
