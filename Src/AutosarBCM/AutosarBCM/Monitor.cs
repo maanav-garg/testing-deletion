@@ -404,8 +404,16 @@ namespace AutosarBCM
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
-                function.ControlInfo.Switch(function.Payloads, true);
-
+                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                if (hasDIDBitsOnOff)
+                {
+                    function.ControlInfo.SwitchForBits(function.Payloads, true);
+                }
+                else
+                {
+                    function.ControlInfo.Switch(function.Payloads, true);
+                }
+                
                 ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
                     if (dictMapping.TryGetValue(payload, out mappedItem))
@@ -466,7 +474,15 @@ namespace AutosarBCM
 
             foreach (var function in cycle.CloseItems)
             {
-                function.ControlInfo.Switch(function.Payloads, false);
+                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                if (hasDIDBitsOnOff)
+                {
+                    function.ControlInfo.SwitchForBits(function.Payloads, false);
+                }
+                else
+                {
+                    function.ControlInfo.Switch(function.Payloads, false);
+                }
 
                 ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
