@@ -263,6 +263,7 @@ namespace AutosarBCM.UserControls.Monitor
                 }
             }
         }
+        private ToolTip toolTipDtc = new ToolTip();
 
         /// <summary>
         /// Change DTC of the input window regarding to read data from the device.
@@ -271,10 +272,13 @@ namespace AutosarBCM.UserControls.Monitor
         {
             lblDtcStatus.BeginInvoke((MethodInvoker)delegate ()
             {
-                lblDtcStatus.Text = dtc;
+                string displayText = dtc.Length > 20 ? dtc.Substring(0, 20) + "..." : dtc;
+                lblDtcStatus.Text = displayText;
+                toolTipDtc.SetToolTip(lblDtcStatus, dtc); 
             });
             CurrentDtcDescription = dtc;
         }
+
 
         /// <summary>
         /// Change status of the input window regarding to read data from the device.
