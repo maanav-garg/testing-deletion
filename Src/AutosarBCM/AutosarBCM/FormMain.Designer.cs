@@ -118,7 +118,7 @@ namespace AutosarBCM
             // 
             this.optionsTsmi.Image = ((System.Drawing.Image)(resources.GetObject("optionsTsmi.Image")));
             this.optionsTsmi.Name = "optionsTsmi";
-            this.optionsTsmi.Size = new System.Drawing.Size(184, 26);
+            this.optionsTsmi.Size = new System.Drawing.Size(174, 22);
             this.optionsTsmi.Text = "Options";
             this.optionsTsmi.Click += new System.EventHandler(this.optionsTsmi_Click);
             // 
@@ -126,7 +126,7 @@ namespace AutosarBCM
             // 
             this.traceDialogtsmi.Image = ((System.Drawing.Image)(resources.GetObject("traceDialogtsmi.Image")));
             this.traceDialogtsmi.Name = "traceDialogtsmi";
-            this.traceDialogtsmi.Size = new System.Drawing.Size(184, 26);
+            this.traceDialogtsmi.Size = new System.Drawing.Size(174, 22);
             this.traceDialogtsmi.Text = "Trace Dialog";
             this.traceDialogtsmi.Click += new System.EventHandler(this.traceDialogtsmi_Click);
             // 
@@ -134,7 +134,7 @@ namespace AutosarBCM
             // 
             this.testLogToolStripMenuItem.Image = global::AutosarBCM.Properties.Resources.EditWindow;
             this.testLogToolStripMenuItem.Name = "testLogToolStripMenuItem";
-            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.testLogToolStripMenuItem.Text = "Test Log Viewer";
             this.testLogToolStripMenuItem.Visible = false;
             this.testLogToolStripMenuItem.Click += new System.EventHandler(this.testLogToolStripMenuItem_Click);
@@ -143,7 +143,7 @@ namespace AutosarBCM
             // 
             this.tsmiCheck.Image = global::AutosarBCM.Properties.Resources.pass;
             this.tsmiCheck.Name = "tsmiCheck";
-            this.tsmiCheck.Size = new System.Drawing.Size(184, 26);
+            this.tsmiCheck.Size = new System.Drawing.Size(174, 22);
             this.tsmiCheck.Text = "Control Check";
             this.tsmiCheck.Click += new System.EventHandler(this.tsmiCheck_Click);
             // 
@@ -151,14 +151,14 @@ namespace AutosarBCM
             // 
             this.tsmiEMCView.Image = global::AutosarBCM.Properties.Resources.DiskDiag_30222_1109286131;
             this.tsmiEMCView.Name = "tsmiEMCView";
-            this.tsmiEMCView.Size = new System.Drawing.Size(184, 26);
+            this.tsmiEMCView.Size = new System.Drawing.Size(174, 22);
             this.tsmiEMCView.Text = "EMC Monitor";
             this.tsmiEMCView.Click += new System.EventHandler(this.tsmiEMCView_Click);
             // 
             // environmentalTestTsmi
             // 
             this.environmentalTestTsmi.Name = "environmentalTestTsmi";
-            this.environmentalTestTsmi.Size = new System.Drawing.Size(184, 26);
+            this.environmentalTestTsmi.Size = new System.Drawing.Size(174, 22);
             this.environmentalTestTsmi.Text = "Environmental Test";
             this.environmentalTestTsmi.Click += new System.EventHandler(this.environmentalTestTsmi_Click);
             // 
@@ -495,7 +495,7 @@ namespace AutosarBCM
             // nullToolStripMenuItem
             // 
             this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
-            this.nullToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.nullToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nullToolStripMenuItem.Text = "N/A";
             // 
             // tsbECUReset
@@ -766,7 +766,6 @@ namespace AutosarBCM
         private ToolStripMenuItem testLogToolStripMenuItem;
         private ToolStripMenuItem tsmiCheck;
         private ToolStripButton tsbToggle;
-        private ToolStripDropDownButton tsbSession;
         private ToolStripMenuItem nullToolStripMenuItem;
         private ToolStripDropDownButton testerPresentDropDownButton;
         public ToolStripMenuItem activeToolStripMenuItem;
@@ -774,6 +773,7 @@ namespace AutosarBCM
         private ToolStripMenuItem environmentalTestTsmi;
         internal WeifenLuo.WinFormsUI.Docking.DockPanel dockMonitor;
         private ToolStripMenuItem tsmiEMCView;
+        public ToolStripDropDownButton tsbSession;
     }
 }
 

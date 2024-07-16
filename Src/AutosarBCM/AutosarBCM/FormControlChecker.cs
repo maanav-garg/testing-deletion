@@ -91,6 +91,13 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments</param>
         private void btnStart_Click(object sender, EventArgs e)
         {
+            FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
+            if (mainForm.tsbSession.Text != "Session: Extended Diagnostic Session")
+            {
+                Helper.ShowWarningMessageBox("Must be in Extended Diagnostic Session.");
+                return;
+            }
+
 
             Task.Run(async () =>
             {
