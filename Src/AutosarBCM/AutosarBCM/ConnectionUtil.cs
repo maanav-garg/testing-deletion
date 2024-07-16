@@ -178,7 +178,7 @@ namespace AutosarBCM
 
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
-
+            HandleSWVersion(e.Data);
             if (service?.ServiceInfo == ServiceInfo.TesterPresent)
                 return;
 
@@ -239,7 +239,7 @@ namespace AutosarBCM
 
             //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 
-            ////HandleGeneralMessages(bytes);
+            ////HandleSWVersion(bytes);
 
             if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
             {
@@ -408,7 +408,7 @@ namespace AutosarBCM
                     //    return;
                     //}
 
-                    HandleGeneralMessages(data);
+                    HandleSWVersion(data);
 
                     AppendTrace(rxRead, time);
                     AppendTraceRx(rxRead, time);
@@ -587,7 +587,7 @@ namespace AutosarBCM
             ////    return;
             ////}
 
-            ////HandleGeneralMessages(bytes);
+            ////HandleSWVersion(bytes);
 
             AppendTrace(rxRead, time);
             AppendTraceRx(rxRead, time);
@@ -669,17 +669,15 @@ namespace AutosarBCM
         /// checks received message
         /// </summary>
         /// <param name="data">A byte array represents the data of the received message.</param>
-        private void HandleGeneralMessages(byte[] data)
+        private void HandleSWVersion(byte[] data)
         {
-            if (data[2] == 0x06 && data[3] == 0x6F && data[4] == 0x61 && data[5] == 0x99)
-            {
-                var EmbSwVersion = data.Skip(6).Take(4).ToArray();
+            if (data[0] == 0x62 && data[1] == 0xF1 && data[2] == 0xF0) { 
+                var EmbSwVersion = data.Skip(3).Take(4).ToArray();
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                 if (formMain.InvokeRequired)
                     formMain.Invoke(new MethodInvoker(() => formMain.SetEmbeddedSoftwareVersion(EmbSwVersion)));
                 else
                     formMain.SetEmbeddedSoftwareVersion(EmbSwVersion);
-
             }
         }
 

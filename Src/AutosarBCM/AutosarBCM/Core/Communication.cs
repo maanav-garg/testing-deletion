@@ -80,11 +80,7 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return ReadDTCInformationService.Receive(this);
             }
-            else if (Data[0] == ServiceInfo.ClearDTCInformation.ResponseID)
-            {
-                IsPositiveRx = true;
-                return ClearDTCInformation.Receive(this);
-            }
+            
             else if (Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
             {
                 IsPositiveRx = true;
