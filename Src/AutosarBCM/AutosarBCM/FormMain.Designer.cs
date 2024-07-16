@@ -499,7 +499,9 @@ namespace AutosarBCM
             // nullToolStripMenuItem
             // 
             this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
-            this.nullToolStripMenuItem.Size = new System.Drawing.Size(119, 26);
+
+            this.nullToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+
             this.nullToolStripMenuItem.Text = "N/A";
             // 
             // tsbECUReset
@@ -769,7 +771,6 @@ namespace AutosarBCM
         private ToolStripMenuItem testLogToolStripMenuItem;
         private ToolStripMenuItem tsmiCheck;
         private ToolStripButton tsbToggle;
-        private ToolStripDropDownButton tsbSession;
         private ToolStripMenuItem nullToolStripMenuItem;
         private ToolStripDropDownButton testerPresentDropDownButton;
         public ToolStripMenuItem activeToolStripMenuItem;
@@ -777,6 +778,7 @@ namespace AutosarBCM
         private ToolStripMenuItem environmentalTestTsmi;
         internal WeifenLuo.WinFormsUI.Docking.DockPanel dockMonitor;
         private ToolStripMenuItem tsmiEMCView;
+        public ToolStripDropDownButton tsbSession;
     }
 }
 

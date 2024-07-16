@@ -693,7 +693,6 @@ namespace AutosarBCM
            
             StopTesterPresent();
         }
-
         private bool CheckConfigurationFile()
         {
             if (ASContext.Configuration == null)

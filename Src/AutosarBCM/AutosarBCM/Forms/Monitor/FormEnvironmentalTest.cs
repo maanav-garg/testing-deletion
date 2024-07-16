@@ -151,8 +151,15 @@ namespace AutosarBCM.Forms.Monitor
             timeHour = 0;
             isActive = false;
         }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
+            FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
+            if (mainForm.tsbSession.Text != "Session: Extended Diagnostic Session")
+            {
+                Helper.ShowWarningMessageBox("Must be in Extended Diagnostic Session.");
+                return;
+            }
             if (FormMain.IsTestRunning)
             {
                 cancellationTokenSource.Cancel();
@@ -276,9 +283,9 @@ namespace AutosarBCM.Forms.Monitor
         {
             foreach (var dtcValue in dtcService.Values)
             {
-                if (dtcValue.Mask != 80 || !dtcList.ContainsKey(dtcValue.Code))
+                if (dtcValue.Mask != 0x0B || !dtcList.ContainsKey(dtcValue.Code))
                 { 
-                    continue; 
+                    continue;
                 }
 
                 var control = dtcList[dtcValue.Code];

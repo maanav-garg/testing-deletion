@@ -53,8 +53,8 @@ namespace AutosarBCM
 
 #if !DEBUG
             var appName = Assembly.GetExecutingAssembly().GetName().Name;
-                    //if (!ValidationHelper.CheckLicense(appName))
-                    //    return;
+            if (!ValidationHelper.CheckLicense(appName))
+                return;
 #endif
 
             FormSplashScreen splashScreen = new FormSplashScreen();
