@@ -210,7 +210,8 @@ namespace AutosarBCM
                     if (isChecked)
                     {
                         var cInf = (ControlInfo)row.Tag;
-                        if (cInf.Address == 0xC151)
+                        var hasDIDBitsOnOff = cInf.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                        if (hasDIDBitsOnOff)
                         {
                             ciDictBits.Add(row.Cells[2].Value.ToString(), (new List<string> { row.Cells[2].Value.ToString() }, false));
                         }

@@ -50,8 +50,12 @@ namespace AutosarBCM.UserControls.Monitor
 
             isControlMaskActive = ucItem.ControlInfo.Responses[0].Payloads.Count > 1;
 
+            var hasDIDBitsOnOff = ucItem.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+
             foreach (var payload in ucItem.ControlInfo.Responses[0].Payloads)
             {
+                if (hasDIDBitsOnOff && payload.TypeName != "DID_Bits_On_Off") continue;
+
                 var ucPayload = new UCControlPayload(payload, isControlMaskActive);
                 ucPayload.BorderStyle = BorderStyle.FixedSingle;
                 ucPayload.Anchor = AnchorStyles.Top | AnchorStyles.Left;
@@ -67,7 +71,16 @@ namespace AutosarBCM.UserControls.Monitor
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareControlData());
+            var hasDIDBitsOnOff = ucItem.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+            if (hasDIDBitsOnOff)
+            {
+                ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareControlDataForBits());
+            }
+            else
+            {
+                ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareControlData());
+            }
+            
         }
 
         private byte[] PrepareControlData()
@@ -100,24 +113,43 @@ namespace AutosarBCM.UserControls.Monitor
                         bitIndex++;
                     }
                 }
-
-
             }
             if (isControlMaskActive)
             {
                 bytes.Add(controlByte);
             }
 
-
-
-
             return bytes.ToArray();
         }
 
+        private byte[] PrepareControlDataForBits()
+        {
+            byte bits = 0x0;
+            int bitIndex = 0;
+
+            var bytes = new List<byte> { (byte)InputControlParameter.ShortTermAdjustment };
+
+            foreach (var uc in pnlControls.Controls)
+            {
+                if (uc is UCControlPayload ucPayload)
+                {
+                    if (ucPayload.IsSelected)
+                    {
+                        if(ucPayload.SelectedValue[0] == 0x01)
+                        {
+                            bits |= (byte)(1 << (7 - bitIndex));
+                        }
+                    }
+                    bitIndex++;
+                }
+            }
+            bytes.Add(bits);
+            bytes.Add(bits);
+            return bytes.ToArray();
+        }
+
+
         #endregion
-
-
-
 
     }
 }

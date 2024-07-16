@@ -63,7 +63,7 @@ namespace AutosarBCM.Core
 
             foreach (var payload in Responses?[0].Payloads)
             {
-                if (payload.Name == "All Doors Lock and Ajar Output Signal Status")
+                if (payload.TypeName != "DID_Bits_On_Off")
                 {
                     continue;
                 }
