@@ -178,7 +178,6 @@ namespace AutosarBCM
 
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
-            HandleSWVersion(e.Data);
             if (service?.ServiceInfo == ServiceInfo.TesterPresent)
                 return;
 
@@ -194,6 +193,7 @@ namespace AutosarBCM
                 AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
                 return;
             }
+
 
             if (FormMain.ControlChecker)
             {
@@ -211,6 +211,7 @@ namespace AutosarBCM
 
             if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
             {
+                HandleGeneralMessages(service);
                 foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
                     if (receiver.Receive(service)) continue;
             }
@@ -408,7 +409,7 @@ namespace AutosarBCM
                     //    return;
                     //}
 
-                    HandleSWVersion(data);
+                    //HandleSWVersion(data);
 
                     AppendTrace(rxRead, time);
                     AppendTraceRx(rxRead, time);
@@ -669,15 +670,20 @@ namespace AutosarBCM
         /// checks received message
         /// </summary>
         /// <param name="data">A byte array represents the data of the received message.</param>
-        private void HandleSWVersion(byte[] data)
+        private void HandleGeneralMessages(Service service)
         {
-            if (data[0] == 0x62 && data[1] == 0xF1 && data[2] == 0xF0) { 
-                var EmbSwVersion = data.Skip(3).Take(4).ToArray();
-                FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                if (formMain.InvokeRequired)
-                    formMain.Invoke(new MethodInvoker(() => formMain.SetEmbeddedSoftwareVersion(EmbSwVersion)));
-                else
-                    formMain.SetEmbeddedSoftwareVersion(EmbSwVersion);
+            if (service is ReadDataByIdenService readService)
+            {
+                if (readService.ControlInfo.Name == "Vestel_Internal_Software_Version")
+                {
+                    var embeddedSwVersion = readService.Payloads.First().Value;
+                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                    if (formMain.InvokeRequired)
+                        formMain.Invoke(new MethodInvoker(() => formMain.SetEmbeddedSoftwareVersion(embeddedSwVersion)));
+                    else
+                        formMain.SetEmbeddedSoftwareVersion(embeddedSwVersion);
+                    
+                }
             }
         }
 
