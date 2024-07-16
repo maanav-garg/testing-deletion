@@ -407,6 +407,13 @@ namespace AutosarBCM
 
                 function.ControlInfo.Switch(function.Payloads, true);
 
+                var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads.Intersect(function.Payloads).ToList();
+                if (sensitivePayloads?.Count > 0)
+                    Task.Delay(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
+                    {
+                        function.ControlInfo.Switch(sensitivePayloads, false);
+                    });
+
                 ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
                     if (dictMapping.TryGetValue(payload, out mappedItem))
@@ -467,7 +474,9 @@ namespace AutosarBCM
 
             foreach (var function in cycle.CloseItems)
             {
-                function.ControlInfo.Switch(function.Payloads, false);
+                var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
+                if (nonSensitivePayloads?.Count > 0)
+                    function.ControlInfo.Switch(nonSensitivePayloads, false);
 
                 ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)

@@ -122,7 +122,7 @@ namespace AutosarBCM.Core
                 bytes.Add(controlByte);
             //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
             Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
-            
+
         }
 
         internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data)
@@ -343,7 +343,13 @@ namespace AutosarBCM.Core
                                     ControlInfo = controls.FirstOrDefault(x => x.Name == f.Attribute("control")?.Value),
                                     Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
                                 }).ToList(),
-                        }).ToList()
+                        }).ToList(),
+                    SensitiveControls = t.Element("SensitiveControls").Elements("Function")
+                        .Select(f => new Function
+                        {
+                            Control = f.Attribute("control")?.Value,
+                            Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
+                        }).ToList(),
                 }).First();
 
             #endregion
@@ -409,6 +415,10 @@ namespace AutosarBCM.Core
         /// Gets or sets the test cycles
         /// </summary>
         public List<Cycle> Cycles { get; set; }
+        /// <summary>
+        /// Gets or sets a list of sensitive controls
+        /// </summary>
+        public List<Function> SensitiveControls { get; set; }
     }
 
     /// <summary>
@@ -469,6 +479,10 @@ namespace AutosarBCM.Core
         /// Gets or sets the message of PWM Close Frequency value
         /// </summary>
         public short PWMFreqCloseValue { get; set; }
+        /// <summary>
+        /// Gets or sets the duration of sensitive control
+        /// </summary>
+        public int SensitiveCtrlDuration { get; set; }
 
         #endregion
     }
