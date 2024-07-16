@@ -1108,9 +1108,9 @@ namespace AutosarBCM
             {
                 var key = (key1, key2);
                 dictionary.Add(key, value);
-                //if (!key1MatchDict.ContainsKey(key1))
+                if (!key1MatchDict.ContainsKey(key1))
                     key1MatchDict.Add(key1, key);
-                //if (!key2MatchDict.ContainsKey(key2))
+                if (!key2MatchDict.ContainsKey(key2))
                     key2MatchDict.Add(key2, key);
             }
         }

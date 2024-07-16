@@ -351,14 +351,17 @@ namespace AutosarBCM
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest.SetCounter(reboots + 1, cycleIndex + 1);
 
+            if (cycleIndex == startCycleIndex - 1 && reboots == 0)
+                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
+
             if (cycleDict.TryGetValue(cycleIndex + 1, out Core.Cycle cycle))
             {
-                StopCycle(cycle, dictMapping);
+                if(!(cycleIndex+1 == 16 &&  reboots+1 == 1))
+                    StopCycle(cycle, dictMapping);
                 StartCycle(cycle, dictMapping);
             }
 
-            if (cycleIndex == startCycleIndex - 1 && reboots == 0)
-                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
+            
             //Console.WriteLine(Constants.StartProcessCompleted);
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
@@ -372,6 +375,7 @@ namespace AutosarBCM
                     {
                         ThreadSleep(txInterval);
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
+                        
                         Console.WriteLine($"Send Continousitem: {item.Name} inputName: {continousReadList[item]}");
                         Helper.WriteCycleMessageToLogFile(item.Name, continousReadList[item], Constants.ContinousRead);
                     }
@@ -392,7 +396,6 @@ namespace AutosarBCM
             if (cycleIndex >= endCycleIndex - 1)
             {
                 Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
-                new TesterPresent().Transmit();
                 Helper.SendExtendedDiagSession();
             }
             else
@@ -436,10 +439,10 @@ namespace AutosarBCM
                         {
                             var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
                             Console.WriteLine($"Start Send MappedItem {mappedItem.Name} inputName {inputName}");
-                            Helper.WriteCycleMessageToLogFile(mappedItem.Name, inputName, (Constants.MappingRead));
                             if (mapControls.Any(c => c.Name == mappedItem.Name))
                                 continue;
                             mapControls.Add(mappedItem);
+                            Helper.WriteCycleMessageToLogFile(mappedItem.Name, inputName, (Constants.MappingRead));
                         }
                     }
                 }
