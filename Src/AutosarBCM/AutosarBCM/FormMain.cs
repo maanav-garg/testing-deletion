@@ -543,8 +543,8 @@ namespace AutosarBCM
         {
             if (txtTrace.Text.Length > 0)
             {
-                if (MessageBox.Show("Do you want to save the trace log?", "Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                    return;
+              //  if (MessageBox.Show("Do you want to save the trace log?", "Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                 //   return;
 
                 File.AppendAllText(logFileName + Settings.Default.TraceFilePath, txtTrace.Text);
             }
@@ -737,8 +737,25 @@ namespace AutosarBCM
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             // save settings
+            // Properties.Settings.Default.Save();
+            //SaveTraceLog();
+            //ConnectionUtil.Disconnect();
+            var result = MessageBox.Show("Do you want to save the trace log?", "Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                
+                SaveTraceLog();
+            }
+            else if (result == DialogResult.No)
+            {
+                
+                e.Cancel = true;
+                return;
+            }
+
+            // save settings
             Properties.Settings.Default.Save();
-            SaveTraceLog();
             ConnectionUtil.Disconnect();
         }
 

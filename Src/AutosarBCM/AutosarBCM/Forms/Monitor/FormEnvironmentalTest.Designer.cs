@@ -62,7 +62,7 @@
             this.tspFilterTxb});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1579, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1579, 31);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -72,7 +72,7 @@
             this.btnStart.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnStart.Margin = new System.Windows.Forms.Padding(5, 1, 10, 2);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(64, 24);
+            this.btnStart.Size = new System.Drawing.Size(64, 28);
             this.btnStart.Text = "Start";
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -83,20 +83,20 @@
             this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
             this.btnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(109, 24);
+            this.btnClear.Size = new System.Drawing.Size(109, 28);
             this.btnClear.Text = "Clear Fields";
             // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(49, 24);
+            this.toolStripLabel2.Size = new System.Drawing.Size(49, 28);
             this.toolStripLabel2.Text = "Filter: ";
             // 
             // tspFilterTxb
             // 
             this.tspFilterTxb.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tspFilterTxb.Name = "tspFilterTxb";
-            this.tspFilterTxb.Size = new System.Drawing.Size(100, 27);
+            this.tspFilterTxb.Size = new System.Drawing.Size(100, 31);
             this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);
             // 
             // pnlMonitor
@@ -106,10 +106,10 @@
             this.pnlMonitor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMonitor.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlMonitor.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.pnlMonitor.Location = new System.Drawing.Point(0, 27);
+            this.pnlMonitor.Location = new System.Drawing.Point(0, 31);
             this.pnlMonitor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlMonitor.Name = "pnlMonitor";
-            this.pnlMonitor.Size = new System.Drawing.Size(1579, 910);
+            this.pnlMonitor.Size = new System.Drawing.Size(1579, 906);
             this.pnlMonitor.TabIndex = 3;
             this.pnlMonitor.WrapContents = false;
             // 
@@ -274,6 +274,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Environmental Test";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormEnvironmentalTest_FormClosing);
+            this.Load += new System.EventHandler(this.FormEnvironmentalTest_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);

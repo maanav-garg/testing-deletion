@@ -38,11 +38,11 @@
             // txtTrace
             // 
             this.txtTrace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtTrace.Location = new System.Drawing.Point(0, 27);
-            this.txtTrace.Margin = new System.Windows.Forms.Padding(2);
+            this.txtTrace.Location = new System.Drawing.Point(0, 31);
+            this.txtTrace.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtTrace.Name = "txtTrace";
             this.txtTrace.ReadOnly = true;
-            this.txtTrace.Size = new System.Drawing.Size(800, 423);
+            this.txtTrace.Size = new System.Drawing.Size(1067, 523);
             this.txtTrace.TabIndex = 11;
             this.txtTrace.Text = "";
             // 
@@ -53,7 +53,7 @@
             this.tsbClearLog});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(800, 27);
+            this.toolStrip2.Size = new System.Drawing.Size(1067, 31);
             this.toolStrip2.TabIndex = 12;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -64,18 +64,19 @@
             this.tsbClearLog.Image = ((System.Drawing.Image)(resources.GetObject("tsbClearLog.Image")));
             this.tsbClearLog.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbClearLog.Name = "tsbClearLog";
-            this.tsbClearLog.Size = new System.Drawing.Size(58, 24);
+            this.tsbClearLog.Size = new System.Drawing.Size(67, 28);
             this.tsbClearLog.Text = "Clear";
             this.tsbClearLog.Click += new System.EventHandler(this.tsbClearLog_Click);
             // 
             // FormTracePopup
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.txtTrace);
             this.Controls.Add(this.toolStrip2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormTracePopup";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Trace";

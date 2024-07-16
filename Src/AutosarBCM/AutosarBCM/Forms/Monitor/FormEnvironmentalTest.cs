@@ -98,11 +98,33 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="e">Argument</param>
         private void FormEnvironmentalTest_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (FormMain.IsTestRunning && !Helper.ShowConfirmationMessageBox("There is an ongoing test. Do you want to proceed"))
+            // if (FormMain.IsTestRunning && !Helper.ShowConfirmationMessageBox("There is an ongoing test. Do you want to proceed"))
+            // {
+            // e.Cancel = true;
+            // }
+            var result = MessageBox.Show("Do you want to save the changes before closing?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
             {
-                e.Cancel = true;
+               
+               SaveChanges();
             }
+            else if (result == DialogResult.No)
+            {
+               
+                e.Cancel = true;
+                return;
+            }
+
+
         }
+        private void SaveChanges()
+        {
+            // Değişiklikleri kaydetme işlemlerini burada gerçekleştirin.
+            // Örneğin, formdaki verileri bir dosyaya veya veritabanına kaydedebilirsiniz.
+            MessageBox.Show("Changes have been saved.");
+        }
+
 
 
         #endregion
@@ -227,6 +249,11 @@ namespace AutosarBCM.Forms.Monitor
                 }
             }
             DrawTime();
+        }
+
+        private void FormEnvironmentalTest_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void DrawTime()
