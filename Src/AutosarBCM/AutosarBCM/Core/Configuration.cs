@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using AutosarBCM.UserControls.Monitor;
 using System.Threading.Tasks;
-using AutosarBCM.Core.Config;
+using System.Windows.Forms.Design;
 
 namespace AutosarBCM.Core
 {
@@ -112,6 +112,7 @@ namespace AutosarBCM.Core
                         }
                         
                     }
+                    Console.WriteLine($" Send Control Name: {Name} -- Send Val: {payload.Name} -- {(isOpen ? Constants.Opened : Constants.Closed)}");
                     Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
 
                 }
@@ -121,7 +122,9 @@ namespace AutosarBCM.Core
             if (isControlMaskActive)
                 bytes.Add(controlByte);
             //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
-            Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            // TODO Will be removed when the bug caused by payload bits is fixed    
+            if (Address != 0xc151)
+                Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
             
         }
 

@@ -8,6 +8,7 @@ using log4net;
 using AutosarBCM.Properties;
 using System.Linq;
 using AutosarBCM.Config;
+using AutosarBCM.Core;
 
 namespace AutosarBCM
 {
@@ -403,7 +404,7 @@ namespace AutosarBCM
                 if (String.IsNullOrEmpty(comment))
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")};{itemName};{itemType};{operation};{data};{escapeChars}");
                 else
-                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}#{comment}#{escapeChars}");
+                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}#{DateTime.Now.ToString("HH:mm:ss.fff\t")}#{comment}#{escapeChars}");
             }
         }
 
@@ -493,6 +494,15 @@ namespace AutosarBCM
                     System.IO.File.WriteAllText(dialog.FileName, sb.ToString());
                 Helper.ShowWarningMessageBox("The Operation Completed Successfully");
             }
+        }
+
+        public static void SendExtendedDiagSession()
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+            var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session");
+            ASContext.CurrentSession = sessionInfo;
+            new DiagnosticSessionControl().Transmit(sessionInfo);
         }
 
         #endregion
@@ -1098,8 +1108,10 @@ namespace AutosarBCM
             {
                 var key = (key1, key2);
                 dictionary.Add(key, value);
-                key1MatchDict.Add(key1, key);
-                key2MatchDict.Add(key2, key);
+                if (!key1MatchDict.ContainsKey(key1))
+                    key1MatchDict.Add(key1, key);
+                if (!key2MatchDict.ContainsKey(key2))
+                    key2MatchDict.Add(key2, key);
             }
         }
 

@@ -164,6 +164,8 @@ namespace AutosarBCM
                         FormMain.EMCMonitoring = false;
                         timer?.Stop();
                     }
+
+
                     if (btnStart.InvokeRequired)
                     {
                         btnStart.BeginInvoke((MethodInvoker)delegate ()
@@ -176,7 +178,7 @@ namespace AutosarBCM
                     {
                         btnStart.Text = start ? "Stop" : "Start";
                         btnStart.ForeColor = start ? Color.Red : DefaultForeColor;
-                    }
+                    } 
                 }
                 finally
                 {
@@ -293,18 +295,12 @@ namespace AutosarBCM
         private bool IsInformativeRX(Payload payload)
         {
             //TODO to be checked
-            Invoke(new Action(() =>
-            {
-                var hour = payload.Value[payload.Value.Length - 2];
-                var minute = payload.Value[payload.Value.Length - 1];
-
-                int hourInt = (int)hour;
-                int minuteInt = (int)minute;
-
-                string timeFormatted = $"{hourInt:D2}:{minuteInt:D2}";
-
-                lblElapsedTime.Text = timeFormatted;
-            }));
+            lblElapsedTime.Text = payload.FormattedValue;
+            //if (Config.CommonConfig.EMCLifecycle.Skip(2).Take(2).SequenceEqual(response.RawData.Skip(4).Take(2)))
+            //{
+            //    lblElapsedTime.Text = TimeSpan.FromMinutes(BitConverter.ToInt16(response.RawData, 8)).ToString(@"hh\:mm\:ss\.fff");
+            //    return true;
+            //}
             return false;
         }
 
