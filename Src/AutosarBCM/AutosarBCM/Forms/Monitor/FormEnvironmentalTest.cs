@@ -283,9 +283,9 @@ namespace AutosarBCM.Forms.Monitor
         {
             foreach (var dtcValue in dtcService.Values)
             {
-                if (dtcValue.Mask != 80 || !dtcList.ContainsKey(dtcValue.Code))
+                if (dtcValue.Mask != 0x0B || !dtcList.ContainsKey(dtcValue.Code))
                 { 
-                    continue; 
+                    continue;
                 }
 
                 var control = dtcList[dtcValue.Code];

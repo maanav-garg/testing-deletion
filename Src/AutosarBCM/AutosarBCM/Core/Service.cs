@@ -166,7 +166,7 @@ namespace AutosarBCM.Core
 
         public void Transmit()
         {
-            new ASRequest(ServiceInfo, new byte[] { ServiceInfo.RequestID, 0x02, 0x40 }).Execute();
+            new ASRequest(ServiceInfo, new byte[] { ServiceInfo.RequestID, 0x02, 0x8F }).Execute();
         }
 
         public static ReadDTCInformationService Receive(ASResponse response)
@@ -175,20 +175,24 @@ namespace AutosarBCM.Core
             var data = response.Data.Skip(3).ToArray();
 
             for (var i = 0; i < data.Length; i += 4)
+            {
                 result.Add(new DTCValue
                 {
                     Code = BitConverter.ToString(data.Skip(i).Take(2).ToArray()).Replace("-", ""),
                     FailureType = data[i + 2],
                     Mask = data[i + 3]
                 });
-            return new ReadDTCInformationService 
-            { 
+            }
+
+
+            return new ReadDTCInformationService
+            {
                 Values = result,
                 Response = response
             };
         }
     }
-    
+
     public class DTCValue
     {
         public string Code { get; set; }
