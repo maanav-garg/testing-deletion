@@ -316,7 +316,8 @@ namespace AutosarBCM.Forms.Monitor
                 if (payload == null)
                     continue;
                 var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
-                uc?.ChangeDtc(dtcValue.Description);
+                if (uc != null && uc.CurrentDtcDescription != dtcValue.Description)
+                    uc?.ChangeDtc(dtcValue.Description);
             }
         }
 

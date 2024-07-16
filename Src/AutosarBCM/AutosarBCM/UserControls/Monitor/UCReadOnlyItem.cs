@@ -64,6 +64,9 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         private float[] rssiValues = new float[3];
 
+        public string CurrentDtcDescription { get; set;}
+
+
         /// <summary>
         /// Gets or sets the previous (old) value of the input item.
         /// </summary>
@@ -109,10 +112,19 @@ namespace AutosarBCM.UserControls.Monitor
             ControlInfo = controlInfo;
             PayloadInfo = payloadInfo;
 
-            if (controlInfo.Name.Length > 30)
-                lblParent.Text = $"{controlInfo.Name.Substring(0, 27)}...";
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(this.lblParent, controlInfo.Name);
+
+            if (controlInfo.Name.Length > 14)
+            {
+                lblParent.Text = $"{controlInfo.Name.Substring(0, 12)}...";
+            }
             else
+            {
                 lblParent.Text = controlInfo.Name;
+            }
+    
+            toolTip.SetToolTip(this.lblName, payloadInfo.Name);
 
             if (payloadInfo.Name.Length > 30)
                 lblName.Text = $"{payloadInfo.Name.Substring(0, 27)}...";
@@ -207,13 +219,14 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         internal void HandleMetrics()
         {
-            MessagesTransmitted++;
-
+          
+                MessagesTransmitted++;
             if (lblTransmitted.InvokeRequired)
             {
                 lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
                 {
                     lblTransmitted.Text = MessagesTransmitted.ToString();
+                
                 });
             }
             else
@@ -250,6 +263,7 @@ namespace AutosarBCM.UserControls.Monitor
                 }
             }
         }
+        private ToolTip toolTipDtc = new ToolTip();
 
         /// <summary>
         /// Change DTC of the input window regarding to read data from the device.
@@ -258,9 +272,13 @@ namespace AutosarBCM.UserControls.Monitor
         {
             lblDtcStatus.BeginInvoke((MethodInvoker)delegate ()
             {
-                lblDtcStatus.Text = dtc;
+                string displayText = dtc.Length > 20 ? dtc.Substring(0, 20) + "..." : dtc;
+                lblDtcStatus.Text = displayText;
+                toolTipDtc.SetToolTip(lblDtcStatus, dtc); 
             });
+            CurrentDtcDescription = dtc;
         }
+
 
         /// <summary>
         /// Change status of the input window regarding to read data from the device.
