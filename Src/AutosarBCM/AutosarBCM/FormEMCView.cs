@@ -36,10 +36,6 @@ namespace AutosarBCM
         /// Keeps the values of DID payloads. It will be used to determine the changed data
         /// </summary>
         private Dictionary<string, string> payloadValueList = new Dictionary<string, string>();
-        /// <summary>
-        /// Keeps the values of DTC values. It will be used to determine the changed data
-        /// </summary>
-        private Dictionary<string, Dictionary<string, byte>> dtcValueList = new Dictionary<string, Dictionary<string, byte>>();
 
         List<DataGridViewRow> excelData = new List<DataGridViewRow>();
 
@@ -79,7 +75,6 @@ namespace AutosarBCM
                     if (string.IsNullOrEmpty(payload.DTCCode))
                         continue;
                     dtcList[payload.DTCCode] = control;
-                    dtcValueList[payload.DTCCode] = new Dictionary<string, byte>();
                 }
             }
         }
@@ -153,6 +148,7 @@ namespace AutosarBCM
                             ThreadSleep(int.Parse(txInterval));
                             new ReadDTCInformationService().Transmit();
                             Thread.Sleep(int.Parse(dtcWaitingTime));
+                            new ClearDTCInformation().Transmit();
                         }
                     }
                     else
@@ -256,14 +252,9 @@ namespace AutosarBCM
                     //Check for changed data
                     try
                     {
-                        //Add default value
-                        if (!dtcValueList[dtcValue.Code].ContainsKey(dtcValue.Description))
-                            dtcValueList[dtcValue.Code].Add(dtcValue.Description, 0);
-
                         if (dtcValue.Mask == 0x0B)
                         {
                             AddDataRow(control, payload, "", dtcValue.Description);
-                            dtcValueList[dtcValue.Code][dtcValue.Description] = dtcValue.Mask;
                         }
                     }
                     catch (Exception ex)
@@ -272,9 +263,6 @@ namespace AutosarBCM
                     }
                     
                 }
-                new ClearDTCInformation().Transmit();
-                dtcValueList.Clear();
-
             }
         }
 
