@@ -75,6 +75,11 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return IOControlByIdentifierService.Receive(this);
             }
+            else if (Data[0] == ServiceInfo.WriteDataByIdentifier.ResponseID)
+            {
+                IsPositiveRx = true;
+                return WriteDataByIdentifierService.Receive(this);
+            }
             else if (Data[0] == ServiceInfo.ReadDTCInformation.ResponseID)
             {
                 IsPositiveRx = true;

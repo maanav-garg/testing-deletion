@@ -14,9 +14,16 @@ namespace AutosarBCM.UserControls.Monitor
 {
     public partial class UCControlByIdentifierItem : UserControl
     {
+        enum SelectedService
+        {
+            IoControlByIdentifier,
+            WriteDataByIdentifier
+        }
+
         #region Variables
         private UCItem ucItem;
         private bool isControlMaskActive;
+        private SelectedService selectedService;
 
         #endregion
 
@@ -41,7 +48,19 @@ namespace AutosarBCM.UserControls.Monitor
             lblAddress.Text = "Address: " + BitConverter.ToString(BitConverter.GetBytes(ucItem.ControlInfo.Address).Reverse().ToArray());
 
             //IOControlByIdentifier Service
-            if (!ucItem.ControlInfo.Services.Contains(ServiceInfo.InputOutputControlByIdentifier.RequestID))
+            if (ucItem.ControlInfo.Services.Contains(ServiceInfo.InputOutputControlByIdentifier.RequestID))
+            {
+                selectedService = SelectedService.IoControlByIdentifier;
+                lblParameter.Visible = true;
+                cmbInputControlParameter.Visible = true;
+            }
+            else if (ucItem.ControlInfo.Services.Contains(ServiceInfo.WriteDataByIdentifier.RequestID))
+            {
+                selectedService = SelectedService.WriteDataByIdentifier;
+                lblParameter.Visible = false;
+                cmbInputControlParameter.Visible = false;
+            }
+            else
             {
                 lblError.Visible = true;
                 btnSend.Visible = false;
@@ -52,7 +71,11 @@ namespace AutosarBCM.UserControls.Monitor
 
             foreach (var payload in ucItem.ControlInfo.Responses[0].Payloads)
             {
-                var ucPayload = new UCControlPayload(payload, isControlMaskActive);
+                UCControlPayload ucPayload;
+                if (selectedService == SelectedService.IoControlByIdentifier) 
+                    ucPayload = new UCControlPayload(payload, isControlMaskActive);
+                else //WriteDataByIdentifier
+                    ucPayload = new UCControlPayload(payload, false);
                 ucPayload.BorderStyle = BorderStyle.FixedSingle;
                 ucPayload.Anchor = AnchorStyles.Top | AnchorStyles.Left;
                 pnlControls.Controls.Add(ucPayload);
@@ -67,10 +90,26 @@ namespace AutosarBCM.UserControls.Monitor
             if (!ConnectionUtil.CheckConnection())
                 return;
 
-            ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareControlData());
+            if (selectedService == SelectedService.IoControlByIdentifier)
+                ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareIoControlData());
+            else //WriteDataByIdentifier
+                ucItem.ControlInfo.Transmit(ServiceInfo.WriteDataByIdentifier, PrepareWriteControlData());
         }
 
-        private byte[] PrepareControlData()
+        private byte[] PrepareWriteControlData()
+        {
+            var bytes = new List<byte>();
+
+            foreach (var uc in pnlControls.Controls)
+            {
+                if (uc is UCControlPayload ucPayload)
+                    bytes.AddRange(ucPayload.SelectedValue);
+            }
+
+            return bytes.ToArray();
+        }
+
+        private byte[] PrepareIoControlData()
         {
             byte controlByte = 0x0;
             int bitIndex = 0;
@@ -107,10 +146,6 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 bytes.Add(controlByte);
             }
-
-
-
-
             return bytes.ToArray();
         }
 
