@@ -121,7 +121,6 @@ namespace AutosarBCM.Forms.Monitor
             }
         }
 
-
         #endregion
 
         /// <summary>
@@ -162,6 +161,10 @@ namespace AutosarBCM.Forms.Monitor
             }
             if (FormMain.IsTestRunning)
             {
+                if(!Helper.ShowConfirmationMessageBox("There is an ongoing test. Do you want to proceed"))
+                {
+                    return;
+                }
                 cancellationTokenSource.Cancel();
             }
             else //Start Test
