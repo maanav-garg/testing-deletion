@@ -270,17 +270,30 @@ namespace AutosarBCM
         {
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsStarted, Constants.DefaultEscapeCharacter);
+            var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
+            txInterval = false ? txInterval * 2 : txInterval;
 
-            for (int i = 0; i < cycleDict.Count; i++)
+            List<Function> functions = new List<Function>();
+            foreach (var function in cycleDict.SelectMany(c => c.Value.CloseItems))
             {
-                if (cycleDict.TryGetValue(i, out Core.Cycle cycle))
+                var ctrl = functions.Where(f => f.Control == function.Control).FirstOrDefault();
+                if (ctrl == null)
                 {
-                    if (cycle.CloseItems.Count > 0)
-                    {
-                        StopCycle(cycle, dictMapping);
-                    }
+                    var func = new Function { Control = function.Control, ControlInfo = function.ControlInfo, Payloads = function.Payloads.ToList() };
+                    functions.Add(func);
+                }
+                else
+                {
+                    ctrl.Payloads.AddRange(function.Payloads);
                 }
             }
+
+            foreach (var function in functions)
+                {
+                    function.ControlInfo.Switch(function.Payloads.Distinct().ToList(), false);
+                    Thread.Sleep(txInterval);
+                }
+
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsFinished, Constants.DefaultEscapeCharacter);
             FormMain.IsTestRunning = !FormMain.IsTestRunning;
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
