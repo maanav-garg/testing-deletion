@@ -405,7 +405,15 @@ namespace AutosarBCM
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
-                function.ControlInfo.Switch(function.Payloads, true);
+                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                if (hasDIDBitsOnOff)
+                {
+                    function.ControlInfo.SwitchForBits(function.Payloads, true);
+                }
+                else
+                {
+                    function.ControlInfo.Switch(function.Payloads, true);
+                }
 
                 var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads.Intersect(function.Payloads).ToList();
                 if (sensitivePayloads?.Count > 0)
@@ -474,9 +482,17 @@ namespace AutosarBCM
 
             foreach (var function in cycle.CloseItems)
             {
-                var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
-                if (nonSensitivePayloads?.Count > 0)
-                    function.ControlInfo.Switch(nonSensitivePayloads, false);
+                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                if (hasDIDBitsOnOff)
+                {
+                    function.ControlInfo.SwitchForBits(function.Payloads, false);
+                }
+                else
+                {
+                    var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
+                    if (nonSensitivePayloads?.Count > 0)
+                        function.ControlInfo.Switch(nonSensitivePayloads, false);
+                }
 
                 ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)

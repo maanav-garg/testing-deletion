@@ -57,6 +57,38 @@ namespace AutosarBCM.Core
 
         }
 
+        public void SwitchForBits(List<string> payloads, bool isOpen)
+        {
+            var bitIndex = 0;
+            byte bits = 0x0;
+            byte controlByte = 0x0;
+            var bytes = new List<byte>();
+            bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
+
+            foreach (var payload in Responses?[0].Payloads)
+            {
+                if (payload.TypeName != "DID_Bits_On_Off")
+                {
+                    continue;
+                }
+                else
+                {
+                    if (payloads.Contains(payload.Name))
+                    {
+                        controlByte |= (byte)(1 << (7 - bitIndex));
+                        if (isOpen)
+                        {
+                            bits |= (byte)(1 << (7 - bitIndex));
+                        }
+                    }
+                    bitIndex++;
+                }
+            }
+            bytes.Add(bits);
+            bytes.Add(controlByte);
+            Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+        }
+
         public void Switch(List<string> payloads, bool isOpen)
         {
             byte controlByte = 0x0;
@@ -76,21 +108,21 @@ namespace AutosarBCM.Core
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;
-                    
+
                     //Check if control has enum
                     if (resultPayload.Values?.Count > 0)
                     {
                         var data = new List<byte>();
-                        
+
                         if (isOpen)
                             data = resultPayload.Values.FirstOrDefault(v => v.IsOpen).Value.ToList();
                         else
                             data = resultPayload.Values.FirstOrDefault(v => v.IsClose).Value.ToList();
 
                         bytes.AddRange(data);
-                        
+
                     }
-                    else 
+                    else
                     {
                         if (resultPayload.TypeName == "DID_PWM")
                         {
@@ -113,7 +145,7 @@ namespace AutosarBCM.Core
                                     bytes.Add(0x0);
                             }
                         }
-                        
+
                     }
                     Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
 
@@ -123,6 +155,7 @@ namespace AutosarBCM.Core
             }
             if (isControlMaskActive)
                 bytes.Add(controlByte);
+
             //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
             Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
 

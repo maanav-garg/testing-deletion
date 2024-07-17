@@ -69,11 +69,16 @@ namespace AutosarBCM.UserControls.Monitor
 
             isControlMaskActive = ucItem.ControlInfo.Responses[0].Payloads.Count > 1;
 
+            var hasDIDBitsOnOff = ucItem.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+
             foreach (var payload in ucItem.ControlInfo.Responses[0].Payloads)
             {
                 UCControlPayload ucPayload;
-                if (selectedService == SelectedService.IoControlByIdentifier) 
+                if (selectedService == SelectedService.IoControlByIdentifier)
+                {
+                    if (hasDIDBitsOnOff && payload.TypeName != "DID_Bits_On_Off") continue;
                     ucPayload = new UCControlPayload(payload, isControlMaskActive);
+                }
                 else //WriteDataByIdentifier
                     ucPayload = new UCControlPayload(payload, false);
                 ucPayload.BorderStyle = BorderStyle.FixedSingle;
@@ -89,9 +94,15 @@ namespace AutosarBCM.UserControls.Monitor
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
-
+            var hasDIDBitsOnOff = ucItem.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+            
             if (selectedService == SelectedService.IoControlByIdentifier)
-                ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareIoControlData());
+            {
+                if (hasDIDBitsOnOff)
+                    ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareControlDataForBits());
+                else
+                    ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareIoControlData());
+            }
             else //WriteDataByIdentifier
                 ucItem.ControlInfo.Transmit(ServiceInfo.WriteDataByIdentifier, PrepareWriteControlData());
         }
@@ -139,20 +150,45 @@ namespace AutosarBCM.UserControls.Monitor
                         bitIndex++;
                     }
                 }
-
-
             }
             if (isControlMaskActive)
             {
                 bytes.Add(controlByte);
             }
+
             return bytes.ToArray();
         }
 
+        private byte[] PrepareControlDataForBits()
+        {
+            byte bits = 0x0;
+            int bitIndex = 0;
+            byte controlByte = 0x0;
+
+            var bytes = new List<byte> { (byte)InputControlParameter.ShortTermAdjustment };
+
+            foreach (var uc in pnlControls.Controls)
+            {
+                if (uc is UCControlPayload ucPayload)
+                {
+                    if (ucPayload.IsSelected)
+                    {
+                        controlByte |= (byte)(1 << (7 - bitIndex));
+                        if (ucPayload.SelectedValue[0] == 0x01)
+                        {
+                            bits |= (byte)(1 << (7 - bitIndex));
+                        }
+                    }
+                    bitIndex++;
+                }
+            }
+            bytes.Add(bits);
+            bytes.Add(controlByte);
+            return bytes.ToArray();
+        }
+
+
         #endregion
-
-
-
 
     }
 }
