@@ -44,7 +44,7 @@ namespace AutosarBCM
 
         List<DataGridViewRow> excelData = new List<DataGridViewRow>();
 
-        private string EMCDataLimit = Settings.Default.EmcDataLimit;
+        private int emcDataLimit;
 
         #endregion
 
@@ -56,7 +56,7 @@ namespace AutosarBCM
         public FormEMCView()
         {
             InitializeComponent();
-
+            emcDataLimit = int.Parse(Settings.Default.EmcDataLimit);
             if (ASContext.Configuration == null)
             {
                 Helper.ShowWarningMessageBox("Please, load the configuration file first.");
@@ -195,11 +195,8 @@ namespace AutosarBCM
             Invoke(new Action(() =>
             {
                 dgvData.FirstDisplayedScrollingRowIndex = dgvData.Rows.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), control?.Name, payload?.Name, controlValue, dtcValue);
-                foreach (DataGridViewRow data in dgvData.Rows)
-                {
-                    excelData.Add(data);
-                }
-                if (dgvData.Rows.Count >= int.Parse(EMCDataLimit))
+                excelData.Add(dgvData.Rows[dgvData.Rows.GetLastRow(DataGridViewElementStates.None)]);
+                if (dgvData.Rows.Count >= emcDataLimit)
                     dgvData.Rows.Clear();
             }));
             return true;
