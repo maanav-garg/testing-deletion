@@ -26,6 +26,7 @@
 		</Service>
 		<Service requestID="2E" responseID="6E">
 			<Name>WriteDataByIdentifier</Name>
+			<Sessions>03</Sessions>
 		</Service>
 		<Service requestID="3E" responseID="7E">
 			<Name>TesterPresent</Name>
