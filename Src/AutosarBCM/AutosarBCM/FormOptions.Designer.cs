@@ -37,11 +37,13 @@ namespace AutosarBCM
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Serial Port");
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Can Hardware");
             System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("TX/RX Filter");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Communication", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("EMC Data Limitation");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Communication", new System.Windows.Forms.TreeNode[] {
             treeNode3,
             treeNode4,
             treeNode5,
-            treeNode6});
+            treeNode6,
+            treeNode7});
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.loadTsmi = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,6 +117,9 @@ namespace AutosarBCM
             this.btnClearFilter = new System.Windows.Forms.Button();
             this.btnDeleteFilter = new System.Windows.Forms.Button();
             this.lbFilterPage = new System.Windows.Forms.ListBox();
+            this.tabEMCDataLimitation = new System.Windows.Forms.TabPage();
+            this.lblEMCDataLimit = new System.Windows.Forms.Label();
+            this.tbEMCDataLimit = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
@@ -139,6 +144,7 @@ namespace AutosarBCM
             this.tabCanHardware_grpIntrepid.SuspendLayout();
             this.tabCanHardware_grpKvaser.SuspendLayout();
             this.tabFilterPage.SuspendLayout();
+            this.tabEMCDataLimitation.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -215,11 +221,13 @@ namespace AutosarBCM
             treeNode5.Text = "Can Hardware";
             treeNode6.Name = "nodeFilter";
             treeNode6.Text = "TX/RX Filter";
-            treeNode7.Name = "NodeComm";
-            treeNode7.Text = "Communication";
+            treeNode7.Name = "nodeEMCDataLimitation";
+            treeNode7.Text = "EMC Data Limitation";
+            treeNode8.Name = "NodeComm";
+            treeNode8.Text = "Communication";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode2,
-            treeNode7});
+            treeNode8});
             this.treeView.ShowLines = false;
             this.treeView.Size = new System.Drawing.Size(155, 344);
             this.treeView.TabIndex = 0;
@@ -232,6 +240,7 @@ namespace AutosarBCM
             this.tabControl.Controls.Add(this.tabSerialPort);
             this.tabControl.Controls.Add(this.tabCanHardware);
             this.tabControl.Controls.Add(this.tabFilterPage);
+            this.tabControl.Controls.Add(this.tabEMCDataLimitation);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -257,7 +266,7 @@ namespace AutosarBCM
             this.tabPageProp1.Controls.Add(this.label1);
             this.tabPageProp1.Location = new System.Drawing.Point(4, 22);
             this.tabPageProp1.Name = "tabPageProp1";
-            this.tabPageProp1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageProp1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageProp1.Size = new System.Drawing.Size(457, 318);
             this.tabPageProp1.TabIndex = 0;
             this.tabPageProp1.Text = "Config group 1";
@@ -444,7 +453,7 @@ namespace AutosarBCM
             this.tabPageProp2.Controls.Add(this.lblTransmitAdress);
             this.tabPageProp2.Location = new System.Drawing.Point(4, 22);
             this.tabPageProp2.Name = "tabPageProp2";
-            this.tabPageProp2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageProp2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageProp2.Size = new System.Drawing.Size(457, 318);
             this.tabPageProp2.TabIndex = 1;
             this.tabPageProp2.Text = "General";
@@ -610,8 +619,8 @@ namespace AutosarBCM
             this.tabSerialPort.Controls.Add(this.lblPort);
             this.tabSerialPort.Location = new System.Drawing.Point(4, 22);
             this.tabSerialPort.Name = "tabSerialPort";
-            this.tabSerialPort.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabSerialPort.Size = new System.Drawing.Size(457, 323);
+            this.tabSerialPort.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSerialPort.Size = new System.Drawing.Size(457, 318);
             this.tabSerialPort.TabIndex = 2;
             this.tabSerialPort.Text = "Serial Port";
             this.tabSerialPort.UseVisualStyleBackColor = true;
@@ -798,10 +807,10 @@ namespace AutosarBCM
             this.tabCanHardware.Controls.Add(this.label3);
             this.tabCanHardware.Controls.Add(this.tabCanHardware_cmbDevice);
             this.tabCanHardware.Location = new System.Drawing.Point(4, 22);
-            this.tabCanHardware.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware.Name = "tabCanHardware";
-            this.tabCanHardware.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabCanHardware.Size = new System.Drawing.Size(457, 323);
+            this.tabCanHardware.Padding = new System.Windows.Forms.Padding(2);
+            this.tabCanHardware.Size = new System.Drawing.Size(457, 318);
             this.tabCanHardware.TabIndex = 3;
             this.tabCanHardware.Text = "Can Hardware";
             this.tabCanHardware.UseVisualStyleBackColor = true;
@@ -811,7 +820,7 @@ namespace AutosarBCM
             this.flowLayoutPanel1.Controls.Add(this.tabCanHardware_grpIntrepid);
             this.flowLayoutPanel1.Controls.Add(this.tabCanHardware_grpKvaser);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 54);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(401, 264);
             this.flowLayoutPanel1.TabIndex = 2;
@@ -823,9 +832,9 @@ namespace AutosarBCM
             this.tabCanHardware_grpIntrepid.Controls.Add(this.label4);
             this.tabCanHardware_grpIntrepid.Controls.Add(this.tabCanHardware_cmbBitRate);
             this.tabCanHardware_grpIntrepid.Location = new System.Drawing.Point(2, 2);
-            this.tabCanHardware_grpIntrepid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_grpIntrepid.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_grpIntrepid.Name = "tabCanHardware_grpIntrepid";
-            this.tabCanHardware_grpIntrepid.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_grpIntrepid.Padding = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_grpIntrepid.Size = new System.Drawing.Size(397, 81);
             this.tabCanHardware_grpIntrepid.TabIndex = 0;
             this.tabCanHardware_grpIntrepid.TabStop = false;
@@ -860,7 +869,7 @@ namespace AutosarBCM
             "NETID_FIRE_LIN4",
             "NETID_FIRE_CGI"});
             this.tabCanHardware_cmbNetworkId.Location = new System.Drawing.Point(88, 41);
-            this.tabCanHardware_cmbNetworkId.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_cmbNetworkId.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_cmbNetworkId.Name = "tabCanHardware_cmbNetworkId";
             this.tabCanHardware_cmbNetworkId.Size = new System.Drawing.Size(153, 21);
             this.tabCanHardware_cmbNetworkId.TabIndex = 3;
@@ -893,7 +902,7 @@ namespace AutosarBCM
             "800000",
             "1000000"});
             this.tabCanHardware_cmbBitRate.Location = new System.Drawing.Point(88, 17);
-            this.tabCanHardware_cmbBitRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_cmbBitRate.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_cmbBitRate.Name = "tabCanHardware_cmbBitRate";
             this.tabCanHardware_cmbBitRate.Size = new System.Drawing.Size(153, 21);
             this.tabCanHardware_cmbBitRate.TabIndex = 1;
@@ -903,9 +912,9 @@ namespace AutosarBCM
             this.tabCanHardware_grpKvaser.Controls.Add(this.label14);
             this.tabCanHardware_grpKvaser.Controls.Add(this.tabCanHardware_cmbKvaserBitRate);
             this.tabCanHardware_grpKvaser.Location = new System.Drawing.Point(2, 87);
-            this.tabCanHardware_grpKvaser.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_grpKvaser.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_grpKvaser.Name = "tabCanHardware_grpKvaser";
-            this.tabCanHardware_grpKvaser.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_grpKvaser.Padding = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_grpKvaser.Size = new System.Drawing.Size(397, 51);
             this.tabCanHardware_grpKvaser.TabIndex = 1;
             this.tabCanHardware_grpKvaser.TabStop = false;
@@ -935,7 +944,7 @@ namespace AutosarBCM
             "500000",
             "1000000"});
             this.tabCanHardware_cmbKvaserBitRate.Location = new System.Drawing.Point(88, 17);
-            this.tabCanHardware_cmbKvaserBitRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_cmbKvaserBitRate.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_cmbKvaserBitRate.Name = "tabCanHardware_cmbKvaserBitRate";
             this.tabCanHardware_cmbKvaserBitRate.Size = new System.Drawing.Size(153, 21);
             this.tabCanHardware_cmbKvaserBitRate.TabIndex = 1;
@@ -959,7 +968,7 @@ namespace AutosarBCM
             "Kvaser",
             "Vector"});
             this.tabCanHardware_cmbDevice.Location = new System.Drawing.Point(93, 15);
-            this.tabCanHardware_cmbDevice.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabCanHardware_cmbDevice.Margin = new System.Windows.Forms.Padding(2);
             this.tabCanHardware_cmbDevice.Name = "tabCanHardware_cmbDevice";
             this.tabCanHardware_cmbDevice.Size = new System.Drawing.Size(92, 21);
             this.tabCanHardware_cmbDevice.TabIndex = 0;
@@ -973,10 +982,10 @@ namespace AutosarBCM
             this.tabFilterPage.Controls.Add(this.btnDeleteFilter);
             this.tabFilterPage.Controls.Add(this.lbFilterPage);
             this.tabFilterPage.Location = new System.Drawing.Point(4, 22);
-            this.tabFilterPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabFilterPage.Margin = new System.Windows.Forms.Padding(2);
             this.tabFilterPage.Name = "tabFilterPage";
-            this.tabFilterPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabFilterPage.Size = new System.Drawing.Size(457, 323);
+            this.tabFilterPage.Padding = new System.Windows.Forms.Padding(2);
+            this.tabFilterPage.Size = new System.Drawing.Size(457, 318);
             this.tabFilterPage.TabIndex = 4;
             this.tabFilterPage.Text = "TX/RX Filter";
             this.tabFilterPage.UseVisualStyleBackColor = true;
@@ -984,7 +993,7 @@ namespace AutosarBCM
             // btnAddFilter
             // 
             this.btnAddFilter.Location = new System.Drawing.Point(176, 7);
-            this.btnAddFilter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAddFilter.Margin = new System.Windows.Forms.Padding(2);
             this.btnAddFilter.Name = "btnAddFilter";
             this.btnAddFilter.Size = new System.Drawing.Size(34, 19);
             this.btnAddFilter.TabIndex = 5;
@@ -995,7 +1004,7 @@ namespace AutosarBCM
             // tbFilter
             // 
             this.tbFilter.Location = new System.Drawing.Point(136, 6);
-            this.tbFilter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbFilter.Margin = new System.Windows.Forms.Padding(2);
             this.tbFilter.Name = "tbFilter";
             this.tbFilter.Size = new System.Drawing.Size(32, 20);
             this.tbFilter.TabIndex = 4;
@@ -1004,7 +1013,7 @@ namespace AutosarBCM
             // btnClearFilter
             // 
             this.btnClearFilter.Location = new System.Drawing.Point(4, 234);
-            this.btnClearFilter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnClearFilter.Margin = new System.Windows.Forms.Padding(2);
             this.btnClearFilter.Name = "btnClearFilter";
             this.btnClearFilter.Size = new System.Drawing.Size(56, 19);
             this.btnClearFilter.TabIndex = 2;
@@ -1015,7 +1024,7 @@ namespace AutosarBCM
             // btnDeleteFilter
             // 
             this.btnDeleteFilter.Location = new System.Drawing.Point(74, 234);
-            this.btnDeleteFilter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDeleteFilter.Margin = new System.Windows.Forms.Padding(2);
             this.btnDeleteFilter.Name = "btnDeleteFilter";
             this.btnDeleteFilter.Size = new System.Drawing.Size(56, 19);
             this.btnDeleteFilter.TabIndex = 1;
@@ -1027,10 +1036,40 @@ namespace AutosarBCM
             // 
             this.lbFilterPage.FormattingEnabled = true;
             this.lbFilterPage.Location = new System.Drawing.Point(4, 5);
-            this.lbFilterPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lbFilterPage.Margin = new System.Windows.Forms.Padding(2);
             this.lbFilterPage.Name = "lbFilterPage";
             this.lbFilterPage.Size = new System.Drawing.Size(127, 225);
             this.lbFilterPage.TabIndex = 0;
+            // 
+            // tabEMCDataLimitation
+            // 
+            this.tabEMCDataLimitation.Controls.Add(this.lblEMCDataLimit);
+            this.tabEMCDataLimitation.Controls.Add(this.tbEMCDataLimit);
+            this.tabEMCDataLimitation.Location = new System.Drawing.Point(4, 22);
+            this.tabEMCDataLimitation.Name = "tabEMCDataLimitation";
+            this.tabEMCDataLimitation.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEMCDataLimitation.Size = new System.Drawing.Size(457, 318);
+            this.tabEMCDataLimitation.TabIndex = 5;
+            this.tabEMCDataLimitation.Text = "EMC Data Limitation";
+            this.tabEMCDataLimitation.UseVisualStyleBackColor = true;
+            // 
+            // lblEMCDataLimit
+            // 
+            this.lblEMCDataLimit.AutoSize = true;
+            this.lblEMCDataLimit.Location = new System.Drawing.Point(55, 39);
+            this.lblEMCDataLimit.Name = "lblEMCDataLimit";
+            this.lblEMCDataLimit.Size = new System.Drawing.Size(80, 13);
+            this.lblEMCDataLimit.TabIndex = 1;
+            this.lblEMCDataLimit.Text = "EMC Data Limit";
+            this.lblEMCDataLimit.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // tbEMCDataLimit
+            // 
+            this.tbEMCDataLimit.Location = new System.Drawing.Point(141, 32);
+            this.tbEMCDataLimit.Name = "tbEMCDataLimit";
+            this.tbEMCDataLimit.Size = new System.Drawing.Size(100, 20);
+            this.tbEMCDataLimit.TabIndex = 0;
+            this.tbEMCDataLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbEMCDataLimit_KeyPress);
             // 
             // panel1
             // 
@@ -1106,6 +1145,8 @@ namespace AutosarBCM
             this.tabCanHardware_grpKvaser.PerformLayout();
             this.tabFilterPage.ResumeLayout(false);
             this.tabFilterPage.PerformLayout();
+            this.tabEMCDataLimitation.ResumeLayout(false);
+            this.tabEMCDataLimitation.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1185,10 +1226,13 @@ namespace AutosarBCM
         private System.Windows.Forms.ListBox lbFilterPage;
         private System.Windows.Forms.TextBox tbFilter;
         private System.Windows.Forms.Button btnAddFilter;
+        private System.Windows.Forms.TabPage tabEMCDataLimitation;
         private Label label17;
         private Label label16;
         private Label label15;
         private Label label13;
         private Label label2;
+        private Label lblEMCDataLimit;
+        private System.Windows.Forms.TextBox tbEMCDataLimit;
     }
 }
