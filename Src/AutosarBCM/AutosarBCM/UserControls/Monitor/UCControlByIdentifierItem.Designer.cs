@@ -32,7 +32,7 @@
             this.cmbInputControlParameter = new System.Windows.Forms.ComboBox();
             this.lblName = new System.Windows.Forms.Label();
             this.btnSend = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblParameter = new System.Windows.Forms.Label();
             this.pnlControls = new System.Windows.Forms.FlowLayoutPanel();
             this.lblError = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -79,14 +79,14 @@
             this.btnSend.Visible = false;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
-            // label1
+            // lblParameter
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 59);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(118, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Input Control Parameter";
+            this.lblParameter.AutoSize = true;
+            this.lblParameter.Location = new System.Drawing.Point(3, 59);
+            this.lblParameter.Name = "lblParameter";
+            this.lblParameter.Size = new System.Drawing.Size(118, 13);
+            this.lblParameter.TabIndex = 14;
+            this.lblParameter.Text = "Input Control Parameter";
             // 
             // pnlControls
             // 
@@ -118,7 +118,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.pnlControls);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblParameter);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.lblAddress);
             this.Controls.Add(this.cmbInputControlParameter);
@@ -136,7 +136,7 @@
         private System.Windows.Forms.ComboBox cmbInputControlParameter;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblParameter;
         private System.Windows.Forms.FlowLayoutPanel pnlControls;
         private System.Windows.Forms.Label lblError;
     }

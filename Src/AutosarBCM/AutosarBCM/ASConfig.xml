@@ -1142,6 +1142,18 @@
 			</Responses>
 		</Control>
 		<Control>
+			<Address>DF41</Address>
+			<Name>Keyfob_Pair</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Keyfob Pair" typeName="HexDump_1Byte"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
 			<Address>C211</Address>
 			<Name>Last_Received_Transmitter_ID_Code_Value</Name>
 			<Type></Type>

@@ -77,6 +77,35 @@ namespace AutosarBCM.Core
         }
     }
 
+    public class WriteDataByIdentifierService : Service
+    {
+        public ControlInfo ControlInfo { get; private set; }
+        public List<Payload> Payloads { get; private set; }
+
+        public WriteDataByIdentifierService() : base(ServiceInfo.WriteDataByIdentifier) { }
+
+        public void Transmit(ControlInfo controlInfo, byte[] additionalData)
+        {
+            var address = BitConverter.ToString(BitConverter.GetBytes(controlInfo.Address).Reverse().ToArray());
+            var additionalBytes = BitConverter.ToString(additionalData);
+            var data = $"{ServiceInfo.RequestID.ToString("X")}-{address}-{additionalBytes}";
+
+            var request = new ASRequest(ServiceInfo, controlInfo, data);
+            request.Execute();
+        }
+
+        internal static Service Receive(ASResponse response)
+        {
+            var service = new WriteDataByIdentifierService();
+
+            service.ControlInfo = ASContext.Configuration.GetControlByAddress(BitConverter.ToUInt16(response.Data.Skip(1).Take(2).Reverse().ToArray(), 0));
+
+            service.Payloads = service.ControlInfo.GetPayloads(service.ServiceInfo, response.Data);
+            service.Response = response;
+            return service;
+        }
+    }
+
     public class DiagnosticSessionControl : Service
     {
         public DiagnosticSessionControl() : base(ServiceInfo.DiagnosticSessionControl) { }
