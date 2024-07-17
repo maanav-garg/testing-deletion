@@ -62,7 +62,7 @@
             this.tspFilterTxb});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1579, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(1184, 27);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -72,7 +72,7 @@
             this.btnStart.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnStart.Margin = new System.Windows.Forms.Padding(5, 1, 10, 2);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(64, 28);
+            this.btnStart.Size = new System.Drawing.Size(55, 24);
             this.btnStart.Text = "Start";
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -83,20 +83,20 @@
             this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
             this.btnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(109, 28);
+            this.btnClear.Size = new System.Drawing.Size(91, 24);
             this.btnClear.Text = "Clear Fields";
             // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(49, 28);
+            this.toolStripLabel2.Size = new System.Drawing.Size(39, 24);
             this.toolStripLabel2.Text = "Filter: ";
             // 
             // tspFilterTxb
             // 
             this.tspFilterTxb.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tspFilterTxb.Name = "tspFilterTxb";
-            this.tspFilterTxb.Size = new System.Drawing.Size(100, 31);
+            this.tspFilterTxb.Size = new System.Drawing.Size(76, 27);
             this.tspFilterTxb.TextChanged += new System.EventHandler(this.tspFilterTxb_TextChanged);
             // 
             // pnlMonitor
@@ -106,10 +106,10 @@
             this.pnlMonitor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMonitor.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlMonitor.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.pnlMonitor.Location = new System.Drawing.Point(0, 31);
-            this.pnlMonitor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pnlMonitor.Location = new System.Drawing.Point(0, 27);
+            this.pnlMonitor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlMonitor.Name = "pnlMonitor";
-            this.pnlMonitor.Size = new System.Drawing.Size(1579, 906);
+            this.pnlMonitor.Size = new System.Drawing.Size(1184, 734);
             this.pnlMonitor.TabIndex = 3;
             this.pnlMonitor.WrapContents = false;
             // 
@@ -118,9 +118,10 @@
             this.lblMin.AutoSize = true;
             this.lblMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblMin.ForeColor = System.Drawing.Color.Orange;
-            this.lblMin.Location = new System.Drawing.Point(567, 7);
+            this.lblMin.Location = new System.Drawing.Point(425, 6);
+            this.lblMin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMin.Name = "lblMin";
-            this.lblMin.Size = new System.Drawing.Size(24, 18);
+            this.lblMin.Size = new System.Drawing.Size(21, 15);
             this.lblMin.TabIndex = 4;
             this.lblMin.Text = "00";
             // 
@@ -129,9 +130,10 @@
             this.lblSec.AutoSize = true;
             this.lblSec.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblSec.ForeColor = System.Drawing.Color.Orange;
-            this.lblSec.Location = new System.Drawing.Point(615, 7);
+            this.lblSec.Location = new System.Drawing.Point(461, 6);
+            this.lblSec.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSec.Name = "lblSec";
-            this.lblSec.Size = new System.Drawing.Size(24, 18);
+            this.lblSec.Size = new System.Drawing.Size(21, 15);
             this.lblSec.TabIndex = 5;
             this.lblSec.Text = "00";
             // 
@@ -140,9 +142,10 @@
             this.lblCs.AutoSize = true;
             this.lblCs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCs.ForeColor = System.Drawing.Color.Orange;
-            this.lblCs.Location = new System.Drawing.Point(663, 7);
+            this.lblCs.Location = new System.Drawing.Point(497, 6);
+            this.lblCs.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCs.Name = "lblCs";
-            this.lblCs.Size = new System.Drawing.Size(24, 18);
+            this.lblCs.Size = new System.Drawing.Size(21, 15);
             this.lblCs.TabIndex = 6;
             this.lblCs.Text = "00";
             // 
@@ -150,9 +153,10 @@
             // 
             this.lblTimeTag.AutoSize = true;
             this.lblTimeTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblTimeTag.Location = new System.Drawing.Point(468, 7);
+            this.lblTimeTag.Location = new System.Drawing.Point(351, 6);
+            this.lblTimeTag.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTimeTag.Name = "lblTimeTag";
-            this.lblTimeTag.Size = new System.Drawing.Size(45, 18);
+            this.lblTimeTag.Size = new System.Drawing.Size(38, 15);
             this.lblTimeTag.TabIndex = 7;
             this.lblTimeTag.Text = "Time:";
             // 
@@ -160,9 +164,10 @@
             // 
             this.lblLoopTag.AutoSize = true;
             this.lblLoopTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblLoopTag.Location = new System.Drawing.Point(731, 7);
+            this.lblLoopTag.Location = new System.Drawing.Point(548, 6);
+            this.lblLoopTag.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblLoopTag.Name = "lblLoopTag";
-            this.lblLoopTag.Size = new System.Drawing.Size(46, 18);
+            this.lblLoopTag.Size = new System.Drawing.Size(38, 15);
             this.lblLoopTag.TabIndex = 8;
             this.lblLoopTag.Text = "Loop:";
             // 
@@ -170,9 +175,10 @@
             // 
             this.lblCycleTag.AutoSize = true;
             this.lblCycleTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblCycleTag.Location = new System.Drawing.Point(805, 7);
+            this.lblCycleTag.Location = new System.Drawing.Point(604, 6);
+            this.lblCycleTag.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCycleTag.Name = "lblCycleTag";
-            this.lblCycleTag.Size = new System.Drawing.Size(49, 18);
+            this.lblCycleTag.Size = new System.Drawing.Size(39, 15);
             this.lblCycleTag.TabIndex = 9;
             this.lblCycleTag.Text = "Cycle:";
             // 
@@ -181,9 +187,10 @@
             this.lblLoopVal.AutoSize = true;
             this.lblLoopVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblLoopVal.ForeColor = System.Drawing.Color.Orange;
-            this.lblLoopVal.Location = new System.Drawing.Point(783, 7);
+            this.lblLoopVal.Location = new System.Drawing.Point(587, 6);
+            this.lblLoopVal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblLoopVal.Name = "lblLoopVal";
-            this.lblLoopVal.Size = new System.Drawing.Size(16, 18);
+            this.lblLoopVal.Size = new System.Drawing.Size(14, 15);
             this.lblLoopVal.TabIndex = 10;
             this.lblLoopVal.Text = "0";
             // 
@@ -192,9 +199,10 @@
             this.lblCycleVal.AutoSize = true;
             this.lblCycleVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCycleVal.ForeColor = System.Drawing.Color.Orange;
-            this.lblCycleVal.Location = new System.Drawing.Point(860, 7);
+            this.lblCycleVal.Location = new System.Drawing.Point(645, 6);
+            this.lblCycleVal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCycleVal.Name = "lblCycleVal";
-            this.lblCycleVal.Size = new System.Drawing.Size(16, 18);
+            this.lblCycleVal.Size = new System.Drawing.Size(14, 15);
             this.lblCycleVal.TabIndex = 11;
             this.lblCycleVal.Text = "0";
             // 
@@ -203,9 +211,10 @@
             this.lblCol3.AutoSize = true;
             this.lblCol3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCol3.ForeColor = System.Drawing.Color.Orange;
-            this.lblCol3.Location = new System.Drawing.Point(645, 7);
+            this.lblCol3.Location = new System.Drawing.Point(484, 6);
+            this.lblCol3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCol3.Name = "lblCol3";
-            this.lblCol3.Size = new System.Drawing.Size(12, 18);
+            this.lblCol3.Size = new System.Drawing.Size(10, 15);
             this.lblCol3.TabIndex = 12;
             this.lblCol3.Text = ":";
             // 
@@ -214,9 +223,10 @@
             this.lblCol2.AutoSize = true;
             this.lblCol2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCol2.ForeColor = System.Drawing.Color.Orange;
-            this.lblCol2.Location = new System.Drawing.Point(597, 7);
+            this.lblCol2.Location = new System.Drawing.Point(448, 6);
+            this.lblCol2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCol2.Name = "lblCol2";
-            this.lblCol2.Size = new System.Drawing.Size(12, 18);
+            this.lblCol2.Size = new System.Drawing.Size(10, 15);
             this.lblCol2.TabIndex = 13;
             this.lblCol2.Text = ":";
             // 
@@ -231,9 +241,10 @@
             this.lblHour.AutoSize = true;
             this.lblHour.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblHour.ForeColor = System.Drawing.Color.Orange;
-            this.lblHour.Location = new System.Drawing.Point(519, 7);
+            this.lblHour.Location = new System.Drawing.Point(389, 6);
+            this.lblHour.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblHour.Name = "lblHour";
-            this.lblHour.Size = new System.Drawing.Size(24, 18);
+            this.lblHour.Size = new System.Drawing.Size(21, 15);
             this.lblHour.TabIndex = 14;
             this.lblHour.Text = "00";
             // 
@@ -242,17 +253,18 @@
             this.lblCol1.AutoSize = true;
             this.lblCol1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCol1.ForeColor = System.Drawing.Color.Orange;
-            this.lblCol1.Location = new System.Drawing.Point(549, 7);
+            this.lblCol1.Location = new System.Drawing.Point(412, 6);
+            this.lblCol1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCol1.Name = "lblCol1";
-            this.lblCol1.Size = new System.Drawing.Size(12, 18);
+            this.lblCol1.Size = new System.Drawing.Size(10, 15);
             this.lblCol1.TabIndex = 15;
             this.lblCol1.Text = ":";
             // 
             // FormEnvironmentalTest
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1579, 937);
+            this.ClientSize = new System.Drawing.Size(1184, 761);
             this.Controls.Add(this.lblCol1);
             this.Controls.Add(this.lblHour);
             this.Controls.Add(this.lblCol2);
@@ -267,14 +279,12 @@
             this.Controls.Add(this.lblMin);
             this.Controls.Add(this.pnlMonitor);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(1061, 728);
+            this.MinimumSize = new System.Drawing.Size(800, 599);
             this.Name = "FormEnvironmentalTest";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Environmental Test";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormEnvironmentalTest_FormClosing);
-            this.Load += new System.EventHandler(this.FormEnvironmentalTest_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
