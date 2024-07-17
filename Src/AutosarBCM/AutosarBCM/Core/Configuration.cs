@@ -52,6 +52,9 @@ namespace AutosarBCM.Core
                 new ReadDataByIdenService().Transmit(this);
             else if (serviceInfo == ServiceInfo.InputOutputControlByIdentifier)
                 new IOControlByIdentifierService().Transmit(this, data);
+            else if (serviceInfo == ServiceInfo.WriteDataByIdentifier)
+                new WriteDataByIdentifierService().Transmit(this, data);
+
         }
 
         public void Switch(List<string> payloads, bool isOpen)
