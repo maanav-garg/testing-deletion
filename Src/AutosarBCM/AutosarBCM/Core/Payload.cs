@@ -126,6 +126,6 @@ namespace AutosarBCM.Core.Config
     }
     public class Unsigned_2Bytes : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToUInt16(Value.Reverse().ToArray(), 0).ToString();
     }
 }

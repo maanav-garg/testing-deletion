@@ -2278,7 +2278,7 @@
 		<Payload length="1" typeName="DID_DE06_1" />
 		<Payload length="1" typeName="DID_DE06_3" />
 		<Payload length="1" typeName="DID_DE0B_1" />
-		<Payload length="1" typeName="Unsigned_2Bytes" />
+		<Payload length="2" typeName="Unsigned_2Bytes" />
 	</Payloads>
 	<DTCFailureTypes>
 		<Type value="11">Circuit Short To Ground</Type>
