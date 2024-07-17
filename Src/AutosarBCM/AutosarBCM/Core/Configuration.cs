@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using AutosarBCM.UserControls.Monitor;
 using System.Threading.Tasks;
 using AutosarBCM.Core.Config;
+using AutosarBCM.Properties;
 
 namespace AutosarBCM.Core
 {
@@ -73,21 +74,21 @@ namespace AutosarBCM.Core
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;
-                    
+
                     //Check if control has enum
                     if (resultPayload.Values?.Count > 0)
                     {
                         var data = new List<byte>();
-                        
+
                         if (isOpen)
                             data = resultPayload.Values.FirstOrDefault(v => v.IsOpen).Value.ToList();
                         else
                             data = resultPayload.Values.FirstOrDefault(v => v.IsClose).Value.ToList();
 
                         bytes.AddRange(data);
-                        
+
                     }
-                    else 
+                    else
                     {
                         if (resultPayload.TypeName == "DID_PWM")
                         {
@@ -110,7 +111,7 @@ namespace AutosarBCM.Core
                                     bytes.Add(0x0);
                             }
                         }
-                        
+
                     }
                     Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
 
@@ -122,7 +123,7 @@ namespace AutosarBCM.Core
                 bytes.Add(controlByte);
             //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
             Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
-            
+
         }
 
         internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data)
@@ -208,6 +209,17 @@ namespace AutosarBCM.Core
         internal static ConfigurationInfo Parse(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
+
+            var sessions = doc.Descendants("PROTOCOL").Descendants("APPLICATION_LAYER").Descendants("SESSIONS_SUPPORTED").Descendants("SESSION")
+                .Select(s => new SessionInfo
+                {
+                    ID = Convert.ToByte(s.Element("NUMBER").Value, 16),
+                    Name = s.Element("NAME").Value,
+                    //AvailableServices = s.Element("AvailableServices").Value != "" ? s.Element("AvailableServices").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+                })
+                .ToList();
+
+            /*
 
             var settings = doc.Descendants("Settings").Descendants("Entry")
                 .ToDictionary(
@@ -347,7 +359,14 @@ namespace AutosarBCM.Core
                 }).First();
 
             #endregion
+            */
 
+
+            return new ConfigurationInfo
+            {
+                Sessions = sessions,
+            };
+            /*
             return new ConfigurationInfo
             {
                 Settings = settings,
@@ -357,7 +376,7 @@ namespace AutosarBCM.Core
                 Payloads = payloads,
                 DTCFailureTypes = dtcFailureTypes,
                 EnvironmentalTest = environmentalTest
-            };
+            };*/
         }
 
         internal ServiceInfo GetServiceByResponseID(byte serviceID)

@@ -373,7 +373,7 @@ namespace AutosarBCM
         private void LoadXMLDoc()
         {
             var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Xml|*.xml";
+            openFileDialog.Filter = "xml;mdx|*.xml;*.mdx";
             openFileDialog.Multiselect = false;
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
