@@ -265,13 +265,25 @@ namespace AutosarBCM.Forms.Monitor
                         bool activeExceptionMatch = ucItem.ControlInfo.SessionActiveException.Any(exception => exception == ASContext.CurrentSession.ID);
                         bool inactiveExceptionMatch = ucItem.ControlInfo.SessionInactiveException.Any(exception => exception == ASContext.CurrentSession.ID);
 
-                        ucItem.Enabled = (defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch;
+                        if (ucItem.InvokeRequired)
+                        {
+                            ucItem.BeginInvoke((MethodInvoker)delegate ()
+                            {
+                                ucItem.Enabled = (defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch;
+                            });
+                        }
+                        else
+                        {
+                            ucItem.Enabled = (defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch;
+                        }
                     }
+
                 }
             }
         }
         public void DisabledAllSession()
         {
+            Helper.ShowWarningMessageBox("Session failed to activate, try again.");
             foreach (Control control in pnlMonitorInput.Controls)
             {
                 if (control is FlowLayoutPanel flowPanel)
@@ -436,7 +448,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <summary>
         /// Handle transmitted data.
         /// </summary>
-        public bool Sent(short address)
+        public bool Sent(ushort address)
         {
             foreach (var ucItem in uCItems)
                 if (ucItem.ControlInfo.Address == address)

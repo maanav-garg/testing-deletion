@@ -57,7 +57,7 @@
             // 
             this.lblDtcStatus.AutoSize = true;
             this.lblDtcStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblDtcStatus.Location = new System.Drawing.Point(90, 65);
+            this.lblDtcStatus.Location = new System.Drawing.Point(90, 61);
             this.lblDtcStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDtcStatus.Name = "lblDtcStatus";
             this.lblDtcStatus.Size = new System.Drawing.Size(13, 17);
@@ -131,7 +131,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(267, 62);
+            this.label4.Location = new System.Drawing.Point(267, 63);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 16);
@@ -142,7 +142,7 @@
             // 
             this.lblWriteStatus.AutoSize = true;
             this.lblWriteStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblWriteStatus.Location = new System.Drawing.Point(356, 65);
+            this.lblWriteStatus.Location = new System.Drawing.Point(356, 60);
             this.lblWriteStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblWriteStatus.Name = "lblWriteStatus";
             this.lblWriteStatus.Size = new System.Drawing.Size(13, 18);
@@ -151,13 +151,12 @@
             // 
             // lblParent
             // 
-            this.lblParent.AutoSize = true;
             this.lblParent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblParent.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.lblParent.Location = new System.Drawing.Point(4, 1);
             this.lblParent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblParent.Name = "lblParent";
-            this.lblParent.Size = new System.Drawing.Size(52, 17);
+            this.lblParent.Size = new System.Drawing.Size(133, 31);
             this.lblParent.TabIndex = 18;
             this.lblParent.Text = "label1";
             // 

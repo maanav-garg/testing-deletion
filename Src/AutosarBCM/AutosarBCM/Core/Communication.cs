@@ -11,7 +11,7 @@ namespace AutosarBCM.Core
 {
     internal interface IReceiver
     {
-        bool Sent(short address);
+        bool Sent(ushort address);
         bool Receive(Service service);
     }
 

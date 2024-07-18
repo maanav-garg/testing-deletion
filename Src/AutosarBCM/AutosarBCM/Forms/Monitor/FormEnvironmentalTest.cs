@@ -135,6 +135,7 @@ namespace AutosarBCM.Forms.Monitor
                 lblCycleVal.Text = cycleCounter.ToString();
                 lblLoopVal.Text = loopCounter.ToString();
             }));
+            Console.WriteLine(lblLoopVal.Text);
 
         }
 
@@ -166,32 +167,48 @@ namespace AutosarBCM.Forms.Monitor
                     return;
                 }
                 cancellationTokenSource.Cancel();
+                btnStart.Enabled = false;
             }
             else //Start Test
             {
                 cancellationTokenSource = new CancellationTokenSource();
+                Task.Run(async () =>
+                {
+                    Helper.SendExtendedDiagSession();
+
+                    await Task.Delay(1000);
+                });
                 StartTest(cancellationTokenSource.Token);
-            }
-
-            FormMain.IsTestRunning = !FormMain.IsTestRunning;
-            if (FormMain.IsTestRunning)
-            {
                 ResetTime();
-                isActive = true;
-                btnStart.Text = "Stop";
-                btnStart.ForeColor = Color.Red;
             }
-            else
-            {
-                isActive = false;
-                btnStart.Text = "Start";
-                btnStart.ForeColor = Color.Green;
-            }
+            SetStartBtnVisual();
         }
+        public void SetStartBtnVisual()
+        {
 
+            BeginInvoke(new Action(() =>
+            {
+                if (FormMain.IsTestRunning)
+                {
+                    isActive = true;
+                    btnStart.Text = "Stop";
+                    btnStart.ForeColor = Color.Red;
+                }
+                else
+                {
+                    btnStart.Enabled = true;
+                    isActive = false;
+                    btnStart.Text = "Start";
+                    btnStart.ForeColor = Color.Green;
+                }
+            }));
+
+            
+        }
         public void StartTest(CancellationToken cancellationToken)
         {
             MonitorUtil.RunTestPeriodically(cancellationToken, MonitorTestType.Environmental);
+            FormMain.IsTestRunning = !FormMain.IsTestRunning;
         }
 
         public bool CanBeRun()
@@ -256,7 +273,11 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleIOControlByIdentifierReceive(IOControlByIdentifierService ioService)
         {
-            int loopVal;
+            for (var i = 0; i < ioService.Payloads.Count; i++)
+            {
+                Console.WriteLine($"Outloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
+            }
+                int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             {
                 return false;
@@ -266,15 +287,40 @@ namespace AutosarBCM.Forms.Monitor
             UCReadOnlyItem matchedControl = null;
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
-                if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
+                Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
+                if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
+                {
+                    
                     Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
 
-                matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
-                if (matchedControl == null)
-                    return false;
+                    matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
+                    if (matchedControl == null)
+                        return false;
+
+                    totalMessagesReceived++;
+
+                    matchedControl.ChangeStatus(ioService);
+                }
+
+                if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
+                {
+                    foreach (var test in cycles)
+                    {
+                        if (test.Value.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
+                        {
+
+                            Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, "ClosingResponse", "", "", ioService.Payloads[i].FormattedValue);
+
+                            totalMessagesReceived++;
+                            break;
+                        }
+
+                    }                
             }
-            matchedControl.ChangeStatus(ioService);
-            totalMessagesReceived++;
+
+    }
+            
+            
             UpdateCounters();
             return true;
         }
@@ -297,7 +343,8 @@ namespace AutosarBCM.Forms.Monitor
                 if (payload == null)
                     continue;
                 var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
-                uc?.ChangeDtc(dtcValue.Description);
+                if (uc != null && uc.CurrentDtcDescription != dtcValue.Description)
+                    uc?.ChangeDtc(dtcValue.Description);
             }
         }
 
@@ -306,38 +353,42 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleReadDataByIdenService(ReadDataByIdenService readByIdenService)
         {
-            int loopVal;
+            for (var i = 0; i < readByIdenService.Payloads.Count; i++)
+            {
+                Console.WriteLine($"Outloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
+            }
+                int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             { 
-                return false; 
+                return false;
             }
 
             var cycle = cycles[loopVal];
             UCReadOnlyItem matchedControl = null;
+            var inputName = mappingData.Where(m => cycle.OpenItems.Any(x => x.Payloads.Contains(m.Output.Name)) || cycle.CloseItems.Any(x => x.Payloads.Contains(m.Output.Name)));
 
             for (var i = 0; i < readByIdenService.Payloads.Count; i++)
             {
+                Console.WriteLine($"Inloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
+                
                 if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
-                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue);
+                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
+                    totalMessagesReceived++;
                 }
                     
-                if (mappingData.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name)) 
+                if (inputName.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name)) 
                 { 
-                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue); 
+                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.MappingResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
+                    totalMessagesReceived++;
                 }
                     
                 if (continuousReadData.Any(p => p.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
+                    totalMessagesReceived++;
                 }
-                    
-
-                matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == readByIdenService.Payloads[i].PayloadInfo.Name);
-                if (matchedControl == null)
-                {
-                    return false;
-                }
+             
             }
             return true;
         }
@@ -347,20 +398,31 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private void UpdateCounters()
         {
-            tslTransmitted.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+            if (tslTransmitted.GetCurrentParent().InvokeRequired)
+            {
+                tslTransmitted.GetCurrentParent().BeginInvoke((MethodInvoker)delegate ()
+                {
+                    tslTransmitted.Text = totalMessagesTransmitted.ToString();
+                });
+                tslReceived.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+                {
+                    tslReceived.Text = totalMessagesReceived.ToString();
+                });
+                tslDiff.GetCurrentParent().Invoke((MethodInvoker)delegate ()
+                {
+                    double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
+                    tslDiff.Text = (diff * 100).ToString("F2") + "%";
+                    tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+                });
+            }
+            else
             {
                 tslTransmitted.Text = totalMessagesTransmitted.ToString();
-            });
-            tslReceived.GetCurrentParent().Invoke((MethodInvoker)delegate ()
-            {
                 tslReceived.Text = totalMessagesReceived.ToString();
-            });
-            tslDiff.GetCurrentParent().Invoke((MethodInvoker)delegate ()
-            {
                 double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
                 tslDiff.Text = (diff * 100).ToString("F2") + "%";
                 tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
-            });
+            }
         }
 
         /// <summary>
@@ -368,7 +430,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         /// <param name="sender">Form</param>
         /// <param name="e">Argument</param>
-        public bool Sent(short address)
+        public bool Sent(ushort address)
         {
             if (!int.TryParse(lblLoopVal.Text, out int loopVal))
                 return false;
@@ -382,6 +444,7 @@ namespace AutosarBCM.Forms.Monitor
             if (!matchedControls.Any())
                 return false;
 
+            totalMessagesTransmitted++;
             foreach (var uc in matchedControls)
             {
                 foreach (var payload in cycle.Functions.SelectMany(p => p.Payloads))
@@ -389,10 +452,10 @@ namespace AutosarBCM.Forms.Monitor
                     if (uc.PayloadInfo.Name == payload)
                     {
                         uc.HandleMetrics();
-
-                        totalMessagesTransmitted++;
+                      
                         break;
                     }
+                  
                 }
             }
             return true;

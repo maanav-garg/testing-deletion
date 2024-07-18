@@ -65,6 +65,9 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         private float[] rssiValues = new float[3];
 
+        public string CurrentDtcDescription { get; set;}
+
+
         /// <summary>
         /// Gets or sets the previous (old) value of the input item.
         /// </summary>
@@ -110,10 +113,19 @@ namespace AutosarBCM.UserControls.Monitor
             ControlInfo = controlInfo;
             PayloadInfo = payloadInfo;
 
-            if (controlInfo.Name.Length > 30)
-                lblParent.Text = $"{controlInfo.Name.Substring(0, 27)}...";
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(this.lblParent, controlInfo.Name);
+
+            if (controlInfo.Name.Length > 14)
+            {
+                lblParent.Text = $"{controlInfo.Name.Substring(0, 12)}...";
+            }
             else
+            {
                 lblParent.Text = controlInfo.Name;
+            }
+    
+            toolTip.SetToolTip(this.lblName, payloadInfo.Name);
 
             if (payloadInfo.Name.Length > 30)
                 lblName.Text = $"{payloadInfo.Name.Substring(0, 27)}...";
@@ -136,11 +148,21 @@ namespace AutosarBCM.UserControls.Monitor
             if (Program.MappingStateDict.TryGetValue(ControlInfo.Name, out var errorLogDetect))
                 Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, GetMappingLogState(errorLogDetect.Operation)));
 
-            lblReceived.BeginInvoke((MethodInvoker)delegate ()
+            if (lblReceived.InvokeRequired)
+            {
+                lblReceived.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    MessagesReceived++;
+                    lblReceived.Text = MessagesReceived.ToString();
+                    Calculate();
+                });
+            }
+            else
             {
                 MessagesReceived++;
                 lblReceived.Text = MessagesReceived.ToString();
-            });
+                Calculate();
+            }
 
             if (oldValue != null)
             {
@@ -181,19 +203,8 @@ namespace AutosarBCM.UserControls.Monitor
                     lblWriteStatus.Text = payload?.FormattedValue.ToString();
                 }
             });
-            if (MessagesTransmitted == 0)
-            {
-                lblDiff.Text = "-";
-            }
-            else
-            {
-                lblDiff.BeginInvoke((MethodInvoker)delegate ()
-                {
-                    double diff = (double)MessagesReceived / MessagesTransmitted;
-                    lblDiff.Text = (diff * 100).ToString("F2") + "%";
-                    lblDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
-                });
-            }
+
+            
 
             lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
             {
@@ -209,24 +220,75 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         internal void HandleMetrics()
         {
-            MessagesTransmitted++;
-
-            lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
+          
+                MessagesTransmitted++;
+            if (lblTransmitted.InvokeRequired)
+            {
+                lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    lblTransmitted.Text = MessagesTransmitted.ToString();
+                
+                });
+            }
+            else
             {
                 lblTransmitted.Text = MessagesTransmitted.ToString();
-            });
+            }
+            Calculate();
         }
+
+        public void Calculate()
+        {
+            if (MessagesTransmitted == 0 || MessagesReceived == 0)
+            {
+                lblDiff.Text = "-";
+            }
+            else
+            {
+                if (lblDiff.InvokeRequired)
+                {
+                    lblDiff.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        var x = ControlInfo;
+                        double diff = (double)MessagesReceived / MessagesTransmitted;
+                        lblDiff.Text = (diff * 100).ToString("F2") + "%";
+                        lblDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+                    });
+                }
+                else
+                {
+                    var x = ControlInfo;
+                    double diff = (double)MessagesReceived / MessagesTransmitted;
+                    lblDiff.Text = (diff * 100).ToString("F2") + "%";
+                    lblDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+                }
+            }
+        }
+        private ToolTip toolTipDtc = new ToolTip();
 
         /// <summary>
         /// Change DTC of the input window regarding to read data from the device.
         /// </summary>
         public void ChangeDtc(string dtc)
         {
-            lblDtcStatus.BeginInvoke((MethodInvoker)delegate ()
+            if (lblDtcStatus.InvokeRequired)
             {
-                lblDtcStatus.Text = dtc;
-            });
+                lblDtcStatus.Invoke((MethodInvoker)delegate ()
+                {
+                    string displayText = dtc.Length > 20 ? dtc.Substring(0, 20) + "..." : dtc;
+                    lblDtcStatus.Text = displayText;
+                    toolTipDtc.SetToolTip(lblDtcStatus, dtc);
+                });
+            }
+            else
+            {
+                string displayText = dtc.Length > 20 ? dtc.Substring(0, 20) + "..." : dtc;
+                lblDtcStatus.Text = displayText;
+                toolTipDtc.SetToolTip(lblDtcStatus, dtc);
+            }
+            CurrentDtcDescription = dtc;
         }
+
 
         /// <summary>
         /// Change status of the input window regarding to read data from the device.
@@ -307,9 +369,9 @@ namespace AutosarBCM.UserControls.Monitor
 
         private MappingResponse GetMappingLogState(MappingOperation operation)
         {
-            if (operation == MappingOperation.Open && (currentValue.Item1 == "ON" || currentValue.Item1 == "SET"))
+            if (operation == MappingOperation.Open && (currentValue?.Item1 == "ON" || currentValue?.Item1 == "SET"))
                 return MappingResponse.OutputOpen;
-            else if (operation == MappingOperation.Close && (currentValue.Item1 == "OFF" || ((Item.PwmTag == "XS4200" && currentValue.Item1 == "ON") || currentValue.Item1 == "SET")))
+            else if (operation == MappingOperation.Close && (currentValue?.Item1 == "OFF" || ((Item?.PwmTag == "XS4200" && currentValue?.Item1 == "ON") || currentValue?.Item1 == "SET")))
                 return MappingResponse.OutputClose;
             else
                 return MappingResponse.OutputError;

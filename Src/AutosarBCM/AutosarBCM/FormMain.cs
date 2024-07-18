@@ -1306,7 +1306,7 @@ namespace AutosarBCM
                 if (formEMCView == null || formEMCView.IsDisposed)
                 {
                     formEMCView = new FormEMCView();
-                    formEMCView.Show();
+                    formEMCView.ShowDialog();
                 }
                 else
                     formEMCView.BringToFront();
