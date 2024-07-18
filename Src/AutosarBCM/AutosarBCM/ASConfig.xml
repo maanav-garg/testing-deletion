@@ -1211,6 +1211,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
+					<Payload name="C4.8_SparePWM3" dtcCode="9D9E" typeName="DID_PWM"></Payload>
 					<Payload name="C4.7_SparePWM4" dtcCode="9D9D" typeName="DID_PWM"></Payload>
 				</Response>
 			</Responses>
