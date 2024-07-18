@@ -270,12 +270,21 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         public void ChangeDtc(string dtc)
         {
-            lblDtcStatus.BeginInvoke((MethodInvoker)delegate ()
+            if (lblDtcStatus.InvokeRequired)
+            {
+                lblDtcStatus.Invoke((MethodInvoker)delegate ()
+                {
+                    string displayText = dtc.Length > 20 ? dtc.Substring(0, 20) + "..." : dtc;
+                    lblDtcStatus.Text = displayText;
+                    toolTipDtc.SetToolTip(lblDtcStatus, dtc);
+                });
+            }
+            else
             {
                 string displayText = dtc.Length > 20 ? dtc.Substring(0, 20) + "..." : dtc;
                 lblDtcStatus.Text = displayText;
-                toolTipDtc.SetToolTip(lblDtcStatus, dtc); 
-            });
+                toolTipDtc.SetToolTip(lblDtcStatus, dtc);
+            }
             CurrentDtcDescription = dtc;
         }
 

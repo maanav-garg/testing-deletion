@@ -1153,6 +1153,18 @@
 			</Responses>
 		</Control>
 		<Control>
+			<Address>DF41</Address>
+			<Name>Keyfob_Pairing</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22;2F</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="Keyfob Pair" typeName="HexDump_1Byte"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
 			<Address>C257</Address>
 			<Name>Last_Received_Transmitter_Button_Press</Name>
 			<Type></Type>
@@ -2807,9 +2819,9 @@
 					<Function control="LED_Outputs">
 						<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-					</Function>
+					</Function>-->
 					<Function control="Washer_Pump_Front_Relay">
 						<Payload>C1.15_Washer Pump Front Relay</Payload>
 					</Function>
@@ -2914,9 +2926,9 @@
 					<Function control="Right_Rear_Turn_Signal_Lamp_Control">
 						<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-					</Function>
+					</Function>-->
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -3008,9 +3020,9 @@
 					<Function control="LED_Outputs">
 						<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>
+					</Function>-->
 					<Function control="Washer_Pump_Front_Relay">
 						<Payload>C1.15_Washer Pump Front Relay</Payload>
 					</Function>
@@ -3063,9 +3075,9 @@
 					<Function control="Horn_Output_Control">
 						<Payload>C1.11_Horn Output Control</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-					</Function>
+					</Function>-->
 					<Function control="ReverseGearSupply">
 						<Payload>C3.15_ReverseGearSupply</Payload>
 					</Function>
@@ -3126,9 +3138,9 @@
 					<Function control="LowLinerFrontSideLiftedValveSupply">
 						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
-					</Function>
+					</Function>-->
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -3174,7 +3186,7 @@
 					</Function>
 				</Functions>
 			</Cycle>
-			<Cycle>
+			<!--<Cycle>
 				<Name>CycleLoad 31 - Group 3</Name>
 				<OpenAt>46</OpenAt>
 				<CloseAt>56</CloseAt>
@@ -3183,7 +3195,7 @@
 						<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
 					</Function>
 				</Functions>
-			</Cycle>
+			</Cycle>-->
 			<Cycle>
 				<Name>CycleLoad 31 - Group 3</Name>
 				<OpenAt>46</OpenAt>
@@ -3294,9 +3306,9 @@
 					<Function control="LowLinerFrontSideLiftedValveSupply">
 						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-					</Function>
+					</Function>-->
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -3376,9 +3388,9 @@
 					<Function control="Horn_Output_Control">
 						<Payload>C1.11_Horn Output Control</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>
+					</Function>-->
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -3438,9 +3450,9 @@
 					<Function control="LowLinerFrontSideLiftedValveSupply">
 						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-					</Function>
+					</Function>-->
 					<Function control="TrailerTagAxleLifting1Supply">
 						<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
 					</Function>
@@ -3517,9 +3529,9 @@
 					<Function control="Right_Rear_Turn_Signal_Lamp_Control">
 						<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-					</Function>
+					</Function>-->
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -3624,9 +3636,9 @@
 					<Function control="LowLinerFrontSideLiftedValveSupply">
 						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>
+					</Function>-->
 					<Function control="TrailerTagAxleLifting1Supply">
 						<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
 					</Function>
@@ -3681,9 +3693,9 @@
 					<Function control="Horn_Output_Control">
 						<Payload>C1.11_Horn Output Control</Payload>
 					</Function>
-					<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-					</Function>
+					</Function>-->
 					<Function control="ReverseGearSupply">
 						<Payload>C3.15_ReverseGearSupply</Payload>
 					</Function>
