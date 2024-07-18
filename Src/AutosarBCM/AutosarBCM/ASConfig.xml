@@ -1766,11 +1766,47 @@
 			<Address>DF66</Address>
 			<Name>Emc_Swc_LifeCycle</Name>
 			<Type></Type>
-			<Group>DID</Group>
+			<Group>EMC</Group>
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
 					<Payload name="SWC LifeCycle" typeName="HexDump_4Bytes"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>099E</Address>
+			<Name>EMC_PEPSFunctionControl</Name>
+			<Type></Type>
+			<Group>EMC</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="EMC_PEPSFunctionControl" typeName="HexDump_1Byte"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>099D</Address>
+			<Name>EMC_LowBatteryVoltageProtectionEnable</Name>
+			<Type></Type>
+			<Group>EMC</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="EMC_LowBatteryVoltageProtectionEnable" typeName="HexDump_1Byte"></Payload>
+				</Response>
+			</Responses>
+		</Control>
+		<Control>
+			<Address>099C</Address>
+			<Name>EMC_FunctionEnable</Name>
+			<Type></Type>
+			<Group>EMC</Group>
+			<Services>22;2E</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="EMC_FunctionEnable" typeName="HexDump_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
