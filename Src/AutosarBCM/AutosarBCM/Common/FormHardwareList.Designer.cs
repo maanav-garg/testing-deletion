@@ -99,7 +99,7 @@
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
-            // label1
+            // triggerLabel
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(21, 9);

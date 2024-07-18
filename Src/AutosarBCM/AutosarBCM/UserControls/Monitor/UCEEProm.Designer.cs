@@ -161,7 +161,7 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Data 1";
             // 
-            // label1
+            // triggerLabel
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 20);

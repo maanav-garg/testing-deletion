@@ -177,7 +177,7 @@
             this.btnReadFile.UseVisualStyleBackColor = true;
             this.btnReadFile.Click += new System.EventHandler(this.btnReadFile_Click);
             // 
-            // label1
+            // triggerLabel
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;

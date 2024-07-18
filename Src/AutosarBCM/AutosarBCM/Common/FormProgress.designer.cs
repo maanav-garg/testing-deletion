@@ -77,7 +77,7 @@ namespace AutosarBCM.Common
             this.progressBar.Size = new System.Drawing.Size(218, 25);
             this.progressBar.TabIndex = 3;
             // 
-            // panel1
+            // msgPanel
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.progressBar);

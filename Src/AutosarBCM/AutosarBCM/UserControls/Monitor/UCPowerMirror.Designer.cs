@@ -135,7 +135,7 @@
             this.btnReadUp.UseVisualStyleBackColor = true;
             this.btnReadUp.Click += new System.EventHandler(this.btnReadUp_Click);
             // 
-            // label1
+            // triggerLabel
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);

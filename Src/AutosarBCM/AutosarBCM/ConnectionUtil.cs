@@ -19,6 +19,7 @@ using Connection.Protocol.Uds;
 using AutosarBCM.Config;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace AutosarBCM
 {
@@ -169,7 +170,6 @@ namespace AutosarBCM
                 foreach (var receiver in FormMain.Receivers)
                     if (receiver.Sent(BitConverter.ToUInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
             }
-
             if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
                 AppendTrace(txRead, time, Color.Black);
         }
@@ -301,16 +301,25 @@ namespace AutosarBCM
 
         public static void TransmitData(uint canId, byte[] dataBytes)
         {
-            MessageBox.Show("HW Layer not used");
+            if (Thread.CurrentThread != Program.UIThread)
+                TransmitDataInternal(dataBytes,canId);
+            else
+                Task.Run(() => TransmitDataInternal(dataBytes,canId));
+
         }
 
-        private static void TransmitDataInternal(byte[] dataBytes)
+        private static void TransmitDataInternal( byte[] dataBytes, uint? canId = null)
         {
             FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
             lock (lockObj)
             {
                 try
                 {
+                    if (canId != null)
+                        transportProtocol.Config.PhysicalAddr.TxId = (uint)canId;
+                    else
+                        transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
+
                     transportProtocol.SendBytes(dataBytes);
                 }
                 catch (Exception ex)

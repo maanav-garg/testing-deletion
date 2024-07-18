@@ -718,10 +718,10 @@ namespace AutosarBCM
             recentToolFileHelper.MenuClick += (o, s) => OpenToolFile(s);
             recentToolFileHelper.ListUpdated += (o, s) =>
             {
-                Properties.Settings.Default.RecentToolFiles = s;    // update settings. no need to save immediately. save before closing.
+                Settings.Default.RecentToolFiles = s;    // update settings. no need to save immediately. save before closing.
                 recentToolFileHelper.UpdateRecentFilesMenu(recentFilesTsmi);    // update menu
             };
-            recentToolFileHelper.Init(Properties.Settings.Default.RecentToolFiles);
+            recentToolFileHelper.Init(Settings.Default.RecentToolFiles);
             this.WindowState = FormWindowState.Maximized;
             #endregion
 
@@ -1076,6 +1076,11 @@ namespace AutosarBCM
         private void newTsmi_Click(object sender, EventArgs e)
         {
             var f = new Form() { MdiParent = this };
+            f.Show();
+        }
+        private void tsmiTransmit_Click(object sender, EventArgs e)
+        {
+            var f = new FormTransmit();
             f.Show();
         }
 

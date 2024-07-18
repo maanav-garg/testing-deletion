@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseMessage.cs" />
     <Compile Include="Core\Enums.cs" />
     <Compile Include="Core\Payload.cs" />
     <Compile Include="Core\Service.cs" />
@@ -142,6 +143,12 @@
     </Compile>
     <Compile Include="FormEMCView.Designer.cs">
       <DependentUpon>FormEMCView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMessageAddition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMessageAddition.Designer.cs">
+      <DependentUpon>FormMessageAddition.cs</DependentUpon>
     </Compile>
     <Compile Include="FormOptions.cs">
       <SubType>Form</SubType>
@@ -202,6 +209,18 @@
     </Compile>
     <Compile Include="FormTracePopup.Designer.cs">
       <DependentUpon>FormTracePopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormTransmit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTransmit.Designer.cs">
+      <DependentUpon>FormTransmit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormTransmitMulti.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTransmitMulti.Designer.cs">
+      <DependentUpon>FormTransmitMulti.cs</DependentUpon>
     </Compile>
     <Compile Include="MMTimer.cs" />
     <Compile Include="Monitor.cs" />
@@ -330,6 +349,9 @@
       <DependentUpon>FormMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormMessageAddition.resx">
+      <DependentUpon>FormMessageAddition.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormOptions.resx">
       <DependentUpon>FormOptions.cs</DependentUpon>
     </EmbeddedResource>
@@ -359,6 +381,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormTracePopup.resx">
       <DependentUpon>FormTracePopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTransmit.resx">
+      <DependentUpon>FormTransmit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTransmitMulti.resx">
+      <DependentUpon>FormTransmitMulti.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -470,6 +498,7 @@
     <None Include="Resources\arrowup2.png" />
     <None Include="Resources\arrowdown2.png" />
     <Content Include="ASConfig.xml" />
+    <Content Include="Resources\checkup.png" />
     <Content Include="Resources\DownloadDocument.bmp" />
     <None Include="Resources\dtc.png" />
     <Content Include="Resources\EditWindow.ico" />
@@ -485,6 +514,9 @@
     <None Include="Resources\UnLcok.png" />
     <None Include="Resources\testerPresent.png" />
     <Content Include="tool1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UserControls\UDS\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

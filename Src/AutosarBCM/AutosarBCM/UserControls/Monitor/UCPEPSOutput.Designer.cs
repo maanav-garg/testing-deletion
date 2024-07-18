@@ -324,7 +324,7 @@
             this.lblZ.TabIndex = 29;
             this.lblZ.Text = "0";
             // 
-            // label1
+            // triggerLabel
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(4, 16);

@@ -62,7 +62,7 @@
             this.lblStatus.Text = "-";
             this.lblStatus.Visible = false;
             // 
-            // label1
+            // triggerLabel
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;

@@ -197,7 +197,7 @@
             this.lblRevertTime.TabIndex = 26;
             this.lblRevertTime.Text = "Revert Time";
             // 
-            // label1
+            // triggerLabel
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(89, 73);

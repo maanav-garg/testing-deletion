@@ -8,7 +8,10 @@ using log4net;
 using AutosarBCM.Properties;
 using System.Linq;
 using AutosarBCM.Config;
+using AutosarBCM.Message;
+using System.ComponentModel;
 using AutosarBCM.Core;
+
 
 namespace AutosarBCM
 {
@@ -397,14 +400,14 @@ namespace AutosarBCM
         /// <param name="comment">Optional comment.</param>
         /// <param name="escapeChars">Optional escape characters for formatting.</param>
         /// <param name="data">Additional data related to the message.</param>
-        public static void WriteCycleMessageToLogFile(string itemName, string itemType, string operation,string comment = "",string escapeChars = "",string data = "")
+        public static void WriteCycleMessageToLogFile(string itemName, string itemType, string operation, string comment = "", string escapeChars = "", string data = "")
         {
             if (FormMain.IsTestRunning)
             {
                 if (String.IsNullOrEmpty(comment))
-                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")};{itemName};{itemType};{operation};{data};{escapeChars}");
+                    ((FormMain)System.Windows.Forms.Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")};{itemName};{itemType};{operation};{data};{escapeChars}");
                 else
-                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}#{DateTime.Now.ToString("HH:mm:ss.fff\t")}#{comment}#{escapeChars}");
+                    ((FormMain)System.Windows.Forms.Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}#{comment}#{escapeChars}");
             }
         }
 
@@ -422,10 +425,10 @@ namespace AutosarBCM
             if (FormMain.IsTestRunning && FormMain.MonitorTestTypeClone == MonitorTestType.Environmental)
             {
                 if (String.IsNullOrEmpty(comment))
-                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")};{itemName};{itemType};{operation};{data};{escapeChars}");
+                    ((FormMain)System.Windows.Forms.Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")};{itemName};{itemType};{operation};{data};{escapeChars}");
                 else
-                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}#{comment}#{escapeChars}");
-            }                
+                    ((FormMain)System.Windows.Forms.Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}#{comment}#{escapeChars}");
+            }
         }
 
         /// <summary>
@@ -1011,7 +1014,7 @@ namespace AutosarBCM
             // add to recent file list
             AddToRecentFiles(fileName);
         }
-        
+
         /// <summary>
         /// Notifies parent control that the recent file list is updated.
         /// </summary>
@@ -1071,11 +1074,222 @@ namespace AutosarBCM
             saveFileDialog.Title = "Save a Csv template.";
         }
 
+        /// <summary>
+        /// Imports a CSV file and parses it based on the specified protocol.
+        /// </summary>
+        /// <param name="protocol">The communication protocol to use for parsing.</param>
+        /// <returns>A list of parsed messages or null if the operation fails.</returns>
+        public static object ImportCsvFİle(TransmitProtocol protocol)
+        {
+            try
+            {
+                using (openFileDialog)
+                {
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+
+                    {
+                        switch (protocol)
+                        {
+                            case TransmitProtocol.Can:
+                                return CanMessageCsvParser(File.ReadAllLines(openFileDialog.FileName)
+                                               .Skip(1)
+                                               .ToList());
+                            case TransmitProtocol.Uds:
+                                return UdsMessageCsvParser(File.ReadAllLines(openFileDialog.FileName)
+                                               .Skip(1)
+                                               .ToList());
+                            default: return null;
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.ShowWarningMessageBox("Unexpected CSV File.\nPlease check CSV File.");
+                return null;
+            }
+        }
+
+
+
+
+
+
+
+        /// <summary>
+        /// Downloads a CSV template based on the specified protocol.
+        /// </summary>
+        /// <param name="protocol">The communication protocol for the CSV template.</param>
+        public static void DownloadCsvFile(TransmitProtocol protocol, BindingList<CanMessage> bindingList)
+        {
+            using (saveFileDialog)
+            {
+                saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    switch (protocol)
+                    {
+                        case TransmitProtocol.Can:
+                            //File.WriteAllText(saveFileDialog.FileName, Resources.Can_CSV_Template);
+                            var csv = new StringBuilder();
+                            bool isPrevSingle = false;
+                            bool isPrevMulti = false;
+                            foreach (CanMessage message in bindingList)
+                            {
+                                //single firstline format
+                                var newLine = "";
+                                var subMesages = message.SubMessages;
+                                var first = message.Id;
+                                var dataBytes = message.Data;
+                                var second = "";
+                                foreach (byte data in dataBytes)
+                                {
+                                    second += data + " ";
+                                }
+                                second = second.TrimEnd();
+                                var third = message.CycleTime;
+                                var fourth = message.CycleCount;
+                                var fifth = message.DelayTime;
+                                var sixth = message.Count;
+                                var seventh = message.Trigger;
+                                var eighth = message.Comment;
+                                var ninth = message.Multi;
+                                if (!isPrevSingle && !ninth)
+                                {
+                                    csv.AppendLine("MessageID; Data; Cycle Time; Cycle Count; Delay Time; Count; Trigger; Comment; Multi Message");
+                                    isPrevSingle = true;
+                                    newLine = string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}", first, second, third, fourth, fifth, sixth, seventh, eighth, ninth.ToString().ToUpper());
+                                    csv.AppendLine(newLine);
+                                }
+                                else if (ninth)
+                                {
+                                    isPrevSingle = false;
+                                }
+
+                                //multi firstline format
+                                if (!isPrevMulti && ninth)
+                                {
+                                    csv.AppendLine("-;Multi Messages;x;x;x;x;x;Text;");
+                                    foreach(BaseMessage subMessage in subMesages)
+                                    {
+                                        first = subMessage.Id;
+                                        dataBytes = subMessage.Data;
+                                        second = "";
+                                        foreach (byte data in dataBytes)
+                                        {
+                                            second += data + " ";
+                                        }
+                                        second = second.TrimEnd();
+                                        third = subMessage.CycleTime;
+                                        fourth = subMessage.CycleCount;
+                                        fifth = subMessage.DelayTime;
+                                        sixth = subMessage.Count;
+                                        seventh = subMessage.Trigger;
+                                        eighth = subMessage.Comment;
+                                        ninth = subMessage.Multi;
+                                        ninth = true;
+                                        newLine = string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}", first, second, third, fourth, fifth, sixth, seventh, eighth, ninth.ToString().ToUpper());
+                                        csv.AppendLine(newLine);
+                                    }
+                                    isPrevMulti = true;
+
+                                }
+                                else if (!ninth)
+                                {
+                                    isPrevMulti = false;
+                                }
+                            }
+                            File.WriteAllText(saveFileDialog.FileName, csv.ToString());
+                            break;
+                        case TransmitProtocol.Uds:
+                            File.WriteAllText(saveFileDialog.FileName, Resources.Uds_CSV_Template);
+                            break;
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Private Methods
 
-        
+        /// <summary>
+        /// Parses CSV lines into a list of CanMessage objects.
+        /// </summary>
+        /// <param name="lines">The lines of the CSV file.</param>
+        /// <returns>A list of CanMessage objects.</returns>
+        private static List<CanMessage> CanMessageCsvParser(List<string> lines)
+        {
+            var result = new List<CanMessage>();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i].Replace("\",\"", ";").Split(';');
+                if (line[0] == "-")
+                {
+                    var subMesages = new List<BaseMessage>();
+                    for (int j = i + 1; j < lines.Count; j++, i = j - 1)
+                    {
+                        var subLine = lines[j].Replace("\",\"", ";").Split(';');
+                        if (string.IsNullOrWhiteSpace(subLine[8]) ? false : bool.Parse(subLine[8]))
+                        {
+                            subLine[8] = "FALSE";
+                            subMesages.Add(CanMessage.SetCanMessage(subLine));
+                        }
+                        else
+                            break;
+                    }
+                    result.Add(new CanMessage() { Id = line[0], Multi = true, Comment = line[7], SubMessages = subMesages });
+                }
+                else
+                {
+                    result.Add(CanMessage.SetCanMessage(line));
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Parses CSV lines into a list of UdsMessage objects.
+        /// </summary>
+        /// <param name="lines">The lines of the CSV file.</param>
+        /// <returns>A list of UdsMessage objects.</returns>
+        private static List<UdsMessage> UdsMessageCsvParser(List<string> lines)
+        {
+            var result = new List<UdsMessage>();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i].Replace("\",\"", ";").Split(';');
+                if (line[0] == "-")
+                {
+                    var subMesages = new List<BaseMessage>();
+                    for (int j = i + 1; j < lines.Count; j++, i = j - 1)
+                    {
+                        var subLine = lines[j].Replace("\",\"", ";").Split(';');
+                        if (string.IsNullOrWhiteSpace(subLine[8]) ? false : bool.Parse(subLine[8]))
+                        {
+                            subLine[8] = "FALSE";
+                            subMesages.Add(UdsMessage.SetUdsMessage(subLine));
+                        }
+                        else
+                            break;
+                    }
+
+                    result.Add(new UdsMessage() { Id = line[0], Multi = true, Comment = line[7], SubMessages = subMesages });
+                }
+                else
+                {
+                    result.Add(UdsMessage.SetUdsMessage(line));
+                }
+            }
+
+            return result;
+        }
+
 
         #endregion
     }
