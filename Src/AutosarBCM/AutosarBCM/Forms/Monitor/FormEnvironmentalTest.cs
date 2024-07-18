@@ -168,6 +168,7 @@ namespace AutosarBCM.Forms.Monitor
                     await Task.Delay(1000);
                 });
                 StartTest(cancellationTokenSource.Token);
+                ResetTime();
             }
             SetStartBtnVisual();
         }
@@ -178,7 +179,6 @@ namespace AutosarBCM.Forms.Monitor
             {
                 if (FormMain.IsTestRunning)
                 {
-                    ResetTime();
                     isActive = true;
                     btnStart.Text = "Stop";
                     btnStart.ForeColor = Color.Red;
@@ -290,8 +290,24 @@ namespace AutosarBCM.Forms.Monitor
 
                     matchedControl.ChangeStatus(ioService);
                 }
-                   
+
+                if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
+                {
+                    foreach (var test in cycles)
+                    {
+                        if (test.Value.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
+                        {
+
+                            Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, "ClosingResponse", "", "", ioService.Payloads[i].FormattedValue);
+
+                            totalMessagesReceived++;
+                            break;
+                        }
+
+                    }                
             }
+
+    }
             
             
             UpdateCounters();

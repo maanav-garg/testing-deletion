@@ -270,6 +270,7 @@ namespace AutosarBCM
         {
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsStarted, Constants.DefaultEscapeCharacter);
+            Console.WriteLine(Constants.ClosingOutputsStarted);
             var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
             txInterval = false ? txInterval * 2 : txInterval;
 
@@ -293,7 +294,7 @@ namespace AutosarBCM
                     function.ControlInfo.Switch(function.Payloads.Distinct().ToList(), false);
                     Thread.Sleep(txInterval);
                 }
-
+            Console.WriteLine(Constants.ClosingOutputsFinished);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsFinished, Constants.DefaultEscapeCharacter);
             FormMain.IsTestRunning = !FormMain.IsTestRunning;
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
@@ -383,7 +384,7 @@ namespace AutosarBCM
             {
                 if (cycleIndex % 4 == 0)
                 {
-                    new ReadDTCInformationService().Transmit();
+                    //new ReadDTCInformationService().Transmit();
                     foreach (var item in continousReadList.Keys)
                     {
                         ThreadSleep(txInterval);
