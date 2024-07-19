@@ -29,6 +29,8 @@ namespace AutosarBCM.Forms.Monitor
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
 
+        private HashSet<string> allPayloads;
+
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
@@ -168,6 +170,13 @@ namespace AutosarBCM.Forms.Monitor
                 }
                 cancellationTokenSource.Cancel();
                 btnStart.Enabled = false;
+                var count = 1;
+                foreach (var payload in allPayloads)
+                {
+                    Helper.WriteUnopenedPayloadsToLogFile(count, payload);
+                    count++;
+                }
+
             }
             else //Start Test
             {
@@ -180,6 +189,8 @@ namespace AutosarBCM.Forms.Monitor
                 });
                 StartTest(cancellationTokenSource.Token);
                 ResetTime();
+                if (mainForm.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                    formInput.DisabledAllSession();
             }
             SetStartBtnVisual();
         }
@@ -285,9 +296,21 @@ namespace AutosarBCM.Forms.Monitor
 
             var cycle = cycles[loopVal];
             UCReadOnlyItem matchedControl = null;
+            var cyclePayloads = cycle.Functions.SelectMany(f => f.Payloads).ToHashSet();
+            allPayloads = new HashSet<string>(cyclePayloads);
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
-                Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
+                var payloadName = ioService.Payloads[i].PayloadInfo.Name;
+                if (cyclePayloads.Contains(payloadName))
+                {
+                    if (!allPayloads.Contains(payloadName))
+                    {
+                        continue;
+                    }
+
+                    allPayloads.Remove(payloadName);
+                }
+                    Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
                 {
                     

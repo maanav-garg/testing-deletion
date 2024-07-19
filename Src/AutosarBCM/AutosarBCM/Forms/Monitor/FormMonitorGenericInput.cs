@@ -283,7 +283,7 @@ namespace AutosarBCM.Forms.Monitor
         }
         public void DisabledAllSession()
         {
-            Helper.ShowWarningMessageBox("Session failed to activate, try again.");
+         Helper.ShowWarningMessageBox("Session failed to activate, try again.");
             foreach (Control control in pnlMonitorInput.Controls)
             {
                 if (control is FlowLayoutPanel flowPanel)

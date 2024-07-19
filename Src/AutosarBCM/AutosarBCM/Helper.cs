@@ -387,6 +387,20 @@ namespace AutosarBCM
                 dgvMessages.ClearSelection();
             }            
         }
+        /// <summary>
+        /// Create a txt file to the unopened DIDS during an environmental test.
+        /// </summary>
+        /// <param name="count">The name of the item.</param>
+        /// <param name="payloadName">The type of the item.</param>
+        public static void WriteUnopenedPayloadsToLogFile(int count, string payloadName)
+        {
+            string date = DateTime.Now.ToString("yyyyMMdd");
+            string logFilePath = $"{date}_Unopened_Payloads_log.txt";
+            string logMessage = $"{count}) Payload Name : {payloadName}{Environment.NewLine}";
+            File.AppendAllText(logFilePath, logMessage);
+        }
+
+
 
         /// <summary>
         /// Writes a cycle message to the log file during an environmental test.
