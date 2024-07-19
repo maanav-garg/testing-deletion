@@ -146,7 +146,6 @@ namespace AutosarBCM.Forms.Monitor
         private void btnStart_Click(object sender, EventArgs e)
         {
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
-            mainForm.UpdateSessionLabel();
 
             if (FormMain.IsTestRunning)
             {
@@ -163,6 +162,7 @@ namespace AutosarBCM.Forms.Monitor
                 Task.Run(async () =>
                 {
                     Helper.SendExtendedDiagSession();
+                    mainForm.UpdateSessionLabel();
 
                     await Task.Delay(1000);
                 });
