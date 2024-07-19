@@ -2348,9 +2348,6 @@
 			<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
 		</EnvironmentalConfig>
 		<ContinousReadList>
-			<Func parent="TCCM_Input">KL75Relay1</Func>
-			<!-- <Func>C1.3_VehicleConverter12VSupply</Func> -->
-			<!-- <Func>C1.3_VehicleConverter12VSupply</Func> -->
 		</ContinousReadList>
 		<ConnectionMappings>
 			<Mapping>

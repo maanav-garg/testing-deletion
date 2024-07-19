@@ -216,6 +216,9 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(ReadDataByIdenService service)
         {
+            if (FormMain.IsTestRunning)
+                return;
+
             lblReceived.BeginInvoke((MethodInvoker)delegate ()
             {
                 MessageReceived++;
@@ -261,8 +264,10 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         internal void HandleMetrics()
         {
-            if (!FormMain.IsTestRunning)
-                MessageTransmitted++;
+            if (FormMain.IsTestRunning)
+                return;
+
+            MessageTransmitted++;
 
             lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
             {

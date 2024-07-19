@@ -43,8 +43,8 @@
             this.lblData = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.ucControlByIdentifierItem = new AutosarBCM.UserControls.Monitor.UCControlByIdentifierItem();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.pnlMonitorInput.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -62,7 +62,7 @@
             this.pnlMonitorInput.Location = new System.Drawing.Point(0, 0);
             this.pnlMonitorInput.Name = "pnlMonitorInput";
             this.pnlMonitorInput.Padding = new System.Windows.Forms.Padding(0, 24, 0, 0);
-            this.pnlMonitorInput.Size = new System.Drawing.Size(594, 450);
+            this.pnlMonitorInput.Size = new System.Drawing.Size(650, 450);
             this.pnlMonitorInput.TabIndex = 0;
             this.pnlMonitorInput.WrapContents = false;
             // 
@@ -198,7 +198,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.ucControlByIdentifierItem);
             this.splitContainer1.Panel2MinSize = 15;
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 594;
+            this.splitContainer1.SplitterDistance = 650;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -210,7 +210,7 @@
             this.btnStart});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(594, 24);
+            this.toolStrip2.Size = new System.Drawing.Size(650, 24);
             this.toolStrip2.TabIndex = 1;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -219,7 +219,7 @@
             this.ucControlByIdentifierItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucControlByIdentifierItem.Location = new System.Drawing.Point(0, 0);
             this.ucControlByIdentifierItem.Name = "ucControlByIdentifierItem";
-            this.ucControlByIdentifierItem.Size = new System.Drawing.Size(203, 450);
+            this.ucControlByIdentifierItem.Size = new System.Drawing.Size(147, 450);
             this.ucControlByIdentifierItem.TabIndex = 0;
             // 
             // FormMonitorGenericInput
