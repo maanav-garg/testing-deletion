@@ -1078,6 +1078,11 @@ namespace AutosarBCM
             var f = new Form() { MdiParent = this };
             f.Show();
         }
+        private void tsmiTransmit_Click(object sender, EventArgs e)
+        {
+            var f = new FormTransmit();
+            f.Show();
+        }
 
         /// <summary>
         /// Displays file selection form and opens selected file.
