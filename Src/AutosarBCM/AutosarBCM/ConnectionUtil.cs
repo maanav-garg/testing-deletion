@@ -189,9 +189,11 @@ namespace AutosarBCM
             {
                 if (e.Data[1] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL)
                 {
+                    Helper.ShowWarningMessageBox("Session failed to activate, try again.");
+
                     FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                     if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                        formInput.DisabledAllSession();
+                        formInput.SessionControlManagement(false);
                 }
 
                 AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);

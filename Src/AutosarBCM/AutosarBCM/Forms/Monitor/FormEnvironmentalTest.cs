@@ -157,6 +157,7 @@ namespace AutosarBCM.Forms.Monitor
         private void btnStart_Click(object sender, EventArgs e)
         {
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
+
             if (mainForm.tsbSession.Text != "Session: Extended Diagnostic Session")
             {
                 Helper.ShowWarningMessageBox("Must be in Extended Diagnostic Session.");
@@ -190,7 +191,7 @@ namespace AutosarBCM.Forms.Monitor
                 StartTest(cancellationTokenSource.Token);
                 ResetTime();
                 if (mainForm.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                    formInput.DisabledAllSession();
+                    formInput.SessionControlManagement(false);
             }
             SetStartBtnVisual();
         }
@@ -207,6 +208,9 @@ namespace AutosarBCM.Forms.Monitor
                 }
                 else
                 {
+                    FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
+                    if (mainForm.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                        formInput.SessionControlManagement(true);
                     btnStart.Enabled = true;
                     isActive = false;
                     btnStart.Text = "Start";
@@ -526,7 +530,7 @@ namespace AutosarBCM.Forms.Monitor
             pnlMonitor.Refresh();
         }
 
-        public void DisabledAllSession()
+        public void SessionControlManagement(bool isActive)
         {
             throw new NotImplementedException();
         }
