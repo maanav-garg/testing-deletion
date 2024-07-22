@@ -368,7 +368,8 @@ namespace AutosarBCM
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest?.SetCounter(reboots + 1, cycleIndex + 1);
 
-            
+            if (cycleIndex == startCycleIndex - 1 && reboots == 0)
+                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
 
             if (cycleDict.TryGetValue(cycleIndex + 1, out Cycle cycle))
             {
@@ -377,8 +378,7 @@ namespace AutosarBCM
                 StartCycle(cycle, dictMapping);
             }
 
-            if (cycleIndex == startCycleIndex - 1 && reboots == 0)
-                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
+            
             //Console.WriteLine(Constants.StartProcessCompleted);
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
