@@ -1,21 +1,12 @@
-﻿using AutosarBCM.Core.Config;
-using AutosarBCM.Core;
+﻿using AutosarBCM.Core;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Configuration;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Windows.Forms;
-
 namespace AutosarBCM.Forms.Monitor
 {
     public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver, IDTCReceiver, IReadDataByIdenReceiver
@@ -155,11 +146,7 @@ namespace AutosarBCM.Forms.Monitor
         private void btnStart_Click(object sender, EventArgs e)
         {
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
-            if (mainForm.tsbSession.Text != "Session: Extended Diagnostic Session")
-            {
-                Helper.ShowWarningMessageBox("Must be in Extended Diagnostic Session.");
-                return;
-            }
+
             if (FormMain.IsTestRunning)
             {
                 if(!Helper.ShowConfirmationMessageBox("There is an ongoing test. Do you want to proceed"))
@@ -175,11 +162,14 @@ namespace AutosarBCM.Forms.Monitor
                 Task.Run(async () =>
                 {
                     Helper.SendExtendedDiagSession();
+                    mainForm.UpdateSessionLabel();
 
                     await Task.Delay(1000);
                 });
                 StartTest(cancellationTokenSource.Token);
                 ResetTime();
+                if (mainForm.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                    formInput.DisabledAllSession();
             }
             SetStartBtnVisual();
         }

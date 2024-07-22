@@ -989,6 +989,14 @@ namespace AutosarBCM
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
+
+            if (ASContext.CurrentSession == null)
+            {
+                Helper.ShowWarningMessageBox("A session must be active.");
+                return;
+            }
+               
+
             var cInf = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == "Vestel_Internal_Software_Version");
             if (cInf == null)
                 return;
@@ -1316,6 +1324,14 @@ namespace AutosarBCM
                 else
                     formEMCView.BringToFront();
             }
+        }
+        internal void UpdateSessionLabel()
+        {
+
+            if (tsbSession.GetCurrentParent().InvokeRequired)
+                tsbSession.GetCurrentParent().Invoke(new Action(() => tsbSession.Text = $"Session: {ASContext.CurrentSession.Name}"));
+            else tsbSession.Text = $"Session: {ASContext.CurrentSession.Name}";
+
         }
     }
 }
