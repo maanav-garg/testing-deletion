@@ -28,6 +28,8 @@ namespace AutosarBCM
     {
         #region Variables
 
+        internal static bool isSwVerClicked = false;
+
         /// <summary>
         /// Helper for loading/saving/displaying recent tool files.
         /// </summary>
@@ -318,7 +320,8 @@ namespace AutosarBCM
         /// <param name="array">Hex data array containing the version</param>
         internal void SetEmbeddedSoftwareVersion(byte[] array)
         {
-            lblEmbSwVer.Text = string.Join(".", array.Select(b => Convert.ToInt32(b).ToString()));
+            if (isSwVerClicked)
+                lblEmbSwVer.Text = string.Join(".", array.Select(b => Convert.ToInt32(b).ToString()));
         }
 
         /// <summary>
@@ -987,6 +990,7 @@ namespace AutosarBCM
         /// <param name="e">Params</param>
         private void btnShowEmbSwVer_Click(object sender, EventArgs e)
         {
+            isSwVerClicked = true;
             if (!ConnectionUtil.CheckConnection())
                 return;
             var cInf = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == "Vestel_Internal_Software_Version");

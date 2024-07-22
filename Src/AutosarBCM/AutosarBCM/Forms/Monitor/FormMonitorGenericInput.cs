@@ -22,6 +22,7 @@ namespace AutosarBCM.Forms.Monitor
     public partial class FormMonitorGenericInput : DockContent, IPeriodicTest, IReadDataByIdenReceiver
     {
         #region Variables
+
         /// <summary>
         /// Configuration settings for the monitor.
         /// </summary>
@@ -437,6 +438,8 @@ namespace AutosarBCM.Forms.Monitor
                 foreach (var ucItem in uCItems)
                     if (ucItem.ControlInfo.Address == service.ControlInfo.Address)
                     {
+                        if (service.ControlInfo.Name == "Vestel_Internal_Software_Version" && FormMain.isSwVerClicked)
+                            break;
                         ucItem.ChangeStatus(service);
                         return true;
                     }
@@ -451,7 +454,7 @@ namespace AutosarBCM.Forms.Monitor
         public bool Sent(ushort address)
         {
             foreach (var ucItem in uCItems)
-                if (ucItem.ControlInfo.Address == address)
+                if (ucItem.ControlInfo.Address == address && !FormMain.isSwVerClicked)
                 {
                     ucItem.HandleMetrics();
                     return true;

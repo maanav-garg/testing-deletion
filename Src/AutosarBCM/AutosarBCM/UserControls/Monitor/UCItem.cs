@@ -249,7 +249,6 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 lbResponse.Items.Clear();
                 lbResponse.Items.AddRange(service.Payloads.ToArray());
-
             });
 
         }
@@ -312,7 +311,8 @@ namespace AutosarBCM.UserControls.Monitor
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
-
+            if (ControlInfo.Name == "Vestel_Internal_Software_Version" && FormMain.isSwVerClicked)
+                FormMain.isSwVerClicked = false;
             ControlInfo.Transmit(ServiceInfo.ReadDataByIdentifier);
         }
 
