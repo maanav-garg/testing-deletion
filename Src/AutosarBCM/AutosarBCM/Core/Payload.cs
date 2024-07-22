@@ -39,6 +39,7 @@ namespace AutosarBCM.Core.Config
         }
     }
 
+    public class MDX_Payload : Payload { }
     public class DID_Byte_Enable_Disable : Payload { }
     public class DID_Byte_Activate_Inactivate : Payload { }
     public class DID_Bytes_High_Low : Payload { }

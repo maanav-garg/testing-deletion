@@ -390,9 +390,9 @@ namespace AutosarBCM
 
                 if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
                 {
-                    genericInput.ClearPreviousConfiguration();
+                    //genericInput.ClearPreviousConfiguration();
                     genericInput.LoadConfiguration(ASContext.Configuration);
-                    formDTCPanel.LoadConfiguration();
+                    //formDTCPanel.LoadConfiguration();
                     if (tsbSession.Text != "Session: N/A")
                     {
                         genericInput.SessionFiltering();

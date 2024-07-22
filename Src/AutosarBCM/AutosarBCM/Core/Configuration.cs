@@ -7,6 +7,7 @@ using AutosarBCM.UserControls.Monitor;
 using System.Threading.Tasks;
 using AutosarBCM.Core.Config;
 using AutosarBCM.Properties;
+using System.Diagnostics;
 
 namespace AutosarBCM.Core
 {
@@ -140,14 +141,14 @@ namespace AutosarBCM.Core
                 payloads.Add(InitializeType(pInfo, value));
                 responseIndex += pDef?.Length ?? 0;
 
-                if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+                if (pInfo.Bits?.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
             }
             return payloads.ToList();
         }
 
         private static Payload InitializeType(PayloadInfo payloadInfo, byte[] value, int? index = null)
         {
-            return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.{payloadInfo.TypeName}"))).Parse(payloadInfo, value, index);
+            return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.MDX_Payload"))).Parse(payloadInfo, value, index);
         }
     }
 
@@ -215,9 +216,169 @@ namespace AutosarBCM.Core
                 {
                     ID = Convert.ToByte(s.Element("NUMBER").Value, 16),
                     Name = s.Element("NAME").Value,
-                    //AvailableServices = s.Element("AvailableServices").Value != "" ? s.Element("AvailableServices").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+                    //AvailableServices = { 0x22 },
                 })
                 .ToList();
+
+            var services = doc.Descendants("PROTOCOL").Descendants("APPLICATION_LAYER").Descendants("SERVICES_SUPPORTED").Descendants("SERVICE")
+                .Select(s => new ServiceInfo
+                {
+                    RequestID = s.Element("NUMBER") != null ? Convert.ToByte(s.Element("NUMBER").Value, 16) : (byte)0,
+                    ResponseID = s.Element("NUMBER") != null ? (byte)(Convert.ToByte(s.Element("NUMBER").Value, 16) + 0x40) : (byte)0,
+                    Name = s.Element("NAME").Value,
+                    //ResponseIndex = s.Element("ResponseIndex") != null ? int.Parse(s.Element("ResponseIndex").Value) : 0,
+                    Sessions = s.Attribute("SESSION_REFS") != null
+                                  ? s.Attribute("SESSION_REFS").Value
+                                        .Split(' ')
+                                        .Select(refValue => byte.Parse(refValue.Substring(refValue.LastIndexOf('_') + 1)))
+                                        .ToList()
+                                  : new List<byte>()
+                })
+                .ToList();
+
+            var payloads = new List<PayloadInfo> { };
+            var counter = 0;
+            
+
+            var controls = doc.Descendants("ECU_DATA").Descendants("DATA_IDENTIFIERS").Descendants("DID")
+                .Select(c => new ControlInfo
+                {
+                    Address = Convert.ToUInt16(c.Element("NUMBER").Value, 16),
+                    Name = c.Element("NAME").Value,
+                    //Type = c.Element("Type").Value,
+                    Group = "DID",
+
+                    Services = c.Descendants("ACCESS_PARAMETERS")
+                                .Descendants()
+                                .Where(x => x.Attribute("SERVICE_REFS") != null)
+                                .SelectMany(x => x.Attribute("SERVICE_REFS").Value.Split(' ')
+                                                .Select(refValue => byte.Parse(refValue.Substring(refValue.Length - 2), System.Globalization.NumberStyles.HexNumber)))
+                                .ToList(),
+
+                    Responses = new List<ResponseInfo>
+                    {
+                        new ResponseInfo
+                        {
+                              Payloads = c.Elements("SUB_FIELD")?.Select(x =>
+                                {
+                                    
+                                    var descriptionValue = x.Element("DESCRIPTION")?.Value;
+                                    string[] parts = descriptionValue?.Split(new[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                                    var descriptionPart = parts != null && parts.Length > 1 ? parts[1].Trim() : null;
+
+                                    var dtcCode = doc.Descendants("ECU_DATA")
+                                                     .Descendants("DIAGNOSTIC_TROUBLE_CODES")
+                                                     .Descendants("DTC")
+                                                     .Where(dtc => dtc.Element("DESCRIPTION")?.Value == descriptionPart)
+                                                     .Select(dtc => dtc.Element("NUMBER")?.Value)
+                                                     .FirstOrDefault();
+
+                                    var dataType = x.Element("DATA_DEFINITION").Element("DATA_TYPE").Value;
+                                    List<PayloadValue> values;
+
+                                    if (dataType == "enumerated")
+                                    {
+                                        values = x.Element("DATA_DEFINITION").Element("ENUMERATED_PARAMETERS").Elements("ENUM_MEMBER").Select(z => new PayloadValue
+                                        {
+                                            ValueString = z.Element("ENUM_VALUE").Value,
+                                            FormattedValue = z.Element("DESCRIPTION").Value,
+                                        }).ToList();
+                                    }
+                                    else if (dataType == "bytes")
+                                    {
+                                        values = new List<PayloadValue>
+                                        {
+                                            new PayloadValue
+                                            {
+                                                ValueString = "0",
+                                                FormattedValue = "bytes"
+                                            }
+                                        };
+                                    }
+                                    else if (dataType == "unsigned")
+                                    {
+                                        values = new List<PayloadValue>
+                                        {
+                                            new PayloadValue
+                                            {
+                                                ValueString = "0",
+                                                FormattedValue = "unsigned"
+                                            }
+                                        };
+                                    }
+                                    else
+                                    {
+                                        values = new List<PayloadValue>();
+                                    }
+
+                                    string existingTypeName = null;
+
+                                    bool valueExists = payloads.Any(p => p.Values.Select(v => v.ValueString).SequenceEqual(values.Select(v => v.ValueString)));
+                                    if (!valueExists)
+                                    {
+                                        counter += 1;
+                                        payloads.Add(new PayloadInfo
+                                        {
+                                            Length = 1,
+                                            TypeName = "TypeName" + counter,
+                                            Values = values
+                                        });
+                                    }
+                                    else
+                                    {
+                                        existingTypeName = payloads.First(p => p.Values.Select(v => v.ValueString).SequenceEqual(values.Select(v => v.ValueString))).TypeName;
+                                    }
+
+
+                                    return new PayloadInfo
+                                    {
+                                        Name = descriptionValue,
+                                        DTCCode = dtcCode,
+                                        TypeName = existingTypeName ?? "TypeName" + counter
+                                    };
+
+
+                                }).ToList() ?? new List<PayloadInfo>()
+                        }
+                    }
+
+                }).ToList();
+
+            /*
+
+            var payloads = doc.Descendants("Payloads").Descendants("Payload")
+                .Select(s => new PayloadInfo
+                {
+                    Length = int.Parse(s.Attribute("length").Value),
+                    TypeName = s.Attribute("typeName").Value,
+                    Values = s.Elements("Value")
+                        .Select(x => new PayloadValue
+                        {
+                            ValueString = x.Attribute("value").Value,
+                            Color = x.Attribute("color")?.Value ?? null,
+                            FormattedValue = x.Value,
+                            IsClose = x.Attribute("isClose")?.Value == "true",
+                            IsOpen = x.Attribute("isOpen")?.Value == "true",
+                        }).ToList(),
+                })
+                .ToList();
+
+            */
+
+            Console.WriteLine(payloads);
+
+
+
+
+            var dtcFailureTypes = doc.Descendants("ECU_DATA").Descendants("DIAGNOSTIC_TROUBLE_CODES").Descendants("DTC_FAILURE_TYPES_SUPPORTED").Descendants("DTC_FAILURE_TYPE")
+                .Select(t => new DTCFailure
+                {
+                    Value = Convert.ToByte(t.Element("NUMBER").Value, 16),
+                    Description = t.Element("DESCRIPTION")?.Value,
+                })
+                .ToList();
+
+            Console.WriteLine("");
 
             /*
 
@@ -365,6 +526,10 @@ namespace AutosarBCM.Core
             return new ConfigurationInfo
             {
                 Sessions = sessions,
+                Services = services,
+                Controls = controls,
+                Payloads = payloads,
+                DTCFailureTypes = dtcFailureTypes
             };
             /*
             return new ConfigurationInfo
@@ -396,7 +561,7 @@ namespace AutosarBCM.Core
 
         internal PayloadInfo GetPayloadInfoByType(string typeName)
         {
-            return Payloads.FirstOrDefault(x => x.TypeName == typeName);
+            return Payloads?.FirstOrDefault(x => x.TypeName == typeName);
         }
     }
 
