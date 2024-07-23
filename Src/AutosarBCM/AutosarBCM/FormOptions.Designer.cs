@@ -473,7 +473,7 @@ namespace AutosarBCM
             this.tabPageProp2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageProp2.Name = "tabPageProp2";
             this.tabPageProp2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageProp2.Size = new System.Drawing.Size(613, 394);
+            this.tabPageProp2.Size = new System.Drawing.Size(613, 400);
             this.tabPageProp2.TabIndex = 1;
             this.tabPageProp2.Text = "General";
             this.tabPageProp2.UseVisualStyleBackColor = true;
@@ -645,7 +645,7 @@ namespace AutosarBCM
             this.tabSerialPort.Margin = new System.Windows.Forms.Padding(4);
             this.tabSerialPort.Name = "tabSerialPort";
             this.tabSerialPort.Padding = new System.Windows.Forms.Padding(4);
-            this.tabSerialPort.Size = new System.Drawing.Size(613, 394);
+            this.tabSerialPort.Size = new System.Drawing.Size(613, 400);
             this.tabSerialPort.TabIndex = 2;
             this.tabSerialPort.Text = "Serial Port";
             this.tabSerialPort.UseVisualStyleBackColor = true;
@@ -851,7 +851,7 @@ namespace AutosarBCM
             this.tabCanHardware.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabCanHardware.Name = "tabCanHardware";
             this.tabCanHardware.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabCanHardware.Size = new System.Drawing.Size(613, 394);
+            this.tabCanHardware.Size = new System.Drawing.Size(613, 400);
             this.tabCanHardware.TabIndex = 3;
             this.tabCanHardware.Text = "Can Hardware";
             this.tabCanHardware.UseVisualStyleBackColor = true;
@@ -1022,7 +1022,7 @@ namespace AutosarBCM
             this.tabFilterPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabFilterPage.Name = "tabFilterPage";
             this.tabFilterPage.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabFilterPage.Size = new System.Drawing.Size(613, 394);
+            this.tabFilterPage.Size = new System.Drawing.Size(613, 400);
             this.tabFilterPage.TabIndex = 4;
             this.tabFilterPage.Text = "TX/RX Filter";
             this.tabFilterPage.UseVisualStyleBackColor = true;
@@ -1083,7 +1083,7 @@ namespace AutosarBCM
             // 
             this.tabEMCDataLimitation.Location = new System.Drawing.Point(4, 25);
             this.tabEMCDataLimitation.Name = "tabEMCDataLimitation";
-            this.tabEMCDataLimitation.Size = new System.Drawing.Size(613, 394);
+            this.tabEMCDataLimitation.Size = new System.Drawing.Size(613, 400);
             this.tabEMCDataLimitation.TabIndex = 5;
             // 
             // lblEMCDataLimit

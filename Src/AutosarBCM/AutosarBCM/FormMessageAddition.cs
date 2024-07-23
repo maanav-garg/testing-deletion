@@ -32,7 +32,6 @@ namespace AutosarBCM
         public FormMessageAddition(CanMessage message)
         {
             InitializeComponent();
-
             for (int i = 4; i<68; i++)
             {
                 Label label = new Label();
@@ -67,7 +66,6 @@ namespace AutosarBCM
 
             CurrentMessage = message;
             GetData(message);
-
             txtArbID.KeyPress += TextBoxKeyPress;
             KeyDown += new KeyEventHandler(PopupForm_KeyDown);
             KeyPreview = true;

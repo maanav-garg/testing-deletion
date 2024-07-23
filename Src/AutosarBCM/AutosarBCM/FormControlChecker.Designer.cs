@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormControlChecker));
             this.btnStart = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.txtFilter = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnImport = new System.Windows.Forms.Button();
@@ -402,6 +403,8 @@
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.dgvOutput);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.CancelButton = this.buttonCancel;
             this.MinimumSize = new System.Drawing.Size(1000, 450);
             this.Name = "FormControlChecker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -424,6 +427,7 @@
         #endregion
 
         private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.TextBox txtFilter;
         private System.Windows.Forms.Label label1;

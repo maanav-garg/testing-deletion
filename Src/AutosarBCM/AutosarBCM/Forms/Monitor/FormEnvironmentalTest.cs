@@ -497,6 +497,16 @@ namespace AutosarBCM.Forms.Monitor
             lblHour.Text = String.Format("{0:00}", timeHour);
         }
 
+        /// <summary>
+        /// An event handler to the btnCancel's Click event.
+        /// </summary>
+        /// <param name="sender">A reference to the btnCancel instance.</param>
+        /// <param name="e">A reference to the Click event's arguments.</param>
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+
         private void tspFilterTxb_TextChanged(object sender, EventArgs e)
         {
             FilterUCItems(tspFilterTxb.Text);

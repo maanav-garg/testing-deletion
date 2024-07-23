@@ -38,6 +38,7 @@
             this.txtFilter = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.lblElapsedTime = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
@@ -179,6 +180,8 @@
             this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Name = "FormEMCView";
             this.ShowIcon = false;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.CancelButton = this.buttonCancel;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EMC Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormEMCView_FormClosing);
@@ -195,6 +198,7 @@
         private System.Windows.Forms.TextBox txtFilter;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblElapsedTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;

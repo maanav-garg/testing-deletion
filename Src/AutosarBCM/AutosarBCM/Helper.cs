@@ -1063,9 +1063,11 @@ namespace AutosarBCM
         /// <summary>
         /// Initializes the CsvHelper class, setting up file dialog properties.
         /// </summary>
-        public static void PrepareCsvHelper()
+        public static void PrepareCsvSaveHelper()
         {
-            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string currentDirectory = Directory.GetCurrentDirectory();
+            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = currentDirectory;
             saveFileDialog.Filter = openFileDialog.Filter = "CSV File| *.csv";
             openFileDialog.Multiselect = false;
             openFileDialog.Title = "Please select a CSV file.";
@@ -1074,13 +1076,15 @@ namespace AutosarBCM
             saveFileDialog.Title = "Save a Csv template.";
         }
 
+
         /// <summary>
         /// Imports a CSV file and parses it based on the specified protocol.
         /// </summary>
         /// <param name="protocol">The communication protocol to use for parsing.</param>
         /// <returns>A list of parsed messages or null if the operation fails.</returns>
-        public static object ImportCsvFİle(TransmitProtocol protocol)
+        public static object ImportCsvFile(TransmitProtocol protocol)
         {
+            //PrepareCsvSaveHelper();
             try
             {
                 using (openFileDialog)
@@ -1126,6 +1130,7 @@ namespace AutosarBCM
         /// <param name="protocol">The communication protocol for the CSV template.</param>
         public static void DownloadCsvFile(TransmitProtocol protocol, BindingList<CanMessage> bindingList)
         {
+            //PrepareCsvSaveHelper();
             using (saveFileDialog)
             {
                 saveFileDialog.Filter = "CSV files (*.csv)|*.csv";

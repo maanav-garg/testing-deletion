@@ -32,6 +32,8 @@
             this.txtTrace = new System.Windows.Forms.RichTextBox();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.tsbClearLog = new System.Windows.Forms.ToolStripButton();
+            this.buttonCancel = new System.Windows.Forms.Button();
+
             this.toolStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,8 +77,11 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.txtTrace);
             this.Controls.Add(this.toolStrip2);
+            this.Controls.Add(this.buttonCancel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormTracePopup";
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.CancelButton = this.buttonCancel;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Trace";
             this.toolStrip2.ResumeLayout(false);
@@ -89,6 +94,8 @@
         #endregion
 
         internal System.Windows.Forms.RichTextBox txtTrace;
+        internal System.Windows.Forms.Button buttonCancel;
+
         private System.Windows.Forms.ToolStrip toolStrip2;
         private System.Windows.Forms.ToolStripButton tsbClearLog;
     }

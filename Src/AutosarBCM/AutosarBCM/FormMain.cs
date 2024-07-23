@@ -373,6 +373,44 @@ namespace AutosarBCM
 
             errorLogMessageTimer.Start();
         }
+
+        private void LoadODXDoc()
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Odx|*.odx";
+            openFileDialog.Multiselect = false;
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var filePath = openFileDialog.FileName;
+                ParseMessages(filePath);
+                ASContext = new ASContext(filePath);
+                LoadSessions();
+
+                if (ASContext.Configuration == null)
+                    return;
+                else
+                    tspFilterTxb.Enabled = true;
+                if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
+                {
+                    genericInput.ClearPreviousConfiguration();
+                    genericInput.LoadConfiguration(ASContext.Configuration);
+                    formDTCPanel.LoadConfiguration();
+                    if (tsbSession.Text != "Session: N/A")
+                    {
+                        genericInput.SessionFiltering();
+                    }
+                    //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                }
+                else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
+                {
+                    envInput.LoadConfiguration(Configuration);
+                    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                }
+            }
+
+        }
+
         private void LoadXMLDoc()
         {
             var openFileDialog = new OpenFileDialog();
@@ -857,7 +895,8 @@ namespace AutosarBCM
         /// <param name="e">The event arguments.</param>
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
-            LoadXMLDoc();
+            //LoadXMLDoc();
+            LoadODXDoc();
         }
 
         /// <summary>
@@ -1116,8 +1155,9 @@ namespace AutosarBCM
             LoadXMLDoc();
         }
 
+
         /// <summary>
-        /// Parse XML File to DataGridView
+        /// Parse XML, ODX File to DataGridView
         /// </summary>
         /// <param string="filePath"></param>
         internal void ParseMessages(string filePath)

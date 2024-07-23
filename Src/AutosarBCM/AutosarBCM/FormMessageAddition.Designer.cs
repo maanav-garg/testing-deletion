@@ -86,7 +86,7 @@ namespace AutosarBCM
             this.txtArbID.Name = "txtArbID";
             this.txtArbID.Size = new System.Drawing.Size(97, 22);
             this.txtArbID.TabIndex = 69;
-            this.txtArbID.Text = "101";
+            this.txtArbID.Text = "726";
             // 
             // lblArbID
             // 
@@ -169,7 +169,7 @@ namespace AutosarBCM
             0});
             this.numMessageLength.Name = "numMessageLength";
             this.numMessageLength.Size = new System.Drawing.Size(48, 22);
-            this.numMessageLength.TabIndex = 79;
+            this.numMessageLength.TabIndex = 70;
             this.numMessageLength.Value = new decimal(new int[] {
             8,
             0,
@@ -188,7 +188,7 @@ namespace AutosarBCM
             0});
             this.numDelayTime.Name = "numDelayTime";
             this.numDelayTime.Size = new System.Drawing.Size(100, 22);
-            this.numDelayTime.TabIndex = 101;
+            this.numDelayTime.TabIndex = 102;
             // 
             // numCycleCount
             // 
@@ -201,7 +201,7 @@ namespace AutosarBCM
             0});
             this.numCycleCount.Name = "numCycleCount";
             this.numCycleCount.Size = new System.Drawing.Size(100, 22);
-            this.numCycleCount.TabIndex = 100;
+            this.numCycleCount.TabIndex = 101;
             // 
             // numCycleTime
             // 
@@ -214,7 +214,7 @@ namespace AutosarBCM
             0});
             this.numCycleTime.Name = "numCycleTime";
             this.numCycleTime.Size = new System.Drawing.Size(100, 22);
-            this.numCycleTime.TabIndex = 99;
+            this.numCycleTime.TabIndex = 100;
             // 
             // lblCycleCount
             // 
@@ -246,7 +246,7 @@ namespace AutosarBCM
             this.cbTrigger.Margin = new System.Windows.Forms.Padding(4);
             this.cbTrigger.Name = "cbTrigger";
             this.cbTrigger.Size = new System.Drawing.Size(83, 24);
-            this.cbTrigger.TabIndex = 80;
+            this.cbTrigger.TabIndex = 81;
             this.cbTrigger.Text = "Manual";
             this.cbTrigger.SelectedIndexChanged += new System.EventHandler(this.cbTrigger_SelectedIndexChanged);
             // 
@@ -257,7 +257,7 @@ namespace AutosarBCM
             this.triggerLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.triggerLabel.Name = "triggerLabel";
             this.triggerLabel.Size = new System.Drawing.Size(51, 16);
-            this.triggerLabel.TabIndex = 81;
+            this.triggerLabel.TabIndex = 82;
             this.triggerLabel.Text = "Trigger";
             // 
             // txtComment
@@ -275,7 +275,7 @@ namespace AutosarBCM
             this.lblComment.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblComment.Name = "lblComment";
             this.lblComment.Size = new System.Drawing.Size(64, 16);
-            this.lblComment.TabIndex = 85;
+            this.lblComment.TabIndex = 86;
             this.lblComment.Text = "Comment";
             // 
             // lblCycleTime

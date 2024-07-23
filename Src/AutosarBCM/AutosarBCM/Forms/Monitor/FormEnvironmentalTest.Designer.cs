@@ -33,6 +33,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnStart = new System.Windows.Forms.ToolStripButton();
             this.btnClear = new System.Windows.Forms.ToolStripButton();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tspFilterTxb = new System.Windows.Forms.ToolStripTextBox();
             this.tslReceived = new System.Windows.Forms.ToolStripLabel();
@@ -276,6 +277,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 761);
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.CancelButton = this.buttonCancel;
             this.Controls.Add(this.lblCol1);
             this.Controls.Add(this.lblHour);
             this.Controls.Add(this.lblCol2);
@@ -302,7 +305,7 @@
         }
 
         #endregion
-
+        private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnStart;
         private System.Windows.Forms.ToolStripButton btnClear;

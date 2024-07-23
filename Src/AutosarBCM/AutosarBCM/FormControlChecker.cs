@@ -124,6 +124,16 @@ namespace AutosarBCM
             //}
             //RefreshUI(!FormMain.ControlChecker);
         }
+
+        /// <summary>
+        /// An event handler to the btnCancel's Click event.
+        /// </summary>
+        /// <param name="sender">A reference to the btnCancel instance.</param>
+        /// <param name="e">A reference to the Click event's arguments.</param>
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
         private void LoadConfig()
         {
             if (ASContext.Configuration == null)

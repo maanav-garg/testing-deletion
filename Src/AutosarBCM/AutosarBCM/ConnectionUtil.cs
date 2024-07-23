@@ -150,7 +150,7 @@ namespace AutosarBCM
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
             // Tester present
-            if (e.Data[0] == ServiceInfo.TesterPresent.RequestID)
+            if (e.Data[0] == (byte)SIDDescription.SID_TESTER_PRESENT)
                 return;
 
             var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
@@ -164,8 +164,8 @@ namespace AutosarBCM
             }
 
             // Handle transmitted data -TX-
-            if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID
-                || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
+            if (e.Data[0] == (byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER
+                || e.Data[0] == (byte)SIDDescription.SID_INPUT_OUTPUT_CONTROL_BY_IDENTIFIER)
             {
                 foreach (var receiver in FormMain.Receivers)
                     if (receiver.Sent(BitConverter.ToUInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
@@ -182,61 +182,64 @@ namespace AutosarBCM
 
             var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
-            if (service?.ServiceInfo == ServiceInfo.TesterPresent)
-                return;
-
-            if (service?.ServiceInfo == ServiceInfo.NegativeResponse)
+            if (service.ServiceInfo != null)
             {
-                if (e.Data[1] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL)
+                if (service?.ServiceInfo == ServiceInfo.TesterPresent)
+                    return;
+
+                if (service?.ServiceInfo == ServiceInfo.NegativeResponse)
                 {
-                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                        formInput.DisabledAllSession();
+                    if (e.Data[1] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL)
+                    {
+                        FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                        if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                            formInput.DisabledAllSession();
+                    }
+
+                    AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
+                    return;
                 }
 
-                AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
-                return;
-            }
 
-
-            if (FormMain.ControlChecker)
-            {
-                AppendTrace(rxRead, time);
-                SendDataToControlChecker(service);
-                return;
-            }
-
-            if (FormMain.EMCMonitoring)
-            {
-                AppendTrace(rxRead, time);
-                Program.FormEMCView?.HandleResponse(service);
-                return;
-            }
-
-            if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
-            {
-                HandleGeneralMessages(service);
-                foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
-                    if (receiver.Receive(service)) continue;
-            }
-            else if (service?.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
-            {
-                foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
-                    if (receiver.Receive(service)) continue;
-            }
-            else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
-                    || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
-            {
-                foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
-                    if (receiver.Receive(service)) continue;
-            }
-            if (service?.ServiceInfo == ServiceInfo.DiagnosticSessionControl)
-            {
-                if (!FormMain.ControlChecker)
+                if (FormMain.ControlChecker)
                 {
-                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                        formInput.SessionFiltering();
+                    AppendTrace(rxRead, time);
+                    SendDataToControlChecker(service);
+                    return;
+                }
+
+                if (FormMain.EMCMonitoring)
+                {
+                    AppendTrace(rxRead, time);
+                    Program.FormEMCView?.HandleResponse(service);
+                    return;
+                }
+
+                if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
+                {
+                    HandleGeneralMessages(service);
+                    foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
+                        if (receiver.Receive(service)) continue;
+                }
+                else if (service?.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
+                {
+                    foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
+                        if (receiver.Receive(service)) continue;
+                }
+                else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
+                        || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
+                {
+                    foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
+                        if (receiver.Receive(service)) continue;
+                }
+                if (service?.ServiceInfo == ServiceInfo.DiagnosticSessionControl)
+                {
+                    if (!FormMain.ControlChecker)
+                    {
+                        FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                        if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                            formInput.SessionFiltering();
+                    }
                 }
             }
 
@@ -248,8 +251,8 @@ namespace AutosarBCM
 
             if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
             {
-                AppendTrace(rxRead, time);
-                AppendTraceRx(rxRead, time);
+                AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
+                //AppendTraceRx($"{rxRead} ({service.Response.NegativeResponseCode})", time);
             }
 
 

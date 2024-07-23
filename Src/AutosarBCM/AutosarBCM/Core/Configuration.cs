@@ -242,6 +242,18 @@ namespace AutosarBCM.Core
         public List<DTCFailure> DTCFailureTypes { get; set; }
         public EnvironmentalTest EnvironmentalTest { get; set; }
 
+
+        internal static ConfigurationInfo ParseODX(string filePath)
+        {
+
+
+
+
+
+
+            return null;
+        }
+
         internal static ConfigurationInfo Parse(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);

@@ -44,6 +44,7 @@ namespace AutosarBCM{
         public FormTransmit()
         {
             InitializeComponent();
+            this.
             dgvMessages.AutoGenerateColumns = false;
             dgvMessages.DataSource = bindingList;
             dgvMessages.DefaultCellStyle.SelectionBackColor = Color.Orange;
@@ -143,6 +144,15 @@ namespace AutosarBCM{
         }
 
 
+        /// <summary>
+        /// An event handler to the btnCancel's Click event.
+        /// </summary>
+        /// <param name="sender">A reference to the btnCancel instance.</param>
+        /// <param name="e">A reference to the Click event's arguments.</param>
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
 
         /// <summary>
         /// Opens New message window
@@ -153,6 +163,7 @@ namespace AutosarBCM{
         {
             var message = new CanMessage();
             message.Length = 8;
+            message.Id = "726";
             var f = new FormMessageAddition(message);
             if (f.ShowDialog() == DialogResult.Yes)
             {
@@ -276,7 +287,7 @@ namespace AutosarBCM{
         /// <param name="e">Provides data for the EventArgs.</param>
         private void tsbImportData_Click(object sender, EventArgs e)
         {
-            var csvList = (List<CanMessage>)CsvHelper.ImportCsvFİle(TransmitProtocol.Can);
+            var csvList = (List<CanMessage>)CsvHelper.ImportCsvFile(TransmitProtocol.Can);
 
             if (csvList != null)
                 csvList.ForEach(x => bindingList.Add(x));

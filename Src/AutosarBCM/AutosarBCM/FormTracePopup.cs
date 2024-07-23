@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace AutosarBCM
@@ -45,6 +46,16 @@ namespace AutosarBCM
         {
             txtTrace.SelectionStart = txtTrace.TextLength;
             txtTrace.ScrollToCaret();
+        }
+
+        /// <summary>
+        /// An event handler to the btnCancel's Click event.
+        /// </summary>
+        /// <param name="sender">A reference to the btnCancel instance.</param>
+        /// <param name="e">A reference to the Click event's arguments.</param>
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
         }
 
         /// <summary>

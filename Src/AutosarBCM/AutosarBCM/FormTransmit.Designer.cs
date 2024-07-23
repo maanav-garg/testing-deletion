@@ -59,6 +59,7 @@
             this.pnlMovementBtn = new System.Windows.Forms.Panel();
             this.btnUp = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMessages)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -345,17 +346,28 @@
             this.btnDown.UseVisualStyleBackColor = false;
             this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
             // 
+            // buttonCancel
+            // 
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(0, 0);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 0;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
             // FormTransmit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(1408, 359);
             this.Controls.Add(this.dgvMessages);
             this.Controls.Add(this.pnlMovementBtn);
             this.Controls.Add(this.toolStrip1);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormTransmit";
+            this.ShowIcon = false;
             this.Text = "Transmit";
             this.Load += new System.EventHandler(this.FormTransmit_Load);
             this.toolStrip1.ResumeLayout(false);
@@ -370,6 +382,7 @@
 
         #endregion
 
+        private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.ToolStrip toolStrip1;
         public System.Windows.Forms.DataGridView dgvMessages;
         private System.Windows.Forms.ToolStripButton tsbTransmit;

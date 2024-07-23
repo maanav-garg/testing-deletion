@@ -120,7 +120,7 @@ namespace AutosarBCM
             // 
             this.optionsTsmi.Image = ((System.Drawing.Image)(resources.GetObject("optionsTsmi.Image")));
             this.optionsTsmi.Name = "optionsTsmi";
-            this.optionsTsmi.Size = new System.Drawing.Size(217, 26);
+            this.optionsTsmi.Size = new System.Drawing.Size(224, 26);
             this.optionsTsmi.Text = "Options";
             this.optionsTsmi.Click += new System.EventHandler(this.optionsTsmi_Click);
             // 
@@ -448,12 +448,12 @@ namespace AutosarBCM
             // 
             this.dockMonitor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dockMonitor.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
-            this.dockMonitor.Location = new System.Drawing.Point(0, 28);
+            this.dockMonitor.Location = new System.Drawing.Point(0, 27);
             this.dockMonitor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 4);
             this.dockMonitor.Name = "dockMonitor";
             this.dockMonitor.Padding = new System.Windows.Forms.Padding(6);
             this.dockMonitor.ShowAutoHideContentOnHover = false;
-            this.dockMonitor.Size = new System.Drawing.Size(1881, 865);
+            this.dockMonitor.Size = new System.Drawing.Size(1881, 866);
             this.dockMonitor.TabIndex = 2;
             this.dockMonitor.Theme = this.vS2015LightTheme1;
             this.dockMonitor.ActiveDocumentChanged += new System.EventHandler(this.dockMonitor_ActiveDocumentChanged);
@@ -482,7 +482,7 @@ namespace AutosarBCM
             this.tsbToggle});
             this.toolStrip3.Location = new System.Drawing.Point(0, 0);
             this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Size = new System.Drawing.Size(1881, 28);
+            this.toolStrip3.Size = new System.Drawing.Size(1881, 27);
             this.toolStrip3.TabIndex = 1;
             this.toolStrip3.Text = "toolStrip3";
             // 
@@ -642,14 +642,14 @@ namespace AutosarBCM
             // btnSetGround
             // 
             this.btnSetGround.Name = "btnSetGround";
-            this.btnSetGround.Size = new System.Drawing.Size(224, 26);
+            this.btnSetGround.Size = new System.Drawing.Size(141, 26);
             this.btnSetGround.Text = "Ground";
             this.btnSetGround.Click += new System.EventHandler(this.btnSetGround_Click);
             // 
             // btnSetBattery
             // 
             this.btnSetBattery.Name = "btnSetBattery";
-            this.btnSetBattery.Size = new System.Drawing.Size(224, 26);
+            this.btnSetBattery.Size = new System.Drawing.Size(141, 26);
             this.btnSetBattery.Text = "Battery";
             this.btnSetBattery.Click += new System.EventHandler(this.btnSetGround_Click);
             // 
