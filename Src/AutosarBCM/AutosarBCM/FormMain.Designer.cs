@@ -199,10 +199,10 @@ namespace AutosarBCM
             this.tslReceived,
             this.tslTransmitted,
             this.tslDiff});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 28);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 30);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(1889, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1889, 31);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -317,7 +317,7 @@ namespace AutosarBCM
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1889, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1889, 30);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -415,11 +415,11 @@ namespace AutosarBCM
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.ImageList = this.imageList1;
-            this.tabControl1.Location = new System.Drawing.Point(0, 55);
+            this.tabControl1.Location = new System.Drawing.Point(0, 61);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1889, 922);
+            this.tabControl1.Size = new System.Drawing.Size(1889, 916);
             this.tabControl1.TabIndex = 15;
             // 
             // tabPage3
@@ -430,7 +430,7 @@ namespace AutosarBCM
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1881, 893);
+            this.tabPage3.Size = new System.Drawing.Size(1881, 887);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Monitor";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -439,12 +439,12 @@ namespace AutosarBCM
             // 
             this.dockMonitor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dockMonitor.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
-            this.dockMonitor.Location = new System.Drawing.Point(0, 28);
+            this.dockMonitor.Location = new System.Drawing.Point(0, 31);
             this.dockMonitor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 4);
             this.dockMonitor.Name = "dockMonitor";
             this.dockMonitor.Padding = new System.Windows.Forms.Padding(6);
             this.dockMonitor.ShowAutoHideContentOnHover = false;
-            this.dockMonitor.Size = new System.Drawing.Size(1881, 865);
+            this.dockMonitor.Size = new System.Drawing.Size(1881, 856);
             this.dockMonitor.TabIndex = 2;
             this.dockMonitor.Theme = this.vS2015LightTheme1;
             this.dockMonitor.ActiveDocumentChanged += new System.EventHandler(this.dockMonitor_ActiveDocumentChanged);
@@ -473,7 +473,7 @@ namespace AutosarBCM
             this.tsbToggle});
             this.toolStrip3.Location = new System.Drawing.Point(0, 0);
             this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Size = new System.Drawing.Size(1881, 28);
+            this.toolStrip3.Size = new System.Drawing.Size(1881, 31);
             this.toolStrip3.TabIndex = 1;
             this.toolStrip3.Text = "toolStrip3";
             // 
@@ -499,9 +499,7 @@ namespace AutosarBCM
             // nullToolStripMenuItem
             // 
             this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
-
-            this.nullToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-
+            this.nullToolStripMenuItem.Size = new System.Drawing.Size(119, 26);
             this.nullToolStripMenuItem.Text = "N/A";
             // 
             // tsbECUReset
