@@ -470,7 +470,15 @@ namespace AutosarBCM
                 if (sensitivePayloads?.Count > 0)
                     Task.Delay(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
                     {
-                        function.ControlInfo.Switch(sensitivePayloads, false);
+                        var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                        if (hasDIDBitsOnOff)
+                        {
+                            function.ControlInfo.SwitchForBits(sensitivePayloads, false);
+                        }
+                        else
+                        {
+                            function.ControlInfo.Switch(sensitivePayloads, false);
+                        }
                     });
 
                 ControlInfo mappedItem = null;
