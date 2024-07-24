@@ -444,21 +444,51 @@ namespace AutosarBCM
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
-                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                if (hasDIDBitsOnOff)
+                if (function.Scenario == null)
                 {
-                    function.ControlInfo.SwitchForBits(function.Payloads, true);
+                    var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        function.ControlInfo.SwitchForBits(function.Payloads, true);
+                    }
+                    else
+                    {
+                        function.ControlInfo.Switch(function.Payloads, true);
+                    }
                 }
                 else
                 {
-                    function.ControlInfo.Switch(function.Payloads, true);
+                    var scenario = ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                    if (scenario == null)
+                        continue;
+
+                    var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
+                    var payloads = scenario.OpenPayloads.Select(a => (a, true)).Union(scenario.ClosePayloads.Select(a => (a, false))).ToDictionary(x => x.a, x => x.Item2);
+
+                    var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        controlInfo.SwitchForBits(payloads);
+                    }
+                    else
+                    {
+                        controlInfo.Switch(payloads);
+                    }
                 }
 
                 var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads.Intersect(function.Payloads).ToList();
                 if (sensitivePayloads?.Count > 0)
                     Task.Delay(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
                     {
-                        function.ControlInfo.Switch(sensitivePayloads, false);
+                        var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                        if (hasDIDBitsOnOff)
+                        {
+                            function.ControlInfo.SwitchForBits(sensitivePayloads, false);
+                        }
+                        else
+                        {
+                            function.ControlInfo.Switch(sensitivePayloads, false);
+                        }
                     });
 
                 ControlInfo mappedItem = null;
@@ -531,16 +561,40 @@ namespace AutosarBCM
 
             foreach (var function in cycle.CloseItems)
             {
-                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                if (hasDIDBitsOnOff)
+                if (function.Scenario == null)
                 {
-                    function.ControlInfo.SwitchForBits(function.Payloads, false);
+                    var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
+                    if (nonSensitivePayloads?.Count == 0)
+                        continue;
+
+                    var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        function.ControlInfo.SwitchForBits(nonSensitivePayloads, false);
+                    }
+                    else
+                    {
+                        function.ControlInfo.Switch(nonSensitivePayloads, false);
+                    }
                 }
                 else
                 {
-                    var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
-                    if (nonSensitivePayloads?.Count > 0)
-                        function.ControlInfo.Switch(nonSensitivePayloads, false);
+                    var scenario = ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                    if (scenario == null)
+                        continue;
+
+                    var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
+                    var payloads = scenario.OpenPayloads.Union(scenario.ClosePayloads).ToDictionary(x => x, x => false);
+
+                    var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        controlInfo.SwitchForBits(payloads);
+                    }
+                    else
+                    {
+                        controlInfo.Switch(payloads);
+                    }
                 }
 
                 ControlInfo mappedItem = null;
