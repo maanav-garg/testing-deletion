@@ -6,6 +6,8 @@ using System.Xml.Serialization;
 using AutosarBCM.UserControls.Monitor;
 using System.Threading.Tasks;
 using AutosarBCM.Core.Config;
+using System.Xml;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace AutosarBCM.Core
 {
@@ -242,6 +244,245 @@ namespace AutosarBCM.Core
         public List<DTCFailure> DTCFailureTypes { get; set; }
         public EnvironmentalTest EnvironmentalTest { get; set; }
 
+        internal static ConfigurationInfo ParseODX(string filePath)
+        {
+
+            XmlDocument odxDoc = new XmlDocument();
+            odxDoc.Load(filePath);
+            /*  XmlNodeList baseVariants = odxDoc.GetElementsByTagName("BASE-VARIANT");
+              foreach(XmlNode baseVariant in baseVariants)
+              {
+                  XmlNode baseVar_sNameNode = baseVariant.SelectSingleNode("SHORT-NAME");
+                  if (baseVar_sNameNode != null)
+                  {
+                      Console.WriteLine("SHORT-NAME: " + baseVar_sNameNode.InnerText);
+                  }
+                  XmlNode baseVar_lNameNode = baseVariant.SelectSingleNode("LONG-NAME");
+                  if (baseVar_lNameNode != null)
+                  {
+                      Console.WriteLine("LONG-NAME: " + baseVar_lNameNode.InnerText);
+                  }
+                  XmlNodeList funcVariants = baseVariant.SelectNodes("FUNCT-CLASSS");
+                  foreach (XmlNode funcVariant in funcVariants)
+                  {         
+                      XmlNodeList funVar_NodeList = funcVariant.SelectNodes("FUNCT-CLASS");
+                      foreach (XmlNode funVar_Node in funVar_NodeList)
+                      {
+                          XmlNode funVar_sNameNode = funVar_Node.SelectSingleNode("SHORT-NAME");
+                          if (funVar_sNameNode != null)
+                          {
+                              Console.WriteLine("SHORT-NAME: " + funVar_sNameNode.InnerText);
+                          }
+                          XmlNode funVar_lNameNode = funVar_Node.SelectSingleNode("LONG-NAME");
+                          if (funVar_lNameNode != null)
+                          {
+                              Console.WriteLine("LONG-NAME: " + funVar_lNameNode.InnerText);
+                          }
+
+                      }
+                  }
+                  XmlNodeList diagDataVars = baseVariant.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
+                  foreach (XmlNode diagDataVar in diagDataVars)
+                  {
+                      XmlNodeList dtcDops = diagDataVar.SelectNodes("DTC-DOPS");
+                      foreach (XmlNode dtcDop in dtcDops)
+                      {
+                          XmlNodeList dtcDopVariants = dtcDop.SelectNodes("DTC-DOP");
+                          foreach (XmlNode dtcDopVariant in dtcDopVariants)
+                          {
+                              XmlNode dtcDop_sNameNode = dtcDopVariant.SelectSingleNode("SHORT-NAME");
+                              if (dtcDop_sNameNode != null)
+                              {
+                                  Console.WriteLine("SHORT-NAME: " + dtcDop_sNameNode.InnerText);
+                              }
+
+                              XmlNode dtcDop_lNameNode = dtcDopVariant.SelectSingleNode("LONG-NAME");
+                              if (dtcDop_lNameNode != null)
+                              {
+                                  Console.WriteLine("LONG-NAME: " + dtcDop_lNameNode.InnerText);
+                              }
+
+                              XmlNode diagCodeTypeNode = dtcDopVariant.SelectSingleNode("DIAG-CODED-TYPE");
+                              if (diagCodeTypeNode != null)
+                              {
+                                  XmlAttributeCollection attributes = diagCodeTypeNode.Attributes;
+                                  Console.WriteLine("DIAG-CODED-TYPE: ");
+                                  foreach (XmlAttribute attribute in attributes)
+                                  {
+                                      Console.WriteLine($"{attribute.Name}: {attribute.Value}");
+                                  }
+
+                                  Console.WriteLine("BIT-LENGTH: " + diagCodeTypeNode.InnerText);
+                              }
+
+                              XmlNode physTypeNode = dtcDopVariant.SelectSingleNode("PHYSICAL-TYPE");
+                              if (physTypeNode != null)
+                              {
+                                  XmlAttributeCollection attributes = physTypeNode.Attributes;
+                                  Console.WriteLine("PHYSICAL-TYPE: ");
+                                  foreach (XmlAttribute attribute in attributes)
+                                  {
+                                      Console.WriteLine($"{attribute.Name}: {attribute.Value}");
+                                  }
+                              }
+
+                              XmlNode compuNode = dtcDopVariant.SelectSingleNode("COMPU-METHOD");
+                              if (compuNode != null)
+                              {
+                                  Console.WriteLine("CATEGORY: " + compuNode.InnerText);
+                              }
+                              XmlNodeList dtcsNodes = dtcDopVariant.SelectNodes("DTCS");
+                              foreach (XmlNode dtcsNode in dtcsNodes)
+                              {
+                                  XmlNodeList dtcVariants = dtcsNode.SelectNodes("DTC");
+                                  foreach (XmlNode dtcVariant in dtcVariants)
+                                  {
+                                      XmlNode sNameNode = dtcVariant.SelectSingleNode("SHORT-NAME");
+                                      if (sNameNode != null)
+                                      {
+                                          Console.WriteLine("SHORT-NAME: " + sNameNode.InnerText);
+                                      }
+                                      XmlNode tCodeNode = dtcVariant.SelectSingleNode("TROUBLE-CODE");
+                                      if (tCodeNode != null)
+                                      {
+                                          Console.WriteLine("TROUBLE-CODE: " + tCodeNode.InnerText);
+                                      }
+                                      XmlNode dispTCodeNode = dtcVariant.SelectSingleNode("DISPLAY-TROUBLE-CODE");
+                                      if (dispTCodeNode != null)
+                                      {
+                                          Console.WriteLine("DISPLAY-TROUBLE-CODE: " + dispTCodeNode.InnerText);
+                                      }
+                                      XmlNode textNode = dtcVariant.SelectSingleNode("TEXT");
+                                      if (textNode != null)
+                                      {
+                                          Console.WriteLine("TEXT: " + textNode.InnerText);
+                                      }
+                                      XmlNodeList sdgsVariants = dtcVariant.SelectNodes("SDGS");
+                                      foreach (XmlNode sdgsVariant in sdgsVariants)
+                                      {
+                                          XmlNodeList sdgVariants = sdgsVariant.SelectNodes("SDG");
+                                          foreach (XmlNode sdgVariant in sdgVariants)
+                                          {
+                                              XmlNodeList sdVariants = sdgVariant.SelectNodes("SDG-CAPTION");
+                                              foreach (XmlNode sdVariant in sdVariants)
+                                              {
+                                                  XmlNode sd_sNameNode = sdVariant.SelectSingleNode("SHORT-NAME");
+                                                  if (sd_sNameNode != null)
+                                                  {
+                                                      Console.WriteLine("SHORT-NAME: " + sd_sNameNode.InnerText);
+                                                  }
+
+                                                  XmlNode sd_lNameNode = sdVariant.SelectSingleNode("LONG-NAME");
+                                                  if (sd_lNameNode != null)
+                                                  {
+                                                      Console.WriteLine("LONG-NAME: " + sd_lNameNode.InnerText);
+                                                  }
+
+                                                  XmlNode descNode = sdVariant.SelectSingleNode("DESC");
+                                                  if (descNode != null)
+                                                  {
+                                                      Console.WriteLine("DESC: " + descNode.InnerText);
+                                                  }
+                                              }
+
+                                              XmlNode sdNode = sdgVariant.SelectSingleNode("SD");
+                                              if (sdNode != null)
+                                              {
+                                                  Console.WriteLine("SD: " + sdNode.InnerText);
+                                              }
+                                          }
+                                      }
+                                  }
+                              }
+                          }    
+
+                      }
+                  }
+
+              }*/
+
+            //data props altindakilerden baslayacak
+
+
+            /* XmlNodeList dopVariants = odxDoc.GetElementsByTagName("DATA-OBJECT-PROP");
+             foreach (XmlNode dopVariant in dopVariants)
+             {
+                 XmlAttribute dop_sNameAttribute = dopVariant.Attributes["SHORT-NAME"];
+                 if (dop_sNameAttribute != null)
+                 {
+                     Console.WriteLine("SHORT-NAME: " + dop_sNameAttribute.Value);
+                 }
+
+                 XmlAttribute dop_lNameAttribute = dopVariant.Attributes["LONG-NAME"];
+                 if (dop_lNameAttribute != null)
+                 {
+                     Console.WriteLine("LONG-NAME: " + dop_lNameAttribute.Value);
+                 }
+
+                 XmlAttribute diagCodeTypeAttribute = dopVariant.Attributes["DIAG-CODED-TYPE"];
+                 if (diagCodeTypeAttribute != null)
+                 {
+                     Console.WriteLine("DIAG-CODED-TYPE: " + diagCodeTypeAttribute.Value);
+                 }
+
+                 XmlAttribute bitLenAttribute = dopVariant.Attributes["BIT-LENGTH"];
+                 if (bitLenAttribute != null)
+                 {
+                     Console.WriteLine("BIT-LENGTH: " + bitLenAttribute.Value);
+                 }
+
+                 XmlAttribute physTypeAttribute = dopVariant.Attributes["PHYSICAL-TYPE"];
+                 if (physTypeAttribute != null)
+                 {
+                     Console.WriteLine("PHYSICAL-TYPE: " + physTypeAttribute.Value);
+                 }
+
+                 XmlAttribute categoryAttribute = dopVariant.Attributes["CATEGORY"];
+                 if (categoryAttribute != null)
+                 {
+                     Console.WriteLine("CATEGORY: " + categoryAttribute.Value);
+                 }
+             }*/
+            var didNames = new List<string>();
+            var rqList = new List<string>();
+
+            XmlNodeList ecuVariants = odxDoc.GetElementsByTagName("ECU-VARIANT");
+            foreach (XmlNode ecuVariant in ecuVariants)
+            {
+                XmlNodeList diagComms = ecuVariant.SelectNodes("DIAG-COMMS");
+                foreach (XmlNode diagComm in diagComms)
+                {
+                    XmlNodeList ecuVar_diagServices = diagComm.SelectNodes("DIAG-SERVICE");
+                    foreach (XmlNode ecuVar_diagService in ecuVar_diagServices)
+                    {
+                        XmlNode diagServ = ecuVar_diagService.SelectSingleNode("SHORT-NAME");
+                        if (diagServ != null)
+                        {
+                            string[] tempArr = diagServ.InnerText.Split('_');
+                            //string sName = tempArr.Take<string>(tempArr.Length - 1);
+                            didNames.Add(diagServ.InnerText);
+                            Console.WriteLine("SHORT-NAME: " + diagServ.InnerText);
+                        }
+                    }
+                }
+                XmlNodeList reqsVariants = ecuVariant.SelectNodes("REQUESTS");
+                foreach (XmlNode reqsVariant in reqsVariants)
+                {
+                    XmlNodeList reqVariants = reqsVariant.SelectNodes("REQUEST");
+                    foreach (XmlNode reqVariant in reqVariants)
+                    {
+                        XmlNode rqName = reqVariant.SelectSingleNode("SHORT-NAME");
+                        if (rqName != null)
+                        {
+                            rqList.Add(rqName.InnerText);
+                            Console.WriteLine("SHORT-NAME: " + rqName.InnerText);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         internal static ConfigurationInfo Parse(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
@@ -331,63 +572,63 @@ namespace AutosarBCM.Core
             #region Environmental Test
 
             var environmentalTest = doc.Descendants("EnvironmentalTest")
-                .Select(t => new EnvironmentalTest
-                {
-                    EnvironmentalConfig = t.Descendants("EnvironmentalConfig")
-                        .Select(c => new EnvironmentalConfig
-                        {
-                            CycleTime = int.Parse(c.Element("CycleTime").Value),
-                            TxInterval = int.Parse(c.Element("TxInterval").Value),
-                            StartCycleIndex = int.Parse(c.Element("StartCycleIndex").Value),
-                            EndCycleIndex = int.Parse(c.Element("EndCycleIndex").Value),
-                            PWMDutyOpenValue = byte.Parse(c.Element("PWMDutyOpenValue").Value),
-                            PWMDutyCloseValue = byte.Parse(c.Element("PWMDutyCloseValue").Value),
-                            PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
-                            PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
-                        }).First(),
-                    ConnectionMappings = t.Element("ConnectionMappings").Elements("Mapping")
-                        .Select(m => new Mapping
-                        {
-                            Input = m.Elements("Input")
-                                .Select(f => new Function
-                                {
-                                    Name = f.Value,
-                                    Control = f.Attribute("parent")?.Value ?? null,
-                                }).First(),
-                            Output = m.Elements("Output")
-                                .Select(f => new Function
-                                {
-                                    Name = f.Value,
-                                    Control = f.Attribute("parent")?.Value ?? null,
-                                }).First(),
-                        }).ToList(),
-                    ContinousReadList = t.Element("ContinousReadList").Elements("Func")
-                         .Select(f => new Function
-                         {
-                             Name = f.Value,
-                             Control = f.Attribute("parent")?.Value ?? null,
-                         }).ToList(),
-                    Cycles = t.Element("Cycles").Elements("Cycle")
-                        .Select(c => new Cycle
-                        {
-                            Name = c.Element("Name").Value,
-                            OpenAt = int.Parse(c.Element("OpenAt").Value),
-                            CloseAt = int.Parse(c.Element("CloseAt").Value),
-                            Functions = c.Element("Functions").Elements("Function")
-                                .Select(f => new Function
-                                {
-                                    Control = f.Attribute("control")?.Value,
-                                    ControlInfo = controls.FirstOrDefault(x => x.Name == f.Attribute("control")?.Value),
-                                    Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
-                                }).ToList(),
-                        }).ToList(),
-                    SensitiveControls = t.Element("SensitiveControls").Elements("Function")
-                        .Select(f => new Function
-                        {
-                            Control = f.Attribute("control")?.Value,
-                            Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
-                        }).ToList(),
-                }).First();
+            .Select(t => new EnvironmentalTest
+            {
+                EnvironmentalConfig = t.Descendants("EnvironmentalConfig")
+                    .Select(c => new EnvironmentalConfig
+                    {
+                        CycleTime = int.Parse(c.Element("CycleTime").Value),
+                        TxInterval = int.Parse(c.Element("TxInterval").Value),
+                        StartCycleIndex = int.Parse(c.Element("StartCycleIndex").Value),
+                        EndCycleIndex = int.Parse(c.Element("EndCycleIndex").Value),
+                        PWMDutyOpenValue = byte.Parse(c.Element("PWMDutyOpenValue").Value),
+                        PWMDutyCloseValue = byte.Parse(c.Element("PWMDutyCloseValue").Value),
+                        PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
+                        PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
+                    }).First(),
+                ConnectionMappings = t.Element("ConnectionMappings").Elements("Mapping")
+                    .Select(m => new Mapping
+                    {
+                        Input = m.Elements("Input")
+                            .Select(f => new Function
+                            {
+                                Name = f.Value,
+                                Control = f.Attribute("parent")?.Value ?? null,
+                            }).First(),
+                        Output = m.Elements("Output")
+                            .Select(f => new Function
+                            {
+                                Name = f.Value,
+                                Control = f.Attribute("parent")?.Value ?? null,
+                            }).First(),
+                    }).ToList(),
+                ContinousReadList = t.Element("ContinousReadList").Elements("Func")
+                     .Select(f => new Function
+                     {
+                         Name = f.Value,
+                         Control = f.Attribute("parent")?.Value ?? null,
+                     }).ToList(),
+                Cycles = t.Element("Cycles").Elements("Cycle")
+                    .Select(c => new Cycle
+                    {
+                        Name = c.Element("Name").Value,
+                        OpenAt = int.Parse(c.Element("OpenAt").Value),
+                        CloseAt = int.Parse(c.Element("CloseAt").Value),
+                        Functions = c.Element("Functions").Elements("Function")
+                            .Select(f => new Function
+                            {
+                                Control = f.Attribute("control")?.Value,
+                                ControlInfo = controls.FirstOrDefault(x => x.Name == f.Attribute("control")?.Value),
+                                Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
+                            }).ToList(),
+                    }).ToList(),
+                SensitiveControls = t.Element("SensitiveControls").Elements("Function")
+                    .Select(f => new Function
+                    {
+                        Control = f.Attribute("control")?.Value,
+                        Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
+                    }).ToList(),
+            }).First();
 
             #endregion
 
@@ -432,6 +673,7 @@ namespace AutosarBCM.Core
         public ASContext(string configFile)
         {
             if (configFile != null)
+                //Configuration = ConfigurationInfo.ParseODX(configFile);
                 Configuration = ConfigurationInfo.Parse(configFile);
         }
     }

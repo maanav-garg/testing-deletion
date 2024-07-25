@@ -855,6 +855,7 @@ namespace AutosarBCM
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
             LoadXMLDoc();
+            //LoadODXDoc();
         }
 
         /// <summary>
