@@ -182,8 +182,9 @@ namespace AutosarBCM.UserControls.Monitor
                     bitIndex++;
                 }
             }
-            bytes.Add(bits);
-            bytes.Add(controlByte);
+            //Set the values to high, control mask to low bits
+            var resultByte = (byte)((bits) & 0xFF | ((controlByte) & 0xFF) >> 4);
+            bytes.Add(resultByte);
             return bytes.ToArray();
         }
 
