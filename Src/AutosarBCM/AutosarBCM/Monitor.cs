@@ -455,6 +455,8 @@ namespace AutosarBCM
                     {
                         function.ControlInfo.Switch(function.Payloads, true);
                     }
+
+                    CloseSensitiveControls(function.ControlInfo, function.Payloads);
                 }
                 else
                 {
@@ -474,22 +476,9 @@ namespace AutosarBCM
                     {
                         controlInfo.Switch(payloads);
                     }
-                }
 
-                var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads.Intersect(function.Payloads).ToList();
-                if (sensitivePayloads?.Count > 0)
-                    Task.Delay(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
-                    {
-                        var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                        if (hasDIDBitsOnOff)
-                        {
-                            function.ControlInfo.SwitchForBits(sensitivePayloads, false);
-                        }
-                        else
-                        {
-                            function.ControlInfo.Switch(sensitivePayloads, false);
-                        }
-                    });
+                    CloseSensitiveControls(controlInfo, scenario.OpenPayloads);
+                }
 
                 ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
@@ -542,6 +531,24 @@ namespace AutosarBCM
                 mapControl.Transmit(ServiceInfo.ReadDataByIdentifier);
                 ThreadSleep(txInterval);
             }
+        }
+
+        private static void CloseSensitiveControls(ControlInfo controlInfo, List<string> payloads)
+        {
+            var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == controlInfo.Name).FirstOrDefault()?.Payloads.Intersect(payloads).ToList();
+            if (sensitivePayloads?.Count > 0)
+                Task.Delay(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
+                {
+                    var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        controlInfo.SwitchForBits(sensitivePayloads, false);
+                    }
+                    else
+                    {
+                        controlInfo.Switch(sensitivePayloads, false);
+                    }
+                });
         }
 
         /// <summary>
