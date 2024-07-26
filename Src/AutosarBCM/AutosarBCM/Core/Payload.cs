@@ -75,6 +75,10 @@ namespace AutosarBCM.Core.Config
     {
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
+    public class HexDump_3Bytes : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
 
     public class HexDump_4Bytes : Payload
     {
