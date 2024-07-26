@@ -1320,8 +1320,8 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C4.18_PowerWindowDirectionLeftHallSensor" typeName="DID_Byte_Activate_Inactivate"></Payload>
-					<Payload name="C4.34_PowerWindowDirectionRightHallSensor" typeName="DID_Byte_Activate_Inactivate"></Payload>
+					<Payload name="C4.18_PowerWindowDirectionLeftHallSensor" typeName="Decimal_1Byte"></Payload>
+					<Payload name="C4.34_PowerWindowDirectionRightHallSensor" typeName="Decimal_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1367,7 +1367,7 @@
 					<Payload name="C6.42_HornTypeSelectionSwitch" dtcCode="9324" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.2_AxleLifting1Switch" dtcCode="6100" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.47_LowLinerSwitch" dtcCode="6103" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="C6.21_RockingSwitch" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.21_SpareSwitch2" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.43_TrailerTagAxleLifting" dtcCode="6101" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C4.9_CabinTiltSwitch" dtcCode="9F0E" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.15_InteriorLampOffSwitch" dtcCode="9F3D" typeName="DID_Byte_Present_notPresent"></Payload>
@@ -2273,6 +2273,7 @@
 			<Value value="FF">Not Used</Value>
 		</Payload>
 		<Payload length="1" typeName="Unsigned_1Byte" />
+		<Payload length="1" typeName="Decimal_1Byte" />
 		<Payload length="4" typeName="DID_F166_0" />
 		<Payload length="4" typeName="Internal_Version" />
 		<Payload length="2" typeName="DID_PWM" />
