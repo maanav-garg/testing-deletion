@@ -1320,21 +1320,8 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C4.18_PowerWindowDirectionLeftHallSensor" typeName="DID_Byte_Activate_Inactivate"></Payload>
-					<Payload name="C4.34_PowerWindowDirectionRightHallSensor" typeName="DID_Byte_Activate_Inactivate"></Payload>
-				</Response>
-			</Responses>
-		</Control>
-		<Control>
-			<Address>DF43</Address>
-			<Name>Spare_Analog_Input</Name>
-			<Type></Type>
-			<Group>DID</Group>
-			<Services>22</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="C5.40_SpareAnalogInput2" typeName="HexDump_1Byte"></Payload>
-					<Payload name="C5.39_SpareAnalogInput1" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C4.18_PowerWindowDirectionLeftHallSensor" typeName="Decimal_1Byte"></Payload>
+					<Payload name="C4.34_PowerWindowDirectionRightHallSensor" typeName="Decimal_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1348,7 +1335,6 @@
 				<Response serviceId="62">
 					<Payload name="C4.5_SpareDigitalOutput2" dtcCode="9D9B" typeName="HexDump_1Byte"></Payload>
 					<Payload name="C4.48_SpareDigitalOutput3" dtcCode="9A8C" typeName="HexDump_1Byte"></Payload>
-					<Payload name="C4.8_SpareDigitalOutput4" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -1361,12 +1347,12 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C5.42_ClockSpring1LHSensor" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.43_ClockSpring1RHSensor" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.23_ClockSpring2LHSensor 1" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.22_ClockSpring2RHSensor 1" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.25_ClockSpring3LHSensor" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.26_ClockSpring3RHSensor" typeName="HexDump_3Byte"></Payload>
+					<Payload name="C5.42_ClockSpring1LHSensor" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.43_ClockSpring1RHSensor" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.23_ClockSpring2LHSensor 1" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.22_ClockSpring2RHSensor 1" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.25_ClockSpring3LHSensor" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.26_ClockSpring3RHSensor" typeName="HexDump_3Bytes"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1381,7 +1367,7 @@
 					<Payload name="C6.42_HornTypeSelectionSwitch" dtcCode="9324" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.2_AxleLifting1Switch" dtcCode="6100" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.47_LowLinerSwitch" dtcCode="6103" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="C6.21_RockingSwitch" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.21_SpareSwitch2" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.43_TrailerTagAxleLifting" dtcCode="6101" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C4.9_CabinTiltSwitch" dtcCode="9F0E" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.15_InteriorLampOffSwitch" dtcCode="9F3D" typeName="DID_Byte_Present_notPresent"></Payload>
@@ -1496,7 +1482,6 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C5.46_Spare Switch 30" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.48_Spare Switch 29" dtcCode="BA7A" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.47_Spare Switch 28" dtcCode="BA7B" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.40_Spare Switch 27" dtcCode="BA7C" typeName="DID_Byte_Present_notPresent"></Payload>
@@ -1519,7 +1504,6 @@
 					<Payload name="C5.29_Spare Switch 5" dtcCode="9F55" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.18_Spare Switch 4" dtcCode="BA88" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.17_Spare Switch 3" dtcCode="BA89" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="C6.21_Spare Switch 2" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.11_Spare Switch 1" dtcCode="9F45" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.25_Spare1 Config Switch" dtcCode="9F57" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
@@ -1823,28 +1807,27 @@
 				<Response serviceId="6E"></Response>
 			</Responses>
 		</Control>
-		<!--Important: deactivated because there was no response in the control.-->
-		<!--<Control>
-      <Address>402A</Address>
-      <Name>Vehicle_Battery_Voltage</Name>
-      <Type></Type>
-      <Group>DID</Group>
-      <Services>22</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
-        </Response>
-      </Responses>
-    </Control>-->
+		<Control>
+			<Address>402A</Address>
+			<Name>Vehicle_Battery_Voltage</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+				  <Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
+				  <Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
+				  <Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
+				  <Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
+				  <Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
+				  <Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
+				  <Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
+				  <Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
+				  <Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
+				  <Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
+				</Response>
+			</Responses>
+		</Control>
 		<Control>
 			<Address>4096</Address>
 			<Name>Remote_Key_Rolling_Counter</Name>
@@ -2037,18 +2020,6 @@
 					<Payload name="C2.1_Right Front Fog Lamps Output" dtcCode="9148" typeName="DID_41F3_0"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
-			</Responses>
-		</Control>
-		<Control>
-			<Address>4253</Address>
-			<Name>Turn_Indicator_Switch_Input</Name>
-			<Type></Type>
-			<Group>DID</Group>
-			<Services>22</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="C5.15_Turn Indicator Switch Input" dtcCode="9F3D" typeName="DID_4253_0"></Payload>
-				</Response>
 			</Responses>
 		</Control>
 		<Control>
@@ -2302,11 +2273,13 @@
 			<Value value="FF">Not Used</Value>
 		</Payload>
 		<Payload length="1" typeName="Unsigned_1Byte" />
+		<Payload length="1" typeName="Decimal_1Byte" />
 		<Payload length="4" typeName="DID_F166_0" />
 		<Payload length="4" typeName="Internal_Version" />
 		<Payload length="2" typeName="DID_PWM" />
 		<Payload length="1" typeName="HexDump_1Byte" />
 		<Payload length="2" typeName="HexDump_2Bytes" />
+		<Payload length="3" typeName="HexDump_3Bytes" />
 		<Payload length="4" typeName="HexDump_4Bytes" />
 		<Payload length="16" typeName="HexDump_16Bytes" />
 		<Payload length="16" typeName="DID_DE26" />
