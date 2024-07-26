@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace AutosarBCM
 {
@@ -105,6 +106,7 @@ namespace AutosarBCM
         /// Token for test running state
         /// </summary>
         private static CancellationToken cancellationToken;
+        private static MMTimer timer;
         #endregion
 
         #region Public Methods
@@ -256,10 +258,10 @@ namespace AutosarBCM
             var groupedSoftContinuousDiagList = Helper.GroupList(softContinuousDiagList, (endCycleIndex - startCycleIndex + 1) > softContinuousDiagList.Count ? softContinuousDiagList.Count : (endCycleIndex - startCycleIndex + 1));
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest.SetCounter(1, 1);
-            var timer = new MMTimer(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleTime, 0, MMTimer.EventType.Repeating, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
+            timer = new MMTimer(0, MMTimer.EventType.OneTime, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
-            timer.Start();
+            timer.Next(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleTime);
             while (!cancellationToken.IsCancellationRequested)
                 ThreadSleep(250);
             timer.Stop();
@@ -348,6 +350,7 @@ namespace AutosarBCM
         /// <param name="reboots">Reference to the count of reboots.</param>
         private static void TickHandler(List<List<Config.OutputMonitorItem>> softContinuousDiagList, Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, ControlInfo> dictMapping, Dictionary<ControlInfo, string> continousReadList, ref int cycleIndex, ref int reboots)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
             if (cancellationToken.IsCancellationRequested)
                 return;
 
@@ -384,7 +387,7 @@ namespace AutosarBCM
             {
                 if (cycleIndex % 4 == 0)
                 {
-                    //new ReadDTCInformationService().Transmit();
+                    new ReadDTCInformationService().Transmit();
                     foreach (var item in continousReadList.Keys)
                     {
                         ThreadSleep(txInterval);
@@ -415,6 +418,13 @@ namespace AutosarBCM
             }
             else
                 Interlocked.Increment(ref cycleIndex);
+
+            stopwatch.Stop();
+            var elapsed = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleTime - stopwatch.ElapsedMilliseconds;
+            if (elapsed < 0)
+                TickHandler(softContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots);
+            else
+                timer.Next((int)elapsed);
         }
 
         /// <summary>
@@ -434,22 +444,41 @@ namespace AutosarBCM
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
-                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                if (hasDIDBitsOnOff)
+                if (function.Scenario == null)
                 {
-                    function.ControlInfo.SwitchForBits(function.Payloads, true);
+                    var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        function.ControlInfo.SwitchForBits(function.Payloads, true);
+                    }
+                    else
+                    {
+                        function.ControlInfo.Switch(function.Payloads, true);
+                    }
+
+                    CloseSensitiveControls(function.ControlInfo, function.Payloads);
                 }
                 else
                 {
-                    function.ControlInfo.Switch(function.Payloads, true);
-                }
+                    var scenario = ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                    if (scenario == null)
+                        continue;
 
-                var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads.Intersect(function.Payloads).ToList();
-                if (sensitivePayloads?.Count > 0)
-                    Task.Delay(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
+                    var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
+                    var payloads = scenario.OpenPayloads.Select(a => (a, true)).Union(scenario.ClosePayloads.Select(a => (a, false))).ToDictionary(x => x.a, x => x.Item2);
+
+                    var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
                     {
-                        function.ControlInfo.Switch(sensitivePayloads, false);
-                    });
+                        controlInfo.SwitchForBits(payloads);
+                    }
+                    else
+                    {
+                        controlInfo.Switch(payloads);
+                    }
+
+                    CloseSensitiveControls(controlInfo, scenario.OpenPayloads);
+                }
 
                 ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
@@ -504,6 +533,24 @@ namespace AutosarBCM
             }
         }
 
+        private static void CloseSensitiveControls(ControlInfo controlInfo, List<string> payloads)
+        {
+            var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == controlInfo.Name).FirstOrDefault()?.Payloads.Intersect(payloads).ToList();
+            if (sensitivePayloads?.Count > 0)
+                Task.Delay(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
+                {
+                    var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        controlInfo.SwitchForBits(sensitivePayloads, false);
+                    }
+                    else
+                    {
+                        controlInfo.Switch(sensitivePayloads, false);
+                    }
+                });
+        }
+
         /// <summary>
         /// Stops a monitoring cycle, closing items and finishing transmissions.
         /// </summary>
@@ -521,16 +568,40 @@ namespace AutosarBCM
 
             foreach (var function in cycle.CloseItems)
             {
-                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                if (hasDIDBitsOnOff)
+                if (function.Scenario == null)
                 {
-                    function.ControlInfo.SwitchForBits(function.Payloads, false);
+                    var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
+                    if (nonSensitivePayloads?.Count == 0)
+                        continue;
+
+                    var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        function.ControlInfo.SwitchForBits(nonSensitivePayloads, false);
+                    }
+                    else
+                    {
+                        function.ControlInfo.Switch(nonSensitivePayloads, false);
+                    }
                 }
                 else
                 {
-                    var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
-                    if (nonSensitivePayloads?.Count > 0)
-                        function.ControlInfo.Switch(nonSensitivePayloads, false);
+                    var scenario = ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                    if (scenario == null)
+                        continue;
+
+                    var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
+                    var payloads = scenario.OpenPayloads.Union(scenario.ClosePayloads).ToDictionary(x => x, x => false);
+
+                    var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        controlInfo.SwitchForBits(payloads);
+                    }
+                    else
+                    {
+                        controlInfo.Switch(payloads);
+                    }
                 }
 
                 ControlInfo mappedItem = null;

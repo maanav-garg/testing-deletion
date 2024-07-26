@@ -55,6 +55,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.AutoSize = false;
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnStart,
@@ -112,7 +113,7 @@
             this.tslReceived.Margin = new System.Windows.Forms.Padding(0, 1, 10, 2);
             this.tslReceived.Name = "tslReceived";
             this.tslReceived.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.tslReceived.Size = new System.Drawing.Size(35, 24);
+            this.tslReceived.Size = new System.Drawing.Size(31, 24);
             this.tslReceived.Text = "0";
             // 
             // tslTransmitted
@@ -123,7 +124,7 @@
             this.tslTransmitted.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tslTransmitted.Margin = new System.Windows.Forms.Padding(0, 1, 5, 2);
             this.tslTransmitted.Name = "tslTransmitted";
-            this.tslTransmitted.Size = new System.Drawing.Size(35, 24);
+            this.tslTransmitted.Size = new System.Drawing.Size(31, 24);
             this.tslTransmitted.Text = "0";
             this.tslTransmitted.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
@@ -136,7 +137,7 @@
             this.tslDiff.ForeColor = System.Drawing.Color.IndianRed;
             this.tslDiff.Margin = new System.Windows.Forms.Padding(0, 1, 5, 2);
             this.tslDiff.Name = "tslDiff";
-            this.tslDiff.Size = new System.Drawing.Size(20, 24);
+            this.tslDiff.Size = new System.Drawing.Size(17, 24);
             this.tslDiff.Text = "0";
             // 
             // pnlMonitor
@@ -226,7 +227,7 @@
             this.lblCycleVal.Location = new System.Drawing.Point(668, 9);
             this.lblCycleVal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCycleVal.Name = "lblCycleVal";
-            this.lblCycleVal.Size = new System.Drawing.Size(21, 15);
+            this.lblCycleVal.Size = new System.Drawing.Size(39, 15);
             this.lblCycleVal.TabIndex = 11;
             this.lblCycleVal.Text = "00";
             // 
@@ -250,9 +251,10 @@
             // 
             // lblHour
             // 
+            this.lblHour.AutoSize = true;
             this.lblHour.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblHour.ForeColor = System.Drawing.Color.Orange;
-            this.lblHour.Location = new System.Drawing.Point(395, 9);
+            this.lblHour.Location = new System.Drawing.Point(395, 6);
             this.lblHour.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblHour.Name = "lblHour";
             this.lblHour.Size = new System.Drawing.Size(21, 15);

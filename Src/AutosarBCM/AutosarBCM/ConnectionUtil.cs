@@ -303,16 +303,23 @@ namespace AutosarBCM
 
         public static void TransmitData(uint canId, byte[] dataBytes)
         {
-            MessageBox.Show("HW Layer not used");
+            if (Thread.CurrentThread != Program.UIThread)
+                TransmitDataInternal(dataBytes,canId);
+            else
+                Task.Run(() => TransmitDataInternal(dataBytes,canId));
         }
 
-        private static void TransmitDataInternal(byte[] dataBytes)
+        private static void TransmitDataInternal( byte[] dataBytes, uint? canId = null)
         {
             FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
             lock (lockObj)
             {
                 try
                 {
+                    if (canId != null)
+                        transportProtocol.Config.PhysicalAddr.TxId = (uint)canId;
+                    else
+                        transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
                     transportProtocol.SendBytes(dataBytes);
                 }
                 catch (Exception ex)

@@ -117,16 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>326, 17</value>
-  </metadata>
-  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="toolStrip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>452, 17</value>
-  </metadata>
-  <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>132, 17</value>
-  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnMsgAdd.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAADrwAAA68AZW8ckkAAABISURBVDhPY8AGvn379h8bhkoT
+        BiDFFl0mKHg4GwCSwIaxGYANY7WNWDycDMCGsSnGhqFxgQpAEtgMgEoTBsPEAGwYKo0EGBgAMACkrMWZ
+        PQwAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="btnCancel.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vAAADrwBlbxySQAAANRJREFUOE+1U8ENwjAMzBAMwAiMwAJMAI98kfgzGx86QqbgU5CCeOSHgi/YlZNY
+        SFBx0qmNfXdtWse1SCl54kDMDVHzLOtBzSUxPM6nPG43+bJwFVFDDxpo2fYGm+N1v+uMLW/HA0JiFUKL
+        gAYE43pV2Bp1nUOCmD1eTUTPeyzUIVadt+MRMMieRQiI2KoVLXngRcD0JCvEMgvh7QJAHQJYZvA/AdqM
+        q75vQyRg9kec9xt5FoJMIQTaLNT1apAAWpRRlmn8RHOUAQ757TBpUPOL4+zcCzIffKHxkkn8AAAAAElF
+        TkSuQmCC
+</value>
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABMLAAATCwAAAAAAAAAA
+        AAD///8A////AP///wD///8A////AKSkpKCkpKT/pKSk/6SkpP+kpKT/pKSkoP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wCkpKT/zc3N/8PDw/+3t7f/s7Oz/6SkpP////8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8ApKSk/9DQ0P+6urr/q6ur/76+vv+kpKT/////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AKSkpP/Z2dn/x8fH/7q6uv/IyMj/pKSk////
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wCkpKT/4ODg/9PT0//Hx8f/09PT/6Sk
+        pP////8A////AP///wD///8A////AJaWlqCkpKT/pKSk/6SkpP+kpKT/pKSk/+Xl5f/b29v/0tLS/9ra
+        2v+kpKT/pKSk/6SkpP+kpKT/pKSk/6SkpKCWlpb/3t7e/+Hh4f/m5ub/6enp/+np6f/n5+f/39/f/9ra
+        2v/f39//2tra/9TU1P/Ly8v/wsLC/7e3t/+kpKT/lpaW/9PT0//MzMz/1dXV/93d3f/i4uL/4+Pj/+Li
+        4v/f39//2tra/9PT0//Ly8v/wMDA/7S0tP++vr7/pKSk/5aWlv/Nzc3/wsLC/8vLy//U1NT/3Nzc/+Hh
+        4f/l5eX/5eXl/+Pj4//e3t7/19fX/87Ozv/Dw8P/ysrK/6SkpP+Wlpb/ycnJ/8nJyf/Ozs7/1dXV/9zc
+        3P/h4eH/4ODg/+Tk5P/r6+v/7Ozs/+np6f/l5eX/39/f/9fX1/+kpKT/lpaWoJaWlv+Wlpb/lpaW/5aW
+        lv+Wlpb/2dnZ/9ra2v/g4OD/7e3t/6SkpP+kpKT/pKSk/6SkpP+kpKT/pKSkoP///wD///8A////AP//
+        /wD///8AlpaW/9HR0f/R0dH/2dnZ/+np6f+kpKT/////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AJaWlv/Kysr/xsbG/8/Pz//k5OT/pKSk/////wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wCWlpb/xcXF/76+vv/FxcX/3Nzc/6SkpP////8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8AlpaW/8HBwf/Hx8f/zMzM/9XV1f+jo6P/////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AJaWlqCWlpb/lpaW/5aWlv+Wlpb/lpaWoP///wD///8A////AP//
+        /wD///8A+B8AAPgfAAD4HwAA+B8AAPgfAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4HwAA+B8AAPgf
+        AAD4HwAA+B8AAA==
+</value>
+  </data>
 </root>

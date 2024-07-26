@@ -286,7 +286,7 @@ namespace AutosarBCM.Forms.Monitor
         }
         public void SessionControlManagement(bool isActive)
         {
-            foreach (Control control in pnlMonitorInput.Controls)
+           foreach (Control control in pnlMonitorInput.Controls)
             {
                 if (control is FlowLayoutPanel flowPanel)
                 {
