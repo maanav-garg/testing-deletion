@@ -287,6 +287,21 @@ namespace AutosarBCM
         }
 
         /// <summary>
+        /// Checks whether a session has been selected or not.
+        /// </summary>
+        /// <returns>true if a session is selected; otherwise, false.</returns>
+        public static bool CheckSession()
+        {
+            if (ASContext.CurrentSession == null)
+            {
+                Helper.ShowWarningMessageBox("No session selected!");
+                return false;
+            }
+            else
+                return true;
+        }
+
+        /// <summary>
         /// Transmits an array of bytes to a specific device.
         /// </summary>
         /// <param name="canId">The id of the message.</param>
