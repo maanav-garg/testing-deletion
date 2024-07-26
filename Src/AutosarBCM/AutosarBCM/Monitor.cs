@@ -292,10 +292,18 @@ namespace AutosarBCM
             }
 
             foreach (var function in functions)
+            {
+                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                if (hasDIDBitsOnOff)
+                {
+                    function.ControlInfo.SwitchForBits(function.Payloads.Distinct().ToList(), false);
+                }
+                else
                 {
                     function.ControlInfo.Switch(function.Payloads.Distinct().ToList(), false);
-                    Thread.Sleep(txInterval);
                 }
+                Thread.Sleep(txInterval);
+            }
             Console.WriteLine(Constants.ClosingOutputsFinished);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsFinished, Constants.DefaultEscapeCharacter);
             FormMain.IsTestRunning = !FormMain.IsTestRunning;

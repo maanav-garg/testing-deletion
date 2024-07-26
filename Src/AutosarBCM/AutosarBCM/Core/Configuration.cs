@@ -116,7 +116,17 @@ namespace AutosarBCM.Core
                 payloads.TryGetValue(payload.Name, out bool isOpen);
 
                 if (!payloads.ContainsKey(payload.Name))
-                    bytes.Add(0x0);
+                {
+                    if (payload.TypeName == "DID_PWM")
+                    {
+                        bytes.Add(0x0);
+                        bytes.Add(0x0);
+                    }
+                    else
+                    {
+                        bytes.Add(0x0);
+                    }
+                }
                 else //Payload match
                 {
                     controlByte |= (byte)(1 << (7 - bitIndex));
