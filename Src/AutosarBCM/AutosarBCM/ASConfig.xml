@@ -2581,10 +2581,7 @@
 			</Mapping>
 		</ConnectionMappings>
 		<SensitiveControls>
-			<Function control="TCCM_Input">
-				<Payload>KL15Relay1</Payload>
-				<Payload>KL15Relay2</Payload>
-			</Function>
+			
 		</SensitiveControls>
 		<Cycles>
 			<Cycle>
