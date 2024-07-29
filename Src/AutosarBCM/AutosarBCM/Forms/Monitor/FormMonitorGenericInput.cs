@@ -255,6 +255,9 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         public void SessionFiltering()
         {
+            if (FormMain.IsTestRunning)
+                return;
+
             foreach (Control control in pnlMonitorInput.Controls)
             {
                 if (control is FlowLayoutPanel flowPanel)
@@ -281,7 +284,7 @@ namespace AutosarBCM.Forms.Monitor
                 }
             }
         }
-        public void DisabledAllSession()
+        public void SessionControlManagement(bool isActive)
         {
            foreach (Control control in pnlMonitorInput.Controls)
             {
@@ -289,11 +292,10 @@ namespace AutosarBCM.Forms.Monitor
                 {
                     foreach (UCItem ucItem in flowPanel.Controls.OfType<UCItem>())
                     {
-
-                        ucItem.BeginInvoke(new Action(() =>
-                        {
-                            ucItem.Enabled = false;
-                        }));
+                            ucItem.Invoke((MethodInvoker)delegate ()
+                            {
+                                ucItem.Enabled = isActive;
+                            });
                     }
                 }
             }

@@ -287,7 +287,7 @@ namespace AutosarBCM.Forms.Monitor
             throw new NotImplementedException();
         }
 
-        public void DisabledAllSession()
+        public void SessionControlManagement(bool isActive)
         {
             throw new NotImplementedException();
         }

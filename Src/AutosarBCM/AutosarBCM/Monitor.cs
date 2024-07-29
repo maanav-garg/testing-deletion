@@ -43,7 +43,7 @@ namespace AutosarBCM
         /// Filter items to show by sessions
         /// </summary>
         void SessionFiltering();
-        void DisabledAllSession();
+        void SessionControlManagement(bool isActive);
     }
 
     /// <summary>
