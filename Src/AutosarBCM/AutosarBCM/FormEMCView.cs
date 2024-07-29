@@ -116,6 +116,8 @@ namespace AutosarBCM
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
+            if (!ConnectionUtil.CheckSession())
+                return;
 
             Start(!FormMain.EMCMonitoring);
         }
@@ -308,6 +310,94 @@ namespace AutosarBCM
             return false;
         }
 
+        /// <summary>
+        /// Enables the EMC function.
+        /// </summary>
+        private void activeFunctionEnable_Click(object sender, EventArgs e)
+        {
+            if (!SendEmcControl("EMC_FunctionEnable", true))
+                return;
+            inactiveFunctionEnable.Checked = !(activeFunctionEnable.Checked = true);
+            functionEnableDropDownButton.Image = Resources.pass;
+        }
+
+        /// <summary>
+        /// Disables the EMC function.
+        /// </summary>
+        private void inactiveFunctionEnable_Click(object sender, EventArgs e)
+        {
+            if (!SendEmcControl("EMC_FunctionEnable", false))
+                return;
+            inactiveFunctionEnable.Checked = !(activeFunctionEnable.Checked = false);
+            functionEnableDropDownButton.Image = Resources.reset;
+        }
+
+        /// <summary>
+        /// Enables the PEPS function control.
+        /// </summary>
+        private void activePepsFunction_Click(object sender, EventArgs e)
+        {
+            if (!SendEmcControl("EMC_PEPSFunctionControl", true))
+                return;
+            inactivePepsFunction.Checked = !(activePepsFunction.Checked = true);
+            pepsFunctionControlDropDownButton.Image = Resources.pass;
+        }
+
+        /// <summary>
+        /// Disables the PEPS function control.
+        /// </summary>
+        private void inactivePepsFunction_Click(object sender, EventArgs e)
+        {
+            if (!SendEmcControl("EMC_PEPSFunctionControl", false))
+                return;
+            inactivePepsFunction.Checked = !(activePepsFunction.Checked = false);
+            pepsFunctionControlDropDownButton.Image = Resources.reset;
+        }
+
+        /// <summary>
+        /// Enables the low battery voltage protection.
+        /// </summary>
+        private void activeLowBatteryVoltage_Click(object sender, EventArgs e)
+        {
+            if (!SendEmcControl("EMC_LowBatteryVoltageProtectionEnable", true))
+                return;
+            inactiveLowBatteryVoltage.Checked = !(activeLowBatteryVoltage.Checked = true);
+            lowBatteryProtectionDropDownButton.Image = Resources.pass;
+        }
+
+        /// <summary>
+        /// Disables the low battery voltage protection.
+        /// </summary>
+        private void inactiveLowBatteryVoltage_Click(object sender, EventArgs e)
+        {
+            if (!SendEmcControl("EMC_LowBatteryVoltageProtectionEnable", false))
+                return;
+
+            inactiveLowBatteryVoltage.Checked = !(activeLowBatteryVoltage.Checked = false);
+            lowBatteryProtectionDropDownButton.Image = Resources.reset;
+        }
+
+        /// <summary>
+        /// Sends control data to the EMC.
+        /// </summary>
+        /// <param name="controlName">The name of the control to be transmitted.</param>
+        /// <param name="isActive">A boolean value indicating whether the control should be active or not.</param>
+        private bool SendEmcControl(string controlName, bool isActive)
+        {
+            if (!ConnectionUtil.CheckConnection() || !ConnectionUtil.CheckSession())
+                return false;
+
+            var emcItem = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == controlName);
+            if (emcItem == null)
+                return false;
+            else 
+            { 
+                emcItem.Transmit(ServiceInfo.WriteDataByIdentifier, new byte[] { isActive ? (byte)1 : (byte)0 });
+                return true;
+            } 
+        }
+
+
         #endregion
 
         #region Public Methods
@@ -326,5 +416,6 @@ namespace AutosarBCM
         }
 
         #endregion
+
     }
 }
