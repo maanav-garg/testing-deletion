@@ -120,7 +120,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1030, 42);
+            this.label1.Location = new System.Drawing.Point(1030, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 5;
@@ -129,7 +129,7 @@
             // txtFilter
             // 
             this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFilter.Location = new System.Drawing.Point(1068, 39);
+            this.txtFilter.Location = new System.Drawing.Point(1068, 29);
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(250, 20);
             this.txtFilter.TabIndex = 6;
@@ -164,7 +164,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(220, 48);
+            this.label2.Location = new System.Drawing.Point(209, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 13);
             this.label2.TabIndex = 10;
@@ -173,7 +173,7 @@
             // lblElapsedTime
             // 
             this.lblElapsedTime.AutoSize = true;
-            this.lblElapsedTime.Location = new System.Drawing.Point(300, 48);
+            this.lblElapsedTime.Location = new System.Drawing.Point(289, 32);
             this.lblElapsedTime.Name = "lblElapsedTime";
             this.lblElapsedTime.Size = new System.Drawing.Size(34, 13);
             this.lblElapsedTime.TabIndex = 11;
@@ -210,7 +210,7 @@
             // 
             this.toolStripSeparator5.ForeColor = System.Drawing.SystemColors.Control;
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 27);
             this.toolStripSeparator5.Visible = false;
             // 
             // pepsFunctionControlDropDownButton
@@ -227,7 +227,7 @@
             // activePepsFunction
             // 
             this.activePepsFunction.Name = "activePepsFunction";
-            this.activePepsFunction.Size = new System.Drawing.Size(180, 22);
+            this.activePepsFunction.Size = new System.Drawing.Size(115, 22);
             this.activePepsFunction.Text = "Active";
             this.activePepsFunction.Click += new System.EventHandler(this.activePepsFunction_Click);
             // 
@@ -236,14 +236,14 @@
             this.inactivePepsFunction.Checked = true;
             this.inactivePepsFunction.CheckState = System.Windows.Forms.CheckState.Checked;
             this.inactivePepsFunction.Name = "inactivePepsFunction";
-            this.inactivePepsFunction.Size = new System.Drawing.Size(180, 22);
+            this.inactivePepsFunction.Size = new System.Drawing.Size(115, 22);
             this.inactivePepsFunction.Text = "Inactive";
             this.inactivePepsFunction.Click += new System.EventHandler(this.inactivePepsFunction_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
             this.toolStripSeparator1.Visible = false;
             // 
             // emcControlToolStrip
@@ -258,9 +258,9 @@
             this.pepsFunctionControlDropDownButton,
             this.toolStripSeparator1,
             this.lowBatteryProtectionDropDownButton});
-            this.emcControlToolStrip.Location = new System.Drawing.Point(218, 10);
+            this.emcControlToolStrip.Location = new System.Drawing.Point(338, 25);
             this.emcControlToolStrip.Name = "emcControlToolStrip";
-            this.emcControlToolStrip.Size = new System.Drawing.Size(532, 27);
+            this.emcControlToolStrip.Size = new System.Drawing.Size(489, 27);
             this.emcControlToolStrip.TabIndex = 13;
             this.emcControlToolStrip.Text = "toolStrip3";
             // 
@@ -278,7 +278,7 @@
             // activeLowBatteryVoltage
             // 
             this.activeLowBatteryVoltage.Name = "activeLowBatteryVoltage";
-            this.activeLowBatteryVoltage.Size = new System.Drawing.Size(180, 22);
+            this.activeLowBatteryVoltage.Size = new System.Drawing.Size(115, 22);
             this.activeLowBatteryVoltage.Text = "Active";
             this.activeLowBatteryVoltage.Click += new System.EventHandler(this.activeLowBatteryVoltage_Click);
             // 
@@ -287,7 +287,7 @@
             this.inactiveLowBatteryVoltage.Checked = true;
             this.inactiveLowBatteryVoltage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.inactiveLowBatteryVoltage.Name = "inactiveLowBatteryVoltage";
-            this.inactiveLowBatteryVoltage.Size = new System.Drawing.Size(180, 22);
+            this.inactiveLowBatteryVoltage.Size = new System.Drawing.Size(115, 22);
             this.inactiveLowBatteryVoltage.Text = "Inactive";
             this.inactiveLowBatteryVoltage.Click += new System.EventHandler(this.inactiveLowBatteryVoltage_Click);
             // 
