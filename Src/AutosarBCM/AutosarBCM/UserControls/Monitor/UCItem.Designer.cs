@@ -139,6 +139,7 @@
             // 
             // btnUCClear
             // 
+            this.btnUCClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUCClear.Image = global::AutosarBCM.Properties.Resources.delete_icon_12_795858790;
             this.btnUCClear.Location = new System.Drawing.Point(181, 9);
             this.btnUCClear.Name = "btnUCClear";
