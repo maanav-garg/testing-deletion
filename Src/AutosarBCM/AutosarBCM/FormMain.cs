@@ -118,7 +118,7 @@ namespace AutosarBCM
         /// <summary>
         /// An instance of the 'FormEMCView' control.
         /// </summary>
-        private FormEMCView formEMCView;
+        public FormEMCView formEMCView;
         /// <summary>
         /// An instance of the 'FormLogReader' control for displaying trace messages.
         /// </summary>
@@ -967,6 +967,7 @@ namespace AutosarBCM
                 if (tsbSession.Text != "Session: N/A")
                 {
                     genericInput.SessionFiltering();
+                    tspFilterTxb.Text = "";
                 }
                 //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
             }
@@ -1314,6 +1315,7 @@ namespace AutosarBCM
 
         private void tsmiEMCView_Click(object sender, EventArgs e)
         {
+            formEMCView = null;
             if (CheckConfigurationFile())
             {
                 if (formEMCView == null || formEMCView.IsDisposed)

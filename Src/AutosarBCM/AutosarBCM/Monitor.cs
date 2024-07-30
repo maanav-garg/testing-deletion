@@ -183,7 +183,7 @@ namespace AutosarBCM
 
                             var controlItem = controlItems.Where(x => x.Name.Equals(funcName.Control)).FirstOrDefault();
                             if (controlItem != null)
-                                continousReadList.Add(controlItem,funcName.Name);
+                                continousReadList.Add(controlItem, funcName.Name);
 
                         }
                         //continousReadList = continousReadList.Distinct;
@@ -202,7 +202,7 @@ namespace AutosarBCM
 
                         ThreadSleep(250);
 
-                        StopEnvironmentalTest(cycleDict,dictMapping);
+                        StopEnvironmentalTest(cycleDict, dictMapping);
                     }
                 }
                 finally
@@ -265,7 +265,7 @@ namespace AutosarBCM
             while (!cancellationToken.IsCancellationRequested)
                 ThreadSleep(250);
             timer.Stop();
-            
+
         }
 
         private static void StopEnvironmentalTest(Dictionary<int, Cycle> cycleDict, Dictionary<string, ControlInfo> dictMapping)
@@ -381,12 +381,12 @@ namespace AutosarBCM
 
             if (cycleDict.TryGetValue(cycleIndex + 1, out Cycle cycle))
             {
-                if(!(cycleIndex+1 == 16 &&  reboots+1 == 1))
+                if (!(cycleIndex + 1 == 16 && reboots + 1 == 1))
                     StopCycle(cycle, dictMapping);
                 StartCycle(cycle, dictMapping);
             }
 
-            
+
             //Console.WriteLine(Constants.StartProcessCompleted);
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
@@ -400,7 +400,7 @@ namespace AutosarBCM
                     {
                         ThreadSleep(txInterval);
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
-                        
+
                         Console.WriteLine($"Send Continousitem: {item.Name} inputName: {continousReadList[item]}");
                         Helper.WriteCycleMessageToLogFile(item.Name, continousReadList[item], Constants.ContinousRead);
                     }
@@ -639,7 +639,7 @@ namespace AutosarBCM
                     }
                 }
 
-                
+
                 //controlItem.Close(pwmDuty, pwmFreq);
                 ThreadSleep(txInterval);
                 //ReadDiagAdcCurrent(controlItem, txInterval);

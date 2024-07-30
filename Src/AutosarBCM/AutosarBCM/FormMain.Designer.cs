@@ -34,6 +34,7 @@ namespace AutosarBCM
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.toolsTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsTsmi = new System.Windows.Forms.ToolStripMenuItem();
+            this.transmitTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.traceDialogtsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.testLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCheck = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,7 +93,6 @@ namespace AutosarBCM
             this.btnShowEmbSwVer = new System.Windows.Forms.ToolStripButton();
             this.lblEmbSwVer = new System.Windows.Forms.ToolStripLabel();
             this.tsbToggle = new System.Windows.Forms.ToolStripButton();
-            this.transmitTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -124,6 +124,13 @@ namespace AutosarBCM
             this.optionsTsmi.Text = "Options";
             this.optionsTsmi.Click += new System.EventHandler(this.optionsTsmi_Click);
             // 
+            // transmitTsmi
+            // 
+            this.transmitTsmi.Name = "transmitTsmi";
+            this.transmitTsmi.Size = new System.Drawing.Size(184, 26);
+            this.transmitTsmi.Text = "Transmit";
+            this.transmitTsmi.Click += new System.EventHandler(this.tsmiTransmit_Click);
+            // 
             // traceDialogtsmi
             // 
             this.traceDialogtsmi.Image = ((System.Drawing.Image)(resources.GetObject("traceDialogtsmi.Image")));
@@ -138,7 +145,6 @@ namespace AutosarBCM
             this.testLogToolStripMenuItem.Name = "testLogToolStripMenuItem";
             this.testLogToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.testLogToolStripMenuItem.Text = "Test Log Viewer";
-            this.testLogToolStripMenuItem.Visible = false;
             this.testLogToolStripMenuItem.Click += new System.EventHandler(this.testLogToolStripMenuItem_Click);
             // 
             // tsmiCheck
@@ -370,8 +376,8 @@ namespace AutosarBCM
             this.tabPage2.ImageIndex = 4;
             this.tabPage2.Location = new System.Drawing.Point(4, 23);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1409, 722);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Size = new System.Drawing.Size(1409, 716);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Trace";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -380,10 +386,10 @@ namespace AutosarBCM
             // 
             this.txtTrace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTrace.Location = new System.Drawing.Point(2, 29);
-            this.txtTrace.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTrace.Margin = new System.Windows.Forms.Padding(2);
             this.txtTrace.Name = "txtTrace";
             this.txtTrace.ReadOnly = true;
-            this.txtTrace.Size = new System.Drawing.Size(1405, 691);
+            this.txtTrace.Size = new System.Drawing.Size(1405, 685);
             this.txtTrace.TabIndex = 10;
             this.txtTrace.Text = "";
             // 
@@ -670,13 +676,6 @@ namespace AutosarBCM
             this.tsbToggle.Text = "toolStripButton1";
             this.tsbToggle.Click += new System.EventHandler(this.tsbToggle_Click);
             // 
-            // transmitTsmi
-            // 
-            this.transmitTsmi.Name = "transmitTsmi";
-            this.transmitTsmi.Size = new System.Drawing.Size(184, 26);
-            this.transmitTsmi.Text = "Transmit";
-            this.transmitTsmi.Click += new System.EventHandler(this.tsmiTransmit_Click);
-            // 
             // FormMain
             // 
             this.AllowDrop = true;
@@ -693,7 +692,7 @@ namespace AutosarBCM
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(770, 619);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
