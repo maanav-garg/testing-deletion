@@ -551,9 +551,6 @@ namespace AutosarBCM
         {
             if (txtTrace.Text.Length > 0)
             {
-                if (MessageBox.Show("Do you want to save the trace log?", "Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                    return;
-
                 File.AppendAllText(logFileName + Settings.Default.TraceFilePath, txtTrace.Text);
             }
         }
@@ -739,8 +736,21 @@ namespace AutosarBCM
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             // save settings
+            // Properties.Settings.Default.Save();
+            //SaveTraceLog();
+            //ConnectionUtil.Disconnect();
+            var result = Helper.ShowYesNoCancelMessageBox("Do you want to save the trace log?");
+
+            if (result == DialogResult.Yes)
+                SaveTraceLog();
+            else if (result == DialogResult.Cancel)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            // save settings
             Properties.Settings.Default.Save();
-            SaveTraceLog();
             ConnectionUtil.Disconnect();
         }
 
@@ -832,7 +842,8 @@ namespace AutosarBCM
         /// <param name="e">Event args</param>
         private void tsbClearLog_Click(object sender, EventArgs e)
         {
-            SaveTraceLog();
+            if(Helper.ShowConfirmationMessageBox("Do you want to save the trace log?"))
+                SaveTraceLog();
             txtTrace.Clear();
         }
 
@@ -978,6 +989,14 @@ namespace AutosarBCM
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
+
+            if (ASContext.CurrentSession == null)
+            {
+                Helper.ShowWarningMessageBox("A session must be active.");
+                return;
+            }
+               
+
             var cInf = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == "Vestel_Internal_Software_Version");
             if (cInf == null)
                 return;
@@ -1065,6 +1084,11 @@ namespace AutosarBCM
         private void newTsmi_Click(object sender, EventArgs e)
         {
             var f = new Form() { MdiParent = this };
+            f.Show();
+        }
+        private void tsmiTransmit_Click(object sender, EventArgs e)
+        {
+            var f = new FormTransmit();
             f.Show();
         }
 
@@ -1300,6 +1324,14 @@ namespace AutosarBCM
                 else
                     formEMCView.BringToFront();
             }
+        }
+        internal void UpdateSessionLabel()
+        {
+
+            if (tsbSession.GetCurrentParent().InvokeRequired)
+                tsbSession.GetCurrentParent().Invoke(new Action(() => tsbSession.Text = $"Session: {ASContext.CurrentSession.Name}"));
+            else tsbSession.Text = $"Session: {ASContext.CurrentSession.Name}";
+
         }
     }
 }

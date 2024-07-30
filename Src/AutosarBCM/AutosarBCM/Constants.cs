@@ -39,6 +39,7 @@ namespace AutosarBCM
         internal const string Unexpected = "UNEXPECTED";
         internal const string Response = "Response";
         internal const string ContinuousReadResponse = "ContinuousReadResponse";
+        internal const string MappingResponse = "MappingReadResponse";
         internal const string MappingMismatch = "MappingMismatch";
         internal const string WiperSet = "WIPER_SET";
         internal const string Enabled = "Enabled";

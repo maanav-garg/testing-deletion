@@ -148,23 +148,27 @@ namespace AutosarBCM
         }
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
-
             // Tester present
             if (e.Data[0] == ServiceInfo.TesterPresent.RequestID)
                 return;
+
+            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
+            var time = new DateTime((long)e.Timestamp);
+
+            if (FormMain.EMCMonitoring || FormMain.ControlChecker)
+            {
+                AppendTrace(txRead, time, Color.Black);
+                return;
+            }
 
             // Handle transmitted data -TX-
             if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID
                 || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
             {
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Sent(BitConverter.ToInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0))) ;
+                    if (receiver.Sent(BitConverter.ToUInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
             }
-
-
-            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
-            var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
-            var time = new DateTime((long)e.Timestamp);
 
             if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
                 AppendTrace(txRead, time, Color.Black);
@@ -185,9 +189,11 @@ namespace AutosarBCM
             {
                 if (e.Data[1] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL)
                 {
+                    Helper.ShowWarningMessageBox("Session failed to activate, try again.");
+
                     FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
                     if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                        formInput.DisabledAllSession();
+                        formInput.SessionControlManagement(false);
                 }
 
                 AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
@@ -218,7 +224,7 @@ namespace AutosarBCM
             else if (service?.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
             {
                 foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
-                    if (receiver.Receive(service)) continue ;
+                    if (receiver.Receive(service)) continue;
             }
             else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
                     || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
@@ -283,6 +289,21 @@ namespace AutosarBCM
         }
 
         /// <summary>
+        /// Checks whether a session has been selected or not.
+        /// </summary>
+        /// <returns>true if a session is selected; otherwise, false.</returns>
+        public static bool CheckSession()
+        {
+            if (ASContext.CurrentSession == null)
+            {
+                Helper.ShowWarningMessageBox("No session selected!");
+                return false;
+            }
+            else
+                return true;
+        }
+
+        /// <summary>
         /// Transmits an array of bytes to a specific device.
         /// </summary>
         /// <param name="canId">The id of the message.</param>
@@ -297,16 +318,23 @@ namespace AutosarBCM
 
         public static void TransmitData(uint canId, byte[] dataBytes)
         {
-            MessageBox.Show("HW Layer not used");
+            if (Thread.CurrentThread != Program.UIThread)
+                TransmitDataInternal(dataBytes,canId);
+            else
+                Task.Run(() => TransmitDataInternal(dataBytes,canId));
         }
 
-        private static void TransmitDataInternal(byte[] dataBytes)
+        private static void TransmitDataInternal( byte[] dataBytes, uint? canId = null)
         {
             FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
             lock (lockObj)
             {
                 try
                 {
+                    if (canId != null)
+                        transportProtocol.Config.PhysicalAddr.TxId = (uint)canId;
+                    else
+                        transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
                     transportProtocol.SendBytes(dataBytes);
                 }
                 catch (Exception ex)

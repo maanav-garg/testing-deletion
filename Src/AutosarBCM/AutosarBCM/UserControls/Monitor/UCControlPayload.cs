@@ -156,8 +156,7 @@ namespace AutosarBCM.UserControls.Monitor
                 {
                     Array.Reverse(pwmBytes);
                 }
-                byte[] trimmedBytes = TrimLeadingZeros(pwmBytes);
-                bytes.AddRange(trimmedBytes);
+                bytes.AddRange(pwmBytes);
             }
             else
             {

@@ -51,6 +51,8 @@ namespace AutosarBCM
 
         private Dictionary<ControlInfo, (List<string>, bool)> ciDict;
 
+        private Dictionary<string, (List<string>, bool)> ciDictBits;
+
         private Dictionary<ControlInfo, List<string>> ciDict2;
 
 
@@ -92,16 +94,13 @@ namespace AutosarBCM
         private void btnStart_Click(object sender, EventArgs e)
         {
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
-            if (mainForm.tsbSession.Text != "Session: Extended Diagnostic Session")
-            {
-                Helper.ShowWarningMessageBox("Must be in Extended Diagnostic Session.");
-                return;
-            }
-
+            
 
             Task.Run(async () =>
             {
-                GetExtendedDiagSessionFromControlChecker();
+                FormMain.ControlChecker = true;
+                Helper.SendExtendedDiagSession();
+                mainForm.UpdateSessionLabel();
                 await Task.Delay(1000);
             });
             Start();
@@ -206,6 +205,7 @@ namespace AutosarBCM
             int txIntervalCC = Convert.ToInt32(numInterval.Value);
             var payloadList = new List<string>();
             ciDict = new Dictionary<ControlInfo, (List<string>, bool)>();
+            ciDictBits = new Dictionary<string, (List<string>, bool)>();
             foreach (DataGridViewRow row in dgvOutput.Rows)
             {
                 if (row.Cells[0] is DataGridViewCheckBoxCell checkBoxCell)
@@ -214,6 +214,11 @@ namespace AutosarBCM
                     if (isChecked)
                     {
                         var cInf = (ControlInfo)row.Tag;
+                        var hasDIDBitsOnOff = cInf.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                        if (hasDIDBitsOnOff)
+                        {
+                            ciDictBits.Add(row.Cells[2].Value.ToString(), (new List<string> { row.Cells[2].Value.ToString() }, false));
+                        }
                         if (ciDict.Keys.Where(x => x.Address == cInf.Address).Count() == 0)
                         {
                             ciDict.Add(cInf, (new List<string>(), false));
@@ -230,9 +235,20 @@ namespace AutosarBCM
                     for (var i = 0; i < ciDict.Keys.Count; i++)
                     {
                         var item = ciDict.Keys.ElementAt(i);
+                        var hasDIDBitsOnOff = item.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
                         if (item.Address == 0xDF5E)
                         {
                             continue;
+                        }
+
+                        if (hasDIDBitsOnOff)
+                        {
+                            item.SwitchForBits(ciDictBits.Keys.ToList(), true);
+                            await Task.Delay(txIntervalCC);
+                            Thread.Sleep(100);
+                            ciDict[item] = (ciDict[item].Item1, true);
+                            item.SwitchForBits(ciDictBits.Keys.ToList(), false);
+                            await Task.Delay(txIntervalCC);
                         }
                         else
                         {
@@ -819,16 +835,7 @@ namespace AutosarBCM
         #endregion
 
         #region Public Methods
-        public void GetExtendedDiagSessionFromControlChecker()
-        {
-            if (!ConnectionUtil.CheckConnection())
-                return;
-            FormMain.ControlChecker = true;
-            var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session");
-            ASContext.CurrentSession = sessionInfo;
-            new DiagnosticSessionControl().Transmit(sessionInfo);
-
-        }
+        
         public void UpdateUI(Action updateAction)
         {
             if (this.InvokeRequired)

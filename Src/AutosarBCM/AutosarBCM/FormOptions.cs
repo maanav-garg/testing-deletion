@@ -70,6 +70,8 @@ namespace AutosarBCM
             numFlushToFile.Value = Settings.Default.FlushToFile;
             numRollingAfter.Value = Settings.Default.RollingAfter;
             txtFilePath.Text = Settings.Default.TraceFilePath;
+            tbEMCDataLimit.Text = Settings.Default.EmcDataLimit;
+
             foreach (var item in Settings.Default.FilterData)
             {
                 lbFilterPage.Items.Add(item.ToString());
@@ -107,6 +109,7 @@ namespace AutosarBCM
                 tabControl.TabPages.Add(tabSerialPort);
                 tabControl.TabPages.Add(tabCanHardware);
                 tabControl.TabPages.Add(tabFilterPage);
+                tabControl.TabPages.Add(tabEMCDataLimitation);
             }
 
             SelectTabPage(e.Node.Name);
@@ -135,6 +138,8 @@ namespace AutosarBCM
                     tabControl.SelectTab(tabCanHardware); break;
                 case "nodeFilter":
                     tabControl.SelectTab(tabFilterPage); break;
+                case "nodeEMCDataLimitation":
+                    tabControl.SelectTab(tabEMCDataLimitation); break;
                 default:
                     break;
             }
@@ -160,6 +165,8 @@ namespace AutosarBCM
                     tabControl.SelectTab(tabCanHardware); break;
                 case "nodeFilter":
                     tabControl.SelectTab(tabFilterPage); break;
+                case "nodeEMCDataLimitation":
+                    tabControl.SelectTab(tabEMCDataLimitation); break;
                 default:
                     break;
             }
@@ -197,6 +204,7 @@ namespace AutosarBCM
             Settings.Default.FlushToFile = (int)numFlushToFile.Value;
             Settings.Default.RollingAfter = (int)numRollingAfter.Value;
             Settings.Default.TraceFilePath = txtFilePath.Text;
+            Settings.Default.EmcDataLimit = tbEMCDataLimit.Text;
 
             var intrepidDevice = new IntrepidCsCan()
             {
@@ -372,6 +380,15 @@ namespace AutosarBCM
             if (!Uri.IsHexDigit(e.KeyChar) || tbFilter.Text.Length >= 2)
             {
                 e.Handled = true;
+            }
+        }
+
+        private void tbEMCDataLimit_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Allow control characters like backspace
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Reject the input
             }
         }
     }

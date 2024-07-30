@@ -54,9 +54,57 @@ namespace AutosarBCM.Core
                 new ReadDataByIdenService().Transmit(this);
             else if (serviceInfo == ServiceInfo.InputOutputControlByIdentifier)
                 new IOControlByIdentifierService().Transmit(this, data);
+            else if (serviceInfo == ServiceInfo.WriteDataByIdentifier)
+                new WriteDataByIdentifierService().Transmit(this, data);
+
+        }
+
+        public void SwitchForBits(List<string> payloads, bool isOpen)
+        {
+            SwitchForBits(payloads.ToDictionary(x => x, x => isOpen));
+        }
+
+        public void SwitchForBits(Dictionary<string, bool> payloads)
+        {
+            var bitIndex = 0;
+            byte bits = 0x0;
+            byte controlByte = 0x0;
+            var bytes = new List<byte>();
+            bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
+
+            foreach (var payload in Responses?[0].Payloads)
+            {
+                payloads.TryGetValue(payload.Name, out bool isOpen);
+
+                if (payload.TypeName != "DID_Bits_On_Off")
+                {
+                    continue;
+                }
+                else
+                {
+                    if (payloads.ContainsKey(payload.Name))
+                    {
+                        controlByte |= (byte)(1 << (7 - bitIndex));
+                        if (isOpen)
+                        {
+                            bits |= (byte)(1 << (7 - bitIndex));
+                        }
+                    }
+                    bitIndex++;
+                }
+            }
+            //Set the values to high, control mask to low bits
+            var resultByte = (byte)((bits) & 0xFF | ((controlByte) & 0xFF) >> 4);
+            bytes.Add(resultByte);
+            Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
         }
 
         public void Switch(List<string> payloads, bool isOpen)
+        {
+            Switch(payloads.ToDictionary(x => x, x => isOpen));
+        }
+
+        public void Switch(Dictionary<string, bool> payloads)
         {
             byte controlByte = 0x0;
             var bitIndex = 0;
@@ -67,8 +115,20 @@ namespace AutosarBCM.Core
             var isControlMaskActive = Responses[0].Payloads.Count > 1;
             foreach (var payload in Responses?[0].Payloads)
             {
-                if (!payloads.Contains(payload.Name))
-                    bytes.Add(0x0);
+                payloads.TryGetValue(payload.Name, out bool isOpen);
+
+                if (!payloads.ContainsKey(payload.Name))
+                {
+                    if (payload.TypeName == "DID_PWM")
+                    {
+                        bytes.Add(0x0);
+                        bytes.Add(0x0);
+                    }
+                    else
+                    {
+                        bytes.Add(0x0);
+                    }
+                }
                 else //Payload match
                 {
                     controlByte |= (byte)(1 << (7 - bitIndex));
@@ -114,6 +174,7 @@ namespace AutosarBCM.Core
                         }
 
                     }
+                    Console.WriteLine($" Send Control Name: {Name} -- Send Val: {payload.Name} -- {(isOpen ? Constants.Opened : Constants.Closed)}");
                     Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
 
                 }
@@ -122,6 +183,7 @@ namespace AutosarBCM.Core
             }
             if (isControlMaskActive)
                 bytes.Add(controlByte);
+
             //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
             Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
 
@@ -514,9 +576,23 @@ namespace AutosarBCM.Core
                                 {
                                     Control = f.Attribute("control")?.Value,
                                     ControlInfo = controls.FirstOrDefault(x => x.Name == f.Attribute("control")?.Value),
+                                    Scenario = f.Attribute("scenario")?.Value,
                                     Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
                                 }).ToList(),
-                        }).ToList()
+                        }).ToList(),
+                    SensitiveControls = t.Element("SensitiveControls").Elements("Function")
+                        .Select(f => new Function
+                        {
+                            Control = f.Attribute("control")?.Value,
+                            Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
+                        }).ToList(),
+                    Scenarios = t.Element("Scenarios").Elements("Scenario").Select(s => new Scenario
+                    {
+                        Address = Convert.ToUInt16(s.Element("Address").Value, 16),
+                        Name = s.Element("Name").Value,
+                        OpenPayloads = s.Element("OpenPayloads").Elements("Payload").Select(x => x.Value).ToList(),
+                        ClosePayloads = s.Element("ClosePayloads").Elements("Payload").Select(x => x.Value).ToList(),
+                    }).ToList(),
                 }).First();
 
             #endregion
@@ -593,6 +669,14 @@ namespace AutosarBCM.Core
         /// Gets or sets the test cycles
         /// </summary>
         public List<Cycle> Cycles { get; set; }
+        /// <summary>
+        /// Gets or sets a list of sensitive controls
+        /// </summary>
+        public List<Function> SensitiveControls { get; set; }
+        /// <summary>
+        /// Gets or sets a list of scenarios
+        /// </summary>
+        public List<Scenario> Scenarios { get; set; }
     }
 
     /// <summary>
@@ -653,6 +737,10 @@ namespace AutosarBCM.Core
         /// Gets or sets the message of PWM Close Frequency value
         /// </summary>
         public short PWMFreqCloseValue { get; set; }
+        /// <summary>
+        /// Gets or sets the duration of sensitive control
+        /// </summary>
+        public int SensitiveCtrlDuration { get; set; }
 
         #endregion
     }
@@ -700,8 +788,31 @@ namespace AutosarBCM.Core
     {
         public string Name { get; set; }
         public string Control { get; set; }
+        public string Scenario { get; set; }
         public ControlInfo ControlInfo { get; set; }
         public List<string> Payloads { get; set; }
     }
 
+    /// <summary>
+    /// Represents a test scenario containing a list of open and close payloads
+    /// </summary>
+    public class Scenario
+    {
+        /// <summary>
+        /// Gets or sets the address of the relevant control
+        /// </summary>
+        public ushort Address { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the payload relevant to the scenario
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the list of open payloads
+        /// </summary>
+        public List<string> OpenPayloads { get; set; }
+        /// <summary>
+        /// Gets or sets the list of close payloads
+        /// </summary>
+        public List<string> ClosePayloads { get; set; }
+    }
 }

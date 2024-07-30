@@ -8,6 +8,8 @@ using log4net;
 using AutosarBCM.Properties;
 using System.Linq;
 using AutosarBCM.Config;
+using System.ComponentModel;
+using AutosarBCM.Core;
 
 namespace AutosarBCM
 {
@@ -176,7 +178,7 @@ namespace AutosarBCM
                         productName = ((AssemblyTitleAttribute)attributes[0]).Title;
                     
                     var version = Assembly.GetExecutingAssembly().GetName().Version;
-                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, " Alpha-2");
+                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, " Beta-1");
                 }
                 catch { }
                 return "";
@@ -386,6 +388,20 @@ namespace AutosarBCM
                 dgvMessages.ClearSelection();
             }            
         }
+        /// <summary>
+        /// Create a txt file to the unopened DIDS during an environmental test.
+        /// </summary>
+        /// <param name="count">The name of the item.</param>
+        /// <param name="payloadName">The type of the item.</param>
+        public static void WriteUnopenedPayloadsToLogFile(int count, string payloadName)
+        {
+            string date = DateTime.Now.ToString("yyyyMMdd");
+            string logFilePath = $"{date}_Unopened_Payloads_log.txt";
+            string logMessage = $"{count}) Payload Name : {payloadName}{Environment.NewLine}";
+            File.AppendAllText(logFilePath, logMessage);
+        }
+
+
 
         /// <summary>
         /// Writes a cycle message to the log file during an environmental test.
@@ -403,7 +419,7 @@ namespace AutosarBCM
                 if (String.IsNullOrEmpty(comment))
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")};{itemName};{itemType};{operation};{data};{escapeChars}");
                 else
-                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}#{comment}#{escapeChars}");
+                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogCycleMessageQueue.Enqueue($"{escapeChars}#{DateTime.Now.ToString("HH:mm:ss.fff\t")}#{comment}#{escapeChars}");
             }
         }
 
@@ -493,6 +509,15 @@ namespace AutosarBCM
                     System.IO.File.WriteAllText(dialog.FileName, sb.ToString());
                 Helper.ShowWarningMessageBox("The Operation Completed Successfully");
             }
+        }
+
+        public static void SendExtendedDiagSession()
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+            var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session");
+            ASContext.CurrentSession = sessionInfo;
+            new DiagnosticSessionControl().Transmit(sessionInfo);
         }
 
         #endregion
@@ -1061,11 +1086,185 @@ namespace AutosarBCM
             saveFileDialog.Title = "Save a Csv template.";
         }
 
+        public static object ImportCsvFile(TransmitProtocol protocol)
+        {
+            try
+            {
+                using (openFileDialog)
+                {
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        switch (protocol)
+                        {
+                            case TransmitProtocol.Can:
+                                return CanMessageCsvParser(File.ReadAllLines(openFileDialog.FileName)
+                                               .Skip(1)
+                                               .ToList());
+                            case TransmitProtocol.Uds:
+                                return UdsMessageCsvParser(File.ReadAllLines(openFileDialog.FileName)
+                                               .Skip(1)
+                                               .ToList());
+                            default: return null;
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.ShowWarningMessageBox("Unexpected CSV File.\nPlease check CSV File.");
+                return null;
+            }
+        }
+        public static void DownloadCsvFile(TransmitProtocol protocol, BindingList<CanMessage> bindingList)
+        {
+            using (saveFileDialog)
+            {
+                saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    switch (protocol)
+                    {
+                        case TransmitProtocol.Can:
+                            var csv = new StringBuilder();
+                            bool isPrevSingle = false;
+                            bool isPrevMulti = false;
+                            foreach (CanMessage message in bindingList)
+                            {
+                                var newLine = "";
+                                var subMesages = message.SubMessages;
+                                var first = message.Id;
+                                var dataBytes = message.Data;
+                                var second = "";
+                                foreach (byte data in dataBytes)
+                                {
+                                    second += data + " ";
+                                }
+                                second = second.TrimEnd();
+                                var third = message.CycleTime;
+                                var fourth = message.CycleCount;
+                                var fifth = message.DelayTime;
+                                var sixth = message.Count;
+                                var seventh = message.Trigger;
+                                var eighth = message.Comment;
+                                var ninth = message.Multi;
+                                if (!isPrevSingle && !ninth)
+                                {
+                                    csv.AppendLine("MessageID; Data; Cycle Time; Cycle Count; Delay Time; Count; Trigger; Comment; Multi Message");
+                                    isPrevSingle = true;
+                                    newLine = string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}", first, second, third, fourth, fifth, sixth, seventh, eighth, ninth.ToString().ToUpper());
+                                    csv.AppendLine(newLine);
+                                }
+                                else if (ninth)
+                                {
+                                    isPrevSingle = false;
+                                }
+                                if (!isPrevMulti && ninth)
+                                {
+                                    csv.AppendLine("-;Multi Messages;x;x;x;x;x;Text;");
+                                    foreach(BaseMessage subMessage in subMesages)
+                                    {
+                                        first = subMessage.Id;
+                                        dataBytes = subMessage.Data;
+                                        second = "";
+                                        foreach (byte data in dataBytes)
+                                        {
+                                            second += data + " ";
+                                        }
+                                        second = second.TrimEnd();
+                                        third = subMessage.CycleTime;
+                                        fourth = subMessage.CycleCount;
+                                        fifth = subMessage.DelayTime;
+                                        sixth = subMessage.Count;
+                                        seventh = subMessage.Trigger;
+                                        eighth = subMessage.Comment;
+                                        ninth = subMessage.Multi;
+                                        ninth = true;
+                                        newLine = string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}", first, second, third, fourth, fifth, sixth, seventh, eighth, ninth.ToString().ToUpper());
+                                        csv.AppendLine(newLine);
+                                    }
+                                    isPrevMulti = true;
+                                }
+                                else if (!ninth)
+                                {
+                                    isPrevMulti = false;
+                                }
+                            }
+                            File.WriteAllText(saveFileDialog.FileName, csv.ToString());
+                            break;
+                        case TransmitProtocol.Uds:
+                            File.WriteAllText(saveFileDialog.FileName, Resources.Uds_CSV_Template);
+                            break;
+                    }
+                }
+            }
+        }
         #endregion
 
         #region Private Methods
 
         
+        private static List<CanMessage> CanMessageCsvParser(List<string> lines)
+        {
+            var result = new List<CanMessage>();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i].Replace("\",\"", ";").Split(';');
+                if (line[0] == "-")
+                {
+                    var subMesages = new List<BaseMessage>();
+                    for (int j = i + 1; j < lines.Count; j++, i = j - 1)
+                    {
+                        var subLine = lines[j].Replace("\",\"", ";").Split(';');
+                        if (string.IsNullOrWhiteSpace(subLine[8]) ? false : bool.Parse(subLine[8]))
+                        {
+                            subLine[8] = "FALSE";
+                            subMesages.Add(CanMessage.SetCanMessage(subLine));
+                        }
+                        else
+                            break;
+                    }
+                    result.Add(new CanMessage() { Id = line[0], Multi = true, Comment = line[7], SubMessages = subMesages });
+                }
+                else
+                {
+                    result.Add(CanMessage.SetCanMessage(line));
+                }
+            }
+            return result;
+        }
+        private static List<UdsMessage> UdsMessageCsvParser(List<string> lines)
+        {
+            var result = new List<UdsMessage>();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i].Replace("\",\"", ";").Split(';');
+                if (line[0] == "-")
+                {
+                    var subMesages = new List<BaseMessage>();
+                    for (int j = i + 1; j < lines.Count; j++, i = j - 1)
+                    {
+                        var subLine = lines[j].Replace("\",\"", ";").Split(';');
+                        if (string.IsNullOrWhiteSpace(subLine[8]) ? false : bool.Parse(subLine[8]))
+                        {
+                            subLine[8] = "FALSE";
+                            subMesages.Add(UdsMessage.SetUdsMessage(subLine));
+                        }
+                        else
+                            break;
+                    }
+                    result.Add(new UdsMessage() { Id = line[0], Multi = true, Comment = line[7], SubMessages = subMesages });
+                }
+                else
+                {
+                    result.Add(UdsMessage.SetUdsMessage(line));
+                }
+            }
+            return result;
+        }
 
         #endregion
     }
@@ -1098,8 +1297,10 @@ namespace AutosarBCM
             {
                 var key = (key1, key2);
                 dictionary.Add(key, value);
-                key1MatchDict.Add(key1, key);
-                key2MatchDict.Add(key2, key);
+                if (!key1MatchDict.ContainsKey(key1))
+                    key1MatchDict.Add(key1, key);
+                if (!key2MatchDict.ContainsKey(key2))
+                    key2MatchDict.Add(key2, key);
             }
         }
 

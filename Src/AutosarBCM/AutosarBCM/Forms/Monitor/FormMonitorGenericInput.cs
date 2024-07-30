@@ -255,6 +255,9 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         public void SessionFiltering()
         {
+            if (FormMain.IsTestRunning)
+                return;
+
             foreach (Control control in pnlMonitorInput.Controls)
             {
                 if (control is FlowLayoutPanel flowPanel)
@@ -265,24 +268,34 @@ namespace AutosarBCM.Forms.Monitor
                         bool activeExceptionMatch = ucItem.ControlInfo.SessionActiveException.Any(exception => exception == ASContext.CurrentSession.ID);
                         bool inactiveExceptionMatch = ucItem.ControlInfo.SessionInactiveException.Any(exception => exception == ASContext.CurrentSession.ID);
 
-                        ucItem.Enabled = (defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch;
+                        if (ucItem.InvokeRequired)
+                        {
+                            ucItem.BeginInvoke((MethodInvoker)delegate ()
+                            {
+                                ucItem.Enabled = (defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch;
+                            });
+                        }
+                        else
+                        {
+                            ucItem.Enabled = (defaultSessionMatch || activeExceptionMatch) && !inactiveExceptionMatch;
+                        }
                     }
+
                 }
             }
         }
-        public void DisabledAllSession()
+        public void SessionControlManagement(bool isActive)
         {
-            foreach (Control control in pnlMonitorInput.Controls)
+           foreach (Control control in pnlMonitorInput.Controls)
             {
                 if (control is FlowLayoutPanel flowPanel)
                 {
                     foreach (UCItem ucItem in flowPanel.Controls.OfType<UCItem>())
                     {
-
-                        ucItem.BeginInvoke(new Action(() =>
-                        {
-                            ucItem.Enabled = false;
-                        }));
+                            ucItem.Invoke((MethodInvoker)delegate ()
+                            {
+                                ucItem.Enabled = isActive;
+                            });
                     }
                 }
             }
@@ -436,7 +449,7 @@ namespace AutosarBCM.Forms.Monitor
         /// <summary>
         /// Handle transmitted data.
         /// </summary>
-        public bool Sent(short address)
+        public bool Sent(ushort address)
         {
             foreach (var ucItem in uCItems)
                 if (ucItem.ControlInfo.Address == address)
