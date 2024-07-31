@@ -20,7 +20,7 @@ namespace AutosarBCM.Forms.Monitor
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
 
-        private HashSet<string> allPayloads;
+        private Dictionary<string, string> allPayloads;
 
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
@@ -62,12 +62,13 @@ namespace AutosarBCM.Forms.Monitor
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
             {
+                allPayloads = new Dictionary<string, string>();
                 foreach (var payload in ctrl.Responses[0].Payloads)
                 {
                     var ucItem = new UCReadOnlyItem(ctrl, payload);
                     ucItems.Add(ucItem);
 
-                    //DTC init
+                  
                     if (string.IsNullOrEmpty(payload.DTCCode))
                         continue;
                     dtcList[payload.DTCCode] = ctrl;
@@ -75,7 +76,6 @@ namespace AutosarBCM.Forms.Monitor
                 groups["DID"] = ucItems;
             }
 
-            //Generate UI
             foreach (var group in groups)
             {
                 var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
@@ -88,6 +88,19 @@ namespace AutosarBCM.Forms.Monitor
                 }
 
                 pnlMonitor.Controls.Add(flowPanelGroup);
+            }
+
+            foreach (var cycle in cycles.Values)
+            {
+                foreach (var function in cycle.Functions)
+                {
+                    var controlName = function.Control; // Her function'dan control adı al
+
+                    foreach (var payload in function.Payloads)
+                    {
+                        allPayloads[payload] = controlName; // Payload ve controlName'i ekle
+                    }
+                }
             }
         }
 
@@ -163,10 +176,15 @@ namespace AutosarBCM.Forms.Monitor
                 cancellationTokenSource.Cancel();
                 btnStart.Enabled = false;
                 var count = 1;
-                foreach (var payload in allPayloads)
+                if (allPayloads != null)
                 {
-                    Helper.WriteUnopenedPayloadsToLogFile(count, payload);
-                    count++;
+                    foreach (var entry in allPayloads)
+                    {
+                        string payloadName = entry.Key;
+                        string controlName = entry.Value;
+                        Helper.WriteUnopenedPayloadsToLogFile(count, payloadName, controlName);
+                        count++;
+                    }
                 }
 
             }
@@ -293,16 +311,13 @@ namespace AutosarBCM.Forms.Monitor
             var cycle = cycles[loopVal];
             UCReadOnlyItem matchedControl = null;
             var cyclePayloads = cycle.Functions.SelectMany(f => f.Payloads).ToHashSet();
-            allPayloads = new HashSet<string>(cyclePayloads);
+            var didName = ioService.ControlInfo.Name;
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
                 var payloadName = ioService.Payloads[i].PayloadInfo.Name;
                 if (cyclePayloads.Contains(payloadName))
                 {
-                    if (!allPayloads.Contains(payloadName))
-                    {
-                        continue;
-                    }
+                   
 
                     allPayloads.Remove(payloadName);
                 }
