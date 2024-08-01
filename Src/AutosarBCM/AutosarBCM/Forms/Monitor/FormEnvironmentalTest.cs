@@ -25,6 +25,7 @@ namespace AutosarBCM.Forms.Monitor
 
 
         private Dictionary<string, string> allPayloads;
+        private HashSet<string> openedPayloads = new HashSet<string>();
 
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
@@ -173,21 +174,43 @@ namespace AutosarBCM.Forms.Monitor
             }
             if (FormMain.IsTestRunning)
             {
-                if(!Helper.ShowConfirmationMessageBox("There is an ongoing test. Do you want to proceed"))
+                if (!Helper.ShowConfirmationMessageBox("There is an ongoing test. Do you want to proceed"))
                 {
                     return;
                 }
                 cancellationTokenSource.Cancel();
                 btnStart.Enabled = false;
                 var count = 1;
-                if (allPayloads != null)
+
+                foreach (var cycle in cycles.Values)
                 {
-                    foreach (var entry in allPayloads)
+         
+                    var functions = cycle.Functions;
+
+                    int cycleOpenAt = cycle.OpenAt;
+                    int cycleCloseAt = cycle.CloseAt;
+
+                    foreach (var function in functions)
                     {
-                        string payloadName = entry.Key;
-                        string controlName = entry.Value;
-                        Helper.WriteUnopenedPayloadsToLogFile(count, payloadName, controlName);
-                        count++;
+
+                        foreach (var payload in function.Payloads)
+                        {
+                            if (!openedPayloads.Contains(payload))
+                            {
+                                string controlName = function.ControlInfo.Responses[0].Payloads[0].Name; 
+                                Helper.WriteUnopenedPayloadsToLogFile(count++, payload, controlName, cycleOpenAt, cycleCloseAt);
+                            }
+                        }
+
+
+                        //foreach (var payloadName in function.Payloads)
+                        //{
+                        //    if (!openedPayloads.Contains(payloadName))
+                        //    {
+                        //        string controlName = allPayloads[payloadName];
+                        //        Helper.WriteUnopenedPayloadsToLogFile(count++, payloadName, controlName, cycleOpenAt, cycleCloseAt);
+                        //    }
+                        //}                     
                     }
                 }
 
@@ -325,8 +348,6 @@ namespace AutosarBCM.Forms.Monitor
                 currentCyclePayloads.Add(payloadName);
                 if (cyclePayloads.Contains(payloadName))
                 {
-
-
                     allPayloads.Remove(payloadName);
                 }
                 Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
@@ -342,6 +363,7 @@ namespace AutosarBCM.Forms.Monitor
                     totalMessagesReceived++;
 
                     matchedControl.ChangeStatus(ioService);
+                    openedPayloads.Add(payloadName);
                 }
 
                 if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
@@ -367,7 +389,6 @@ namespace AutosarBCM.Forms.Monitor
             {
                 ResetPayloads(cyclePayloads);
             }
-
 
             UpdateCounters();
             return true;

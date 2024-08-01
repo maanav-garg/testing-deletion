@@ -15,7 +15,12 @@ namespace AutosarBCM.Core
         public string Name { get; set; }
         public List<byte> AvailableServices { get; set; }
     }
-
+    public class CycleInfo
+    {
+        public string ControlName{ get; set; }
+        public int OpenAt { get; set; }
+        public int CloseAt { get; set; }
+    }
     public class ServiceInfo
     {
         public byte RequestID { get; set; }
