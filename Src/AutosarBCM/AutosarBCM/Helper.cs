@@ -400,6 +400,7 @@ namespace AutosarBCM
             string cycleHeader = $"Cycle {openAt}-{closeAt}{Environment.NewLine}";
             string logMessage = $"{count}) Control Name : {controlName} - Payload Name : {payloadName}{Environment.NewLine}";
 
+
             List<string> lines = new List<string>();
 
             if (File.Exists(logFilePath))

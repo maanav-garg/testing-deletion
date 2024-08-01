@@ -192,7 +192,6 @@ namespace AutosarBCM.Forms.Monitor
 
                     foreach (var function in functions)
                     {
-
                         foreach (var payload in function.Payloads)
                         {
                             if (!openedPayloads.Contains(payload))
@@ -350,6 +349,7 @@ namespace AutosarBCM.Forms.Monitor
                 {
                     allPayloads.Remove(payloadName);
                 }
+    
                 Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
                 {
