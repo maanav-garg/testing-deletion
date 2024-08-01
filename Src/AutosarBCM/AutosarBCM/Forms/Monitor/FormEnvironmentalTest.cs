@@ -19,6 +19,10 @@ namespace AutosarBCM.Forms.Monitor
         private Dictionary<int, Cycle> cycles;
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
+        private int cycleRange; 
+        private EnvironmentalConfig EnvironmentalConfig;
+        private int cycleCount = 0;
+
 
         private Dictionary<string, string> allPayloads;
 
@@ -94,11 +98,11 @@ namespace AutosarBCM.Forms.Monitor
             {
                 foreach (var function in cycle.Functions)
                 {
-                    var controlName = function.Control; // Her function'dan control adı al
+                    var controlName = function.Control; 
 
                     foreach (var payload in function.Payloads)
                     {
-                        allPayloads[payload] = controlName; // Payload ve controlName'i ekle
+                        allPayloads[payload] = controlName;
                     }
                 }
             }
@@ -302,29 +306,33 @@ namespace AutosarBCM.Forms.Monitor
             {
                 Console.WriteLine($"Outloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
             }
-                int loopVal;
+            int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             {
                 return false;
             }
+            cycleRange = (int)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleRange;
 
             var cycle = cycles[loopVal];
             UCReadOnlyItem matchedControl = null;
             var cyclePayloads = cycle.Functions.SelectMany(f => f.Payloads).ToHashSet();
             var didName = ioService.ControlInfo.Name;
+            var currentCyclePayloads = new HashSet<string>();
+
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
                 var payloadName = ioService.Payloads[i].PayloadInfo.Name;
+                currentCyclePayloads.Add(payloadName);
                 if (cyclePayloads.Contains(payloadName))
                 {
-                   
+
 
                     allPayloads.Remove(payloadName);
                 }
-                    Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
+                Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
                 {
-                    
+
                     Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
 
                     matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
@@ -349,14 +357,32 @@ namespace AutosarBCM.Forms.Monitor
                             break;
                         }
 
-                    }                
+                    }
+                }
+
+            }
+            cycleCount++;
+
+            if (cycleCount >= cycleRange)
+            {
+                ResetPayloads(cyclePayloads);
             }
 
-    }
-            
-            
+
             UpdateCounters();
             return true;
+        }
+
+
+        private void ResetPayloads(HashSet<string> cyclePayloads)
+        {
+            cycleCount = 0;
+            allPayloads.Clear();
+
+            foreach (var payload in cyclePayloads)
+            {
+                allPayloads[payload] = payload;
+            }
         }
 
         /// <summary>

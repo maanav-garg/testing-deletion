@@ -2321,6 +2321,7 @@
 			<PWMFreqOpenValue>200</PWMFreqOpenValue>
 			<PWMFreqCloseValue>200</PWMFreqCloseValue>
 			<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
+	      	<CycleRange>2</CycleRange>
 		</EnvironmentalConfig>
 		<ContinousReadList>
 		</ContinousReadList>

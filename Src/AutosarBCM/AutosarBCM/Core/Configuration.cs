@@ -369,6 +369,7 @@ namespace AutosarBCM.Core
                             PWMDutyCloseValue = byte.Parse(c.Element("PWMDutyCloseValue").Value),
                             PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
                             PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
+                            CycleRange = int.Parse(c.Element("CycleRange").Value),
                         }).First(),
                     ConnectionMappings = t.Element("ConnectionMappings").Elements("Mapping")
                         .Select(m => new Mapping
@@ -557,6 +558,11 @@ namespace AutosarBCM.Core
         /// Gets or sets the duration of sensitive control
         /// </summary>
         public int SensitiveCtrlDuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the frequency of loop
+        /// </summary>
+        public int CycleRange { get; set; }
 
         #endregion
     }
