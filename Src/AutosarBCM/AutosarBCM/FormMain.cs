@@ -179,6 +179,8 @@ namespace AutosarBCM
         private ECUReset ECUReset;
         private System.Timers.Timer TesterPresentTimer;
 
+        internal static bool isMdxFile;
+
         /// <summary>
         /// Gets the selected test type
         /// </summary>
@@ -379,6 +381,17 @@ namespace AutosarBCM
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var filePath = openFileDialog.FileName;
+
+                string extension = Path.GetExtension(filePath);
+
+                if (!string.IsNullOrEmpty(extension) && extension.StartsWith("."))
+                {
+                    extension = extension.Substring(1);
+                }
+
+                if (extension == "mdx") isMdxFile = true;
+                else isMdxFile = false;
+
                 ParseMessages(filePath);
                 ASContext = new ASContext(filePath);
                 LoadSessions();
@@ -390,9 +403,9 @@ namespace AutosarBCM
 
                 if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
                 {
-                    //genericInput.ClearPreviousConfiguration();
+                    genericInput.ClearPreviousConfiguration();
                     genericInput.LoadConfiguration(ASContext.Configuration);
-                    //formDTCPanel.LoadConfiguration();
+                    formDTCPanel.LoadConfiguration();
                     if (tsbSession.Text != "Session: N/A")
                     {
                         genericInput.SessionFiltering();

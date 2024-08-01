@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using System.Diagnostics;
 
 namespace AutosarBCM.Forms.Monitor
 {
@@ -30,15 +31,18 @@ namespace AutosarBCM.Forms.Monitor
             pnlMonitor.SuspendLayout();
             pnlMonitor.Controls.Clear();
             ucItems = new List<UCDTCCard>();
-
+            var counter = 0;
             foreach (var cInfo in ASContext.Configuration.Controls.Where(c=> c.Group == "DID"))
+            { 
                 foreach (var pInfo in cInfo.Responses.Where(r => r.ServiceID == 0x62).FirstOrDefault()?.Payloads)
                 {
                     var ucItem = new UCDTCCard(cInfo, pInfo);
                     ucItems.Add(ucItem);
                     pnlMonitor.Controls.Add(ucItem);
                 }
-
+                counter++;
+                if (counter == 20) { break; }
+            }
             pnlMonitor.ResumeLayout();
         }
 
