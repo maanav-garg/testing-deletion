@@ -19,7 +19,7 @@ namespace AutosarBCM.Forms.Monitor
         private Dictionary<int, Cycle> cycles;
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
-        private int cycleRange; 
+        private int cycleRange;
         private EnvironmentalConfig EnvironmentalConfig;
         private int cycleCount = 0;
 
@@ -74,7 +74,7 @@ namespace AutosarBCM.Forms.Monitor
                     var ucItem = new UCReadOnlyItem(ctrl, payload);
                     ucItems.Add(ucItem);
 
-                  
+
                     if (string.IsNullOrEmpty(payload.DTCCode))
                         continue;
                     dtcList[payload.DTCCode] = ctrl;
@@ -100,7 +100,7 @@ namespace AutosarBCM.Forms.Monitor
             {
                 foreach (var function in cycle.Functions)
                 {
-                    var controlName = function.Control; 
+                    var controlName = function.Control;
 
                     foreach (var payload in function.Payloads)
                     {
@@ -246,7 +246,7 @@ namespace AutosarBCM.Forms.Monitor
                 }
             }));
 
-            
+
         }
         public void StartTest(CancellationToken cancellationToken)
         {
@@ -306,7 +306,7 @@ namespace AutosarBCM.Forms.Monitor
             {
                 return HandleReadDataByIdenService(readByIdenService);
             }
-                
+
             return false;
         }
 
@@ -331,17 +331,19 @@ namespace AutosarBCM.Forms.Monitor
             UCReadOnlyItem matchedControl = null;
             var cyclePayloads = cycle.Functions.SelectMany(f => f.Payloads).ToHashSet();
             var didName = ioService.ControlInfo.Name;
-            var currentCyclePayloads = new HashSet<string>();
 
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
                 var payloadName = ioService.Payloads[i].PayloadInfo.Name;
-                currentCyclePayloads.Add(payloadName);
+         
                 if (cyclePayloads.Contains(payloadName))
                 {
                     allPayloads.Remove(payloadName);
+                    openedPayloads.Add(payloadName);
                 }
-    
+                Console.WriteLine("allPayloadssss: " + string.Join(", ", allPayloads));
+                Console.WriteLine("openedpayloadsss: " + string.Join(", ", openedPayloads));
+
                 Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
                 {
@@ -355,7 +357,7 @@ namespace AutosarBCM.Forms.Monitor
                     totalMessagesReceived++;
 
                     matchedControl.ChangeStatus(ioService);
-                    openedPayloads.Add(payloadName);
+ 
                 }
 
                 if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
@@ -376,37 +378,39 @@ namespace AutosarBCM.Forms.Monitor
 
             }
             cycleCount++;
+            int cycleOpenAt = cycle.OpenAt;
+            int cycleCloseAt = cycle.CloseAt;
 
             if (cycleCount >= cycleRange)
             {
-                ResetPayloads(cyclePayloads);
-
+                ResetPayloads(cycle.Functions.SelectMany(f => f.Payloads).ToHashSet(), cycle.OpenAt, cycle.CloseAt);
             }
+
 
             UpdateCounters();
             return true;
         }
 
 
-        private void ResetPayloads(HashSet<string> cyclePayloads)
+        private void ResetPayloads(HashSet<string> cyclePayloads, int openAt, int closeAt)
         {
             cycleCount = 0;
-            allPayloads.Clear();
-          //  openedPayloads.Clear();
+
             int count = 1;
 
             foreach (var payload in cyclePayloads)
             {
-                allPayloads[payload] = payload;
                 if (!openedPayloads.Contains(payload))
                 {
                     string controlName = payload;
-                    Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, 1, 5, count);
-                    count += 1;
+                    Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, openAt, closeAt, count);
+                    count++;
                 }
+                //allPayloads.Clear();
+                //openedPayloads.Clear();
+
+
             }
-
-
 
 
             //foreach (var cycle in cycles.Values)
@@ -440,13 +444,13 @@ namespace AutosarBCM.Forms.Monitor
             foreach (var dtcValue in dtcService.Values)
             {
                 if (dtcValue.Mask != 0x0B || !dtcList.ContainsKey(dtcValue.Code))
-                { 
+                {
                     continue;
                 }
 
                 var control = dtcList[dtcValue.Code];
                 var payload = control.Responses?[0].Payloads.First(p => p.DTCCode == dtcValue.Code);
-                
+
                 if (payload == null)
                     continue;
                 var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
@@ -464,9 +468,9 @@ namespace AutosarBCM.Forms.Monitor
             {
                 Console.WriteLine($"Outloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
             }
-                int loopVal;
+            int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
-            { 
+            {
                 return false;
             }
 
@@ -477,25 +481,25 @@ namespace AutosarBCM.Forms.Monitor
             for (var i = 0; i < readByIdenService.Payloads.Count; i++)
             {
                 Console.WriteLine($"Inloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
-                
+
                 if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
                     totalMessagesReceived++;
                 }
-                    
-                if (inputName.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name)) 
-                { 
+
+                if (inputName.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
+                {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.MappingResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
                     totalMessagesReceived++;
                 }
-                    
+
                 if (continuousReadData.Any(p => p.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
                     totalMessagesReceived++;
                 }
-             
+
             }
             return true;
         }
@@ -559,10 +563,10 @@ namespace AutosarBCM.Forms.Monitor
                     if (uc.PayloadInfo.Name == payload)
                     {
                         uc.HandleMetrics();
-                      
+
                         break;
                     }
-                  
+
                 }
             }
             return true;
