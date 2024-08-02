@@ -372,26 +372,29 @@ namespace AutosarBCM
 
             errorLogMessageTimer.Start();
         }
-        private void LoadXMLDoc()
+
+        private void LoadXMLDoc(bool isMdxFile)
         {
             var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "xml;mdx|*.xml;*.mdx";
+            if (isMdxFile)
+                openFileDialog.Filter = "Mdx|*.mdx";
+            else
+                openFileDialog.Filter = "Xml|*.xml";
             openFileDialog.Multiselect = false;
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var filePath = openFileDialog.FileName;
-
-                string extension = Path.GetExtension(filePath);
-
-                if (!string.IsNullOrEmpty(extension) && extension.StartsWith("."))
+                if (isMdxFile)
                 {
-                    extension = extension.Substring(1);
+                    tsmiEMCView.Visible = false;
+                    environmentalTestTsmi.Visible = false;
                 }
-
-                if (extension == "mdx") isMdxFile = true;
-                else isMdxFile = false;
-
+                else
+                {
+                    tsmiEMCView.Visible = true;
+                    environmentalTestTsmi.Visible = true;
+                }
                 ParseMessages(filePath);
                 ASContext = new ASContext(filePath);
                 LoadSessions();
@@ -867,7 +870,8 @@ namespace AutosarBCM
         /// <param name="e">The event arguments.</param>
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
-            LoadXMLDoc();
+            isMdxFile = false;
+            LoadXMLDoc(isMdxFile);
         }
 
         /// <summary>
@@ -1130,7 +1134,7 @@ namespace AutosarBCM
 
             //// add to recent file list
             //recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
-            LoadXMLDoc();
+            LoadXMLDoc(false);
         }
 
         /// <summary>
@@ -1338,6 +1342,19 @@ namespace AutosarBCM
                     formEMCView.BringToFront();
             }
         }
+
+        /// <summary>
+        /// Imports MDX file as config file.
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">argument</param>
+        private void tsmiImpMDX_Click(object sender, EventArgs e)
+        {
+            isMdxFile = true;
+            LoadXMLDoc(isMdxFile);
+        }
+
+
         internal void UpdateSessionLabel()
         {
 
