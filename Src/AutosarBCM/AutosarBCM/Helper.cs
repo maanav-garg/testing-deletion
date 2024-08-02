@@ -393,11 +393,11 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="count">The name of the item.</param>
         /// <param name="payloadName">The type of the item.</param>
-        public static void WriteUnopenedPayloadsToLogFile(int count, string payloadName)
+        public static void WriteUnopenedPayloadsToLogFile(int count, string payloadName, string controlName)
         {
-            string date = DateTime.Now.ToString("yyyyMMdd");
+            string date = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string logFilePath = $"{date}_Unopened_Payloads_log.txt";
-            string logMessage = $"{count}) Payload Name : {payloadName}{Environment.NewLine}";
+            string logMessage = $"{count}) Control Name : {controlName} - Payload Name : {payloadName}{Environment.NewLine}";
             File.AppendAllText(logFilePath, logMessage);
         }
 

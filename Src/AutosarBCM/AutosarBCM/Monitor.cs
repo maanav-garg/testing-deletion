@@ -293,7 +293,9 @@ namespace AutosarBCM
 
             foreach (var function in functions)
             {
-                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                if (function?.ControlInfo == null)
+                    continue;
+                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off"); 
                 if (hasDIDBitsOnOff)
                 {
                     function.ControlInfo.SwitchForBits(function.Payloads.Distinct().ToList(), false);

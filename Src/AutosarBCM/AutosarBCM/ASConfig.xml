@@ -1,9 +1,9 @@
 ﻿<Configuration>
 	<Settings>
 		<Entry key="namesPadding" value="30" />
-		<Entry key="TxInterval" value="5" />
-		<Entry key="ReadInterval" value="5" />
-		<Entry key="DTCWaitingTime" value="8000" />
+		<Entry key="TxInterval" value="15" />
+		<Entry key="ReadInterval" value="10" />
+		<Entry key="DTCWaitingTime" value="30" />
 		<Entry key="TxIntervalForControlChecker" value="50"/>
 		<Entry key="ReadIntervalForControlChecker" value="20"/>
 	</Settings>
@@ -1210,7 +1210,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C4.8_SparePWM3" dtcCode="9D9E" typeName="DID_PWM"></Payload>
+					<Payload name="C4.8_SpareDigitalOutput4" dtcCode="9D9E" typeName="DID_PWM"></Payload>
 					<Payload name="C4.7_SparePWM4" dtcCode="9D9D" typeName="DID_PWM"></Payload>
 				</Response>
 			</Responses>
@@ -1363,7 +1363,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C6.42_HornTypeSelectionSwitch" dtcCode="9324" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.46_SpareSwitch30" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.2_AxleLifting1Switch" dtcCode="6100" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.47_LowLinerSwitch" dtcCode="6103" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.21_SpareSwitch2" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
@@ -1374,7 +1374,7 @@
 					<Payload name="C6.42_DamperConnectionSwitch" dtcCode="9F4B" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.26_EraglonassGlobalMute" dtcCode="921E" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.37_AlternatorChargingStatus" dtcCode="1246" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="C6.38_EHPASInput" dtcCode="35DF" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.38_SpareSwitch23" dtcCode="35DF" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1801,7 +1801,9 @@
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Test_Data" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="C4.7_SparePWM4" dtcCode="9D9D" typeName="DID_PWM"></Payload>
+					<Payload name="C4.10_O_5V_DCDC_1.2A" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C4.8_SpareDigitalOutput4" dtcCode="9D9E" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E"></Response>
 			</Responses>
@@ -2311,7 +2313,7 @@
 	<EnvironmentalTest>
 		<EnvironmentalConfig>
 			<CycleTime>200</CycleTime>
-			<TxInterval>10</TxInterval>
+			<TxInterval>15</TxInterval>
 			<StartCycleIndex>16</StartCycleIndex>
 			<EndCycleIndex>90</EndCycleIndex>
 			<PWMDutyOpenValue>100</PWMDutyOpenValue>
@@ -2533,7 +2535,7 @@
 			</Mapping>
 			<Mapping>
 				<Output parent="Inter_Lock_Valve_Supply">C4.44_InterLockValveSupply</Output>
-				<Input parent="Input_Switches">C6.38_EHPASInput</Input>
+				<Input parent="Input_Switches">C6.38_SpareSwitch23</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Hall_Sensor_Supply">C4.46_HallSensorRightSupply</Output>

@@ -118,9 +118,11 @@ namespace AutosarBCM.Core.Config
 
     public class DID_PWM : Payload
     {
+
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToUInt16(Value, 0).ToString();
         //FormattedValue = ((UInt16)Value[0]).ToString();
         //FormattedValue = BitConverter.ToUInt16(Value, 0).ToString();
+
     }
     public class DID_DE26 : Payload
     {
