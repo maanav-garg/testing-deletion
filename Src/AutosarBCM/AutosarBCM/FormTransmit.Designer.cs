@@ -143,7 +143,6 @@
             // txtFilter
             // 
             this.txtFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.txtFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(175, 27);
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);

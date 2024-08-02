@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Web.UI;
 using System.Windows.Forms;
 using System.Xml.Schema;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace AutosarBCM
 {
@@ -54,6 +55,8 @@ namespace AutosarBCM
         private Dictionary<string, (List<string>, bool)> ciDictBits;
 
         private Dictionary<ControlInfo, List<string>> ciDict2;
+        private bool hasDIDBitsOnOff = false;
+        private bool isDoorLock = false;
 
 
 
@@ -201,7 +204,6 @@ namespace AutosarBCM
         private void StartOutputControls()
         {
             ClearResponse(3, dgvOutput);
-            //ASContext.Configuration.Settings.TryGetValue("TxIntervalForControlChecker", out string txIntervalValue);
             int txIntervalCC = Convert.ToInt32(numInterval.Value);
             var payloadList = new List<string>();
             ciDict = new Dictionary<ControlInfo, (List<string>, bool)>();
@@ -214,8 +216,8 @@ namespace AutosarBCM
                     if (isChecked)
                     {
                         var cInf = (ControlInfo)row.Tag;
-                        var hasDIDBitsOnOff = cInf.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                        var isDoorLock = cInf.Address.Equals(0xC51);
+                        hasDIDBitsOnOff = cInf.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                        isDoorLock = cInf.Address.Equals(0xC151);
                         if (hasDIDBitsOnOff || isDoorLock)
                         {
                             ciDictBits.Add(row.Cells[2].Value.ToString(), (new List<string> { row.Cells[2].Value.ToString() }, false));
@@ -237,13 +239,13 @@ namespace AutosarBCM
                     {
                         var item = ciDict.Keys.ElementAt(i);
                         var hasDIDBitsOnOff = item.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                        var isDoorLock = item.Address.Equals(0xC51);
+                        var isDoorLock = item.Address.Equals(0xC151);
                         //if (item.Address == 0xDF5E)
                         //{
                         //    continue;
                         //}
 
-                        if (hasDIDBitsOnOff || isDoorLock)
+                        if (item.Address == 0xC151) //(hasDIDBitsOnOff || isDoorLock)
                         {
                             item.SwitchForBits(ciDictBits.Keys.ToList(), true);
                             await Task.Delay(txIntervalCC);
@@ -291,8 +293,45 @@ namespace AutosarBCM
 
 
         }
-
-        public void LogDataToDGV(Service srvData)
+        public void LogDataToDGVFromBytes(byte[] data, ushort address)
+        {
+            var control = ASContext.Configuration.Controls.FirstOrDefault(x => x.Address == address);
+            var payloads = control.Responses.SelectMany(r => r.Payloads).Where(p => p.TypeName != "HexDump_1Byte").ToList();
+            byte response = data[4];
+            byte upperNibble = (byte)((response & 0xF0) >> 4);
+            int[] bitArray = new int[4];
+            for (int i = 0; i < 4; i++)
+            {
+                bitArray[i] = (upperNibble >> (3 - i)) & 1;
+            }
+            foreach (DataGridViewRow row in dgvOutput.Rows)
+            {
+                if (row.Cells[0] is DataGridViewCheckBoxCell chkCell)
+                {
+                    bool isSelected = chkCell.Value is true;
+                    var controlInfo = (ControlInfo)row.Tag;
+                    if (ciDict.TryGetValue(controlInfo, out (List<string>, bool) dictContent))
+                    {
+                        for (int i = 0; i < payloads.Count; i++)
+                        {
+                            var pl = payloads[i];
+                            if (controlInfo.Address == control.Address)
+                            {
+                                bool bitValue = bitArray[i] == 1;
+                                if (isSelected)
+                                {
+                                    if (rdoHorizontal.Checked)
+                                    {
+                                        row.Cells[dictContent.Item2 ? 4 : 3].Value = bitValue ? "On" : "Off";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public void LogDataToDGVFromService(Service srvData)
         {
             if (rdoOutput.Checked)
             {
@@ -307,6 +346,8 @@ namespace AutosarBCM
                         if ((ciDict.TryGetValue(controlInfo, out (List<string>, bool) dictContent)))
                         {
                             foreach (var pl in service.Payloads)
+                            {
+
                                 if (controlInfo.Address == service.ControlInfo.Address)
                                 {
                                     if (isSelected != false)
@@ -337,10 +378,13 @@ namespace AutosarBCM
                                         }
 
                                     }
+
                                 }
+                            }
                         }
                     }
                 }
+
             }
             else
             {
@@ -626,7 +670,18 @@ namespace AutosarBCM
                     foreach (var response in control.Responses.Where(r => r.Payloads != null && r.Payloads.Any())
                     .SelectMany(r => r.Payloads, (r, p) => new { ControlName = control.Name, r.ServiceID, PayloadName = p.Name, PayloadTypeName = p.TypeName }))
                     {
-                        dgvInput.Rows[dgvInput.Rows.Add(true, control.Name, response.PayloadName)].Tag = control;
+                        //dgvInput.Rows[dgvInput.Rows.Add(true, control.Name, response.PayloadName)].Tag = control;
+                        var result = ASContext.Configuration.GetPayloadInfoByType(response.PayloadTypeName);
+
+                        foreach (var ctrlRes in result.Values.Where(v => v.IsOpen == true || v.IsClose == true))
+                        {
+                            dgvInput.Rows[dgvInput.Rows.Add(true, control.Name, response.PayloadName)].Tag = control;
+                            break;
+                        }
+                        if (response.PayloadTypeName == "DID_PWM")
+                        {
+                            dgvInput.Rows[dgvInput.Rows.Add(true, control.Name, response.PayloadName)].Tag = control;
+                        }
                     }
 
                 }

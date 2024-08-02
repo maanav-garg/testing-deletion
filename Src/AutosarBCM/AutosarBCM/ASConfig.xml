@@ -1090,7 +1090,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte">
+					<Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte" />
 						<Payload name="C5.28_7 Door Ajar Switch - Driver" dtcCode="91E9" typeName="DID_Bits_On_Off" />
 						<Payload name="C5.33_6 Door Ajar Switch - Passenger" dtcCode="91EA" typeName="DID_Bits_On_Off" />
 						<Payload name="C6.31_5 Cabin Lock" dtcCode="908F" typeName="DID_Bits_On_Off" />
@@ -1099,7 +1099,6 @@
 						<Payload name="C6.3_2 FrontResetRightSwitch" dtcCode="93A3" typeName="DID_Bits_On_Off" />
 						<Payload name="C5.13_1 FrontSetLeftSwitch" dtcCode="939D" typeName="DID_Bits_On_Off" />
 						<Payload name="C5.32_0 FrontSetRightSwitch" dtcCode="BA86" typeName="DID_Bits_On_Off" />
-					</Payload>
 				</Response>
 			</Responses>
 		</Control>

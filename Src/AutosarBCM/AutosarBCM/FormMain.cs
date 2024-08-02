@@ -855,6 +855,8 @@ namespace AutosarBCM
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
             LoadXMLDoc();
+
+            ConnectionUtil.LoadControlDictionary();
         }
 
         /// <summary>
@@ -1119,6 +1121,7 @@ namespace AutosarBCM
             //// add to recent file list
             //recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
             LoadXMLDoc();
+            ConnectionUtil.LoadControlDictionary();
         }
 
         /// <summary>

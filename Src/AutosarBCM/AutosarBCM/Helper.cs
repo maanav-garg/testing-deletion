@@ -1100,6 +1100,7 @@ namespace AutosarBCM
             {
                 using (openFileDialog)
                 {
+                    openFileDialog.Filter = "Csv|*.csv";
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         switch (protocol)
