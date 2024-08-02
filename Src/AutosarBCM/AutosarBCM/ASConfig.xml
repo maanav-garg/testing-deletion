@@ -1817,16 +1817,16 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-				  <Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -2312,16 +2312,16 @@
 	</DTCFailureTypes>
 	<EnvironmentalTest>
 		<EnvironmentalConfig>
-			<CycleTime>200</CycleTime>
-			<TxInterval>15</TxInterval>
+			<CycleTime>20</CycleTime>
+			<TxInterval>30</TxInterval>
 			<StartCycleIndex>16</StartCycleIndex>
-			<EndCycleIndex>21</EndCycleIndex>
+			<EndCycleIndex>25</EndCycleIndex>
 			<PWMDutyOpenValue>100</PWMDutyOpenValue>
 			<PWMDutyCloseValue>0</PWMDutyCloseValue>
 			<PWMFreqOpenValue>200</PWMFreqOpenValue>
 			<PWMFreqCloseValue>200</PWMFreqCloseValue>
 			<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
-	      	<CycleRange>2</CycleRange>
+			<CycleRange>3</CycleRange>
 		</EnvironmentalConfig>
 		<ContinousReadList>
 		</ContinousReadList>
@@ -2584,7 +2584,7 @@
 			</Mapping>
 		</ConnectionMappings>
 		<SensitiveControls>
-			
+
 		</SensitiveControls>
 		<Cycles>
 			<Cycle>
@@ -2848,17 +2848,17 @@
 					</Function>
 				</Functions>
 			</Cycle>
-			<!--<Cycle>
+			<Cycle>
 				<Name>CycleLoad 01 - Group 3</Name>
 				<OpenAt>16</OpenAt>
 				<CloseAt>51</CloseAt>
 				<Functions>
-					--><!-- <Function control="Passenger_Power_Window_Motor"> --><!--
-					--><!-- <Payload>C1.3_Passenger Power Window Motor Down</Payload> --><!--
-					--><!-- </Function> --><!--
-					--><!--><Function control="Sunroof_Motor">
+					<!-- <Function control="Passenger_Power_Window_Motor"> -->
+					<!-- <Payload>C1.3_Passenger Power Window Motor Down</Payload> -->
+					<!-- </Function> -->
+					<!--><Function control="Sunroof_Motor">
 						<Payload>C1.8_MOT-A</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Sunroof_Open"></Function>
 					<Function control="Hall_Sensor_Supply">
 						<Payload>C4.28_HallSensorLeftSupply</Payload>
@@ -2884,10 +2884,10 @@
 				<OpenAt>17</OpenAt>
 				<CloseAt>18</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.4_Passanger Door Lock Relay</Payload>
 						<Payload>C1.10_Driver Door Lock Relay</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Left_Lock"></Function>
 					<Function scenario="Door_Right_Lock"></Function>
 				</Functions>
@@ -2897,10 +2897,10 @@
 				<OpenAt>19</OpenAt>
 				<CloseAt>20</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -2910,10 +2910,10 @@
 				<OpenAt>21</OpenAt>
 				<CloseAt>22</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.10_Driver Door Lock Relay</Payload>
 						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -2952,9 +2952,9 @@
 					<Function control="Right_Rear_Turn_Signal_Lamp_Control">
 						<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-					</Function>--><!--
+					</Function>-->
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -2962,10 +2962,10 @@
 				<OpenAt>23</OpenAt>
 				<CloseAt>24</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -2975,10 +2975,10 @@
 				<OpenAt>25</OpenAt>
 				<CloseAt>26</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.10_Driver Door Lock Relay</Payload>
 						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3012,10 +3012,10 @@
 				<OpenAt>27</OpenAt>
 				<CloseAt>28</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3025,10 +3025,10 @@
 				<OpenAt>29</OpenAt>
 				<CloseAt>30</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.10_Driver Door Lock Relay</Payload>
 						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3038,10 +3038,10 @@
 				<OpenAt>31</OpenAt>
 				<CloseAt>32</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3057,9 +3057,9 @@
 					<Function control="LED_Outputs">
 						<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
+					<!--<Function control="Power_Mirror_Control">
 						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>--><!--
+					</Function>-->
 					<Function scenario="Power_Mirror_Control_Right_Right"></Function>
 					<Function control="Washer_Pump_Front_Relay">
 						<Payload>C1.15_Washer Pump Front Relay</Payload>
@@ -3071,10 +3071,10 @@
 				<OpenAt>32</OpenAt>
 				<CloseAt>33</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.10_Driver Door Lock Relay</Payload>
 						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3084,15 +3084,15 @@
 				<OpenAt>34</OpenAt>
 				<CloseAt>35</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
 						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
 			</Cycle>
-			<Cycle>
+			<!--<Cycle>
 				<Name>CycleLoad 21 - Group 1</Name>
 				<OpenAt>36</OpenAt>
 				<CloseAt>37</CloseAt>
@@ -3834,154 +3834,154 @@
 			</Cycle>-->
 		</Cycles>
 		<Scenarios>
-		    <Scenario>
-		    	<Address>DF12</Address>
-		        <Name>Power_Mirror_Control_Left_Up</Name>
-		        <OpenPayloads>
-		            <Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
-		            <Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
-		        </ClosePayloads>
-		    </Scenario>
 			<Scenario>
-		    	<Address>DF12</Address>
-		        <Name>Power_Mirror_Control_Left_Down</Name>
-		        <OpenPayloads>
-		            <Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
-		            <Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-		        </ClosePayloads>
-		    </Scenario>
+				<Address>DF12</Address>
+				<Name>Power_Mirror_Control_Left_Up</Name>
+				<OpenPayloads>
+					<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+					<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+				</ClosePayloads>
+			</Scenario>
 			<Scenario>
-		    	<Address>DF12</Address>
-		        <Name>Power_Mirror_Control_Left_Left</Name>
-		        <OpenPayloads>
-		            <Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-		            <Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
-		        </ClosePayloads>
-		    </Scenario>
+				<Address>DF12</Address>
+				<Name>Power_Mirror_Control_Left_Down</Name>
+				<OpenPayloads>
+					<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+					<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+				</ClosePayloads>
+			</Scenario>
 			<Scenario>
-		    	<Address>DF12</Address>
-		        <Name>Power_Mirror_Control_Left_Right</Name>
-		        <OpenPayloads>
-		            <Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-		            <Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
-		        </ClosePayloads>
-		    </Scenario>
+				<Address>DF12</Address>
+				<Name>Power_Mirror_Control_Left_Left</Name>
+				<OpenPayloads>
+					<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+					<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+				</ClosePayloads>
+			</Scenario>
 			<Scenario>
-		    	<Address>DF12</Address>
-		        <Name>Power_Mirror_Control_Right_Up</Name>
-		        <OpenPayloads>
-		            <Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-		            <Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-		        </ClosePayloads>
-		    </Scenario>
+				<Address>DF12</Address>
+				<Name>Power_Mirror_Control_Left_Right</Name>
+				<OpenPayloads>
+					<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+					<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+				</ClosePayloads>
+			</Scenario>
 			<Scenario>
-		    	<Address>DF12</Address>
-		        <Name>Power_Mirror_Control_Right_Down</Name>
-		        <OpenPayloads>
-		            <Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-		            <Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-		        </ClosePayloads>
-		    </Scenario>
+				<Address>DF12</Address>
+				<Name>Power_Mirror_Control_Right_Up</Name>
+				<OpenPayloads>
+					<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+					<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+				</ClosePayloads>
+			</Scenario>
 			<Scenario>
-		    	<Address>DF12</Address>
-		        <Name>Power_Mirror_Control_Right_Left</Name>
-		        <OpenPayloads>
-		            <Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-		            <Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-		        </ClosePayloads>
-		    </Scenario>
+				<Address>DF12</Address>
+				<Name>Power_Mirror_Control_Right_Down</Name>
+				<OpenPayloads>
+					<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+					<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+				</ClosePayloads>
+			</Scenario>
 			<Scenario>
-		    	<Address>DF12</Address>
-		        <Name>Power_Mirror_Control_Right_Right</Name>
-		        <OpenPayloads>
-		            <Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-		            <Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-		        </ClosePayloads>
-		    </Scenario>
-		    <Scenario>
-		    	<Address>C151</Address>
-		        <Name>Door_Left_Lock</Name>
-		        <OpenPayloads>
-		            <Payload>C1.4_Passanger Door Lock Relay</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-		        </ClosePayloads>
-		    </Scenario>
-		    <Scenario>
-		    	<Address>C151</Address>
-		        <Name>Door_Left_UnLock</Name>
-		        <OpenPayloads>
-		            <Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C1.4_Passanger Door Lock Relay</Payload>
-		        </ClosePayloads>
-		    </Scenario>
-		    <Scenario>
-		    	<Address>C151</Address>
-		        <Name>Door_Right_Lock</Name>
-		        <OpenPayloads>
-		            <Payload>C1.10_Driver Door Lock Relay</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-		        </ClosePayloads>
-		    </Scenario>
-		    <Scenario>
-		    	<Address>C151</Address>
-		        <Name>Door_Right_UnLock</Name>
-		        <OpenPayloads>
-		            <Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C1.10_Driver Door Lock Relay</Payload>
-		        </ClosePayloads>
-		    </Scenario>
-		    <Scenario>
-		    	<Address>A493</Address>
-		        <Name>Sunroof_Open</Name>
-		        <OpenPayloads>
-		            <Payload>C1.6_MOT-B</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C1.8_MOT-A</Payload>
-		        </ClosePayloads>
-		    </Scenario>
-		    <Scenario>
-		    	<Address>A493</Address>
-		        <Name>Sunroof_Close</Name>
-		        <OpenPayloads>
-		            <Payload>C1.8_MOT-A</Payload>
-		        </OpenPayloads>
-		        <ClosePayloads>
-		            <Payload>C1.6_MOT-B</Payload>
-		        </ClosePayloads>
-		    </Scenario>
+				<Address>DF12</Address>
+				<Name>Power_Mirror_Control_Right_Left</Name>
+				<OpenPayloads>
+					<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+					<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+				</ClosePayloads>
+			</Scenario>
+			<Scenario>
+				<Address>DF12</Address>
+				<Name>Power_Mirror_Control_Right_Right</Name>
+				<OpenPayloads>
+					<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+					<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+				</ClosePayloads>
+			</Scenario>
+			<Scenario>
+				<Address>C151</Address>
+				<Name>Door_Left_Lock</Name>
+				<OpenPayloads>
+					<Payload>C1.4_Passanger Door Lock Relay</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+				</ClosePayloads>
+			</Scenario>
+			<Scenario>
+				<Address>C151</Address>
+				<Name>Door_Left_UnLock</Name>
+				<OpenPayloads>
+					<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C1.4_Passanger Door Lock Relay</Payload>
+				</ClosePayloads>
+			</Scenario>
+			<Scenario>
+				<Address>C151</Address>
+				<Name>Door_Right_Lock</Name>
+				<OpenPayloads>
+					<Payload>C1.10_Driver Door Lock Relay</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+				</ClosePayloads>
+			</Scenario>
+			<Scenario>
+				<Address>C151</Address>
+				<Name>Door_Right_UnLock</Name>
+				<OpenPayloads>
+					<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C1.10_Driver Door Lock Relay</Payload>
+				</ClosePayloads>
+			</Scenario>
+			<Scenario>
+				<Address>A493</Address>
+				<Name>Sunroof_Open</Name>
+				<OpenPayloads>
+					<Payload>C1.6_MOT-B</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C1.8_MOT-A</Payload>
+				</ClosePayloads>
+			</Scenario>
+			<Scenario>
+				<Address>A493</Address>
+				<Name>Sunroof_Close</Name>
+				<OpenPayloads>
+					<Payload>C1.8_MOT-A</Payload>
+				</OpenPayloads>
+				<ClosePayloads>
+					<Payload>C1.6_MOT-B</Payload>
+				</ClosePayloads>
+			</Scenario>
 		</Scenarios>
 	</EnvironmentalTest>
 </Configuration>

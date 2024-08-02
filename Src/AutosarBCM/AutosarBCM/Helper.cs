@@ -10,6 +10,7 @@ using System.Linq;
 using AutosarBCM.Config;
 using System.ComponentModel;
 using AutosarBCM.Core;
+using static System.Windows.Forms.LinkLabel;
 
 namespace AutosarBCM
 {
@@ -393,40 +394,46 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="count">The name of the item.</param>
         /// <param name="payloadName">The type of the item.</param>
-        public static void WriteUnopenedPayloadsToLogFile(int count, string payloadName, string controlName, int openAt, int closeAt)
+        public static void WriteUnopenedPayloadsToLogFile(string payloadName, string controlName, int openAt, int closeAt, int count)
         {
             string date = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string logFilePath = $"{date}_Unopened_Payloads_log.txt";
             string cycleHeader = $"Cycle {openAt}-{closeAt}{Environment.NewLine}";
             string logMessage = $"{count}) Control Name : {controlName} - Payload Name : {payloadName}{Environment.NewLine}";
 
-
-            List<string> lines = new List<string>();
-
+            List<string> lines;
             if (File.Exists(logFilePath))
             {
                 lines = File.ReadAllLines(logFilePath).ToList();
             }
-            bool cycleHeaderExists = lines.Any(line => line.Contains(cycleHeader.Trim()));
+            else
+            {
+                lines = new List<string>();
+            }
 
+            // Check if cycle header exists
+            bool cycleHeaderExists = lines.Any(line => line.Contains(cycleHeader.Trim()));
             if (!cycleHeaderExists)
             {
                 lines.Add(cycleHeader);
             }
 
+            // Find the index where to insert the log message
             int headerIndex = lines.FindIndex(line => line.Contains(cycleHeader.Trim()));
 
-            if (headerIndex == -1)
-            {
-                lines.Add(cycleHeader);
-                lines.Add(logMessage);
-            }
-            else
+            if (headerIndex != -1)
             {
                 lines.Insert(headerIndex + 1, logMessage);
             }
+            else
+            {
+                lines.Add(logMessage);
+            }
+
             File.WriteAllLines(logFilePath, lines);
         }
+
+
 
 
         /// <summary>

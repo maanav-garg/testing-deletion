@@ -65,9 +65,10 @@ namespace AutosarBCM.Forms.Monitor
             continuousReadData = (ASContext.Configuration.EnvironmentalTest.ContinousReadList);
 
             groups.Add("DID", new List<UCReadOnlyItem>());
+            allPayloads = new Dictionary<string, string>();
+
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
             {
-                allPayloads = new Dictionary<string, string>();
                 foreach (var payload in ctrl.Responses[0].Payloads)
                 {
                     var ucItem = new UCReadOnlyItem(ctrl, payload);
@@ -180,38 +181,29 @@ namespace AutosarBCM.Forms.Monitor
                 }
                 cancellationTokenSource.Cancel();
                 btnStart.Enabled = false;
-                var count = 1;
-
-                foreach (var cycle in cycles.Values)
-                {
-         
-                    var functions = cycle.Functions;
-
-                    int cycleOpenAt = cycle.OpenAt;
-                    int cycleCloseAt = cycle.CloseAt;
-
-                    foreach (var function in functions)
-                    {
-                        foreach (var payload in function.Payloads)
-                        {
-                            if (!openedPayloads.Contains(payload))
-                            {
-                                string controlName = function.ControlInfo.Responses[0].Payloads[0].Name; 
-                                Helper.WriteUnopenedPayloadsToLogFile(count++, payload, controlName, cycleOpenAt, cycleCloseAt);
-                            }
-                        }
 
 
-                        //foreach (var payloadName in function.Payloads)
-                        //{
-                        //    if (!openedPayloads.Contains(payloadName))
-                        //    {
-                        //        string controlName = allPayloads[payloadName];
-                        //        Helper.WriteUnopenedPayloadsToLogFile(count++, payloadName, controlName, cycleOpenAt, cycleCloseAt);
-                        //    }
-                        //}                     
-                    }
-                }
+                //foreach (var cycle in cycles.Values)
+                //{
+                //    int cycleOpenAt = cycle.OpenAt;
+                //    int cycleCloseAt = cycle.CloseAt;
+
+                //    int count = 1; 
+
+                //    foreach (var function in cycle.Functions)
+                //    {
+                //        foreach (var payload in function.Payloads)
+                //        {
+                //            if (!openedPayloads.Contains(payload))
+                //            {
+                //                string controlName = function.Control;
+                //                Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, cycleOpenAt, cycleCloseAt, count);
+                //                count += 1; 
+                //            }
+                //        }
+                //    }
+                //}
+
 
             }
             else //Start Test
@@ -388,6 +380,7 @@ namespace AutosarBCM.Forms.Monitor
             if (cycleCount >= cycleRange)
             {
                 ResetPayloads(cyclePayloads);
+
             }
 
             UpdateCounters();
@@ -399,11 +392,44 @@ namespace AutosarBCM.Forms.Monitor
         {
             cycleCount = 0;
             allPayloads.Clear();
+          //  openedPayloads.Clear();
+            int count = 1;
 
             foreach (var payload in cyclePayloads)
             {
                 allPayloads[payload] = payload;
+                if (!openedPayloads.Contains(payload))
+                {
+                    string controlName = payload;
+                    Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, 1, 5, count);
+                    count += 1;
+                }
             }
+
+
+
+
+            //foreach (var cycle in cycles.Values)
+            //{
+            //    int cycleOpenAt = cycle.OpenAt;
+            //    int cycleCloseAt = cycle.CloseAt;
+
+            //    int count = 1; 
+
+            //    foreach (var function in cycle.Functions)
+            //    {
+            //        foreach (var payload in function.Payloads)
+            //        {
+            //            if (!openedPayloads.Contains(payload))
+            //            {
+            //                string controlName = function.Control;
+            //                Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, cycleOpenAt, cycleCloseAt, count);
+            //                count += 1; 
+            //            }
+            //        }
+            //    }
+            //}
+
         }
 
         /// <summary>
