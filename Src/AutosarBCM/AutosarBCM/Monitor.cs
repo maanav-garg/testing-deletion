@@ -497,7 +497,7 @@ namespace AutosarBCM
                     {
                         if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
                         {
-                            if (errorLogDetect.ChcekIsError())
+                            if (errorLogDetect.CheckIsError())
                                 Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
 
                             Program.MappingStateDict.Remove(mappedItem.Name);
@@ -621,7 +621,7 @@ namespace AutosarBCM
                     {
                         if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
                         {
-                            if (errorLogDetect.ChcekIsError())
+                            if (errorLogDetect.CheckIsError())
                                 Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
 
                             Program.MappingStateDict.Remove(mappedItem.Name);

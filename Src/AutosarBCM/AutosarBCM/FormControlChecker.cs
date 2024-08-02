@@ -238,8 +238,6 @@ namespace AutosarBCM
                     for (var i = 0; i < ciDict.Keys.Count; i++)
                     {
                         var item = ciDict.Keys.ElementAt(i);
-                        var hasDIDBitsOnOff = item.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                        var isDoorLock = item.Address.Equals(0xC151);
                         //if (item.Address == 0xDF5E)
                         //{
                         //    continue;
