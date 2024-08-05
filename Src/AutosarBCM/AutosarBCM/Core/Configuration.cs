@@ -9,6 +9,7 @@ using AutosarBCM.Core.Config;
 using AutosarBCM.Properties;
 using System.Diagnostics;
 using System.IO;
+using System.Xml;
 
 namespace AutosarBCM.Core
 {
