@@ -365,8 +365,8 @@ namespace AutosarBCM.Core
                             TxInterval = int.Parse(c.Element("TxInterval").Value),
                             StartCycleIndex = int.Parse(c.Element("StartCycleIndex").Value),
                             EndCycleIndex = int.Parse(c.Element("EndCycleIndex").Value),
-                            PWMDutyOpenValue = byte.Parse(c.Element("PWMDutyOpenValue").Value),
-                            PWMDutyCloseValue = byte.Parse(c.Element("PWMDutyCloseValue").Value),
+                            PWMDutyOpenValue = short.Parse(c.Element("PWMDutyOpenValue").Value),
+                            PWMDutyCloseValue = short.Parse(c.Element("PWMDutyCloseValue").Value),
                             PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
                             PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
                         }).First(),
@@ -540,11 +540,11 @@ namespace AutosarBCM.Core
         ///
         /// Gets or sets the message of PWM Open Duty value
         /// </summary>
-        public byte PWMDutyOpenValue { get; set; }
+        public short PWMDutyOpenValue { get; set; }
         /// <summary>
         /// Gets or sets the message of PWM Close Duty value
         /// </summary>
-        public byte PWMDutyCloseValue { get; set; }
+        public short PWMDutyCloseValue { get; set; }
         /// <summary>
         /// Gets or sets the message of PWM Open Frequency value
         /// </summary>

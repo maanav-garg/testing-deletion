@@ -2462,8 +2462,8 @@
 				<Input parent="Spare_Switch">C5.50_Spare Switch 10</Input>
 			</Mapping>
 			<Mapping>
-			<Output parent="WaterPumpSupply">C3.18_WaterPumpSupply</Output>
-			<Input parent="Spare_Switch">C5.51_Spare Switch 11</Input>
+				<Output parent="WaterPumpSupply">C3.18_WaterPumpSupply</Output>
+				<Input parent="Spare_Switch">C5.51_Spare Switch 11</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Right_Front_Turn_Lamp_Outage_Feedback">C3.21_Right Front Turn Lamp Outage Feedback</Output>
@@ -2583,7 +2583,6 @@
 			</Mapping>
 		</ConnectionMappings>
 		<SensitiveControls>
-			
 		</SensitiveControls>
 		<Cycles>
 			<Cycle>
@@ -2613,7 +2612,7 @@
 						<Payload>C2.4_Rear Fog Lamps Output</Payload>
 					</Function>
 					<Function control="WaterPumpSupply">
-					<Payload>C3.18_WaterPumpSupply</Payload>
+						<Payload>C3.18_WaterPumpSupply</Payload>
 					</Function>
 					<Function control="Left_Front_Low_Beam_Output_Control">
 						<Payload>C1.14_Left Front Low Beam Output Control</Payload>
@@ -2646,6 +2645,8 @@
 				<Functions>
 					<Function control="Test_Data">
 						<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+						<Payload>C4.8_SpareDigitalOutput4</Payload>
+						<Payload>C4.7_SparePWM4</Payload>
 					</Function>
 					<Function control="WCInhibit">
 						<Payload>C4.47_WCInhibit</Payload>
@@ -2663,7 +2664,7 @@
 						<Payload>C2.4_Rear Fog Lamps Output</Payload>
 					</Function>
 					<Function control="WaterPumpSupply">
-					<Payload>C3.18_WaterPumpSupply</Payload>
+						<Payload>C3.18_WaterPumpSupply</Payload>
 					</Function>
 					<Function control="Left_Front_Low_Beam_Output_Control">
 						<Payload>C1.14_Left Front Low Beam Output Control</Payload>
@@ -2692,10 +2693,6 @@
 					</Function>
 					<Function control="Spare_Digital_Outputs">
 						<Payload>C4.5_SpareDigitalOutput2</Payload>
-					</Function>
-					<Function control="Test_Data">
-						<Payload>C4.8_SpareDigitalOutput4</Payload>
-						<Payload>C4.7_SparePWM4</Payload>
 					</Function>
 					<Function control="BrakeLightRelaySupply">
 						<Payload>C4.6_BrakeLightRelaySupply</Payload>
@@ -2718,6 +2715,8 @@
 				<Functions>
 					<Function control="Test_Data">
 						<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+						<Payload>C4.8_SpareDigitalOutput4</Payload>
+						<Payload>C4.7_SparePWM4</Payload>
 					</Function>
 					<Function control="WCInhibit">
 						<Payload>C4.47_WCInhibit</Payload>
@@ -2735,7 +2734,7 @@
 						<Payload>C2.4_Rear Fog Lamps Output</Payload>
 					</Function>
 					<Function control="WaterPumpSupply">
-					<Payload>C3.18_WaterPumpSupply</Payload>
+						<Payload>C3.18_WaterPumpSupply</Payload>
 					</Function>
 					<Function control="Left_Front_Low_Beam_Output_Control">
 						<Payload>C1.14_Left Front Low Beam Output Control</Payload>
@@ -2764,10 +2763,6 @@
 					</Function>
 					<Function control="Spare_Digital_Outputs">
 						<Payload>C4.5_SpareDigitalOutput2</Payload>
-					</Function>
-					<Function control="Test_Data">
-						<Payload>C4.8_SpareDigitalOutput4</Payload>
-						<Payload>C4.7_SparePWM4</Payload>
 					</Function>
 					<Function control="BrakeLightRelaySupply">
 						<Payload>C4.6_BrakeLightRelaySupply</Payload>
