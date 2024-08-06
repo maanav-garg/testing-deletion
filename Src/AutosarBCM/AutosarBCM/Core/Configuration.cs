@@ -153,9 +153,9 @@ namespace AutosarBCM.Core
                         {
                             byte[] pwmBytes;
                             if (isOpen)
-                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue);
+                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue).Reverse().ToArray();
                             else
-                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue);
+                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue).Reverse().ToArray();
 
                             Array.Reverse(pwmBytes);
                             bytes.AddRange(pwmBytes);
