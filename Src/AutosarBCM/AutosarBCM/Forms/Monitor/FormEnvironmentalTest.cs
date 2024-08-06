@@ -24,8 +24,13 @@ namespace AutosarBCM.Forms.Monitor
         private int cycleCount = 0;
 
 
+        public delegate void PayloadsProcessedHandler(HashSet<string> cyclePayloads, int openAt, int closeAt);
+        public static event PayloadsProcessedHandler OnPayloadsProcessed;
+
+
         private Dictionary<string, string> allPayloads;
         private HashSet<string> openedPayloads = new HashSet<string>();
+
 
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
@@ -183,28 +188,6 @@ namespace AutosarBCM.Forms.Monitor
                 btnStart.Enabled = false;
 
 
-                //foreach (var cycle in cycles.Values)
-                //{
-                //    int cycleOpenAt = cycle.OpenAt;
-                //    int cycleCloseAt = cycle.CloseAt;
-
-                //    int count = 1; 
-
-                //    foreach (var function in cycle.Functions)
-                //    {
-                //        foreach (var payload in function.Payloads)
-                //        {
-                //            if (!openedPayloads.Contains(payload))
-                //            {
-                //                string controlName = function.Control;
-                //                Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, cycleOpenAt, cycleCloseAt, count);
-                //                count += 1; 
-                //            }
-                //        }
-                //    }
-                //}
-
-
             }
             else //Start Test
             {
@@ -325,6 +308,11 @@ namespace AutosarBCM.Forms.Monitor
             {
                 return false;
             }
+            int cycleVal;
+            if (!int.TryParse(lblCycleVal.Text, out cycleVal) || !cycles.ContainsKey(cycleVal))
+            {
+                return false;
+            }
             cycleRange = (int)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleRange;
 
             var cycle = cycles[loopVal];
@@ -341,8 +329,6 @@ namespace AutosarBCM.Forms.Monitor
                     allPayloads.Remove(payloadName);
                     openedPayloads.Add(payloadName);
                 }
-                Console.WriteLine("allPayloadssss: " + string.Join(", ", allPayloads));
-                Console.WriteLine("openedpayloadsss: " + string.Join(", ", openedPayloads));
 
                 Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
@@ -375,17 +361,23 @@ namespace AutosarBCM.Forms.Monitor
 
                     }
                 }
-
             }
-            cycleCount++;
             int cycleOpenAt = cycle.OpenAt;
             int cycleCloseAt = cycle.CloseAt;
-
+            ResetPayloads(cycle.Functions.SelectMany(f => f.Payloads).ToHashSet(), cycle.OpenAt, cycle.CloseAt);
+            cycleCount++;
             if (cycleCount >= cycleRange)
             {
-                ResetPayloads(cycle.Functions.SelectMany(f => f.Payloads).ToHashSet(), cycle.OpenAt, cycle.CloseAt);
-            }
+                allPayloads.Clear();
+                openedPayloads.Clear();
 
+                foreach (var payload in cyclePayloads)
+                {
+                    allPayloads.Add(payload, didName);
+                    
+                }
+                cycleCount = 0; 
+            }
 
             UpdateCounters();
             return true;
@@ -394,8 +386,6 @@ namespace AutosarBCM.Forms.Monitor
 
         private void ResetPayloads(HashSet<string> cyclePayloads, int openAt, int closeAt)
         {
-            cycleCount = 0;
-
             int count = 1;
 
             foreach (var payload in cyclePayloads)
@@ -406,33 +396,8 @@ namespace AutosarBCM.Forms.Monitor
                     Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, openAt, closeAt, count);
                     count++;
                 }
-                //allPayloads.Clear();
-                //openedPayloads.Clear();
-
 
             }
-
-
-            //foreach (var cycle in cycles.Values)
-            //{
-            //    int cycleOpenAt = cycle.OpenAt;
-            //    int cycleCloseAt = cycle.CloseAt;
-
-            //    int count = 1; 
-
-            //    foreach (var function in cycle.Functions)
-            //    {
-            //        foreach (var payload in function.Payloads)
-            //        {
-            //            if (!openedPayloads.Contains(payload))
-            //            {
-            //                string controlName = function.Control;
-            //                Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, cycleOpenAt, cycleCloseAt, count);
-            //                count += 1; 
-            //            }
-            //        }
-            //    }
-            //}
 
         }
 

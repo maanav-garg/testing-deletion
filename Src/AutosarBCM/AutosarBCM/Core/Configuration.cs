@@ -17,9 +17,8 @@ namespace AutosarBCM.Core
     }
     public class CycleInfo
     {
-        public string ControlName{ get; set; }
-        public int OpenAt { get; set; }
-        public int CloseAt { get; set; }
+        public string PayloadName { get; set; }
+        public List<int> Cycles { get; set; } = new List<int>();
     }
     public class ServiceInfo
     {

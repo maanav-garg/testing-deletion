@@ -77,6 +77,7 @@ namespace AutosarBCM
                 InitHardware(hardware);
 
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+
                 formMain.txtTrace.ForeColor = Color.Blue;
                 formMain.openConnection.Text = "Stop Connection";
                 formMain.openConnection.Image = formMain.imageList1.Images[3];

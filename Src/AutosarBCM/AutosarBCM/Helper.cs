@@ -396,13 +396,18 @@ namespace AutosarBCM
         /// <param name="payloadName">The type of the item.</param>
         public static void WriteUnopenedPayloadsToLogFile(string payloadName, string controlName, int openAt, int closeAt, int count)
         {
-            string date = DateTime.Now.ToString($"yyyyMMdd-");
+            string date = DateTime.Now.ToString($"yyyyMMdd");
             string logFilePath = $"{date}_Unopened_Payloads_log.txt";
             string cycleHeader = $"Cycle {openAt}-{closeAt}{Environment.NewLine}";
             string logMessage = $"{count}) Control Name : {controlName} - Payload Name : {payloadName}{Environment.NewLine}";
 
-            List<string> lines= new List<string>();
+            List<string> lines = new List<string>();
 
+
+            if (File.Exists(logFilePath))
+            {
+                lines = File.ReadAllLines(logFilePath).ToList();
+            }
 
             bool cycleHeaderExists = lines.Any(line => line.Contains(cycleHeader.Trim()));
             if (!cycleHeaderExists)
@@ -411,7 +416,6 @@ namespace AutosarBCM
             }
 
             int headerIndex = lines.FindIndex(line => line.Contains(cycleHeader.Trim()));
-
             if (headerIndex != -1)
             {
                 lines.Insert(headerIndex + 1, logMessage);
