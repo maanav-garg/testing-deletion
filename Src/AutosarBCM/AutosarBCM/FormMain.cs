@@ -387,13 +387,13 @@ namespace AutosarBCM
                 var filePath = openFileDialog.FileName;
                 if (isMdxFile)
                 {
-                    tsmiEMCView.Visible = false;
-                    environmentalTestTsmi.Visible = false;
+                    tsmiEMCView.Enabled = false;
+                    environmentalTestTsmi.Enabled = false;
                 }
                 else
                 {
-                    tsmiEMCView.Visible = true;
-                    environmentalTestTsmi.Visible = true;
+                    tsmiEMCView.Enabled = true;
+                    environmentalTestTsmi.Enabled = true;
                 }
                 ParseMessages(filePath);
                 ASContext = new ASContext(filePath);

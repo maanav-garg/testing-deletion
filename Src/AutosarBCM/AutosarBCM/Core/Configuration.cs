@@ -212,15 +212,15 @@ namespace AutosarBCM.Core
 
         private static Payload InitializeType(PayloadInfo payloadInfo, byte[] value, int? index = null)
         {
-            if (FormMain.isMdxFile)
+            var typeName = FormMain.isMdxFile ? ((payloadInfo.TypeName == "DID_PWM") ? payloadInfo.TypeName : "MDX_Payload") : "";
+            if (typeName != "")
             {
-                return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.MDX_Payload"))).Parse(payloadInfo, value, index);
+                return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.{typeName}"))).Parse(payloadInfo, value, index);
             }
             else
             {
                 return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.{payloadInfo.TypeName}"))).Parse(payloadInfo, value, index);
             }
-            
         }
     }
 
@@ -352,14 +352,14 @@ namespace AutosarBCM.Core
                                     {
                                         length = (int)Math.Round(((most_sig_bit + 1) - least_sig_bit)/8);
                                     }
-                                    var descriptionValue = x.Element("DESCRIPTION")?.Value;
+                                    var descriptionValue = x.Element("DESCRIPTION")?.Value.Trim();
                                     string[] parts = descriptionValue?.Split(new[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                                     var descriptionPart = parts != null && parts.Length > 1 ? parts[1].Trim() : null;
 
                                     var dtcCode = doc.Descendants("ECU_DATA")
                                                      .Descendants("DIAGNOSTIC_TROUBLE_CODES")
                                                      .Descendants("DTC")
-                                                     .Where(dtc => dtc.Element("DESCRIPTION")?.Value == descriptionPart)
+                                                     .Where(dtc => dtc.Element("DESCRIPTION")?.Value.Trim() == descriptionPart)
                                                      .Select(dtc => dtc.Element("NUMBER")?.Value)
                                                      .FirstOrDefault();
 
@@ -385,6 +385,7 @@ namespace AutosarBCM.Core
                                           })
                                           .ToList();
                                     }
+                                    /*
                                     else if (dataType == "bytes")
                                     {
                                         values = new List<PayloadValue>
@@ -396,13 +397,14 @@ namespace AutosarBCM.Core
                                             }
                                         };
                                     }
+                                    */
                                     else if (dataType == "unsigned")
                                     {
                                         values = new List<PayloadValue>
                                         {
                                             new PayloadValue
                                             {
-                                                ValueString = "0",
+                                                ValueString = "1",
                                                 FormattedValue = "unsigned"
                                             }
                                         };
@@ -422,13 +424,20 @@ namespace AutosarBCM.Core
                                         payloads.Add(new PayloadInfo
                                         {
                                             Length = length,
-                                            TypeName = "TypeName" + counter,
+                                            TypeName = dataType == "unsigned" ? "DID_PWM" :  "TypeName" + counter,
                                             Values = values
                                         });
                                     }
                                     else
                                     {
-                                        existingTypeName = payloads.First(p => p.Values.Select(v => v.ValueString).SequenceEqual(values.Select(v => v.ValueString))).TypeName;
+                                        if(dataType == "unsigned")
+                                        {
+                                            existingTypeName = "DID_PWM";
+                                        }
+                                        else
+                                        {
+                                            existingTypeName = payloads.First(p => p.Values.Select(v => v.ValueString).SequenceEqual(values.Select(v => v.ValueString))).TypeName;
+                                        }
                                     }
 
 
