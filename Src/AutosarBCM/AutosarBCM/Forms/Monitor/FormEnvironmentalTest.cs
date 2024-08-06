@@ -190,6 +190,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else //Start Test
             {
+                FormMain.MonitorTestTypeClone = MonitorTestType.Environmental;
                 cancellationTokenSource = new CancellationTokenSource();
                 Task.Run(async () =>
                 {
