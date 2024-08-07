@@ -35,6 +35,7 @@ namespace AutosarBCM.Forms.Monitor
         public FormEnvironmentalTest()
         {
             InitializeComponent();
+            LoadConfigSelection();
             LoadControls();
         }
         #endregion
@@ -44,6 +45,53 @@ namespace AutosarBCM.Forms.Monitor
         #endregion
 
         #region Private Methods
+
+
+        private void LoadConfigSelection()
+        {
+            if (ASContext.Configuration == null)
+                return;
+            if(EnvironmentalTest.CurrentEnvironment == null)
+            {
+                var defaultEnvironment = ASContext.Configuration.EnvironmentalTest.Envrironments.First().Name;
+                EnvironmentalTest.CurrentEnvironment = defaultEnvironment;
+                tsbConfigurationSelection.Text = $"Configuration: {defaultEnvironment}";
+            }
+                
+            tsbConfigurationSelection.DropDownItems.Clear();
+            foreach (var environment in ASContext.Configuration.EnvironmentalTest.Envrironments)
+                tsbConfigurationSelection.DropDownItems.Add(new ToolStripMenuItem(environment.Name, null, new EventHandler(tsbConfigurationSelection_Click)) { Tag = environment.Name });
+        }
+        private void tsbConfigurationSelection_Click(object sender, EventArgs e)
+        {
+            var environmentInfo = (sender as ToolStripMenuItem).Tag as string;
+            if (EnvironmentalTest.CurrentEnvironment == environmentInfo)
+            {
+                Helper.ShowWarningMessageBox(environmentInfo + " configuration is already loaded.");
+                return;
+            }
+                
+            EnvironmentalTest.CurrentEnvironment = environmentInfo;
+            tsbConfigurationSelection.Text = $"Configuration: {environmentInfo}";
+            SuspendLayout();
+            ReloadControls();
+            ResumeLayout();
+        }
+        private void ReloadControls()
+        {
+            tsbConfigurationSelection.Enabled = false;
+            groups.Clear();
+            cycles.Clear();
+            allPayloads.Clear();
+            mappingData.Clear();
+            continuousReadData.Clear();
+            ucItems.Clear();
+            dtcList.Clear();
+            pnlMonitor.Controls.Clear();
+            LoadControls();
+            tsbConfigurationSelection.Enabled = true;
+            
+        }
         private void LoadControls()
         {
             if (ASContext.Configuration == null)
@@ -55,9 +103,9 @@ namespace AutosarBCM.Forms.Monitor
 
             ResetTime();
 
-            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Cycles);
+            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
             mappingData = (ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
-            continuousReadData = (ASContext.Configuration.EnvironmentalTest.ContinousReadList);
+            continuousReadData = (ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
 
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
@@ -175,6 +223,7 @@ namespace AutosarBCM.Forms.Monitor
                 }
                 cancellationTokenSource.Cancel();
                 btnStart.Enabled = false;
+                tsbConfigurationSelection.Enabled = false;
                 var count = 1;
                 if (allPayloads != null)
                 {
@@ -215,6 +264,7 @@ namespace AutosarBCM.Forms.Monitor
                     isActive = true;
                     btnStart.Text = "Stop";
                     btnStart.ForeColor = Color.Red;
+                    tsbConfigurationSelection.Enabled = false;
                 }
                 else
                 {
@@ -222,6 +272,7 @@ namespace AutosarBCM.Forms.Monitor
                     if (mainForm.dockMonitor.ActiveDocument is IPeriodicTest formInput)
                         formInput.SessionControlManagement(true);
                     btnStart.Enabled = true;
+                    tsbConfigurationSelection.Enabled = true;
                     isActive = false;
                     btnStart.Text = "Start";
                     btnStart.ForeColor = Color.Green;
@@ -322,7 +373,7 @@ namespace AutosarBCM.Forms.Monitor
                     allPayloads.Remove(payloadName);
                 }
                     Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
-                if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
+                if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
                 {
                     
                     Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);

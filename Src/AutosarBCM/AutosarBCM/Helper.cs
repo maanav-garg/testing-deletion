@@ -397,7 +397,7 @@ namespace AutosarBCM
         {
             string date = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string logFilePath = $"{date}_Unopened_Payloads_log.txt";
-            string logMessage = $"{count}) Control Name : {controlName} - Payload Name : {payloadName}{Environment.NewLine}";
+            string logMessage = $"{count}) Control Name : {controlName} - Payload Name : {payloadName}{System.Environment.NewLine}";
             File.AppendAllText(logFilePath, logMessage);
         }
 
@@ -1077,7 +1077,7 @@ namespace AutosarBCM
         /// </summary>
         public static void PrepareCsvHelper()
         {
-            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
             saveFileDialog.Filter = openFileDialog.Filter = "CSV File| *.csv";
             openFileDialog.Multiselect = false;
             openFileDialog.Title = "Please select a CSV file.";
