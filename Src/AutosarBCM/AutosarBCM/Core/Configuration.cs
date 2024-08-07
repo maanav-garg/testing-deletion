@@ -353,6 +353,10 @@ namespace AutosarBCM.Core
                                         length = (int)Math.Round(((most_sig_bit + 1) - least_sig_bit)/8);
                                     }
                                     var descriptionValue = x.Element("DESCRIPTION")?.Value.Trim();
+                                    if(descriptionValue == null || descriptionValue == "")
+                                    {
+                                        descriptionValue = x.Element("NAME")?.Value.Trim();
+                                    }
                                     string[] parts = descriptionValue?.Split(new[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                                     var descriptionPart = parts != null && parts.Length > 1 ? parts[1].Trim() : null;
 
@@ -362,6 +366,11 @@ namespace AutosarBCM.Core
                                                      .Where(dtc => dtc.Element("DESCRIPTION")?.Value.Trim() == descriptionPart)
                                                      .Select(dtc => dtc.Element("NUMBER")?.Value)
                                                      .FirstOrDefault();
+
+                                    if(x.Element("NAME")?.Value == "Vehicle Speed for Low Liner")
+                                    {
+                                        Console.Write("test");
+                                    }
 
                                     var dataType = x.Element("DATA_DEFINITION").Element("DATA_TYPE").Value;
                                     List<PayloadValue> values;
@@ -398,17 +407,6 @@ namespace AutosarBCM.Core
                                         };
                                     }
                                     */
-                                    else if (dataType == "unsigned")
-                                    {
-                                        values = new List<PayloadValue>
-                                        {
-                                            new PayloadValue
-                                            {
-                                                ValueString = "1",
-                                                FormattedValue = "unsigned"
-                                            }
-                                        };
-                                    }
                                     else
                                     {
                                         values = new List<PayloadValue>();
@@ -427,18 +425,13 @@ namespace AutosarBCM.Core
                                             TypeName = dataType == "unsigned" ? "DID_PWM" :  "TypeName" + counter,
                                             Values = values
                                         });
-                                    }
-                                    else
-                                    {
+
                                         if(dataType == "unsigned")
                                         {
                                             existingTypeName = "DID_PWM";
                                         }
-                                        else
-                                        {
-                                            existingTypeName = payloads.First(p => p.Values.Select(v => v.ValueString).SequenceEqual(values.Select(v => v.ValueString))).TypeName;
-                                        }
                                     }
+                                    else existingTypeName = payloads.First(p => p.Values.Select(v => v.ValueString).SequenceEqual(values.Select(v => v.ValueString))).TypeName;
 
 
                                     return new PayloadInfo
@@ -454,6 +447,8 @@ namespace AutosarBCM.Core
                         }
 
                     }).ToList();
+
+                Console.Write("test");
 
                 var dtcFailureTypes = doc.Descendants("ECU_DATA").Descendants("DIAGNOSTIC_TROUBLE_CODES").Descendants("DTC_FAILURE_TYPES_SUPPORTED").Descendants("DTC_FAILURE_TYPE")
                     .Select(t => new DTCFailure
