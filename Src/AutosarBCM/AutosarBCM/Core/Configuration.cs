@@ -369,7 +369,6 @@ namespace AutosarBCM.Core
                             TxInterval = int.Parse(c.Element("TxInterval").Value),
                             StartCycleIndex = int.Parse(c.Element("StartCycleIndex").Value),
                             EndCycleIndex = int.Parse(c.Element("EndCycleIndex").Value),
-                            PWMDutyOpenValue = byte.Parse(c.Element("PWMDutyOpenValue").Value),
                             PWMDutyCloseValue = byte.Parse(c.Element("PWMDutyCloseValue").Value),
                             PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
                             PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),

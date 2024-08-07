@@ -394,40 +394,50 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="count">The name of the item.</param>
         /// <param name="payloadName">The type of the item.</param>
-        public static void WriteUnopenedPayloadsToLogFile(string payloadName, string controlName, int openAt, int closeAt, int count)
+        public static void WriteUnopenedPayloadsToLogFile(string payloadName, string controlName, int openAt, int closeAt, int count, int rangeCount)
         {
-            string date = DateTime.Now.ToString($"yyyyMMdd");
+            string date = DateTime.Now.ToString("yyyyMMdd");
             string logFilePath = $"{date}_Unopened_Payloads_log.txt";
-            string cycleHeader = $"Cycle {openAt}-{closeAt}{Environment.NewLine}";
-            string logMessage = $"{count}) Control Name : {controlName} - Payload Name : {payloadName}{Environment.NewLine}";
+            string rangeHeader = $"{rangeCount}. Range & {openAt}-{closeAt} Cycle {Environment.NewLine}";
+            // string cycleHeader = $"Cycle {openAt}-{closeAt}{Environment.NewLine}";
+            string logMessage = $"{count}) Kontrol Adı: {controlName} - Payload Adı: {payloadName}{Environment.NewLine}";
 
             List<string> lines = new List<string>();
-
+            Console.WriteLine("headers:   " + "" + rangeHeader + "   " + "   " + logMessage);
 
             if (File.Exists(logFilePath))
             {
                 lines = File.ReadAllLines(logFilePath).ToList();
             }
 
-            bool cycleHeaderExists = lines.Any(line => line.Contains(cycleHeader.Trim()));
-            if (!cycleHeaderExists)
+
+            bool rangeHeaderExists = lines.Any(line => line.Contains(rangeHeader.Trim()));
+            if (!rangeHeaderExists)
             {
-                lines.Add(cycleHeader);
+                lines.Add(rangeHeader);
             }
 
-            int headerIndex = lines.FindIndex(line => line.Contains(cycleHeader.Trim()));
-            if (headerIndex != -1)
+            int rangeHeaderIndex = lines.FindIndex(line => line.Contains(rangeHeader.Trim()));
+
+            if (rangeHeaderIndex != -1)
             {
-                lines.Insert(headerIndex + 1, logMessage);
-            }
-            else
-            {
-                lines.Add(logMessage);
+                // Aynı rangeHeader altında var mı kontrol et
+                bool logMessageExists = lines.Skip(rangeHeaderIndex + 1)
+                                             .TakeWhile(line => !line.Contains("Range"))
+                                             .Any(line => line.Contains(logMessage.Trim()));
+
+                if (!logMessageExists)
+                {
+                    lines.Add(logMessage);
+                }
+
+
+
+
+                File.WriteAllLines(logFilePath, lines);
             }
 
-            File.WriteAllLines(logFilePath, lines);
         }
-
 
 
 
