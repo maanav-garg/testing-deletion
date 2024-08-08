@@ -111,10 +111,9 @@ namespace AutosarBCM.Core
             var bitIndex = 0;
 
             var bytes = new List<byte>();
-
             var isControlMaskActive = false;
-
-            if (Services.IndexOf(0X2E) == -1)
+            
+            if (Services.IndexOf((byte)SIDDescription.SID_WRITE_DATA_BY_IDENTIFIER) == -1)
             {
                 bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
                 isControlMaskActive = Responses[0].Payloads.Count > 1;
@@ -166,7 +165,7 @@ namespace AutosarBCM.Core
                             else
                                 pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue).Reverse().ToArray();
 
-                            Array.Reverse(pwmBytes);
+                            //Array.Reverse(pwmBytes);
                             bytes.AddRange(pwmBytes);
                         }
                         else
@@ -191,7 +190,7 @@ namespace AutosarBCM.Core
             if (isControlMaskActive)
                 bytes.Add(controlByte);
 
-            if (Services.IndexOf(0X2E) == -1)
+            if (Services.IndexOf((byte)SIDDescription.SID_WRITE_DATA_BY_IDENTIFIER) == -1)
                 //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
                 Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
             else

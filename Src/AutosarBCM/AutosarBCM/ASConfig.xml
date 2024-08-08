@@ -2592,6 +2592,8 @@
 				<Functions>
 					<Function control="Test_Data">
 						<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+						<Payload>C4.8_SpareDigitalOutput4</Payload>
+						<Payload>C4.7_SparePWM4</Payload>
 					</Function>
 					<Function control="WCInhibit">
 						<Payload>C4.47_WCInhibit</Payload>
@@ -2697,6 +2699,9 @@
 					<Function control="BrakeLightRelaySupply">
 						<Payload>C4.6_BrakeLightRelaySupply</Payload>
 					</Function>
+					<Function control="Spare_Digital_Outputs">
+						<Payload>C4.48_SpareDigitalOutput3</Payload>
+					</Function>
 					<Function control="Rear_Park_Lamps_Output">
 						<Payload>C4.3_RearParkingLightLeftSupply</Payload>
 						<Payload>C4.4_RearParkingLightRightSupply</Payload>
@@ -2766,6 +2771,9 @@
 					</Function>
 					<Function control="BrakeLightRelaySupply">
 						<Payload>C4.6_BrakeLightRelaySupply</Payload>
+					</Function>
+					<Function control="Spare_Digital_Outputs">
+						<Payload>C4.48_SpareDigitalOutput3</Payload>
 					</Function>
 					<Function control="Rear_Park_Lamps_Output">
 						<Payload>C4.3_RearParkingLightLeftSupply</Payload>
