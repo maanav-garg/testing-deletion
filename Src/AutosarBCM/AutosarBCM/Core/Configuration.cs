@@ -6,6 +6,8 @@ using System.Xml.Serialization;
 using AutosarBCM.UserControls.Monitor;
 using System.Threading.Tasks;
 using AutosarBCM.Core.Config;
+using System.Collections;
+using AutosarBCM.Config;
 
 namespace AutosarBCM.Core
 {
@@ -88,6 +90,7 @@ namespace AutosarBCM.Core
                             bits |= (byte)(1 << (7 - bitIndex));
                         }
                     }
+                    Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
                     bitIndex++;
                 }
             }
@@ -108,9 +111,14 @@ namespace AutosarBCM.Core
             var bitIndex = 0;
 
             var bytes = new List<byte>();
-            bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
+            var isControlMaskActive = false;
+            
+            if (Services.IndexOf((byte)SIDDescription.SID_WRITE_DATA_BY_IDENTIFIER) == -1)
+            {
+                bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
+                isControlMaskActive = Responses[0].Payloads.Count > 1;
+            }
 
-            var isControlMaskActive = Responses[0].Payloads.Count > 1;
             foreach (var payload in Responses?[0].Payloads)
             {
                 payloads.TryGetValue(payload.Name, out bool isOpen);
@@ -157,7 +165,7 @@ namespace AutosarBCM.Core
                             else
                                 pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue).Reverse().ToArray();
 
-                            Array.Reverse(pwmBytes);
+                            //Array.Reverse(pwmBytes);
                             bytes.AddRange(pwmBytes);
                         }
                         else
@@ -182,26 +190,55 @@ namespace AutosarBCM.Core
             if (isControlMaskActive)
                 bytes.Add(controlByte);
 
-            //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
-            Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            if (Services.IndexOf((byte)SIDDescription.SID_WRITE_DATA_BY_IDENTIFIER) == -1)
+                //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
+                Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            else
+                Transmit(ServiceInfo.WriteDataByIdentifier, bytes.ToArray());
 
         }
 
-        internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data)
+        internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data = null)
         {
             var payloads = new List<Payload>();
             var responseIndex = serviceInfo.ResponseIndex;
-
+            int counter = 0;
+            var address = 0;
+            byte[] bitArray = new byte[4];
             foreach (var pInfo in Responses.First()?.Payloads)
             {
                 var pDef = ASContext.Configuration.GetPayloadInfoByType(pInfo.TypeName);
                 if (pDef == null) continue;
                 var value = data?.Skip(responseIndex).Take(pDef.Length).ToArray();
 
-                payloads.Add(InitializeType(pInfo, value));
-                responseIndex += pDef?.Length ?? 0;
+                if(data != null)
+                {
+                    address = BitConverter.ToUInt16(data.Skip(1).Take(2).Reverse().ToArray(), 0);
+                }
 
-                if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+                if (data != null && pDef.TypeName == "HexDump_1Byte" && address == 0xC151)
+                {
+                    byte upperNibble = (byte)((value[0] & 0xF0) >> 4);
+                    for (int i = 0; i < 4; i++)
+                    {
+                        bitArray[i] = (byte)((upperNibble >> (3 - i)) & 1);
+                    }
+                }
+
+                if (address == 0xC151 && pDef.TypeName != "HexDump_1Byte")
+                {
+                    payloads.Add(InitializeType(pInfo, new byte[] { bitArray[counter] }));
+                    responseIndex += pDef?.Length ?? 0;
+                    counter++;
+                    if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+                }
+                else
+                {
+                    payloads.Add(InitializeType(pInfo, value));
+                    responseIndex += pDef?.Length ?? 0;
+
+                    if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+                }
             }
             return payloads.ToList();
         }

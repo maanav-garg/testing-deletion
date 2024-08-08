@@ -324,7 +324,7 @@ namespace AutosarBCM.Forms.Monitor
                     Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
                 {
-                    
+
                     Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
 
                     matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
