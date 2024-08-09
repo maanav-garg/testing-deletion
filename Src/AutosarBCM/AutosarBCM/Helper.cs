@@ -408,7 +408,6 @@ namespace AutosarBCM
                 lines = File.ReadAllLines(logFilePath).ToList();
             }
 
-
             bool rangeHeaderExists = lines.Any(line => line.Contains(rangeHeader.Trim()));
             if (!rangeHeaderExists)
             {

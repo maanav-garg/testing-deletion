@@ -2315,7 +2315,7 @@
 			<CycleTime>200</CycleTime>
 			<TxInterval>50</TxInterval>
 			<StartCycleIndex>16</StartCycleIndex>
-			<EndCycleIndex>21</EndCycleIndex>
+			<EndCycleIndex>90</EndCycleIndex>
 			<PWMDutyOpenValue>10000</PWMDutyOpenValue>
 			<PWMDutyCloseValue>0</PWMDutyCloseValue>
 			<PWMFreqOpenValue>200</PWMFreqOpenValue>
@@ -2592,6 +2592,11 @@
 				<OpenAt>01</OpenAt>
 				<CloseAt>05</CloseAt>
 				<Functions>
+					<Function control="Test_Data">
+						<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+						<Payload>C4.8_SpareDigitalOutput4</Payload>
+						<Payload>C4.7_SparePWM4</Payload>
+					</Function>
 					<Function control="WCInhibit">
 						<Payload>C4.47_WCInhibit</Payload>
 					</Function>
@@ -2610,9 +2615,9 @@
 					<Function control="Rear_Fog_Lamps_Output">
 						<Payload>C2.4_Rear Fog Lamps Output</Payload>
 					</Function>
-					<!-- <Function control="WaterPumpSupply"> -->
-					<!-- <Payload>C3.18_WaterPumpSupply</Payload> -->
-					<!-- </Function> -->
+					<Function control="WaterPumpSupply">
+						<Payload>C3.18_WaterPumpSupply</Payload>
+					</Function>
 					<Function control="Left_Front_Low_Beam_Output_Control">
 						<Payload>C1.14_Left Front Low Beam Output Control</Payload>
 					</Function>
@@ -2642,6 +2647,11 @@
 				<OpenAt>06</OpenAt>
 				<CloseAt>10</CloseAt>
 				<Functions>
+					<Function control="Test_Data">
+						<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+						<Payload>C4.8_SpareDigitalOutput4</Payload>
+						<Payload>C4.7_SparePWM4</Payload>
+					</Function>
 					<Function control="WCInhibit">
 						<Payload>C4.47_WCInhibit</Payload>
 					</Function>
@@ -2657,9 +2667,9 @@
 					<Function control="Rear_Fog_Lamps_Output">
 						<Payload>C2.4_Rear Fog Lamps Output</Payload>
 					</Function>
-					<!-- <Function control="WaterPumpSupply"> -->
-					<!-- <Payload>C3.18_WaterPumpSupply</Payload> -->
-					<!-- </Function> -->
+					<Function control="WaterPumpSupply">
+						<Payload>C3.18_WaterPumpSupply</Payload>
+					</Function>
 					<Function control="Left_Front_Low_Beam_Output_Control">
 						<Payload>C1.14_Left Front Low Beam Output Control</Payload>
 					</Function>
@@ -2686,14 +2696,13 @@
 						<Payload>C4.42_Ambient Light LED Power Supply</Payload>
 					</Function>
 					<Function control="Spare_Digital_Outputs">
-						<Payload>C4.8_SpareDigitalOutput4</Payload>
 						<Payload>C4.5_SpareDigitalOutput2</Payload>
-					</Function>
-					<Function control="Spare_PWM_Inputs">
-						<Payload>C4.7_SparePWM4</Payload>
 					</Function>
 					<Function control="BrakeLightRelaySupply">
 						<Payload>C4.6_BrakeLightRelaySupply</Payload>
+					</Function>
+					<Function control="Spare_Digital_Outputs">
+						<Payload>C4.48_SpareDigitalOutput3</Payload>
 					</Function>
 					<Function control="Rear_Park_Lamps_Output">
 						<Payload>C4.3_RearParkingLightLeftSupply</Payload>
@@ -2711,6 +2720,11 @@
 				<OpenAt>11</OpenAt>
 				<CloseAt>-1</CloseAt>
 				<Functions>
+					<Function control="Test_Data">
+						<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+						<Payload>C4.8_SpareDigitalOutput4</Payload>
+						<Payload>C4.7_SparePWM4</Payload>
+					</Function>
 					<Function control="WCInhibit">
 						<Payload>C4.47_WCInhibit</Payload>
 					</Function>
@@ -2726,9 +2740,9 @@
 					<Function control="Rear_Fog_Lamps_Output">
 						<Payload>C2.4_Rear Fog Lamps Output</Payload>
 					</Function>
-					<!-- <Function control="WaterPumpSupply"> -->
-					<!-- <Payload>C3.18_WaterPumpSupply</Payload> -->
-					<!-- </Function> -->
+					<Function control="WaterPumpSupply">
+						<Payload>C3.18_WaterPumpSupply</Payload>
+					</Function>
 					<Function control="Left_Front_Low_Beam_Output_Control">
 						<Payload>C1.14_Left Front Low Beam Output Control</Payload>
 					</Function>
@@ -2755,14 +2769,13 @@
 						<Payload>C4.42_Ambient Light LED Power Supply</Payload>
 					</Function>
 					<Function control="Spare_Digital_Outputs">
-						<Payload>C4.8_SpareDigitalOutput4</Payload>
 						<Payload>C4.5_SpareDigitalOutput2</Payload>
-					</Function>
-					<Function control="Spare_PWM_Inputs">
-						<Payload>C4.7_SparePWM4</Payload>
 					</Function>
 					<Function control="BrakeLightRelaySupply">
 						<Payload>C4.6_BrakeLightRelaySupply</Payload>
+					</Function>
+					<Function control="Spare_Digital_Outputs">
+						<Payload>C4.48_SpareDigitalOutput3</Payload>
 					</Function>
 					<Function control="Rear_Park_Lamps_Output">
 						<Payload>C4.3_RearParkingLightLeftSupply</Payload>
@@ -2821,14 +2834,11 @@
 				<CloseAt>17</CloseAt>
 				<Functions>
 					<!--> <Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!-->
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
-					<Function control="Spare_PWM_Inputs">
-						<Payload>C4.7_SparePWM4</Payload>
-					</Function>
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -2840,17 +2850,14 @@
 						<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
 					</Function>
 					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-					</Function>-->
+								<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+							</Function>-->
 					<Function scenario="Power_Mirror_Control_Right_Up"></Function>
 					<Function control="Washer_Pump_Front_Relay">
 						<Payload>C1.15_Washer Pump Front Relay</Payload>
 					</Function>
 					<Function control="ReverseGearSupply">
 						<Payload>C3.15_ReverseGearSupply</Payload>
-						<Function control="Spare_PWM_Inputs">
-							<Payload>C4.7_SparePWM4</Payload>
-						</Function>
 					</Function>
 				</Functions>
 			</Cycle>
@@ -2863,15 +2870,12 @@
 					<!-- <Payload>C1.3_Passenger Power Window Motor Down</Payload> -->
 					<!-- </Function> -->
 					<!--><Function control="Sunroof_Motor">
-						<Payload>C1.8_MOT-A</Payload>
-					</Function></!-->
+								<Payload>C1.8_MOT-A</Payload>
+							</Function></!-->
 					<Function scenario="Sunroof_Open"></Function>
 					<Function control="Hall_Sensor_Supply">
 						<Payload>C4.28_HallSensorLeftSupply</Payload>
 						<Payload>C4.46_HallSensorRightSupply</Payload>
-					</Function>
-					<Function control="Spare_PWM_Inputs">
-						<Payload>C4.7_SparePWM4</Payload>
 					</Function>
 				</Functions>
 			</Cycle>
@@ -2894,9 +2898,9 @@
 				<CloseAt>18</CloseAt>
 				<Functions>
 					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-					</Function></!-->
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Left_Lock"></Function>
 					<Function scenario="Door_Right_Lock"></Function>
 				</Functions>
@@ -2907,9 +2911,9 @@
 				<CloseAt>20</CloseAt>
 				<Functions>
 					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!-->
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -2920,9 +2924,9 @@
 				<CloseAt>22</CloseAt>
 				<Functions>
 					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!-->
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -2962,8 +2966,8 @@
 						<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
 					</Function>
 					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-					</Function>-->
+								<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+							</Function>-->
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -2972,9 +2976,9 @@
 				<CloseAt>24</CloseAt>
 				<Functions>
 					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!-->
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -2985,14 +2989,14 @@
 				<CloseAt>26</CloseAt>
 				<Functions>
 					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!-->
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
 			</Cycle>
-			<!--<Cycle>
+			<Cycle>
 				<Name>CycleLoad 11 - Group 1</Name>
 				<OpenAt>26</OpenAt>
 				<CloseAt>31</CloseAt>
@@ -3021,10 +3025,10 @@
 				<OpenAt>27</OpenAt>
 				<CloseAt>28</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3034,10 +3038,10 @@
 				<OpenAt>29</OpenAt>
 				<CloseAt>30</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3047,10 +3051,10 @@
 				<OpenAt>31</OpenAt>
 				<CloseAt>32</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3066,9 +3070,9 @@
 					<Function control="LED_Outputs">
 						<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
-						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>--><!--
+					<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							</Function>-->
 					<Function scenario="Power_Mirror_Control_Right_Right"></Function>
 					<Function control="Washer_Pump_Front_Relay">
 						<Payload>C1.15_Washer Pump Front Relay</Payload>
@@ -3080,10 +3084,10 @@
 				<OpenAt>32</OpenAt>
 				<CloseAt>33</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3093,23 +3097,23 @@
 				<OpenAt>34</OpenAt>
 				<CloseAt>35</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
-			</Cycle>-->
-			<!--<Cycle>
+			</Cycle>
+			<Cycle>
 				<Name>CycleLoad 21 - Group 1</Name>
 				<OpenAt>36</OpenAt>
 				<CloseAt>37</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3128,9 +3132,9 @@
 					<Function control="Horn_Output_Control">
 						<Payload>C1.11_Horn Output Control</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
-						<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-					</Function>--><!--
+					<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							</Function>-->
 					<Function scenario="Power_Mirror_Control_Left_Up"></Function>
 					<Function control="ReverseGearSupply">
 						<Payload>C3.15_ReverseGearSupply</Payload>
@@ -3155,10 +3159,10 @@
 				<OpenAt>38</OpenAt>
 				<CloseAt>39</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3168,10 +3172,10 @@
 				<OpenAt>40</OpenAt>
 				<CloseAt>41</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3196,9 +3200,9 @@
 					<Function control="LowLinerFrontSideLiftedValveSupply">
 						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
-						<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
-					</Function>--><!--
+					<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+							</Function>-->
 					<Function scenario="Power_Mirror_Control_Left_Right"></Function>
 				</Functions>
 			</Cycle>
@@ -3207,10 +3211,10 @@
 				<OpenAt>42</OpenAt>
 				<CloseAt>43</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3220,10 +3224,10 @@
 				<OpenAt>44</OpenAt>
 				<CloseAt>45</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3233,10 +3237,10 @@
 				<OpenAt>46</OpenAt>
 				<CloseAt>47</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3276,10 +3280,10 @@
 				<OpenAt>47</OpenAt>
 				<CloseAt>48</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3289,10 +3293,10 @@
 				<OpenAt>49</OpenAt>
 				<CloseAt>50</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3302,10 +3306,10 @@
 				<OpenAt>51</OpenAt>
 				<CloseAt>52</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3339,10 +3343,10 @@
 				<OpenAt>53</OpenAt>
 				<CloseAt>54</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3352,10 +3356,10 @@
 				<OpenAt>55</OpenAt>
 				<CloseAt>56</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3374,9 +3378,9 @@
 					<Function control="LowLinerFrontSideLiftedValveSupply">
 						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
-						<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-					</Function>--><!--
+					<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							</Function>-->
 					<Function scenario="Power_Mirror_Control_Left_Up"></Function>
 				</Functions>
 			</Cycle>
@@ -3405,12 +3409,12 @@
 				<OpenAt>56</OpenAt>
 				<CloseAt>16</CloseAt>
 				<Functions>
-					--><!-- <Function control="Passenger_Power_Window_Motor"> --><!--
-					--><!-- <Payload>C1.2_Passenger Power Window Motor Up</Payload> --><!--
-					--><!-- </Function> --><!--
-					--><!--><Function control="Sunroof_Motor">
-						<Payload>C1.6_MOT-B</Payload>
-					</Function></!--><!--
+					<!-- <Function control="Passenger_Power_Window_Motor"> -->
+					<!-- <Payload>C1.2_Passenger Power Window Motor Up</Payload> -->
+					<!-- </Function> -->
+					<!--><Function control="Sunroof_Motor">
+								<Payload>C1.6_MOT-B</Payload>
+							</Function></!-->
 					<Function scenario="Sunroof_Close"></Function>
 				</Functions>
 			</Cycle>
@@ -3419,10 +3423,10 @@
 				<OpenAt>57</OpenAt>
 				<CloseAt>58</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3432,10 +3436,10 @@
 				<OpenAt>59</OpenAt>
 				<CloseAt>60</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3445,10 +3449,10 @@
 				<OpenAt>61</OpenAt>
 				<CloseAt>62</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3464,9 +3468,9 @@
 					<Function control="Horn_Output_Control">
 						<Payload>C1.11_Horn Output Control</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
-						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>--><!--
+					<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							</Function>-->
 					<Function scenario="Power_Mirror_Control_Right_Right"></Function>
 				</Functions>
 			</Cycle>
@@ -3488,10 +3492,10 @@
 				<OpenAt>62</OpenAt>
 				<CloseAt>63</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3501,10 +3505,10 @@
 				<OpenAt>64</OpenAt>
 				<CloseAt>65</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3514,10 +3518,10 @@
 				<OpenAt>66</OpenAt>
 				<CloseAt>67</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3533,9 +3537,9 @@
 					<Function control="LowLinerFrontSideLiftedValveSupply">
 						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
-						<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-					</Function>--><!--
+					<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+							</Function>-->
 					<Function scenario="Power_Mirror_Control_Right_Up"></Function>
 					<Function control="TrailerTagAxleLifting1Supply">
 						<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
@@ -3566,10 +3570,10 @@
 				<OpenAt>68</OpenAt>
 				<CloseAt>69</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3579,10 +3583,10 @@
 				<OpenAt>70</OpenAt>
 				<CloseAt>71</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3618,9 +3622,9 @@
 					<Function control="Right_Rear_Turn_Signal_Lamp_Control">
 						<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
-						<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-					</Function>--><!--
+					<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+							</Function>-->
 				</Functions>
 			</Cycle>
 			<Cycle>
@@ -3628,10 +3632,10 @@
 				<OpenAt>72</OpenAt>
 				<CloseAt>73</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3641,10 +3645,10 @@
 				<OpenAt>74</OpenAt>
 				<CloseAt>75</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3654,10 +3658,10 @@
 				<OpenAt>76</OpenAt>
 				<CloseAt>77</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3687,10 +3691,10 @@
 				<OpenAt>77</OpenAt>
 				<CloseAt>78</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3700,10 +3704,10 @@
 				<OpenAt>79</OpenAt>
 				<CloseAt>80</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3713,10 +3717,10 @@
 				<OpenAt>81</OpenAt>
 				<CloseAt>82</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3738,9 +3742,9 @@
 					<Function control="LowLinerFrontSideLiftedValveSupply">
 						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
-						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>--><!--
+					<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							</Function>-->
 					<Function scenario="Power_Mirror_Control_Right_Right"></Function>
 					<Function control="TrailerTagAxleLifting1Supply">
 						<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
@@ -3765,10 +3769,10 @@
 				<OpenAt>83</OpenAt>
 				<CloseAt>84</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3778,10 +3782,10 @@
 				<OpenAt>85</OpenAt>
 				<CloseAt>86</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
@@ -3800,9 +3804,9 @@
 					<Function control="Horn_Output_Control">
 						<Payload>C1.11_Horn Output Control</Payload>
 					</Function>
-					--><!--<Function control="Power_Mirror_Control">
-						<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-					</Function>--><!--
+					<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							</Function>-->
 					<Function scenario="Power_Mirror_Control_Left_Up"></Function>
 					<Function control="ReverseGearSupply">
 						<Payload>C3.15_ReverseGearSupply</Payload>
@@ -3820,10 +3824,10 @@
 				<OpenAt>87</OpenAt>
 				<CloseAt>88</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_UnLock"></Function>
 					<Function scenario="Door_Left_UnLock"></Function>
 				</Functions>
@@ -3833,14 +3837,14 @@
 				<OpenAt>89</OpenAt>
 				<CloseAt>90</CloseAt>
 				<Functions>
-					--><!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function></!--><!--
+					<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
 					<Function scenario="Door_Right_Lock"></Function>
 					<Function scenario="Door_Left_Lock"></Function>
 				</Functions>
-			</Cycle>-->
+			</Cycle>
 		</Cycles>
 		<Scenarios>
 			<Scenario>
