@@ -1817,16 +1817,16 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-				  <Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
-				  <Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -2580,7 +2580,6 @@
 				<Output parent="DummyControl">DummyControl3</Output>
 				<Input parent="Last_Received_Transmitter_ID_Code_Value">Last Received Transmitter Id Code Value</Input>
 			</Mapping>
-
 		</ConnectionMappings>
 		<Environments>
 			<Environment>
@@ -2610,6 +2609,8 @@
 						<Functions>
 							<Function control="Test_Data">
 								<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+								<Payload>C4.8_SpareDigitalOutput4</Payload>
+								<Payload>C4.7_SparePWM4</Payload>
 							</Function>
 							<Function control="WCInhibit">
 								<Payload>C4.47_WCInhibit</Payload>
@@ -2715,6 +2716,9 @@
 							<Function control="BrakeLightRelaySupply">
 								<Payload>C4.6_BrakeLightRelaySupply</Payload>
 							</Function>
+							<Function control="Spare_Digital_Outputs">
+								<Payload>C4.48_SpareDigitalOutput3</Payload>
+							</Function>
 							<Function control="Rear_Park_Lamps_Output">
 								<Payload>C4.3_RearParkingLightLeftSupply</Payload>
 								<Payload>C4.4_RearParkingLightRightSupply</Payload>
@@ -2784,6 +2788,9 @@
 							</Function>
 							<Function control="BrakeLightRelaySupply">
 								<Payload>C4.6_BrakeLightRelaySupply</Payload>
+							</Function>
+							<Function control="Spare_Digital_Outputs">
+								<Payload>C4.48_SpareDigitalOutput3</Payload>
 							</Function>
 							<Function control="Rear_Park_Lamps_Output">
 								<Payload>C4.3_RearParkingLightLeftSupply</Payload>
@@ -4024,7 +4031,6 @@
 				<SensitiveControls>
 					<!-- Sensitive controls contents -->
 				</SensitiveControls>
-		
 				<Cycles>
 					<Cycle>
 						<Name>CycleLoad 01 - Group 1</Name>
@@ -4232,8 +4238,8 @@
 								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
-					</Cycle>        
-				</Cycles>       
+					</Cycle>
+				</Cycles>
 				<Scenarios>
 					<Scenario>
 						<Address>DF12</Address>
@@ -4383,7 +4389,7 @@
 							<Payload>C1.6_MOT-B</Payload>
 						</ClosePayloads>
 					</Scenario>
-				</Scenarios>	
+				</Scenarios>
 			</Environment>
 		</Environments>
 	</EnvironmentalTest>
