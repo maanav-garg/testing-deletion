@@ -1,4 +1,5 @@
 ﻿using AutosarBCM.Core;
+using AutosarBCM.Core.Config;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections.Generic;
@@ -16,15 +17,18 @@ namespace AutosarBCM.Forms.Monitor
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
         private Dictionary<string, ControlInfo> dtcList = new Dictionary<string, ControlInfo>();
         private Dictionary<int, Cycle> cycles;
+        private List<Scenario> scenarios;
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
         private int cycleRange;
+        private int endCycleIndex;
         private EnvironmentalConfig EnvironmentalConfig;
         private int cycleCount = 0;
         private DateTime? lastResetTime = null;
-        public static Dictionary<string, string> allPayloads;
+        public static HashSet<string> allPayloads;
         public static HashSet<string> openedPayloads = new HashSet<string>();
-        private int loopCount = 0;
+        public static HashSet<string> cyclePayloads = new HashSet<string>();
+        private int loopCount = 1;
 
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
@@ -64,7 +68,7 @@ namespace AutosarBCM.Forms.Monitor
             continuousReadData = (ASContext.Configuration.EnvironmentalTest.ContinousReadList);
 
             groups.Add("DID", new List<UCReadOnlyItem>());
-            allPayloads = new Dictionary<string, string>();
+            allPayloads = new HashSet<string>();
 
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
             {
@@ -103,7 +107,7 @@ namespace AutosarBCM.Forms.Monitor
 
                     foreach (var payload in function.Payloads)
                     {
-                        allPayloads[payload] = controlName;
+                        allPayloads.Add(payload);
                     }
                 }
             }
@@ -292,6 +296,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleIOControlByIdentifierReceive(IOControlByIdentifierService ioService)
         {
+            string lastControlName = null;
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
                 Console.WriteLine($"Outloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
@@ -307,19 +312,66 @@ namespace AutosarBCM.Forms.Monitor
                 return false;
             }
             cycleRange = (int)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleRange;
-         //   if(cycles.Count ==cycleRange)
+            endCycleIndex = (int)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.EndCycleIndex;
+
+            scenarios = ASContext.Configuration.EnvironmentalTest.Scenarios;
 
             var cycle = cycles[loopVal];
 
+            var payloadNamesInCurrentCycle = cycle.Functions.SelectMany(a => a.Payloads);
+
+            var scenarioNamesInCurrentCycle = cycle.Functions.Select(b => b.Scenario).Where(s => s != null).Distinct();
+
+            var openPayloadsOfScenario = from scenario in scenarios
+                                         join scenarioName in scenarioNamesInCurrentCycle on scenario.Name equals scenarioName
+                                         select scenario.OpenPayloads;
+
+            var closePayloadsOfScenario = from scenario in scenarios
+                                          join scenarioName in scenarioNamesInCurrentCycle on scenario.Name equals scenarioName
+                                          select scenario.ClosePayloads;
+
+            var payloadControlMap = new Dictionary<string, string>();
+
+            foreach (var function in cycle.Functions)
+            {
+                foreach (var payload in function.Payloads)
+                {
+                    payloadControlMap[payload] = function.Control;
+                }
+            }
+
+            foreach (var scenario in scenarios)
+            {
+                foreach (var payload in scenario.OpenPayloads)
+                {
+                    payloadControlMap[payload] = payloadControlMap.ContainsKey(payload) ? payloadControlMap[payload] : null;
+                }
+                foreach (var payload in scenario.ClosePayloads)
+                {
+                    payloadControlMap[payload] = payloadControlMap.ContainsKey(payload) ? payloadControlMap[payload] : null;
+                }
+            }
+
+
+            cyclePayloads = new HashSet<string>(
+                    payloadNamesInCurrentCycle
+                        .Concat(openPayloadsOfScenario.SelectMany(innerList => innerList))
+                        .Concat(closePayloadsOfScenario.SelectMany(innerList => innerList))
+            );
+
+
             UCReadOnlyItem matchedControl = null;
-            var cyclePayloads = cycle.Functions.SelectMany(f => f.Payloads).ToHashSet();
-            var didName = ioService.ControlInfo.Name;
 
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
                 var payloadName = ioService.Payloads[i].PayloadInfo.Name;
+                lastControlName = cycle.Functions
+                              .FirstOrDefault(f => f.Payloads.Contains(payloadName))
+                              ?.Control;
 
-                if (cyclePayloads.Contains(payloadName))
+                if (payloadNamesInCurrentCycle.Contains(payloadName) ||
+                    openPayloadsOfScenario.Any(innerList => innerList.Contains(payloadName)) ||
+                    closePayloadsOfScenario.Any(innerList => innerList.Contains(payloadName)))
                 {
                     allPayloads.Remove(payloadName);
                     openedPayloads.Add(payloadName);
@@ -363,21 +415,25 @@ namespace AutosarBCM.Forms.Monitor
             if (loopVal == cycleCloseAt && (lastResetTime == null || (currentTime - lastResetTime.Value).TotalSeconds >= 1))
             {
                 cycleCount++;
-              
+
                 if (cycleCount >= cycleRange)
                 {
-                    loopCount++;
                     cycleCount = 0;
-                   
+
                 }
-                ResetPayloads(cyclePayloads, cycleOpenAt, cycleCloseAt, loopCount);
+                if (loopVal == endCycleIndex)
+                {
+                    loopCount++;
+                }
+
+                ResetPayloads(cyclePayloads, payloadControlMap, cycleOpenAt, cycleCloseAt, loopCount);
                 allPayloads.Clear();
                 openedPayloads.Clear();
-          
+
 
                 foreach (var payload in cyclePayloads)
                 {
-                    allPayloads.Add(payload, didName);
+                    allPayloads.Add(payload);
                 }
 
                 lastResetTime = currentTime;
@@ -388,15 +444,16 @@ namespace AutosarBCM.Forms.Monitor
         }
 
 
-        private static void ResetPayloads(HashSet<string> cyclePayloads, int openAt, int closeAt, int loopCount)
+        private static void ResetPayloads(HashSet<string> cyclePayloads, Dictionary<string, string> payloadControlMap, int openAt, int closeAt, int loopCount)
         {
             int count = 1;
 
             foreach (var payload in cyclePayloads)
             {
                 if (!openedPayloads.Contains(payload))
+
                 {
-                    string controlName = payload;
+                    string controlName = payloadControlMap.ContainsKey(payload) ? payloadControlMap[payload] : null;
                     Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, openAt, closeAt, count, loopCount);
                     count++;
                 }

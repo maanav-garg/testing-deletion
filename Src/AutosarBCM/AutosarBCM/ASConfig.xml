@@ -2312,11 +2312,11 @@
 	</DTCFailureTypes>
 	<EnvironmentalTest>
 		<EnvironmentalConfig>
-			<CycleTime>40</CycleTime>
-			<TxInterval>30</TxInterval>
+			<CycleTime>200</CycleTime>
+			<TxInterval>50</TxInterval>
 			<StartCycleIndex>16</StartCycleIndex>
-			<EndCycleIndex>25</EndCycleIndex>
-			<PWMDutyOpenValue>100</PWMDutyOpenValue>
+			<EndCycleIndex>21</EndCycleIndex>
+			<PWMDutyOpenValue>10000</PWMDutyOpenValue>
 			<PWMDutyCloseValue>0</PWMDutyCloseValue>
 			<PWMFreqOpenValue>200</PWMFreqOpenValue>
 			<PWMFreqCloseValue>200</PWMFreqCloseValue>
@@ -2848,6 +2848,9 @@
 					</Function>
 					<Function control="ReverseGearSupply">
 						<Payload>C3.15_ReverseGearSupply</Payload>
+						<Function control="Spare_PWM_Inputs">
+							<Payload>C4.7_SparePWM4</Payload>
+						</Function>
 					</Function>
 				</Functions>
 			</Cycle>
@@ -2866,6 +2869,9 @@
 					<Function control="Hall_Sensor_Supply">
 						<Payload>C4.28_HallSensorLeftSupply</Payload>
 						<Payload>C4.46_HallSensorRightSupply</Payload>
+					</Function>
+					<Function control="Spare_PWM_Inputs">
+						<Payload>C4.7_SparePWM4</Payload>
 					</Function>
 				</Functions>
 			</Cycle>

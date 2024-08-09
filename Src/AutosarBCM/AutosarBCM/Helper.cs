@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -177,7 +177,7 @@ namespace AutosarBCM
                     object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                     if (attributes.Length != 0)
                         productName = ((AssemblyTitleAttribute)attributes[0]).Title;
-                    
+
                     var version = Assembly.GetExecutingAssembly().GetName().Version;
                     return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, " Beta-1");
                 }
@@ -372,7 +372,7 @@ namespace AutosarBCM
         {
             try
             {
-                if(currentFilter == String.Empty)
+                if (currentFilter == String.Empty)
                     return;
 
                 int? selectedRowIndex = dgvMessages.CurrentRow?.Index;
@@ -387,7 +387,7 @@ namespace AutosarBCM
             catch
             {
                 dgvMessages.ClearSelection();
-            }            
+            }
         }
         /// <summary>
         /// Create a txt file to the unopened DIDS during an environmental test.
@@ -398,8 +398,7 @@ namespace AutosarBCM
         {
             string date = DateTime.Now.ToString("yyyyMMdd");
             string logFilePath = $"{date}_Unopened_Payloads_log.txt";
-            string rangeHeader = $"{rangeCount}. Range & {openAt}-{closeAt} Cycle {Environment.NewLine}";
-            // string cycleHeader = $"Cycle {openAt}-{closeAt}{Environment.NewLine}";
+            string rangeHeader = $"{rangeCount}. Range & {openAt}-{closeAt} Cycle -- ({date}) {Environment.NewLine}";
             string logMessage = $"{count}) Kontrol Adı: {controlName} - Payload Adı: {payloadName}{Environment.NewLine}";
 
             List<string> lines = new List<string>();
@@ -421,7 +420,6 @@ namespace AutosarBCM
 
             if (rangeHeaderIndex != -1)
             {
-                // Aynı rangeHeader altında var mı kontrol et
                 bool logMessageExists = lines.Skip(rangeHeaderIndex + 1)
                                              .TakeWhile(line => !line.Contains("Range"))
                                              .Any(line => line.Contains(logMessage.Trim()));
@@ -430,9 +428,6 @@ namespace AutosarBCM
                 {
                     lines.Add(logMessage);
                 }
-
-
-
 
                 File.WriteAllLines(logFilePath, lines);
             }
@@ -450,7 +445,7 @@ namespace AutosarBCM
         /// <param name="comment">Optional comment.</param>
         /// <param name="escapeChars">Optional escape characters for formatting.</param>
         /// <param name="data">Additional data related to the message.</param>
-        public static void WriteCycleMessageToLogFile(string itemName, string itemType, string operation,string comment = "",string escapeChars = "",string data = "")
+        public static void WriteCycleMessageToLogFile(string itemName, string itemType, string operation, string comment = "", string escapeChars = "", string data = "")
         {
             if (FormMain.IsTestRunning)
             {
@@ -478,7 +473,7 @@ namespace AutosarBCM
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")};{itemName};{itemType};{operation};{data};{escapeChars}");
                 else
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}#{comment}#{escapeChars}");
-            }                
+            }
         }
 
         /// <summary>
@@ -1064,7 +1059,7 @@ namespace AutosarBCM
             // add to recent file list
             AddToRecentFiles(fileName);
         }
-        
+
         /// <summary>
         /// Notifies parent control that the recent file list is updated.
         /// </summary>
@@ -1203,7 +1198,7 @@ namespace AutosarBCM
                                 if (!isPrevMulti && ninth)
                                 {
                                     csv.AppendLine("-;Multi Messages;x;x;x;x;x;Text;");
-                                    foreach(BaseMessage subMessage in subMesages)
+                                    foreach (BaseMessage subMessage in subMesages)
                                     {
                                         first = subMessage.Id;
                                         dataBytes = subMessage.Data;
@@ -1244,7 +1239,7 @@ namespace AutosarBCM
 
         #region Private Methods
 
-        
+
         private static List<CanMessage> CanMessageCsvParser(List<string> lines)
         {
             var result = new List<CanMessage>();
@@ -1437,7 +1432,7 @@ namespace AutosarBCM
         /// <param name="operation">CurrentOperation</param>
         /// <param name="state">Message State</param>
         /// <param name="outputResponse">Message Response</param>
-        public ErrorLogDetectObject UpdateOutputResponse (MappingOperation operation, MappingState state, MappingResponse outputResponse)
+        public ErrorLogDetectObject UpdateOutputResponse(MappingOperation operation, MappingState state, MappingResponse outputResponse)
         {
             Operation = operation;
             OutputResponse = outputResponse;
@@ -1450,7 +1445,7 @@ namespace AutosarBCM
         /// </summary> 
         /// <param name="state">Message State</param>
         /// <param name="inputResponse">Message Response</param>
-        public ErrorLogDetectObject UpdateInputResponse (MappingState state, MappingResponse inputResponse)
+        public ErrorLogDetectObject UpdateInputResponse(MappingState state, MappingResponse inputResponse)
         {
             InputResponse = inputResponse;
             InputState = state;
