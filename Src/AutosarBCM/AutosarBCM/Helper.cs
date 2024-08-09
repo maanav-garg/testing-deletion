@@ -398,11 +398,10 @@ namespace AutosarBCM
         {
             string date = DateTime.Now.ToString("yyyyMMdd");
             string logFilePath = $"{date}_Unopened_Payloads_log.txt";
-            string rangeHeader = $"{rangeCount}. Range & {openAt}-{closeAt} Cycle -- ({date}) {Environment.NewLine}";
-            string logMessage = $"{count}) Kontrol Adı: {controlName} - Payload Adı: {payloadName}{Environment.NewLine}";
+            string rangeHeader = $"{rangeCount}. Range & {openAt}-{closeAt} Cycle -- ({DateTime.Now.ToString("MM.dd_HH:mm:ss.fff\t")}) {Environment.NewLine}";
+            string logMessage = $"{count}) Control: {controlName} - Payload: {payloadName}{Environment.NewLine}";
 
             List<string> lines = new List<string>();
-            Console.WriteLine("headers:   " + "" + rangeHeader + "   " + "   " + logMessage);
 
             if (File.Exists(logFilePath))
             {
