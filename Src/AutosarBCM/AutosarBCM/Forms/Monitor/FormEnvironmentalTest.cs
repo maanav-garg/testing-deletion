@@ -447,7 +447,6 @@ namespace AutosarBCM.Forms.Monitor
         private static void ResetPayloads(HashSet<string> cyclePayloads, Dictionary<string, string> payloadControlMap, int openAt, int closeAt, int loopCount)
         {
             int count = 1;
-
             foreach (var payload in cyclePayloads)
             {
                 if (!openedPayloads.Contains(payload))
