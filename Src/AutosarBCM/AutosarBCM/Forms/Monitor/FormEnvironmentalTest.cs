@@ -90,7 +90,6 @@ namespace AutosarBCM.Forms.Monitor
             pnlMonitor.Controls.Clear();
             LoadControls();
             tsbConfigurationSelection.Enabled = true;
-            
         }
         private void LoadControls()
         {
@@ -104,7 +103,7 @@ namespace AutosarBCM.Forms.Monitor
             ResetTime();
 
             cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
-            mappingData = (ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
+            mappingData = new List<Mapping>(ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
             continuousReadData = (ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
 
             groups.Add("DID", new List<UCReadOnlyItem>());

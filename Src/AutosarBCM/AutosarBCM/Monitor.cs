@@ -454,41 +454,45 @@ namespace AutosarBCM
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
-                if (function.Scenario == null)
+                if(!function.Control.Contains(Constants.DummyControl))
                 {
-                    var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                    if (hasDIDBitsOnOff)
+                    if (function.Scenario == null)
                     {
-                        function.ControlInfo.SwitchForBits(function.Payloads, true);
+                        var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                        if (hasDIDBitsOnOff)
+                        {
+                            function.ControlInfo.SwitchForBits(function.Payloads, true);
+                        }
+                        else
+                        {
+                            function.ControlInfo.Switch(function.Payloads, true);
+                        }
+
+                        CloseSensitiveControls(function.ControlInfo, function.Payloads);
                     }
                     else
                     {
-                        function.ControlInfo.Switch(function.Payloads, true);
-                    }
+                        var scenario = ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                        if (scenario == null)
+                            continue;
 
-                    CloseSensitiveControls(function.ControlInfo, function.Payloads);
+                        var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
+                        var payloads = scenario.OpenPayloads.Select(a => (a, true)).Union(scenario.ClosePayloads.Select(a => (a, false))).ToDictionary(x => x.a, x => x.Item2);
+
+                        var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                        if (hasDIDBitsOnOff)
+                        {
+                            controlInfo.SwitchForBits(payloads);
+                        }
+                        else
+                        {
+                            controlInfo.Switch(payloads);
+                        }
+
+                        CloseSensitiveControls(controlInfo, scenario.OpenPayloads);
+                    }
                 }
-                else
-                {
-                    var scenario = ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
-                    if (scenario == null)
-                        continue;
-
-                    var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
-                    var payloads = scenario.OpenPayloads.Select(a => (a, true)).Union(scenario.ClosePayloads.Select(a => (a, false))).ToDictionary(x => x.a, x => x.Item2);
-
-                    var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                    if (hasDIDBitsOnOff)
-                    {
-                        controlInfo.SwitchForBits(payloads);
-                    }
-                    else
-                    {
-                        controlInfo.Switch(payloads);
-                    }
-
-                    CloseSensitiveControls(controlInfo, scenario.OpenPayloads);
-                }
+                
 
                 ControlInfo mappedItem = null;
                 foreach (var payload in function.Payloads)
@@ -502,7 +506,8 @@ namespace AutosarBCM
 
                             Program.MappingStateDict.Remove(mappedItem.Name);
                         }
-                        Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
+                        if(function.ControlInfo != null)
+                            Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
 
                         if (mappedItem != null)
                         {
@@ -578,39 +583,42 @@ namespace AutosarBCM
 
             foreach (var function in cycle.CloseItems)
             {
-                if (function.Scenario == null)
+                if (!function.Control.Contains(Constants.DummyControl))
                 {
-                    var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
-                    if (nonSensitivePayloads?.Count == 0)
-                        continue;
-
-                    var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                    if (hasDIDBitsOnOff)
+                    if (function.Scenario == null)
                     {
-                        function.ControlInfo.SwitchForBits(nonSensitivePayloads, false);
+                        var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
+                        if (nonSensitivePayloads?.Count == 0)
+                            continue;
+
+                        var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                        if (hasDIDBitsOnOff)
+                        {
+                            function.ControlInfo.SwitchForBits(nonSensitivePayloads, false);
+                        }
+                        else
+                        {
+                            function.ControlInfo.Switch(nonSensitivePayloads, false);
+                        }
                     }
                     else
                     {
-                        function.ControlInfo.Switch(nonSensitivePayloads, false);
-                    }
-                }
-                else
-                {
-                    var scenario = ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
-                    if (scenario == null)
-                        continue;
+                        var scenario = ASContext.Configuration.EnvironmentalTest.Envrironments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                        if (scenario == null)
+                            continue;
 
-                    var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
-                    var payloads = scenario.OpenPayloads.Union(scenario.ClosePayloads).ToDictionary(x => x, x => false);
+                        var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
+                        var payloads = scenario.OpenPayloads.Union(scenario.ClosePayloads).ToDictionary(x => x, x => false);
 
-                    var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                    if (hasDIDBitsOnOff)
-                    {
-                        controlInfo.SwitchForBits(payloads);
-                    }
-                    else
-                    {
-                        controlInfo.Switch(payloads);
+                        var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                        if (hasDIDBitsOnOff)
+                        {
+                            controlInfo.SwitchForBits(payloads);
+                        }
+                        else
+                        {
+                            controlInfo.Switch(payloads);
+                        }
                     }
                 }
 

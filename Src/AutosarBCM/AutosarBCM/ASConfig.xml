@@ -639,7 +639,7 @@
 			<Address>DE24</Address>
 			<Name>Keyfob_Battery_Status</Name>
 			<Type></Type>
-			<Group>ECU-DID</Group>
+			<Group>DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
@@ -2568,6 +2568,18 @@
 				<Output parent="DoorLockIndicatorSupply">C5.37_DoorLockIndicatorSupply</Output>
 				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.33_6 Door Ajar Switch - Passenger</Input>
 			</Mapping>
+			<Mapping>
+				<Output parent="DummyControl">DummyControl1</Output>
+				<Input parent="Keyfob_Battery_Status">Keyfob battery status</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="DummyControl">DummyControl2</Output>
+				<Input parent="Last_Received_Transmitter_Button_Press">Last Received Transmitter Button Press</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="DummyControl">DummyControl3</Output>
+				<Input parent="Last_Received_Transmitter_ID_Code_Value">Last Received Transmitter Id Code Value</Input>
+			</Mapping>
 
 		</ConnectionMappings>
 		<Environments>
@@ -4019,14 +4031,14 @@
 						<OpenAt>01</OpenAt>
 						<CloseAt>02</CloseAt>
 						<Functions>
-							<Function control="Keyfob_Battery_Status">
-								<Payload>Keyfob battery status</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl1</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4035,11 +4047,11 @@
 						<OpenAt>06</OpenAt>
 						<CloseAt>07</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4048,11 +4060,11 @@
 						<OpenAt>11</OpenAt>
 						<CloseAt>12</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4061,11 +4073,11 @@
 						<OpenAt>16</OpenAt>
 						<CloseAt>17</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4074,14 +4086,14 @@
 						<OpenAt>21</OpenAt>
 						<CloseAt>22</CloseAt>
 						<Functions>
-							<Function control="Keyfob_Battery_Status">
-								<Payload>Keyfob battery status</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl1</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4090,11 +4102,11 @@
 						<OpenAt>26</OpenAt>
 						<CloseAt>27</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4103,11 +4115,11 @@
 						<OpenAt>31</OpenAt>
 						<CloseAt>32</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4116,11 +4128,11 @@
 						<OpenAt>36</OpenAt>
 						<CloseAt>37</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4129,14 +4141,14 @@
 						<OpenAt>41</OpenAt>
 						<CloseAt>42</CloseAt>
 						<Functions>
-							<Function control="Keyfob_Battery_Status">
-								<Payload>Keyfob battery status</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl1</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4145,11 +4157,11 @@
 						<OpenAt>46</OpenAt>
 						<CloseAt>47</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4158,11 +4170,11 @@
 						<OpenAt>51</OpenAt>
 						<CloseAt>52</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4171,14 +4183,14 @@
 						<OpenAt>56</OpenAt>
 						<CloseAt>57</CloseAt>
 						<Functions>
-							<Function control="Keyfob_Battery_Status">
-								<Payload>Keyfob battery status</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl1</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4187,11 +4199,11 @@
 						<OpenAt>61</OpenAt>
 						<CloseAt>62</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4200,11 +4212,11 @@
 						<OpenAt>66</OpenAt>
 						<CloseAt>67</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>
@@ -4213,11 +4225,11 @@
 						<OpenAt>71</OpenAt>
 						<CloseAt>72</CloseAt>
 						<Functions>
-							<Function control="Last_Received_Transmitter_Button_Press">
-								<Payload>Last Received Transmitter Button Press</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
 							</Function>
-							<Function control="Last_Received_Transmitter_ID_Code_Value">
-								<Payload>Last Received Transmitter Id Code Value</Payload>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
 							</Function>
 						</Functions>
 					</Cycle>        
@@ -4374,26 +4386,5 @@
 				</Scenarios>	
 			</Environment>
 		</Environments>
-	</EnvironmentalTest>
-	<EnvironmentalTest>
-		<EnvironmentalConfig>
-			<CycleTime>200</CycleTime>
-			<TxInterval>15</TxInterval>
-			<StartCycleIndex>16</StartCycleIndex>
-			<EndCycleIndex>90</EndCycleIndex>
-			<PWMDutyOpenValue>10000</PWMDutyOpenValue>
-			<PWMDutyCloseValue>0</PWMDutyCloseValue>
-			<PWMFreqOpenValue>200</PWMFreqOpenValue>
-			<PWMFreqCloseValue>200</PWMFreqCloseValue>
-			<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
-		</EnvironmentalConfig>
-		<ContinousReadList>
-		</ContinousReadList>
-
-	<SensitiveControls>
-
-		</SensitiveControls>
-		
-
 	</EnvironmentalTest>
 </Configuration>
