@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "DiagBox-AutosarBCM"
-#define MyAppVersion "0.9.1"
+#define MyAppVersion "1.0.0"
 #define MyApp2ndName "DiagBox-AutosarBCM"
 #define MyAppPublisher "Vestel"
 #define MyAppExeName "AutosarBCM.exe"
