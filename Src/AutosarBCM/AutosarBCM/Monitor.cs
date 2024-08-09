@@ -506,6 +506,7 @@ namespace AutosarBCM
 
                             Program.MappingStateDict.Remove(mappedItem.Name);
                         }
+
                         if(function.ControlInfo != null)
                             Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
 
@@ -634,7 +635,9 @@ namespace AutosarBCM
 
                             Program.MappingStateDict.Remove(mappedItem.Name);
                         }
-                        Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
+
+                        if(function.Control != null)
+                            Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
 
                         if (mappedItem != null)
                         {
