@@ -2316,14 +2316,14 @@
 				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.1_Door Unlock Relay - Passenger's Side</Output>
 				<Input parent="Differential_Control_Input">C5.12_DiffLock1DriverRequestSwitch</Input>
 			</Mapping>
-			<!-- <Mapping> -->
-			<!-- <Output parent="Passenger_Power_Window_Motor">C1.2_Passenger Power Window Motor Up</Output> -->
-			<!-- <Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.36_3 FrontResetLeftSwitch</Input> -->
-			<!-- </Mapping> -->
-			<!-- <Mapping> -->
-			<!-- <Output parent="Passenger_Power_Window_Motor">C1.3_Passenger Power Window Motor Down</Output> -->
-			<!-- <Input parent="Spare_Switch">C5.46_Spare Switch 30</Input> -->
-			<!-- </Mapping> -->
+			<Mapping>
+				<Output parent="Passenger_Power_Window_Motor">C1.2_Passenger Power Window Motor Up</Output>
+				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.36_3 FrontResetLeftSwitch</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="Passenger_Power_Window_Motor">C1.3_Passenger Power Window Motor Down</Output>
+				<Input parent="Spare_Switch">C5.46_Spare Switch 30</Input>
+			</Mapping>
 			<Mapping>
 				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.4_Passanger Door Lock Relay</Output>
 				<Input parent="Start_Stop_Switches">C5.14_Start Stop Switch 3</Input>
@@ -2881,9 +2881,9 @@
 						<OpenAt>16</OpenAt>
 						<CloseAt>51</CloseAt>
 						<Functions>
-							<!-- <Function control="Passenger_Power_Window_Motor"> -->
-							<!-- <Payload>C1.3_Passenger Power Window Motor Down</Payload> -->
-							<!-- </Function> -->
+							<Function control="Passenger_Power_Window_Motor">
+							<Payload>C1.2_Passenger Power Window Motor Up</Payload>
+							</Function>
 							<!--><Function control="Sunroof_Motor">
 								<Payload>C1.8_MOT-A</Payload>
 							</Function></!-->
@@ -3424,9 +3424,9 @@
 						<OpenAt>56</OpenAt>
 						<CloseAt>16</CloseAt>
 						<Functions>
-							<!-- <Function control="Passenger_Power_Window_Motor"> -->
-							<!-- <Payload>C1.2_Passenger Power Window Motor Up</Payload> -->
-							<!-- </Function> -->
+							<Function control="Passenger_Power_Window_Motor">
+							<Payload>C1.3_Passenger Power Window Motor Down</Payload>
+							</Function>
 							<!--><Function control="Sunroof_Motor">
 								<Payload>C1.6_MOT-B</Payload>
 							</Function></!-->
