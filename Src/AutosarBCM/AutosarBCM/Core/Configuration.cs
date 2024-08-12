@@ -353,7 +353,7 @@ namespace AutosarBCM.Core
                                         length = (int)Math.Round(((most_sig_bit + 1) - least_sig_bit)/8);
                                     }
                                     var descriptionValue = x.Element("DESCRIPTION")?.Value.Trim();
-                                    if(descriptionValue == null || descriptionValue == "")
+                                    if(descriptionValue == null || descriptionValue == "" || descriptionValue.Contains("Range"))
                                     {
                                         descriptionValue = x.Element("NAME")?.Value.Trim();
                                     }
@@ -367,12 +367,13 @@ namespace AutosarBCM.Core
                                                      .Select(dtc => dtc.Element("NUMBER")?.Value)
                                                      .FirstOrDefault();
 
-                                    if(x.Element("NAME")?.Value == "Vehicle Speed for Low Liner")
+                                    /*
+                                    if(x.Element("NAME")?.Value.Trim() == "Left Front Turn Lamp Outage Feedback")
                                     {
                                         Console.Write("test");
-                                    }
+                                    }*/
 
-                                    var dataType = x.Element("DATA_DEFINITION").Element("DATA_TYPE").Value;
+                                    var dataType = x.Element("DATA_DEFINITION").Element("DATA_TYPE").Value.Trim();
                                     List<PayloadValue> values;
 
                                     if (dataType == "enumerated")
@@ -395,14 +396,13 @@ namespace AutosarBCM.Core
                                           .ToList();
                                     }
                                     /*
-                                    else if (dataType == "bytes")
+                                    else if (dataType == "unsigned")
                                     {
                                         values = new List<PayloadValue>
                                         {
                                             new PayloadValue
                                             {
-                                                ValueString = "0",
-                                                FormattedValue = "bytes"
+                                                ValueString = "unsigned"
                                             }
                                         };
                                     }
@@ -414,7 +414,14 @@ namespace AutosarBCM.Core
 
                                     string existingTypeName = null;
 
-                                    bool valueExists = payloads.Any(p => p.Length == length && p.Values.Select(v => v.ValueString).SequenceEqual(values.Select(v => v.ValueString)));
+                                    var valueExists = payloads.Any(p =>
+                                        p.Length == length &&
+                                        p.Values.Count == values.Count && // Önce sayýlarý karþýlaþtýrarak hýzlýca ele
+                                        !p.Values.Where((v, i) =>
+                                            v.ValueString != values[i].ValueString ||
+                                            v.FormattedValue != values[i].FormattedValue
+                                        ).Any()
+                                    );
 
                                     if (!valueExists)
                                     {
@@ -431,7 +438,17 @@ namespace AutosarBCM.Core
                                             existingTypeName = "DID_PWM";
                                         }
                                     }
-                                    else existingTypeName = payloads.First(p => p.Values.Select(v => v.ValueString).SequenceEqual(values.Select(v => v.ValueString))).TypeName;
+                                    else
+                                    {
+                                        existingTypeName = payloads.First(p =>
+                                            p.Length == length &&
+                                            p.Values.Count == values.Count &&
+                                            !p.Values.Where((v, i) =>
+                                                v.ValueString != values[i].ValueString ||
+                                                v.FormattedValue != values[i].FormattedValue
+                                            ).Any()
+                                        ).TypeName;
+                                    }
 
 
                                     return new PayloadInfo
@@ -448,7 +465,7 @@ namespace AutosarBCM.Core
 
                     }).ToList();
 
-                Console.Write("test");
+                //Console.Write("test");
 
                 var dtcFailureTypes = doc.Descendants("ECU_DATA").Descendants("DIAGNOSTIC_TROUBLE_CODES").Descendants("DTC_FAILURE_TYPES_SUPPORTED").Descendants("DTC_FAILURE_TYPE")
                     .Select(t => new DTCFailure
@@ -457,8 +474,6 @@ namespace AutosarBCM.Core
                         Description = t.Element("DESCRIPTION")?.Value,
                     })
                     .ToList();
-
-                Console.WriteLine(payloads);
 
                 return new ConfigurationInfo
                 {
