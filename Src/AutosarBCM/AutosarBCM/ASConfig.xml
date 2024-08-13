@@ -3279,7 +3279,7 @@
 								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
 							</Function>
 							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
-								<Payload>C2.7_Left Rear Turn Signal Lamp Controlnctions</Payload>
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
 							</Function>
 							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
 								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
