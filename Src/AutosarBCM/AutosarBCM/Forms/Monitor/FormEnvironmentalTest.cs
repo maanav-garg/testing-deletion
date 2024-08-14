@@ -423,9 +423,31 @@ namespace AutosarBCM.Forms.Monitor
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
                     totalMessagesReceived++;
                 }
-             
+
+                if (Program.MappingStateDict.TryGetValue(readByIdenService.Payloads[i].PayloadInfo.Name, out var errorLogDetect))
+                {
+                    var mappingItem = inputName.FirstOrDefault(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name);
+                    if (mappingItem != null)
+                    {
+                        Program.MappingStateDict.UpdateValue(readByIdenService.Payloads[i].PayloadInfo.Name, errorLogDetect.UpdateInputResponse(MappingState.InputReceived, GetMappingResponse(readByIdenService.Payloads[i].Value)));
+
+                        if (errorLogDetect.ChcekIsError())
+                            Helper.WriteErrorMessageToLogFile(readByIdenService.ControlInfo.Name, $"O: {mappingItem.Output.Control} ({mappingItem.Output.Name}) - I: {mappingItem.Input.Control} ({mappingItem.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", mappingItem.Output.Name, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", mappingItem.Input.Name, errorLogDetect.InputResponse)}");
+
+                        Program.MappingStateDict.Remove(readByIdenService.Payloads[i].PayloadInfo.Name);
+                    }
+                }
+
             }
             return true;
+        }
+
+        private MappingResponse GetMappingResponse(byte[] value)
+        {
+            if (value[0] == 0) return MappingResponse.InputOff;
+            else if (value[0] == 1) return MappingResponse.InputOn;
+            else if (value[0] == 1) return MappingResponse.InputError;
+            return MappingResponse.NOC;
         }
 
         /// <summary>
