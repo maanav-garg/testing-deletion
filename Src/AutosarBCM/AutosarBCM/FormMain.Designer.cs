@@ -3,7 +3,7 @@
 namespace AutosarBCM
 {
     partial class FormMain
-    {      
+    {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -60,6 +60,8 @@ namespace AutosarBCM
             this.openTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.recentFilesTsmi = new System.Windows.Forms.ToolStripMenuItem();
+            this.importMDXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importODXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -120,15 +122,15 @@ namespace AutosarBCM
             // 
             this.optionsTsmi.Image = ((System.Drawing.Image)(resources.GetObject("optionsTsmi.Image")));
             this.optionsTsmi.Name = "optionsTsmi";
-            this.optionsTsmi.Size = new System.Drawing.Size(224, 26);
+            this.optionsTsmi.Size = new System.Drawing.Size(217, 26);
             this.optionsTsmi.Text = "Options";
             this.optionsTsmi.Click += new System.EventHandler(this.optionsTsmi_Click);
             // 
             // transmitTsmi
             // 
-            //this.transmitTsmi.Image = ((System.Drawing.Image)(resources.GetObject("optionsTsmi.Image")));
+            this.transmitTsmi.Image = global::AutosarBCM.Properties.Resources.ArrowUp;
             this.transmitTsmi.Name = "transmitTsmi";
-            this.transmitTsmi.Size = new System.Drawing.Size(224, 26);
+            this.transmitTsmi.Size = new System.Drawing.Size(217, 26);
             this.transmitTsmi.Text = "Transmit";
             this.transmitTsmi.Click += new System.EventHandler(this.tsmiTransmit_Click);
             // 
@@ -136,7 +138,7 @@ namespace AutosarBCM
             // 
             this.traceDialogtsmi.Image = ((System.Drawing.Image)(resources.GetObject("traceDialogtsmi.Image")));
             this.traceDialogtsmi.Name = "traceDialogtsmi";
-            this.traceDialogtsmi.Size = new System.Drawing.Size(224, 26);
+            this.traceDialogtsmi.Size = new System.Drawing.Size(217, 26);
             this.traceDialogtsmi.Text = "Trace Dialog";
             this.traceDialogtsmi.Click += new System.EventHandler(this.traceDialogtsmi_Click);
             // 
@@ -144,7 +146,7 @@ namespace AutosarBCM
             // 
             this.testLogToolStripMenuItem.Image = global::AutosarBCM.Properties.Resources.EditWindow;
             this.testLogToolStripMenuItem.Name = "testLogToolStripMenuItem";
-            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.testLogToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
             this.testLogToolStripMenuItem.Text = "Test Log Viewer";
             this.testLogToolStripMenuItem.Visible = false;
             this.testLogToolStripMenuItem.Click += new System.EventHandler(this.testLogToolStripMenuItem_Click);
@@ -153,7 +155,7 @@ namespace AutosarBCM
             // 
             this.tsmiCheck.Image = global::AutosarBCM.Properties.Resources.pass;
             this.tsmiCheck.Name = "tsmiCheck";
-            this.tsmiCheck.Size = new System.Drawing.Size(224, 26);
+            this.tsmiCheck.Size = new System.Drawing.Size(217, 26);
             this.tsmiCheck.Text = "Control Check";
             this.tsmiCheck.Click += new System.EventHandler(this.tsmiCheck_Click);
             // 
@@ -161,14 +163,14 @@ namespace AutosarBCM
             // 
             this.tsmiEMCView.Image = global::AutosarBCM.Properties.Resources.DiskDiag_30222_1109286131;
             this.tsmiEMCView.Name = "tsmiEMCView";
-            this.tsmiEMCView.Size = new System.Drawing.Size(224, 26);
+            this.tsmiEMCView.Size = new System.Drawing.Size(217, 26);
             this.tsmiEMCView.Text = "EMC Monitor";
             this.tsmiEMCView.Click += new System.EventHandler(this.tsmiEMCView_Click);
             // 
             // environmentalTestTsmi
             // 
             this.environmentalTestTsmi.Name = "environmentalTestTsmi";
-            this.environmentalTestTsmi.Size = new System.Drawing.Size(224, 26);
+            this.environmentalTestTsmi.Size = new System.Drawing.Size(217, 26);
             this.environmentalTestTsmi.Text = "Environmental Test";
             this.environmentalTestTsmi.Click += new System.EventHandler(this.environmentalTestTsmi_Click);
             // 
@@ -336,7 +338,9 @@ namespace AutosarBCM
             this.fileTsmi.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openTsmi,
             this.toolStripSeparator4,
-            this.recentFilesTsmi});
+            this.recentFilesTsmi,
+            this.importMDXToolStripMenuItem,
+            this.importODXToolStripMenuItem});
             this.fileTsmi.Name = "fileTsmi";
             this.fileTsmi.Size = new System.Drawing.Size(46, 24);
             this.fileTsmi.Text = "File";
@@ -346,20 +350,36 @@ namespace AutosarBCM
             this.openTsmi.Image = ((System.Drawing.Image)(resources.GetObject("openTsmi.Image")));
             this.openTsmi.Name = "openTsmi";
             this.openTsmi.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openTsmi.Size = new System.Drawing.Size(190, 26);
+            this.openTsmi.Size = new System.Drawing.Size(224, 26);
             this.openTsmi.Text = "Open...";
             this.openTsmi.Click += new System.EventHandler(this.openTsmi_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(187, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(221, 6);
             // 
             // recentFilesTsmi
             // 
             this.recentFilesTsmi.Name = "recentFilesTsmi";
-            this.recentFilesTsmi.Size = new System.Drawing.Size(190, 26);
+            this.recentFilesTsmi.Size = new System.Drawing.Size(224, 26);
             this.recentFilesTsmi.Text = "Recent Files";
+            // 
+            // importMDXToolStripMenuItem
+            // 
+            this.importMDXToolStripMenuItem.Image = global::AutosarBCM.Properties.Resources.gear_load;
+            this.importMDXToolStripMenuItem.Name = "importMDXToolStripMenuItem";
+            this.importMDXToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.importMDXToolStripMenuItem.Text = "Import MDX ";
+            this.importMDXToolStripMenuItem.Click += new System.EventHandler(this.tsmiImpMDX_Click);
+            // 
+            // importODXToolStripMenuItem
+            // 
+            this.importODXToolStripMenuItem.Image = global::AutosarBCM.Properties.Resources.gear_load;
+            this.importODXToolStripMenuItem.Name = "importODXToolStripMenuItem";
+            this.importODXToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.importODXToolStripMenuItem.Text = "Import ODX";
+            this.importODXToolStripMenuItem.Click += new System.EventHandler(this.tsmiImpODX_Click);
             // 
             // imageList1
             // 
@@ -699,7 +719,7 @@ namespace AutosarBCM
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MinimumSize = new System.Drawing.Size(1021, 753);
+            this.MinimumSize = new System.Drawing.Size(1021, 751);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TransparencyKey = System.Drawing.Color.White;
@@ -732,7 +752,6 @@ namespace AutosarBCM
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolsTsmi;
         private System.Windows.Forms.ToolStripMenuItem optionsTsmi;
-        private System.Windows.Forms.ToolStripMenuItem transmitTsmi;
         private System.Windows.Forms.ToolStripButton tsbOpen;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton tsbOptions;
@@ -788,6 +807,9 @@ namespace AutosarBCM
         internal WeifenLuo.WinFormsUI.Docking.DockPanel dockMonitor;
         private ToolStripMenuItem tsmiEMCView;
         public ToolStripDropDownButton tsbSession;
+        private ToolStripMenuItem transmitTsmi;
+        private ToolStripMenuItem importMDXToolStripMenuItem;
+        private ToolStripMenuItem importODXToolStripMenuItem;
     }
 }
 

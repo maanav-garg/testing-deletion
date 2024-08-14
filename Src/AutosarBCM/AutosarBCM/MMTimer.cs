@@ -11,11 +11,6 @@ namespace AutosarBCM
         #region Variables
 
         /// <summary>
-        /// The delay interval in milliseconds.
-        /// </summary>
-        private readonly int delay;
-
-        /// <summary>
         /// The resolution of the timer in milliseconds.
         /// </summary>
         private readonly int resolution;
@@ -72,9 +67,8 @@ namespace AutosarBCM
         /// <param name="resolution">The resolution in milliseconds.</param>
         /// <param name="eventType">The type of the event (One-time or Repeating).</param>
         /// <param name="action">The action to execute on timer event.</param>
-        public MMTimer(int delay, int resolution, EventType eventType, Action action)
+        public MMTimer(int resolution, EventType eventType, Action action)
         {
-            this.delay = delay;
             this.resolution = resolution;
             this.eventType = eventType;
 
@@ -88,7 +82,7 @@ namespace AutosarBCM
         /// <summary>
         /// Starts the timer.
         /// </summary>
-        public void Start()
+        public void Next(int delay)
         {
             var userData = 0;
             timer = timeSetEvent(delay, resolution, handler, ref userData, (int)eventType);

@@ -28,6 +28,7 @@ namespace AutosarBCM.Forms.Monitor
         private Dictionary<int, Cycle> cycles;
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
+        private Dictionary<string, string> allPayloads;
 
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
@@ -62,19 +63,20 @@ namespace AutosarBCM.Forms.Monitor
 
             ResetTime();
 
-            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Cycles);
-            mappingData = (ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
-            continuousReadData = (ASContext.Configuration.EnvironmentalTest.ContinousReadList);
+            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
+            mappingData = new List<Mapping>(ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
+            continuousReadData = (ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
 
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
             {
+                allPayloads = new Dictionary<string, string>();
                 foreach (var payload in ctrl.Responses[0].Payloads)
                 {
                     var ucItem = new UCReadOnlyItem(ctrl, payload);
                     ucItems.Add(ucItem);
 
-                    //DTC init
+
                     if (string.IsNullOrEmpty(payload.DTCCode))
                         continue;
                     dtcList[payload.DTCCode] = ctrl;
@@ -82,7 +84,6 @@ namespace AutosarBCM.Forms.Monitor
                 groups["DID"] = ucItems;
             }
 
-            //Generate UI
             foreach (var group in groups)
             {
                 var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
@@ -96,7 +97,21 @@ namespace AutosarBCM.Forms.Monitor
 
                 pnlMonitor.Controls.Add(flowPanelGroup);
             }
+
+            foreach (var cycle in cycles.Values)
+            {
+                foreach (var function in cycle.Functions)
+                {
+                    var controlName = function.Control; // Her function'dan control adı al
+
+                    foreach (var payload in function.Payloads)
+                    {
+                        allPayloads[payload] = controlName; // Payload ve controlName'i ekle
+                    }
+                }
+            }
         }
+
 
         /// <summary>
         /// Changing border color of the flowpanel groups

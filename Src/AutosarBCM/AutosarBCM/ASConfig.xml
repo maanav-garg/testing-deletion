@@ -1,9 +1,9 @@
 ﻿<Configuration>
 	<Settings>
 		<Entry key="namesPadding" value="30" />
-		<Entry key="TxInterval" value="5" />
-		<Entry key="ReadInterval" value="5" />
-		<Entry key="DTCWaitingTime" value="8000" />
+		<Entry key="TxInterval" value="15" />
+		<Entry key="ReadInterval" value="10" />
+		<Entry key="DTCWaitingTime" value="30" />
 		<Entry key="TxIntervalForControlChecker" value="50"/>
 		<Entry key="ReadIntervalForControlChecker" value="20"/>
 	</Settings>
@@ -639,7 +639,7 @@
 			<Address>DE24</Address>
 			<Name>Keyfob_Battery_Status</Name>
 			<Type></Type>
-			<Group>ECU-DID</Group>
+			<Group>DID</Group>
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
@@ -1166,18 +1166,6 @@
 			</Responses>
 		</Control>
 		<Control>
-			<Address>DF41</Address>
-			<Name>Keyfob_Pairing</Name>
-			<Type></Type>
-			<Group>DID</Group>
-			<Services>22;2F</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="Keyfob Pair" typeName="HexDump_1Byte"></Payload>
-				</Response>
-			</Responses>
-		</Control>
-		<Control>
 			<Address>C257</Address>
 			<Name>Last_Received_Transmitter_Button_Press</Name>
 			<Type></Type>
@@ -1223,6 +1211,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
+					<Payload name="C4.8_SpareDigitalOutput4" dtcCode="9D9E" typeName="DID_PWM"></Payload>
 					<Payload name="C4.7_SparePWM4" dtcCode="9D9D" typeName="DID_PWM"></Payload>
 				</Response>
 			</Responses>
@@ -1331,21 +1320,8 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C4.18_PowerWindowDirectionLeftHallSensor" typeName="DID_Byte_Activate_Inactivate"></Payload>
-					<Payload name="C4.34_PowerWindowDirectionRightHallSensor" typeName="DID_Byte_Activate_Inactivate"></Payload>
-				</Response>
-			</Responses>
-		</Control>
-		<Control>
-			<Address>DF43</Address>
-			<Name>Spare_Analog_Input</Name>
-			<Type></Type>
-			<Group>DID</Group>
-			<Services>22</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="C5.40_SpareAnalogInput2" typeName="HexDump_1Byte"></Payload>
-					<Payload name="C5.39_SpareAnalogInput1" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C4.18_PowerWindowDirectionLeftHallSensor" typeName="Decimal_1Byte"></Payload>
+					<Payload name="C4.34_PowerWindowDirectionRightHallSensor" typeName="Decimal_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1359,7 +1335,6 @@
 				<Response serviceId="62">
 					<Payload name="C4.5_SpareDigitalOutput2" dtcCode="9D9B" typeName="HexDump_1Byte"></Payload>
 					<Payload name="C4.48_SpareDigitalOutput3" dtcCode="9A8C" typeName="HexDump_1Byte"></Payload>
-					<Payload name="C4.8_SpareDigitalOutput4" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6F"></Response>
 			</Responses>
@@ -1372,12 +1347,12 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C5.42_ClockSpring1LHSensor" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.43_ClockSpring1RHSensor" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.23_ClockSpring2LHSensor 1" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.22_ClockSpring2RHSensor 1" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.25_ClockSpring3LHSensor" typeName="HexDump_3Byte"></Payload>
-					<Payload name="C5.26_ClockSpring3RHSensor" typeName="HexDump_3Byte"></Payload>
+					<Payload name="C5.42_ClockSpring1LHSensor" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.43_ClockSpring1RHSensor" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.23_ClockSpring2LHSensor 1" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.22_ClockSpring2RHSensor 1" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.25_ClockSpring3LHSensor" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.26_ClockSpring3RHSensor" typeName="HexDump_3Bytes"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1389,10 +1364,10 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C6.42_HornTypeSelectionSwitch" dtcCode="9324" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C5.46_SpareSwitch30" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.2_AxleLifting1Switch" dtcCode="6100" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.47_LowLinerSwitch" dtcCode="6103" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="C6.21_RockingSwitch" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.21_SpareSwitch2" dtcCode="34FE" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.43_TrailerTagAxleLifting" dtcCode="6101" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C4.9_CabinTiltSwitch" dtcCode="9F0E" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.15_InteriorLampOffSwitch" dtcCode="9F3D" typeName="DID_Byte_Present_notPresent"></Payload>
@@ -1400,7 +1375,7 @@
 					<Payload name="C6.42_DamperConnectionSwitch" dtcCode="9F4B" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.26_EraglonassGlobalMute" dtcCode="921E" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.37_AlternatorChargingStatus" dtcCode="1246" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="C6.38_EHPASInput" dtcCode="35DF" typeName="DID_Byte_Present_notPresent"></Payload>
+					<Payload name="C6.38_SpareSwitch23" dtcCode="35DF" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1507,7 +1482,6 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C5.46_Spare Switch 30" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.48_Spare Switch 29" dtcCode="BA7A" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.47_Spare Switch 28" dtcCode="BA7B" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.40_Spare Switch 27" dtcCode="BA7C" typeName="DID_Byte_Present_notPresent"></Payload>
@@ -1530,7 +1504,6 @@
 					<Payload name="C5.29_Spare Switch 5" dtcCode="9F55" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.18_Spare Switch 4" dtcCode="BA88" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.17_Spare Switch 3" dtcCode="BA89" typeName="DID_Byte_Present_notPresent"></Payload>
-					<Payload name="C6.21_Spare Switch 2" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C5.11_Spare Switch 1" dtcCode="9F45" typeName="DID_Byte_Present_notPresent"></Payload>
 					<Payload name="C6.25_Spare1 Config Switch" dtcCode="9F57" typeName="DID_Byte_Present_notPresent"></Payload>
 				</Response>
@@ -1829,33 +1802,34 @@
 			<Services>22;2E</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="Test_Data" typeName="HexDump_4Bytes"></Payload>
+					<Payload name="C4.7_SparePWM4" dtcCode="9D9D" typeName="DID_PWM"></Payload>
+					<Payload name="C4.10_O_5V_DCDC_1.2A" typeName="HexDump_1Byte"></Payload>
+					<Payload name="C4.8_SpareDigitalOutput4" dtcCode="9D9E" typeName="HexDump_1Byte"></Payload>
 				</Response>
 				<Response serviceId="6E"></Response>
 			</Responses>
 		</Control>
-		<!--Important: deactivated because there was no response in the control.-->
-		<!--<Control>
-      <Address>402A</Address>
-      <Name>Vehicle_Battery_Voltage</Name>
-      <Type></Type>
-      <Group>DID</Group>
-      <Services>22</Services>
-      <Responses>
-        <Response serviceId="62">
-          <Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
-          <Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
-        </Response>
-      </Responses>
-    </Control>-->
+		<Control>
+			<Address>402A</Address>
+			<Name>Vehicle_Battery_Voltage</Name>
+			<Type></Type>
+			<Group>DID</Group>
+			<Services>22</Services>
+			<Responses>
+				<Response serviceId="62">
+					<Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
+				</Response>
+			</Responses>
+		</Control>
 		<Control>
 			<Address>4096</Address>
 			<Name>Remote_Key_Rolling_Counter</Name>
@@ -2051,18 +2025,6 @@
 			</Responses>
 		</Control>
 		<Control>
-			<Address>4253</Address>
-			<Name>Turn_Indicator_Switch_Input</Name>
-			<Type></Type>
-			<Group>DID</Group>
-			<Services>22</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="C5.15_Turn Indicator Switch Input" dtcCode="9F3D" typeName="DID_4253_0"></Payload>
-				</Response>
-			</Responses>
-		</Control>
-		<Control>
 			<Address>4255</Address>
 			<Name>Daytime_Running_Light_Output</Name>
 			<Type></Type>
@@ -2161,9 +2123,9 @@
 			<Value isOpen="true" value="01">Enable</Value>
 		</Payload>
 		<Payload length="1" typeName="DID_Byte_Activate_Inactivate">
-			<Value value="00">Null - No Control Active</Value>
+			<Value isClose="true" value="00">Null - No Control Active</Value>
 			<Value isOpen="true" value="01" color="Green">Activate</Value>
-			<Value isClose="true" value="02">Inactivate</Value>
+			<Value value="02">Inactivate</Value>
 		</Payload>
 		<Payload length="1" typeName="DID_Bytes_High_Low">
 			<Value isClose="true" value="00">Low</Value>
@@ -2313,11 +2275,13 @@
 			<Value value="FF">Not Used</Value>
 		</Payload>
 		<Payload length="1" typeName="Unsigned_1Byte" />
+		<Payload length="1" typeName="Decimal_1Byte" />
 		<Payload length="4" typeName="DID_F166_0" />
 		<Payload length="4" typeName="Internal_Version" />
 		<Payload length="2" typeName="DID_PWM" />
 		<Payload length="1" typeName="HexDump_1Byte" />
 		<Payload length="2" typeName="HexDump_2Bytes" />
+		<Payload length="3" typeName="HexDump_3Bytes" />
 		<Payload length="4" typeName="HexDump_4Bytes" />
 		<Payload length="16" typeName="HexDump_16Bytes" />
 		<Payload length="16" typeName="DID_DE26" />
@@ -2347,22 +2311,6 @@
 		<Type value="F0">Manufacturer Defined</Type>
 	</DTCFailureTypes>
 	<EnvironmentalTest>
-		<EnvironmentalConfig>
-			<CycleTime>200</CycleTime>
-			<TxInterval>10</TxInterval>
-			<StartCycleIndex>16</StartCycleIndex>
-			<EndCycleIndex>90</EndCycleIndex>
-			<PWMDutyOpenValue>100</PWMDutyOpenValue>
-			<PWMDutyCloseValue>0</PWMDutyCloseValue>
-			<PWMFreqOpenValue>200</PWMFreqOpenValue>
-			<PWMFreqCloseValue>200</PWMFreqCloseValue>
-			<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
-		</EnvironmentalConfig>
-		<ContinousReadList>
-			<Func parent="TCCM_Input">KL75Relay1</Func>
-			<!-- <Func>C1.3_VehicleConverter12VSupply</Func> -->
-			<!-- <Func>C1.3_VehicleConverter12VSupply</Func> -->
-		</ContinousReadList>
 		<ConnectionMappings>
 			<Mapping>
 				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.1_Door Unlock Relay - Passenger's Side</Output>
@@ -2500,10 +2448,10 @@
 				<Output parent="InteriorLightDimmingSupply">C3.17_InteriorLightDimmingSupply</Output>
 				<Input parent="Spare_Switch">C5.50_Spare Switch 10</Input>
 			</Mapping>
-			<!-- <Mapping> -->
-			<!-- <Output parent="WaterPumpSupply">C3.18_WaterPumpSupply</Output> -->
-			<!-- <Input parent="Spare_Switch">C5.51_Spare Switch 11</Input> -->
-			<!-- </Mapping> -->
+			<Mapping>
+				<Output parent="WaterPumpSupply">C3.18_WaterPumpSupply</Output>
+				<Input parent="Spare_Switch">C5.51_Spare Switch 11</Input>
+			</Mapping>
 			<Mapping>
 				<Output parent="Right_Front_Turn_Lamp_Outage_Feedback">C3.21_Right Front Turn Lamp Outage Feedback</Output>
 				<Input parent="Spare_Switch">C5.52_Spare Switch 12</Input>
@@ -2529,11 +2477,11 @@
 				<Input parent="PTO_Switches">C6.19_MainPTOAckSwitch</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent="Spare_PWM_Inputs">C4.7_SparePWM4</Output>
+				<Output parent="Test_Data">C4.7_SparePWM4</Output>
 				<Input parent="Spare_Switch">C6.23_Spare Switch 22</Input>
 			</Mapping>
 			<Mapping>
-				<Output parent="Spare_Digital_Outputs">C4.8_SpareDigitalOutput4</Output>
+				<Output parent="Test_Data">C4.8_SpareDigitalOutput4</Output>
 				<Input parent="Spare_Switch">C6.25_Spare1 Config Switch</Input>
 			</Mapping>
 			<Mapping>
@@ -2574,7 +2522,7 @@
 			</Mapping>
 			<Mapping>
 				<Output parent="Inter_Lock_Valve_Supply">C4.44_InterLockValveSupply</Output>
-				<Input parent="Input_Switches">C6.38_EHPASInput</Input>
+				<Input parent="Input_Switches">C6.38_SpareSwitch23</Input>
 			</Mapping>
 			<Mapping>
 				<Output parent="Hall_Sensor_Supply">C4.46_HallSensorRightSupply</Output>
@@ -2620,1171 +2568,1829 @@
 				<Output parent="DoorLockIndicatorSupply">C5.37_DoorLockIndicatorSupply</Output>
 				<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.33_6 Door Ajar Switch - Passenger</Input>
 			</Mapping>
+			<Mapping>
+				<Output parent="DummyControl">DummyControl1</Output>
+				<Input parent="Keyfob_Battery_Status">Keyfob battery status</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="DummyControl">DummyControl2</Output>
+				<Input parent="Last_Received_Transmitter_Button_Press">Last Received Transmitter Button Press</Input>
+			</Mapping>
+			<Mapping>
+				<Output parent="DummyControl">DummyControl3</Output>
+				<Input parent="Last_Received_Transmitter_ID_Code_Value">Last Received Transmitter Id Code Value</Input>
+			</Mapping>
 		</ConnectionMappings>
-		<SensitiveControls>
-			<Function control="TCCM_Input">
-				<Payload>KL15Relay1</Payload>
-				<Payload>KL15Relay2</Payload>
-			</Function>
-		</SensitiveControls>
-		<Cycles>
-			<Cycle>
-				<Name>Soft Continuous 1</Name>
-				<OpenAt>01</OpenAt>
-				<CloseAt>05</CloseAt>
-				<Functions>
-					<Function control="WCInhibit">
-						<Payload>C4.47_WCInhibit</Payload>
-					</Function>
-					<Function control="DoorLockIndicatorSupply">
-						<Payload>C5.37_DoorLockIndicatorSupply</Payload>
-					</Function>
-					<Function control="Left_Rear_Turn_Lamp_LED_Outage_Feedback">
-						<Payload>C2.15_Left Rear Turn Lamp/LED Outage Feedback</Payload>
-					</Function>
-					<Function control="Right_Rear_Turn_Lamp_LED_Outage_Feedback">
-						<Payload>C2.12_Right Rear Turn Lamp/LED Outage Feedback</Payload>
-					</Function>
-					<Function control="Rear_Park_Lamps_Output">
-						<Payload>C1.13_RearParkingLightTrailerSupply</Payload>
-					</Function>
-					<Function control="Rear_Fog_Lamps_Output">
-						<Payload>C2.4_Rear Fog Lamps Output</Payload>
-					</Function>
-					<!-- <Function control="WaterPumpSupply"> -->
-					<!-- <Payload>C3.18_WaterPumpSupply</Payload> -->
-					<!-- </Function> -->
-					<Function control="Left_Front_Low_Beam_Output_Control">
-						<Payload>C1.14_Left Front Low Beam Output Control</Payload>
-					</Function>
-					<Function control="Right_Front_Fog_Lamps_Output">
-						<Payload>C2.1_Right Front Fog Lamps Output</Payload>
-					</Function>
-					<Function control="Left_Front_Fog_Lamps_Output">
-						<Payload>C2.8_Left Front Fog Lamps Output</Payload>
-					</Function>
-					<Function control="Daytime_Running_Light_Output">
-						<Payload>C2.3_DDRLSupplyRight</Payload>
-						<Payload>C2.9_DDRLSupplyLeft</Payload>
-					</Function>
-					<Function control="InteriorLightDimmingSupply">
-						<Payload>C3.17_InteriorLightDimmingSupply</Payload>
-					</Function>
-					<Function control="Right_Front_Low_Beam_Output_Control">
-						<Payload>C3.14_Right Front Low Beam Output Control</Payload>
-					</Function>
-					<Function control="FrontParkingLightSupply">
-						<Payload>C3.4_FrontParkingLightSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>Soft Continuous 2</Name>
-				<OpenAt>06</OpenAt>
-				<CloseAt>10</CloseAt>
-				<Functions>
-					<Function control="WCInhibit">
-						<Payload>C4.47_WCInhibit</Payload>
-					</Function>
-					<Function control="DoorLockIndicatorSupply">
-						<Payload>C5.37_DoorLockIndicatorSupply</Payload>
-					</Function>
-					<Function control="Left_Rear_Turn_Lamp_LED_Outage_Feedback">
-						<Payload>C2.15_Left Rear Turn Lamp/LED Outage Feedback</Payload>
-					</Function>
-					<Function control="Right_Rear_Turn_Lamp_LED_Outage_Feedback">
-						<Payload>C2.12_Right Rear Turn Lamp/LED Outage Feedback</Payload>
-					</Function>
-					<Function control="Rear_Fog_Lamps_Output">
-						<Payload>C2.4_Rear Fog Lamps Output</Payload>
-					</Function>
-					<!-- <Function control="WaterPumpSupply"> -->
-					<!-- <Payload>C3.18_WaterPumpSupply</Payload> -->
-					<!-- </Function> -->
-					<Function control="Left_Front_Low_Beam_Output_Control">
-						<Payload>C1.14_Left Front Low Beam Output Control</Payload>
-					</Function>
-					<Function control="Right_Front_Fog_Lamps_Output">
-						<Payload>C2.1_Right Front Fog Lamps Output</Payload>
-					</Function>
-					<Function control="Left_Front_Fog_Lamps_Output">
-						<Payload>C2.8_Left Front Fog Lamps Output</Payload>
-					</Function>
-					<Function control="Daytime_Running_Light_Output">
-						<Payload>C2.3_DDRLSupplyRight</Payload>
-						<Payload>C2.9_DDRLSupplyLeft</Payload>
-					</Function>
-					<Function control="InteriorLightDimmingSupply">
-						<Payload>C3.17_InteriorLightDimmingSupply</Payload>
-					</Function>
-					<Function control="Right_Front_Low_Beam_Output_Control">
-						<Payload>C3.14_Right Front Low Beam Output Control</Payload>
-					</Function>
-					<Function control="FrontParkingLightSupply">
-						<Payload>C3.4_FrontParkingLightSupply</Payload>
-					</Function>
-					<Function control="Ambient_Light_LED_Power_Supply">
-						<Payload>C4.42_Ambient Light LED Power Supply</Payload>
-					</Function>
-					<Function control="Spare_Digital_Outputs">
-						<Payload>C4.8_SpareDigitalOutput4</Payload>
-						<Payload>C4.5_SpareDigitalOutput2</Payload>
-					</Function>
-					<Function control="Spare_PWM_Inputs">
-						<Payload>C4.7_SparePWM4</Payload>
-					</Function>
-					<Function control="BrakeLightRelaySupply">
-						<Payload>C4.6_BrakeLightRelaySupply</Payload>
-					</Function>
-					<Function control="Rear_Park_Lamps_Output">
-						<Payload>C4.3_RearParkingLightLeftSupply</Payload>
-						<Payload>C4.4_RearParkingLightRightSupply</Payload>
-						<Payload>C1.13_RearParkingLightTrailerSupply</Payload>
-					</Function>
-					<Function control="TCCM_Input">
-						<Payload>C5.6_KL75Relay1</Payload>
-						<Payload>C5.5_KL15Relay1</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>Soft Continuous 3</Name>
-				<OpenAt>11</OpenAt>
-				<CloseAt>-1</CloseAt>
-				<Functions>
-					<Function control="WCInhibit">
-						<Payload>C4.47_WCInhibit</Payload>
-					</Function>
-					<Function control="DoorLockIndicatorSupply">
-						<Payload>C5.37_DoorLockIndicatorSupply</Payload>
-					</Function>
-					<Function control="Left_Rear_Turn_Lamp_LED_Outage_Feedback">
-						<Payload>C2.15_Left Rear Turn Lamp/LED Outage Feedback</Payload>
-					</Function>
-					<Function control="Right_Rear_Turn_Lamp_LED_Outage_Feedback">
-						<Payload>C2.12_Right Rear Turn Lamp/LED Outage Feedback</Payload>
-					</Function>
-					<Function control="Rear_Fog_Lamps_Output">
-						<Payload>C2.4_Rear Fog Lamps Output</Payload>
-					</Function>
-					<!-- <Function control="WaterPumpSupply"> -->
-					<!-- <Payload>C3.18_WaterPumpSupply</Payload> -->
-					<!-- </Function> -->
-					<Function control="Left_Front_Low_Beam_Output_Control">
-						<Payload>C1.14_Left Front Low Beam Output Control</Payload>
-					</Function>
-					<Function control="Right_Front_Fog_Lamps_Output">
-						<Payload>C2.1_Right Front Fog Lamps Output</Payload>
-					</Function>
-					<Function control="Left_Front_Fog_Lamps_Output">
-						<Payload>C2.8_Left Front Fog Lamps Output</Payload>
-					</Function>
-					<Function control="Daytime_Running_Light_Output">
-						<Payload>C2.3_DDRLSupplyRight</Payload>
-						<Payload>C2.9_DDRLSupplyLeft</Payload>
-					</Function>
-					<Function control="InteriorLightDimmingSupply">
-						<Payload>C3.17_InteriorLightDimmingSupply</Payload>
-					</Function>
-					<Function control="Right_Front_Low_Beam_Output_Control">
-						<Payload>C3.14_Right Front Low Beam Output Control</Payload>
-					</Function>
-					<Function control="FrontParkingLightSupply">
-						<Payload>C3.4_FrontParkingLightSupply</Payload>
-					</Function>
-					<Function control="Ambient_Light_LED_Power_Supply">
-						<Payload>C4.42_Ambient Light LED Power Supply</Payload>
-					</Function>
-					<Function control="Spare_Digital_Outputs">
-						<Payload>C4.8_SpareDigitalOutput4</Payload>
-						<Payload>C4.5_SpareDigitalOutput2</Payload>
-					</Function>
-					<Function control="Spare_PWM_Inputs">
-						<Payload>C4.7_SparePWM4</Payload>
-					</Function>
-					<Function control="BrakeLightRelaySupply">
-						<Payload>C4.6_BrakeLightRelaySupply</Payload>
-					</Function>
-					<Function control="Rear_Park_Lamps_Output">
-						<Payload>C4.3_RearParkingLightLeftSupply</Payload>
-						<Payload>C4.4_RearParkingLightRightSupply</Payload>
-						<Payload>C1.13_RearParkingLightTrailerSupply</Payload>
-					</Function>
-					<Function control="TCCM_Input">
-						<Payload>C5.6_KL75Relay1</Payload>
-						<Payload>C5.5_KL15Relay1</Payload>
-						<Payload>C5.3_KL50Output</Payload>
-						<Payload>C5.2_KL15Relay2</Payload>
-					</Function>
-					<Function control="SteeringColumnSwitchIlluminationSupply">
-						<Payload>C5.9_SteeringColumnSwitchIlluminationSupply</Payload>
-					</Function>
-					<Function control="Interior12VLightDimmingSupply">
-						<Payload>C5.1_Interior12VLightDimmingSupply</Payload>
-					</Function>
-					<Function control="Headlamp_High_Beam_Output_Control">
-						<Payload>C3.16_High Beam Right</Payload>
-						<Payload>C3.7_High Beam Left</Payload>
-					</Function>
-					<Function control="ACCutOffSupply">
-						<Payload>C3.5_ACCutOffSupply</Payload>
-					</Function>
-					<Function control="BedAreaLightingSupply">
-						<Payload>C4.40_BedAreaLightingSupply</Payload>
-					</Function>
-					<Function control="LED_Outputs">
-						<Payload>C4.50_ESPOffOutputLED</Payload>
-						<Payload>C4.49_LDWSFuncIlluminationLED</Payload>
-					</Function>
-					<Function control="PWM_StartStopIllimunation12VLED">
-						<Payload>C5.19_PWM_StartStopIllimunation12VLED</Payload>
-					</Function>
-					<Function control="Dome_Light_Supply">
-						<Payload>C2.2_DomeLightSupply</Payload>
-					</Function>
-					<Function control="Map_Lamp_PWM_Supply">
-						<Payload>C4.45_MapLampPassengerPWMSupply</Payload>
-						<Payload>C4.41_MapLampDriverPWMSupply</Payload>
-					</Function>
-					<Function control="StepLightsSupply">
-						<Payload>C4.19_StepLightsSupply</Payload>
-					</Function>
-					<Function control="PTO_Valve_Supply">
-						<Payload>C5.7_PTO1ValveSupply</Payload>
-						<Payload>C4.37_PTO2ValveSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
+		<Environments>
+			<Environment>
+				<Name>Generic</Name>
+				<EnvironmentalConfig>
+					<CycleTime>200</CycleTime>
+					<TxInterval>15</TxInterval>
+					<StartCycleIndex>16</StartCycleIndex>
+					<EndCycleIndex>90</EndCycleIndex>
+					<PWMDutyOpenValue>10000</PWMDutyOpenValue>
+					<PWMDutyCloseValue>0</PWMDutyCloseValue>
+					<PWMFreqOpenValue>200</PWMFreqOpenValue>
+					<PWMFreqCloseValue>200</PWMFreqCloseValue>
+					<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
+				</EnvironmentalConfig>
+				<ContinousReadList>
+					<!-- Continous read list contents -->
+				</ContinousReadList>
+				<SensitiveControls>
+					<!-- Sensitive controls contents -->
+				</SensitiveControls>
+				<Cycles>
+					<Cycle>
+						<Name>Soft Continuous 1</Name>
+						<OpenAt>01</OpenAt>
+						<CloseAt>05</CloseAt>
+						<Functions>
+							<Function control="Test_Data">
+								<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+								<Payload>C4.8_SpareDigitalOutput4</Payload>
+								<Payload>C4.7_SparePWM4</Payload>
+							</Function>
+							<Function control="WCInhibit">
+								<Payload>C4.47_WCInhibit</Payload>
+							</Function>
+							<Function control="DoorLockIndicatorSupply">
+								<Payload>C5.37_DoorLockIndicatorSupply</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Lamp_LED_Outage_Feedback">
+								<Payload>C2.15_Left Rear Turn Lamp/LED Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Lamp_LED_Outage_Feedback">
+								<Payload>C2.12_Right Rear Turn Lamp/LED Outage Feedback</Payload>
+							</Function>
+							<Function control="Rear_Park_Lamps_Output">
+								<Payload>C1.13_RearParkingLightTrailerSupply</Payload>
+							</Function>
+							<Function control="Rear_Fog_Lamps_Output">
+								<Payload>C2.4_Rear Fog Lamps Output</Payload>
+							</Function>
+							<Function control="WaterPumpSupply">
+								<Payload>C3.18_WaterPumpSupply</Payload>
+							</Function>
+							<Function control="Left_Front_Low_Beam_Output_Control">
+								<Payload>C1.14_Left Front Low Beam Output Control</Payload>
+							</Function>
+							<Function control="Right_Front_Fog_Lamps_Output">
+								<Payload>C2.1_Right Front Fog Lamps Output</Payload>
+							</Function>
+							<Function control="Left_Front_Fog_Lamps_Output">
+								<Payload>C2.8_Left Front Fog Lamps Output</Payload>
+							</Function>
+							<Function control="Daytime_Running_Light_Output">
+								<Payload>C2.3_DDRLSupplyRight</Payload>
+								<Payload>C2.9_DDRLSupplyLeft</Payload>
+							</Function>
+							<Function control="InteriorLightDimmingSupply">
+								<Payload>C3.17_InteriorLightDimmingSupply</Payload>
+							</Function>
+							<Function control="Right_Front_Low_Beam_Output_Control">
+								<Payload>C3.14_Right Front Low Beam Output Control</Payload>
+							</Function>
+							<Function control="FrontParkingLightSupply">
+								<Payload>C3.4_FrontParkingLightSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>Soft Continuous 2</Name>
+						<OpenAt>06</OpenAt>
+						<CloseAt>10</CloseAt>
+						<Functions>
+							<Function control="Test_Data">
+								<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+								<Payload>C4.8_SpareDigitalOutput4</Payload>
+								<Payload>C4.7_SparePWM4</Payload>
+							</Function>
+							<Function control="WCInhibit">
+								<Payload>C4.47_WCInhibit</Payload>
+							</Function>
+							<Function control="DoorLockIndicatorSupply">
+								<Payload>C5.37_DoorLockIndicatorSupply</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Lamp_LED_Outage_Feedback">
+								<Payload>C2.15_Left Rear Turn Lamp/LED Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Lamp_LED_Outage_Feedback">
+								<Payload>C2.12_Right Rear Turn Lamp/LED Outage Feedback</Payload>
+							</Function>
+							<Function control="Rear_Fog_Lamps_Output">
+								<Payload>C2.4_Rear Fog Lamps Output</Payload>
+							</Function>
+							<Function control="WaterPumpSupply">
+								<Payload>C3.18_WaterPumpSupply</Payload>
+							</Function>
+							<Function control="Left_Front_Low_Beam_Output_Control">
+								<Payload>C1.14_Left Front Low Beam Output Control</Payload>
+							</Function>
+							<Function control="Right_Front_Fog_Lamps_Output">
+								<Payload>C2.1_Right Front Fog Lamps Output</Payload>
+							</Function>
+							<Function control="Left_Front_Fog_Lamps_Output">
+								<Payload>C2.8_Left Front Fog Lamps Output</Payload>
+							</Function>
+							<Function control="Daytime_Running_Light_Output">
+								<Payload>C2.3_DDRLSupplyRight</Payload>
+								<Payload>C2.9_DDRLSupplyLeft</Payload>
+							</Function>
+							<Function control="InteriorLightDimmingSupply">
+								<Payload>C3.17_InteriorLightDimmingSupply</Payload>
+							</Function>
+							<Function control="Right_Front_Low_Beam_Output_Control">
+								<Payload>C3.14_Right Front Low Beam Output Control</Payload>
+							</Function>
+							<Function control="FrontParkingLightSupply">
+								<Payload>C3.4_FrontParkingLightSupply</Payload>
+							</Function>
+							<Function control="Ambient_Light_LED_Power_Supply">
+								<Payload>C4.42_Ambient Light LED Power Supply</Payload>
+							</Function>
+							<Function control="Spare_Digital_Outputs">
+								<Payload>C4.5_SpareDigitalOutput2</Payload>
+							</Function>
+							<Function control="BrakeLightRelaySupply">
+								<Payload>C4.6_BrakeLightRelaySupply</Payload>
+							</Function>
+							<Function control="Spare_Digital_Outputs">
+								<Payload>C4.48_SpareDigitalOutput3</Payload>
+							</Function>
+							<Function control="Rear_Park_Lamps_Output">
+								<Payload>C4.3_RearParkingLightLeftSupply</Payload>
+								<Payload>C4.4_RearParkingLightRightSupply</Payload>
+								<Payload>C1.13_RearParkingLightTrailerSupply</Payload>
+							</Function>
+							<Function control="TCCM_Input">
+								<Payload>C5.6_KL75Relay1</Payload>
+								<Payload>C5.5_KL15Relay1</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>Soft Continuous 3</Name>
+						<OpenAt>11</OpenAt>
+						<CloseAt>-1</CloseAt>
+						<Functions>
+							<Function control="Test_Data">
+								<Payload>C4.10_O_5V_DCDC_1.2A</Payload>
+								<Payload>C4.8_SpareDigitalOutput4</Payload>
+								<Payload>C4.7_SparePWM4</Payload>
+							</Function>
+							<Function control="WCInhibit">
+								<Payload>C4.47_WCInhibit</Payload>
+							</Function>
+							<Function control="DoorLockIndicatorSupply">
+								<Payload>C5.37_DoorLockIndicatorSupply</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Lamp_LED_Outage_Feedback">
+								<Payload>C2.15_Left Rear Turn Lamp/LED Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Lamp_LED_Outage_Feedback">
+								<Payload>C2.12_Right Rear Turn Lamp/LED Outage Feedback</Payload>
+							</Function>
+							<Function control="Rear_Fog_Lamps_Output">
+								<Payload>C2.4_Rear Fog Lamps Output</Payload>
+							</Function>
+							<Function control="WaterPumpSupply">
+								<Payload>C3.18_WaterPumpSupply</Payload>
+							</Function>
+							<Function control="Left_Front_Low_Beam_Output_Control">
+								<Payload>C1.14_Left Front Low Beam Output Control</Payload>
+							</Function>
+							<Function control="Right_Front_Fog_Lamps_Output">
+								<Payload>C2.1_Right Front Fog Lamps Output</Payload>
+							</Function>
+							<Function control="Left_Front_Fog_Lamps_Output">
+								<Payload>C2.8_Left Front Fog Lamps Output</Payload>
+							</Function>
+							<Function control="Daytime_Running_Light_Output">
+								<Payload>C2.3_DDRLSupplyRight</Payload>
+								<Payload>C2.9_DDRLSupplyLeft</Payload>
+							</Function>
+							<Function control="InteriorLightDimmingSupply">
+								<Payload>C3.17_InteriorLightDimmingSupply</Payload>
+							</Function>
+							<Function control="Right_Front_Low_Beam_Output_Control">
+								<Payload>C3.14_Right Front Low Beam Output Control</Payload>
+							</Function>
+							<Function control="FrontParkingLightSupply">
+								<Payload>C3.4_FrontParkingLightSupply</Payload>
+							</Function>
+							<Function control="Ambient_Light_LED_Power_Supply">
+								<Payload>C4.42_Ambient Light LED Power Supply</Payload>
+							</Function>
+							<Function control="Spare_Digital_Outputs">
+								<Payload>C4.5_SpareDigitalOutput2</Payload>
+							</Function>
+							<Function control="BrakeLightRelaySupply">
+								<Payload>C4.6_BrakeLightRelaySupply</Payload>
+							</Function>
+							<Function control="Spare_Digital_Outputs">
+								<Payload>C4.48_SpareDigitalOutput3</Payload>
+							</Function>
+							<Function control="Rear_Park_Lamps_Output">
+								<Payload>C4.3_RearParkingLightLeftSupply</Payload>
+								<Payload>C4.4_RearParkingLightRightSupply</Payload>
+								<Payload>C1.13_RearParkingLightTrailerSupply</Payload>
+							</Function>
+							<Function control="TCCM_Input">
+								<Payload>C5.6_KL75Relay1</Payload>
+								<Payload>C5.5_KL15Relay1</Payload>
+								<Payload>C5.3_KL50Output</Payload>
+								<Payload>C5.2_KL15Relay2</Payload>
+							</Function>
+							<Function control="SteeringColumnSwitchIlluminationSupply">
+								<Payload>C5.9_SteeringColumnSwitchIlluminationSupply</Payload>
+							</Function>
+							<Function control="Interior12VLightDimmingSupply">
+								<Payload>C5.1_Interior12VLightDimmingSupply</Payload>
+							</Function>
+							<Function control="Headlamp_High_Beam_Output_Control">
+								<Payload>C3.16_High Beam Right</Payload>
+								<Payload>C3.7_High Beam Left</Payload>
+							</Function>
+							<Function control="ACCutOffSupply">
+								<Payload>C3.5_ACCutOffSupply</Payload>
+							</Function>
+							<Function control="BedAreaLightingSupply">
+								<Payload>C4.40_BedAreaLightingSupply</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.50_ESPOffOutputLED</Payload>
+								<Payload>C4.49_LDWSFuncIlluminationLED</Payload>
+							</Function>
+							<Function control="PWM_StartStopIllimunation12VLED">
+								<Payload>C5.19_PWM_StartStopIllimunation12VLED</Payload>
+							</Function>
+							<Function control="Dome_Light_Supply">
+								<Payload>C2.2_DomeLightSupply</Payload>
+							</Function>
+							<Function control="Map_Lamp_PWM_Supply">
+								<Payload>C4.45_MapLampPassengerPWMSupply</Payload>
+								<Payload>C4.41_MapLampDriverPWMSupply</Payload>
+							</Function>
+							<Function control="StepLightsSupply">
+								<Payload>C4.19_StepLightsSupply</Payload>
+							</Function>
+							<Function control="PTO_Valve_Supply">
+								<Payload>C5.7_PTO1ValveSupply</Payload>
+								<Payload>C4.37_PTO2ValveSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
 
-			<Cycle>
-				<Name>CycleLoad 01 - Group 1</Name>
-				<OpenAt>16</OpenAt>
-				<CloseAt>17</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 01 - Group 2</Name>
-				<OpenAt>16</OpenAt>
-				<CloseAt>21</CloseAt>
-				<Functions>
-					<Function control="LED_Outputs">
-						<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-					</Function>-->
-					<Function control="Washer_Pump_Front_Relay">
-						<Payload>C1.15_Washer Pump Front Relay</Payload>
-					</Function>
-					<Function control="ReverseGearSupply">
-						<Payload>C3.15_ReverseGearSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 01 - Group 3</Name>
-				<OpenAt>16</OpenAt>
-				<CloseAt>51</CloseAt>
-				<Functions>
-					<!-- <Function control="Passenger_Power_Window_Motor"> -->
-					<!-- <Payload>C1.3_Passenger Power Window Motor Down</Payload> -->
-					<!-- </Function> -->
-					<Function control="Sunroof_Motor">
-						<Payload>C1.8_MOT-A</Payload>
-					</Function>
-					<Function control="Hall_Sensor_Supply">
-						<Payload>C4.28_HallSensorLeftSupply</Payload>
-						<Payload>C4.46_HallSensorRightSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 01 - Group 4</Name>
-				<OpenAt>16</OpenAt>
-				<CloseAt>56</CloseAt>
-				<Functions>
-					<Function control="Windscreen_Wipers_System_Output_Signal">
-						<Payload>C1.18_Wiper Low Relay</Payload>
-					</Function>
-					<Function control="Driver_Power_Window_Motor">
-						<Payload>C2.13_Driver Power Window Motor Down</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 02 - Group 1</Name>
-				<OpenAt>17</OpenAt>
-				<CloseAt>18</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 04 - Group 1</Name>
-				<OpenAt>19</OpenAt>
-				<CloseAt>20</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 06 - Group 1</Name>
-				<OpenAt>21</OpenAt>
-				<CloseAt>22</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 06 - Group 2</Name>
-				<OpenAt>21</OpenAt>
-				<CloseAt>26</CloseAt>
-				<Functions>
-					<Function control="Cabin_Tilt_Valve_Supply">
-						<Payload>C4.38_CabinTiltValveSupply</Payload>
-					</Function>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.54_Battery Saver Set Control</Payload>
-					</Function>
-					<Function control="Inter_Lock_Valve_Supply">
-						<Payload>C4.44_InterLockValveSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 06 - Group 3</Name>
-				<OpenAt>21</OpenAt>
-				<CloseAt>31</CloseAt>
-				<Functions>
-					<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
-						<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
-					</Function>
-					<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
-						<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
-					</Function>
-					<Function control="Left_Rear_Turn_Signal_Lamp_Control">
-						<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
-					</Function>
-					<Function control="Right_Rear_Turn_Signal_Lamp_Control">
-						<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-					</Function>-->
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 08 - Group 1</Name>
-				<OpenAt>23</OpenAt>
-				<CloseAt>24</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 10 - Group 1</Name>
-				<OpenAt>25</OpenAt>
-				<CloseAt>26</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 11 - Group 1</Name>
-				<OpenAt>26</OpenAt>
-				<CloseAt>31</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.52_Battery Saver Reset Control</Payload>
-					</Function>
-					<Function control="TrailerTagAxleLifting1Supply">
-						<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 11 - Group 2</Name>
-				<OpenAt>26</OpenAt>
-				<CloseAt>36</CloseAt>
-				<Functions>
-					<Function control="DifferentialLockValve1Supply">
-						<Payload>C3.1_DifferentialLockValve1Supply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 12 - Group 1</Name>
-				<OpenAt>27</OpenAt>
-				<CloseAt>28</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 14 - Group 1</Name>
-				<OpenAt>29</OpenAt>
-				<CloseAt>30</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 16 - Group 1</Name>
-				<OpenAt>31</OpenAt>
-				<CloseAt>32</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 16 - Group 2</Name>
-				<OpenAt>31</OpenAt>
-				<CloseAt>36</CloseAt>
-				<Functions>
-					<Function control="AirHornActivateSupply">
-						<Payload>C4.16_AirHornActivateSupply</Payload>
-					</Function>
-					<Function control="LED_Outputs">
-						<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>-->
-					<Function control="Washer_Pump_Front_Relay">
-						<Payload>C1.15_Washer Pump Front Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 17 - Group 1</Name>
-				<OpenAt>32</OpenAt>
-				<CloseAt>33</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 19 - Group 1</Name>
-				<OpenAt>34</OpenAt>
-				<CloseAt>35</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 21 - Group 1</Name>
-				<OpenAt>36</OpenAt>
-				<CloseAt>37</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 21 - Group 2</Name>
-				<OpenAt>36</OpenAt>
-				<CloseAt>41</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.54_Battery Saver Set Control</Payload>
-					</Function>
-					<Function control="Blower_Control_Relay_Supply">
-						<Payload>C3.9_Blower Control Relay Supply</Payload>
-					</Function>
-					<Function control="Horn_Output_Control">
-						<Payload>C1.11_Horn Output Control</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-					</Function>-->
-					<Function control="ReverseGearSupply">
-						<Payload>C3.15_ReverseGearSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 21 - Group 3</Name>
-				<OpenAt>36</OpenAt>
-				<CloseAt>46</CloseAt>
-				<Functions>
-					<Function control="HeatedMirrorSupply">
-						<Payload>C4.1_HeatedMirrorSupply</Payload>
-					</Function>
-					<Function control="HeatedWindshieldSupply">
-						<Payload>C4.2_HeatedWindshieldSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 23 - Group 1</Name>
-				<OpenAt>38</OpenAt>
-				<CloseAt>39</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 25 - Group 1</Name>
-				<OpenAt>40</OpenAt>
-				<CloseAt>41</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 26 - Group 1</Name>
-				<OpenAt>41</OpenAt>
-				<CloseAt>46</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.52_Battery Saver Reset Control</Payload>
-					</Function>
-					<Function control="DifferentialLockValve1Supply">
-						<Payload>C3.1_DifferentialLockValve1Supply</Payload>
-					</Function>
-					<Function control="EngineBrakeSupply">
-						<Payload>C2.6_EngineBrakeSupply</Payload>
-					</Function>
-					<Function control="TrailerTagAxleLifting1Supply">
-						<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
-					</Function>
-					<Function control="LowLinerFrontSideLiftedValveSupply">
-						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
-					</Function>-->
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 27 - Group 1</Name>
-				<OpenAt>42</OpenAt>
-				<CloseAt>43</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 29 - Group 1</Name>
-				<OpenAt>44</OpenAt>
-				<CloseAt>45</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 31 - Group 1</Name>
-				<OpenAt>46</OpenAt>
-				<CloseAt>47</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 31 - Group 2</Name>
-				<OpenAt>46</OpenAt>
-				<CloseAt>51</CloseAt>
-				<Functions>
-					<Function control="Blower_Control_Relay_Supply">
-						<Payload>C3.9_Blower Control Relay Supply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<!--<Cycle>
-				<Name>CycleLoad 31 - Group 3</Name>
-				<OpenAt>46</OpenAt>
-				<CloseAt>56</CloseAt>
-				<Functions>
-					<Function control="Power_Mirror_Control">
-						<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
-					</Function>
-				</Functions>
-			</Cycle>-->
-			<Cycle>
-				<Name>CycleLoad 31 - Group 3</Name>
-				<OpenAt>46</OpenAt>
-				<CloseAt>61</CloseAt>
-				<Functions>
-					<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
-						<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
-					</Function>
-					<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
-						<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
-					</Function>
-					<Function control="Left_Rear_Turn_Signal_Lamp_Control">
-						<Payload>C2.7_Left Rear Turn Signal Lamp Controlnctions</Payload>
-					</Function>
-					<Function control="Right_Rear_Turn_Signal_Lamp_Control">
-						<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 32 - Group 1</Name>
-				<OpenAt>47</OpenAt>
-				<CloseAt>48</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 34 - Group 1</Name>
-				<OpenAt>49</OpenAt>
-				<CloseAt>50</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 36 - Group 1</Name>
-				<OpenAt>51</OpenAt>
-				<CloseAt>52</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 36 - Group 2</Name>
-				<OpenAt>51</OpenAt>
-				<CloseAt>56</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.54_Battery Saver Set Control</Payload>
-					</Function>
-					<Function control="LED_Outputs">
-						<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
-					</Function>
-					<Function control="Cabin_Tilt_Valve_Supply">
-						<Payload>C4.38_CabinTiltValveSupply</Payload>
-					</Function>
-					<Function control="Washer_Pump_Front_Relay">
-						<Payload>C1.15_Washer Pump Front Relay</Payload>
-					</Function>
-					<Function control="ReverseGearSupply">
-						<Payload>C3.15_ReverseGearSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 38 - Group 1</Name>
-				<OpenAt>53</OpenAt>
-				<CloseAt>54</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 40 - Group 1</Name>
-				<OpenAt>55</OpenAt>
-				<CloseAt>56</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 41 - Group 1</Name>
-				<OpenAt>56</OpenAt>
-				<CloseAt>61</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.52_Battery Saver Reset Control</Payload>
-					</Function>
-					<Function control="EngineBrakeSupply">
-						<Payload>C2.6_EngineBrakeSupply</Payload>
-					</Function>
-					<Function control="LowLinerFrontSideLiftedValveSupply">
-						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-					</Function>-->
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 41 - Group 2</Name>
-				<OpenAt>56</OpenAt>
-				<CloseAt>66</CloseAt>
-				<Functions>
-					<Function control="DifferentialLockValve1Supply">
-						<Payload>C3.1_DifferentialLockValve1Supply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 41 - Group 3</Name>
-				<OpenAt>56</OpenAt>
-				<CloseAt>76</CloseAt>
-				<Functions>
-					<Function control="AirHornActivateSupply">
-						<Payload>C4.16_AirHornActivateSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 41 - Group 4</Name>
-				<OpenAt>56</OpenAt>
-				<CloseAt>16</CloseAt>
-				<Functions>
-					<!-- <Function control="Passenger_Power_Window_Motor"> -->
-					<!-- <Payload>C1.2_Passenger Power Window Motor Up</Payload> -->
-					<!-- </Function> -->
-					<Function control="Sunroof_Motor">
-						<Payload>C1.6_MOT-B</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 42 - Group 1</Name>
-				<OpenAt>57</OpenAt>
-				<CloseAt>58</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 44 - Group 1</Name>
-				<OpenAt>59</OpenAt>
-				<CloseAt>60</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 46 - Group 1</Name>
-				<OpenAt>61</OpenAt>
-				<CloseAt>62</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 46 - Group 2</Name>
-				<OpenAt>61</OpenAt>
-				<CloseAt>66</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.54_Battery Saver Set Control</Payload>
-					</Function>
-					<Function control="Horn_Output_Control">
-						<Payload>C1.11_Horn Output Control</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>-->
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 46 - Group 3</Name>
-				<OpenAt>61</OpenAt>
-				<CloseAt>16</CloseAt>
-				<Functions>
-					<Function control="Windscreen_Wipers_System_Output_Signal">
-						<Payload>C1.9_Wiper High Relay</Payload>
-					</Function>
-					<Function control="Driver_Power_Window_Motor">
-						<Payload>C2.14_Driver Power Window Motor Up</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 47 - Group 1</Name>
-				<OpenAt>62</OpenAt>
-				<CloseAt>63</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 49 - Group 1</Name>
-				<OpenAt>64</OpenAt>
-				<CloseAt>65</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 51 - Group 1</Name>
-				<OpenAt>66</OpenAt>
-				<CloseAt>67</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 51 - Group 2</Name>
-				<OpenAt>66</OpenAt>
-				<CloseAt>71</CloseAt>
-				<Functions>
-					<Function control="Inter_Lock_Valve_Supply">
-						<Payload>C4.44_InterLockValveSupply</Payload>
-					</Function>
-					<Function control="LowLinerFrontSideLiftedValveSupply">
-						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
-					</Function>-->
-					<Function control="TrailerTagAxleLifting1Supply">
-						<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
-					</Function>
-					<Function control="ReverseGearSupply">
-						<Payload>C3.15_ReverseGearSupply</Payload>
-					</Function>
-					<Function control="HeatedMirrorSupply">
-						<Payload>C4.1_HeatedMirrorSupply</Payload>
-					</Function>
-					<Function control="HeatedWindshieldSupply">
-						<Payload>C4.2_HeatedWindshieldSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 51 - Group 3</Name>
-				<OpenAt>66</OpenAt>
-				<CloseAt>76</CloseAt>
-				<Functions>
-					<Function control="Blower_Control_Relay_Supply">
-						<Payload>C3.9_Blower Control Relay Supply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 53 - Group 1</Name>
-				<OpenAt>68</OpenAt>
-				<CloseAt>69</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 55 - Group 1</Name>
-				<OpenAt>70</OpenAt>
-				<CloseAt>71</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 56 - Group 1</Name>
-				<OpenAt>71</OpenAt>
-				<CloseAt>76</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.54_Battery Saver Set Control</Payload>
-					</Function>
-					<Function control="Cabin_Tilt_Valve_Supply">
-						<Payload>C4.38_CabinTiltValveSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 56 - Group 2</Name>
-				<OpenAt>71</OpenAt>
-				<CloseAt>81</CloseAt>
-				<Functions>
-					<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
-						<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
-					</Function>
-					<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
-						<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
-					</Function>
-					<Function control="Left_Rear_Turn_Signal_Lamp_Control">
-						<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
-					</Function>
-					<Function control="Right_Rear_Turn_Signal_Lamp_Control">
-						<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
-					</Function>-->
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 57 - Group 1</Name>
-				<OpenAt>72</OpenAt>
-				<CloseAt>73</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 59 - Group 1</Name>
-				<OpenAt>74</OpenAt>
-				<CloseAt>75</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 61 - Group 1</Name>
-				<OpenAt>76</OpenAt>
-				<CloseAt>77</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 61 - Group 2</Name>
-				<OpenAt>76</OpenAt>
-				<CloseAt>81</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.52_Battery Saver Reset Control</Payload>
-					</Function>
-					<Function control="LED_Outputs">
-						<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
-					</Function>
-					<Function control="DifferentialLockValve1Supply">
-						<Payload>C3.1_DifferentialLockValve1Supply</Payload>
-					</Function>
-					<Function control="Horn_Output_Control">
-						<Payload>C1.11_Horn Output Control</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 62 - Group 1</Name>
-				<OpenAt>77</OpenAt>
-				<CloseAt>78</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 64 - Group 1</Name>
-				<OpenAt>79</OpenAt>
-				<CloseAt>80</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 66 - Group 1</Name>
-				<OpenAt>81</OpenAt>
-				<CloseAt>82</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 66 - Group 2</Name>
-				<OpenAt>81</OpenAt>
-				<CloseAt>86</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.54_Battery Saver Set Control</Payload>
-					</Function>
-					<Function control="Blower_Control_Relay_Supply">
-						<Payload>C3.9_Blower Control Relay Supply</Payload>
-					</Function>
-					<Function control="EngineBrakeSupply">
-						<Payload>C2.6_EngineBrakeSupply</Payload>
-					</Function>
-					<Function control="LowLinerFrontSideLiftedValveSupply">
-						<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
-					</Function>-->
-					<Function control="TrailerTagAxleLifting1Supply">
-						<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
-					</Function>
-					<Function control="Washer_Pump_Front_Relay">
-						<Payload>C1.15_Washer Pump Front Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 66 - Group 3</Name>
-				<OpenAt>81</OpenAt>
-				<CloseAt>16</CloseAt>
-				<Functions>
-					<Function control="AirHornActivateSupply">
-						<Payload>C4.16_AirHornActivateSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 68 - Group 1</Name>
-				<OpenAt>83</OpenAt>
-				<CloseAt>84</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 70 - Group 1</Name>
-				<OpenAt>85</OpenAt>
-				<CloseAt>86</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 71 - Group 1</Name>
-				<OpenAt>86</OpenAt>
-				<CloseAt>16</CloseAt>
-				<Functions>
-					<Function control="Battery_Saver_System_Output_Signals">
-						<Payload>C4.52_Battery Saver Reset Control</Payload>
-					</Function>
-					<Function control="DifferentialLockValve1Supply">
-						<Payload>C3.1_DifferentialLockValve1Supply</Payload>
-					</Function>
-					<Function control="Horn_Output_Control">
-						<Payload>C1.11_Horn Output Control</Payload>
-					</Function>
-					<!--<Function control="Power_Mirror_Control">
-						<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
-					</Function>-->
-					<Function control="ReverseGearSupply">
-						<Payload>C3.15_ReverseGearSupply</Payload>
-					</Function>
-					<Function control="HeatedMirrorSupply">
-						<Payload>C4.1_HeatedMirrorSupply</Payload>
-					</Function>
-					<Function control="HeatedWindshieldSupply">
-						<Payload>C4.2_HeatedWindshieldSupply</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 72 - Group 1</Name>
-				<OpenAt>87</OpenAt>
-				<CloseAt>88</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-						<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-			<Cycle>
-				<Name>CycleLoad 74 - Group 1</Name>
-				<OpenAt>89</OpenAt>
-				<CloseAt>90</CloseAt>
-				<Functions>
-					<Function control="All_Doors_Lock_and_Ajar_Output_Signal">
-						<Payload>C1.10_Driver Door Lock Relay</Payload>
-						<Payload>C1.4_Passanger Door Lock Relay</Payload>
-					</Function>
-				</Functions>
-			</Cycle>
-		</Cycles>
+					<Cycle>
+						<Name>CycleLoad 01 - Group 1</Name>
+						<OpenAt>16</OpenAt>
+						<CloseAt>17</CloseAt>
+						<Functions>
+							<!--> <Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 01 - Group 2</Name>
+						<OpenAt>16</OpenAt>
+						<CloseAt>21</CloseAt>
+						<Functions>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+							</Function>-->
+							<Function scenario="Power_Mirror_Control_Right_Up"></Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 01 - Group 3</Name>
+						<OpenAt>16</OpenAt>
+						<CloseAt>51</CloseAt>
+						<Functions>
+							<!-- <Function control="Passenger_Power_Window_Motor"> -->
+							<!-- <Payload>C1.3_Passenger Power Window Motor Down</Payload> -->
+							<!-- </Function> -->
+							<!--><Function control="Sunroof_Motor">
+								<Payload>C1.8_MOT-A</Payload>
+							</Function></!-->
+							<Function scenario="Sunroof_Open"></Function>
+							<Function control="Hall_Sensor_Supply">
+								<Payload>C4.28_HallSensorLeftSupply</Payload>
+								<Payload>C4.46_HallSensorRightSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 01 - Group 4</Name>
+						<OpenAt>16</OpenAt>
+						<CloseAt>56</CloseAt>
+						<Functions>
+							<Function control="Windscreen_Wipers_System_Output_Signal">
+								<Payload>C1.18_Wiper Low Relay</Payload>
+							</Function>
+							<Function control="Driver_Power_Window_Motor">
+								<Payload>C2.13_Driver Power Window Motor Down</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 02 - Group 1</Name>
+						<OpenAt>17</OpenAt>
+						<CloseAt>18</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Left_Lock"></Function>
+							<Function scenario="Door_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 04 - Group 1</Name>
+						<OpenAt>19</OpenAt>
+						<CloseAt>20</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 06 - Group 1</Name>
+						<OpenAt>21</OpenAt>
+						<CloseAt>22</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 06 - Group 2</Name>
+						<OpenAt>21</OpenAt>
+						<CloseAt>26</CloseAt>
+						<Functions>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Inter_Lock_Valve_Supply">
+								<Payload>C4.44_InterLockValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 06 - Group 3</Name>
+						<OpenAt>21</OpenAt>
+						<CloseAt>31</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+							</Function>-->
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 08 - Group 1</Name>
+						<OpenAt>23</OpenAt>
+						<CloseAt>24</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 10 - Group 1</Name>
+						<OpenAt>25</OpenAt>
+						<CloseAt>26</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 11 - Group 1</Name>
+						<OpenAt>26</OpenAt>
+						<CloseAt>31</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 11 - Group 2</Name>
+						<OpenAt>26</OpenAt>
+						<CloseAt>36</CloseAt>
+						<Functions>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 12 - Group 1</Name>
+						<OpenAt>27</OpenAt>
+						<CloseAt>28</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 14 - Group 1</Name>
+						<OpenAt>29</OpenAt>
+						<CloseAt>30</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 16 - Group 1</Name>
+						<OpenAt>31</OpenAt>
+						<CloseAt>32</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 16 - Group 2</Name>
+						<OpenAt>31</OpenAt>
+						<CloseAt>36</CloseAt>
+						<Functions>
+							<Function control="AirHornActivateSupply">
+								<Payload>C4.16_AirHornActivateSupply</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							</Function>-->
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 17 - Group 1</Name>
+						<OpenAt>32</OpenAt>
+						<CloseAt>33</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 19 - Group 1</Name>
+						<OpenAt>34</OpenAt>
+						<CloseAt>35</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 21 - Group 1</Name>
+						<OpenAt>36</OpenAt>
+						<CloseAt>37</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 21 - Group 2</Name>
+						<OpenAt>36</OpenAt>
+						<CloseAt>41</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							</Function>-->
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 21 - Group 3</Name>
+						<OpenAt>36</OpenAt>
+						<CloseAt>46</CloseAt>
+						<Functions>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 23 - Group 1</Name>
+						<OpenAt>38</OpenAt>
+						<CloseAt>39</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 25 - Group 1</Name>
+						<OpenAt>40</OpenAt>
+						<CloseAt>41</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 26 - Group 1</Name>
+						<OpenAt>41</OpenAt>
+						<CloseAt>46</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+							</Function>-->
+							<Function scenario="Power_Mirror_Control_Left_Right"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 27 - Group 1</Name>
+						<OpenAt>42</OpenAt>
+						<CloseAt>43</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 29 - Group 1</Name>
+						<OpenAt>44</OpenAt>
+						<CloseAt>45</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 31 - Group 1</Name>
+						<OpenAt>46</OpenAt>
+						<CloseAt>47</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 31 - Group 2</Name>
+						<OpenAt>46</OpenAt>
+						<CloseAt>51</CloseAt>
+						<Functions>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 31 - Group 3</Name>
+						<OpenAt>46</OpenAt>
+						<CloseAt>61</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Controlnctions</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 32 - Group 1</Name>
+						<OpenAt>47</OpenAt>
+						<CloseAt>48</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 34 - Group 1</Name>
+						<OpenAt>49</OpenAt>
+						<CloseAt>50</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 36 - Group 1</Name>
+						<OpenAt>51</OpenAt>
+						<CloseAt>52</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 36 - Group 2</Name>
+						<OpenAt>51</OpenAt>
+						<CloseAt>56</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Down">
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 38 - Group 1</Name>
+						<OpenAt>53</OpenAt>
+						<CloseAt>54</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 40 - Group 1</Name>
+						<OpenAt>55</OpenAt>
+						<CloseAt>56</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 41 - Group 1</Name>
+						<OpenAt>56</OpenAt>
+						<CloseAt>61</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							</Function>-->
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 41 - Group 2</Name>
+						<OpenAt>56</OpenAt>
+						<CloseAt>66</CloseAt>
+						<Functions>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 41 - Group 3</Name>
+						<OpenAt>56</OpenAt>
+						<CloseAt>76</CloseAt>
+						<Functions>
+							<Function control="AirHornActivateSupply">
+								<Payload>C4.16_AirHornActivateSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 41 - Group 4</Name>
+						<OpenAt>56</OpenAt>
+						<CloseAt>16</CloseAt>
+						<Functions>
+							<!-- <Function control="Passenger_Power_Window_Motor"> -->
+							<!-- <Payload>C1.2_Passenger Power Window Motor Up</Payload> -->
+							<!-- </Function> -->
+							<!--><Function control="Sunroof_Motor">
+								<Payload>C1.6_MOT-B</Payload>
+							</Function></!-->
+							<Function scenario="Sunroof_Close"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 42 - Group 1</Name>
+						<OpenAt>57</OpenAt>
+						<CloseAt>58</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 44 - Group 1</Name>
+						<OpenAt>59</OpenAt>
+						<CloseAt>60</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 46 - Group 1</Name>
+						<OpenAt>61</OpenAt>
+						<CloseAt>62</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 46 - Group 2</Name>
+						<OpenAt>61</OpenAt>
+						<CloseAt>66</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							</Function>-->
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 46 - Group 3</Name>
+						<OpenAt>61</OpenAt>
+						<CloseAt>16</CloseAt>
+						<Functions>
+							<Function control="Windscreen_Wipers_System_Output_Signal">
+								<Payload>C1.9_Wiper High Relay</Payload>
+							</Function>
+							<Function control="Driver_Power_Window_Motor">
+								<Payload>C2.14_Driver Power Window Motor Up</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 47 - Group 1</Name>
+						<OpenAt>62</OpenAt>
+						<CloseAt>63</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 49 - Group 1</Name>
+						<OpenAt>64</OpenAt>
+						<CloseAt>65</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 51 - Group 1</Name>
+						<OpenAt>66</OpenAt>
+						<CloseAt>67</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 51 - Group 2</Name>
+						<OpenAt>66</OpenAt>
+						<CloseAt>71</CloseAt>
+						<Functions>
+							<Function control="Inter_Lock_Valve_Supply">
+								<Payload>C4.44_InterLockValveSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+							</Function>-->
+							<Function scenario="Power_Mirror_Control_Right_Up"></Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 51 - Group 3</Name>
+						<OpenAt>66</OpenAt>
+						<CloseAt>76</CloseAt>
+						<Functions>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 53 - Group 1</Name>
+						<OpenAt>68</OpenAt>
+						<CloseAt>69</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 55 - Group 1</Name>
+						<OpenAt>70</OpenAt>
+						<CloseAt>71</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 56 - Group 1</Name>
+						<OpenAt>71</OpenAt>
+						<CloseAt>76</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 56 - Group 2</Name>
+						<OpenAt>71</OpenAt>
+						<CloseAt>81</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+							</Function>-->
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 57 - Group 1</Name>
+						<OpenAt>72</OpenAt>
+						<CloseAt>73</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 59 - Group 1</Name>
+						<OpenAt>74</OpenAt>
+						<CloseAt>75</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 61 - Group 1</Name>
+						<OpenAt>76</OpenAt>
+						<CloseAt>77</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 61 - Group 2</Name>
+						<OpenAt>76</OpenAt>
+						<CloseAt>81</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 62 - Group 1</Name>
+						<OpenAt>77</OpenAt>
+						<CloseAt>78</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 64 - Group 1</Name>
+						<OpenAt>79</OpenAt>
+						<CloseAt>80</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 66 - Group 1</Name>
+						<OpenAt>81</OpenAt>
+						<CloseAt>82</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 66 - Group 2</Name>
+						<OpenAt>81</OpenAt>
+						<CloseAt>86</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							</Function>-->
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 66 - Group 3</Name>
+						<OpenAt>81</OpenAt>
+						<CloseAt>16</CloseAt>
+						<Functions>
+							<Function control="AirHornActivateSupply">
+								<Payload>C4.16_AirHornActivateSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 68 - Group 1</Name>
+						<OpenAt>83</OpenAt>
+						<CloseAt>84</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 70 - Group 1</Name>
+						<OpenAt>85</OpenAt>
+						<CloseAt>86</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 71 - Group 1</Name>
+						<OpenAt>86</OpenAt>
+						<CloseAt>16</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<!--<Function control="Power_Mirror_Control">
+								<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							</Function>-->
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 72 - Group 1</Name>
+						<OpenAt>87</OpenAt>
+						<CloseAt>88</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_UnLock"></Function>
+							<Function scenario="Door_Left_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 74 - Group 1</Name>
+						<OpenAt>89</OpenAt>
+						<CloseAt>90</CloseAt>
+						<Functions>
+							<!--><Function control="All_Doors_Lock_and_Ajar_Output_Signal">
+								<Payload>C1.10_Driver Door Lock Relay</Payload>
+								<Payload>C1.4_Passanger Door Lock Relay</Payload>
+							</Function></!-->
+							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Lock"></Function>
+						</Functions>
+					</Cycle>
+				</Cycles>
+				<Scenarios>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Left_Up</Name>
+						<OpenPayloads>
+							<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+							<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Left_Down</Name>
+						<OpenPayloads>
+							<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+							<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Left_Left</Name>
+						<OpenPayloads>
+							<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Left_Right</Name>
+						<OpenPayloads>
+							<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Right_Up</Name>
+						<OpenPayloads>
+							<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Right_Down</Name>
+						<OpenPayloads>
+							<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Right_Left</Name>
+						<OpenPayloads>
+							<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+							<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Right_Right</Name>
+						<OpenPayloads>
+							<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+							<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>C151</Address>
+						<Name>Door_Left_Lock</Name>
+						<OpenPayloads>
+							<Payload>C1.4_Passanger Door Lock Relay</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>C151</Address>
+						<Name>Door_Left_UnLock</Name>
+						<OpenPayloads>
+							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.4_Passanger Door Lock Relay</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>C151</Address>
+						<Name>Door_Right_Lock</Name>
+						<OpenPayloads>
+							<Payload>C1.10_Driver Door Lock Relay</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>C151</Address>
+						<Name>Door_Right_UnLock</Name>
+						<OpenPayloads>
+							<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.10_Driver Door Lock Relay</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>A493</Address>
+						<Name>Sunroof_Open</Name>
+						<OpenPayloads>
+							<Payload>C1.6_MOT-B</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.8_MOT-A</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>A493</Address>
+						<Name>Sunroof_Close</Name>
+						<OpenPayloads>
+							<Payload>C1.8_MOT-A</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.6_MOT-B</Payload>
+						</ClosePayloads>
+					</Scenario>
+				</Scenarios>
+			</Environment>
+			<Environment>
+				<Name>PEPS</Name>
+				<EnvironmentalConfig>
+					<CycleTime>200</CycleTime>
+					<TxInterval>15</TxInterval>
+					<StartCycleIndex>1</StartCycleIndex>
+					<EndCycleIndex>76</EndCycleIndex>
+					<PWMDutyOpenValue>10000</PWMDutyOpenValue>
+					<PWMDutyCloseValue>0</PWMDutyCloseValue>
+					<PWMFreqOpenValue>200</PWMFreqOpenValue>
+					<PWMFreqCloseValue>200</PWMFreqCloseValue>
+					<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
+				</EnvironmentalConfig>
+				<ContinousReadList>
+					<!-- Continous read list contents -->
+				</ContinousReadList>
+				<SensitiveControls>
+					<!-- Sensitive controls contents -->
+				</SensitiveControls>
+				<Cycles>
+					<Cycle>
+						<Name>CycleLoad 01 - Group 1</Name>
+						<OpenAt>01</OpenAt>
+						<CloseAt>02</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl1</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 02 - Group 1</Name>
+						<OpenAt>06</OpenAt>
+						<CloseAt>07</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 03 - Group 1</Name>
+						<OpenAt>11</OpenAt>
+						<CloseAt>12</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 04 - Group 1</Name>
+						<OpenAt>16</OpenAt>
+						<CloseAt>17</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 05 - Group 1</Name>
+						<OpenAt>21</OpenAt>
+						<CloseAt>22</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl1</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 06 - Group 1</Name>
+						<OpenAt>26</OpenAt>
+						<CloseAt>27</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 07 - Group 1</Name>
+						<OpenAt>31</OpenAt>
+						<CloseAt>32</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 08 - Group 1</Name>
+						<OpenAt>36</OpenAt>
+						<CloseAt>37</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 09 - Group 1</Name>
+						<OpenAt>41</OpenAt>
+						<CloseAt>42</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl1</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 10 - Group 1</Name>
+						<OpenAt>46</OpenAt>
+						<CloseAt>47</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 11 - Group 1</Name>
+						<OpenAt>51</OpenAt>
+						<CloseAt>52</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 12 - Group 1</Name>
+						<OpenAt>56</OpenAt>
+						<CloseAt>57</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl1</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 13 - Group 1</Name>
+						<OpenAt>61</OpenAt>
+						<CloseAt>62</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 14 - Group 1</Name>
+						<OpenAt>66</OpenAt>
+						<CloseAt>67</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 15 - Group 1</Name>
+						<OpenAt>71</OpenAt>
+						<CloseAt>72</CloseAt>
+						<Functions>
+							<Function control="DummyControl">
+								<Payload>DummyControl2</Payload>
+							</Function>
+							<Function control="DummyControl">
+								<Payload>DummyControl3</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+				</Cycles>
+				<Scenarios>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Left_Up</Name>
+						<OpenPayloads>
+							<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+							<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Left_Down</Name>
+						<OpenPayloads>
+							<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+							<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Left_Left</Name>
+						<OpenPayloads>
+							<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Left_Right</Name>
+						<OpenPayloads>
+							<Payload>C4.25_MainLeftMirrorRightCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.23_MainLeftMirrorUpCtrl</Payload>
+							<Payload>C4.22_MainLeftMirrorDownLeftCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Right_Up</Name>
+						<OpenPayloads>
+							<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Right_Down</Name>
+						<OpenPayloads>
+							<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+							<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Right_Left</Name>
+						<OpenPayloads>
+							<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+							<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>DF12</Address>
+						<Name>Power_Mirror_Control_Right_Right</Name>
+						<OpenPayloads>
+							<Payload>C4.26_MainRightMirrorRightCtrl</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C4.24_MainRightMirrorUpCtrl</Payload>
+							<Payload>C4.27_MainRightMirrorDownLeftCtrl</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>C151</Address>
+						<Name>Door_Left_Lock</Name>
+						<OpenPayloads>
+							<Payload>C1.4_Passanger Door Lock Relay</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>C151</Address>
+						<Name>Door_Left_UnLock</Name>
+						<OpenPayloads>
+							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.4_Passanger Door Lock Relay</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>C151</Address>
+						<Name>Door_Right_Lock</Name>
+						<OpenPayloads>
+							<Payload>C1.10_Driver Door Lock Relay</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>C151</Address>
+						<Name>Door_Right_UnLock</Name>
+						<OpenPayloads>
+							<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.10_Driver Door Lock Relay</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>A493</Address>
+						<Name>Sunroof_Open</Name>
+						<OpenPayloads>
+							<Payload>C1.6_MOT-B</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.8_MOT-A</Payload>
+						</ClosePayloads>
+					</Scenario>
+					<Scenario>
+						<Address>A493</Address>
+						<Name>Sunroof_Close</Name>
+						<OpenPayloads>
+							<Payload>C1.8_MOT-A</Payload>
+						</OpenPayloads>
+						<ClosePayloads>
+							<Payload>C1.6_MOT-B</Payload>
+						</ClosePayloads>
+					</Scenario>
+				</Scenarios>
+			</Environment>
+		</Environments>
 	</EnvironmentalTest>
 </Configuration>

@@ -179,6 +179,10 @@ namespace AutosarBCM
         private ECUReset ECUReset;
         private System.Timers.Timer TesterPresentTimer;
 
+        internal static bool isMdxFile;
+        internal static bool isOdxFile;
+
+
         /// <summary>
         /// Gets the selected test type
         /// </summary>
@@ -278,7 +282,7 @@ namespace AutosarBCM
         /// <param name="color">Optional text color. Default black</param>
         public void AppendTrace(string text, Color? color = null, bool flush = false)
         {
-            log.Add((color ?? Color.Black, $"{DateTime.Now.ToString("HH:mm:ss.fff")}: {text}{Environment.NewLine}"));
+            log.Add((color ?? Color.Black, $"{DateTime.Now.ToString("HH:mm:ss.fff")}: {text}{System.Environment.NewLine}"));
 
             if (flush || !IsTestRunning || log.Count > Settings.Default.FlushToUI)
             {
@@ -370,15 +374,70 @@ namespace AutosarBCM
 
             errorLogMessageTimer.Start();
         }
-        private void LoadXMLDoc()
+
+
+/*        private void LoadODXDoc()
         {
             var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Xml|*.xml";
+            openFileDialog.Filter = "Odx|*.odx";
             openFileDialog.Multiselect = false;
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var filePath = openFileDialog.FileName;
+                ParseMessages(filePath);
+                ASContext = new ASContext(filePath);
+                LoadSessions();
+
+                if (ASContext.Configuration == null)
+                    return;
+                else
+                    tspFilterTxb.Enabled = true;
+
+                if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
+                {
+                    genericInput.ClearPreviousConfiguration();
+                    genericInput.LoadConfiguration(ASContext.Configuration);
+                    formDTCPanel.LoadConfiguration();
+                    if (tsbSession.Text != "Session: N/A")
+                    {
+                        genericInput.SessionFiltering();
+                    }
+                    //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                }
+                else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
+                {
+                    envInput.LoadConfiguration(Configuration);
+                    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
+                }
+            }
+        }*/
+
+        private void LoadXMLDoc()
+        {
+
+            var openFileDialog = new OpenFileDialog();
+            if (isMdxFile)
+                openFileDialog.Filter = "Mdx|*.mdx";
+            else if (isOdxFile)
+                openFileDialog.Filter = "Odx|*.odx";
+            else
+                openFileDialog.Filter = "Xml|*.xml";
+            openFileDialog.Multiselect = false;
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var filePath = openFileDialog.FileName;
+                if (isMdxFile)
+                {
+                    tsmiEMCView.Visible = false;
+                    environmentalTestTsmi.Visible = false;
+                }
+                else
+                {
+                    tsmiEMCView.Visible = true;
+                    environmentalTestTsmi.Visible = true;
+                }
                 ParseMessages(filePath);
                 ASContext = new ASContext(filePath);
                 LoadSessions();
@@ -681,13 +740,13 @@ namespace AutosarBCM
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
-           
+
             StartTesterPresent();
         }
 
         private void inactiveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
+
             StopTesterPresent();
         }
         private bool CheckConfigurationFile()
@@ -718,10 +777,10 @@ namespace AutosarBCM
             recentToolFileHelper.MenuClick += (o, s) => OpenToolFile(s);
             recentToolFileHelper.ListUpdated += (o, s) =>
             {
-                Settings.Default.RecentToolFiles = s;    // update settings. no need to save immediately. save before closing.
+                Properties.Settings.Default.RecentToolFiles = s;    // update settings. no need to save immediately. save before closing.
                 recentToolFileHelper.UpdateRecentFilesMenu(recentFilesTsmi);    // update menu
             };
-            recentToolFileHelper.Init(Settings.Default.RecentToolFiles);
+            recentToolFileHelper.Init(Properties.Settings.Default.RecentToolFiles);
             this.WindowState = FormWindowState.Maximized;
             #endregion
 
@@ -842,7 +901,7 @@ namespace AutosarBCM
         /// <param name="e">Event args</param>
         private void tsbClearLog_Click(object sender, EventArgs e)
         {
-            if(Helper.ShowConfirmationMessageBox("Do you want to save the trace log?"))
+            if (Helper.ShowConfirmationMessageBox("Do you want to save the trace log?"))
                 SaveTraceLog();
             txtTrace.Clear();
         }
@@ -854,6 +913,8 @@ namespace AutosarBCM
         /// <param name="e">The event arguments.</param>
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
+            isMdxFile = false;
+            isOdxFile = false;
             LoadXMLDoc();
         }
 
@@ -989,6 +1050,14 @@ namespace AutosarBCM
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
+
+            if (ASContext.CurrentSession == null)
+            {
+                Helper.ShowWarningMessageBox("A session must be active.");
+                return;
+            }
+
+
             var cInf = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == "Vestel_Internal_Software_Version");
             if (cInf == null)
                 return;
@@ -1311,11 +1380,47 @@ namespace AutosarBCM
                 if (formEMCView == null || formEMCView.IsDisposed)
                 {
                     formEMCView = new FormEMCView();
-                    formEMCView.ShowDialog();
+                    formEMCView.Show();
                 }
                 else
                     formEMCView.BringToFront();
             }
+        }
+
+        /// <summary>
+        /// Imports MDX file as config file.
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">argument</param>
+        private void tsmiImpMDX_Click(object sender, EventArgs e)
+        {
+            isMdxFile = true;
+            isOdxFile = false;
+            LoadXMLDoc();
+        }
+
+        /// <summary>
+        /// Imports ODX file as config file.
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">argument</param>
+        private void tsmiImpODX_Click(object sender, EventArgs e)
+        {
+            isOdxFile = true;
+            isMdxFile = false ;
+            tsmiEMCView.Visible = false;
+            environmentalTestTsmi.Visible = false;
+            LoadXMLDoc();
+        }
+
+
+        internal void UpdateSessionLabel()
+        {
+
+            if (tsbSession.GetCurrentParent().InvokeRequired)
+                tsbSession.GetCurrentParent().Invoke(new Action(() => tsbSession.Text = $"Session: {ASContext.CurrentSession.Name}"));
+            else tsbSession.Text = $"Session: {ASContext.CurrentSession.Name}";
+
         }
     }
 }

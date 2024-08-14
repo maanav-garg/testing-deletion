@@ -39,6 +39,8 @@ namespace AutosarBCM.Core.Config
         }
     }
 
+    public class MDX_Payload : Payload { }
+    public class ODX_Payload : Payload { }
     public class DID_Byte_Enable_Disable : Payload { }
     public class DID_Byte_Activate_Inactivate : Payload { }
     public class DID_Bytes_High_Low : Payload { }
@@ -75,6 +77,10 @@ namespace AutosarBCM.Core.Config
     {
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
+    public class HexDump_3Bytes : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = Convert.ToUInt32(Value.FirstOrDefault().ToString("X2"), 16).ToString();
+    }
 
     public class HexDump_4Bytes : Payload
     {
@@ -88,6 +94,10 @@ namespace AutosarBCM.Core.Config
     public class Unsigned_1Byte : Payload
     {
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+    }
+    public class Decimal_1Byte : Payload
+    {
+        protected override void SetFormattedValue() => FormattedValue = Convert.ToUInt32(Value.FirstOrDefault().ToString("X2"), 16).ToString();
     }
 
     public class DID_F166_0 : Payload

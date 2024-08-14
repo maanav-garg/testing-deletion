@@ -54,6 +54,8 @@ namespace AutosarBCM
         internal const string On = "ON";
         internal const string Invalid = "INVALID";
         internal const string OutsideOfLimit = " Outside Of Limit";
+        internal const string DummyControl = "DummyControl";
+
 
         #endregion
 
