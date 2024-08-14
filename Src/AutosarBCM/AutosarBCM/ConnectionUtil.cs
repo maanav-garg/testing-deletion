@@ -143,6 +143,11 @@ namespace AutosarBCM
 
         private void TransportProtocol_ReceiveError(object sender, Connection.Protocol.TransportErrorEventArs e)
         {
+            if (FormMain.IsTestRunning)
+            {
+                Helper.SendExtendedDiagSession();
+            }
+            
             AppendTrace(e.Message, DateTime.Now, Color.Red);
             //Helper.ShowErrorMessageBox(e.Message);
             //if (e. == CanHardware_ErrorStatus.Disconnect)
@@ -455,6 +460,10 @@ namespace AutosarBCM
         /// <param name="e">The event arguments containing error information.</param>
         private void SerialHardware_ErrorAccured(object sender, SerialPortErrorEventArgs e)
         {
+            if (FormMain.IsTestRunning)
+            {
+                Helper.SendExtendedDiagSession();
+            }
             var time = new DateTime((long)e.Timestamp);
             AppendTrace(e.Message, time, Color.Red);
             //Helper.ShowErrorMessageBox(e.Message);
@@ -560,6 +569,10 @@ namespace AutosarBCM
         /// <param name="e">The event arguments containing error information.</param>
         private void Hardware_CanError(object sender, CanErrorEventArgs e)
         {
+            if (FormMain.IsTestRunning)
+            {
+                Helper.SendExtendedDiagSession();
+            }
             var time = new DateTime((long)e.Timestamp);
             AppendTrace(e.ErrorMessage, time, Color.Red);
             //Helper.ShowErrorMessageBox(e.ErrorMessage);
