@@ -17,6 +17,7 @@ namespace AutosarBCM.Forms.Monitor
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
         private Dictionary<string, ControlInfo> dtcList = new Dictionary<string, ControlInfo>();
         private Dictionary<int, Cycle> cycles;
+        private List<Scenario> scenarios;
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
 
@@ -58,8 +59,23 @@ namespace AutosarBCM.Forms.Monitor
             ResetTime();
 
             cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
+            scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
             mappingData = new List<Mapping>(ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
             continuousReadData = (ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
+
+            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.Functions.SelectMany(a => a.Payloads));
+
+            var scenarioNamesInCycle = cycles.Values
+                .SelectMany(x => x.Functions)
+                    .Select(b => b.Scenario).Where(s => s != null).Distinct();
+
+            var openPayloadsOfScenario = from scenario in scenarios
+                                       join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                       select scenario.OpenPayloads;
+
+            var closePayloadsOfScenario = from scenario in scenarios
+                                        join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                        select scenario.ClosePayloads;
 
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
@@ -67,10 +83,15 @@ namespace AutosarBCM.Forms.Monitor
                 allPayloads = new Dictionary<string, string>();
                 foreach (var payload in ctrl.Responses[0].Payloads)
                 {
-                    var ucItem = new UCReadOnlyItem(ctrl, payload);
-                    ucItems.Add(ucItem);
+                    if (payloadNamesInCycle.Contains(payload.Name) || 
+                        openPayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)) ||
+                        closePayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)))
+                    {
+                        var ucItem = new UCReadOnlyItem(ctrl, payload);
+                        ucItems.Add(ucItem);
+                    }
 
-                  
+
                     if (string.IsNullOrEmpty(payload.DTCCode))
                         continue;
                     dtcList[payload.DTCCode] = ctrl;
