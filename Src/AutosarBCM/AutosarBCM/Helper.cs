@@ -179,7 +179,7 @@ namespace AutosarBCM
                         productName = ((AssemblyTitleAttribute)attributes[0]).Title;
 
                     var version = Assembly.GetExecutingAssembly().GetName().Version;
-                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, " Beta-1");
+                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, "Beta-3");
                 }
                 catch { }
                 return "";
@@ -1108,7 +1108,7 @@ namespace AutosarBCM
         /// </summary>
         public static void PrepareCsvHelper()
         {
-            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
             saveFileDialog.Filter = openFileDialog.Filter = "CSV File| *.csv";
             openFileDialog.Multiselect = false;
             openFileDialog.Title = "Please select a CSV file.";

@@ -19,6 +19,7 @@ using Connection.Protocol.Uds;
 using AutosarBCM.Config;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace AutosarBCM
 {
@@ -143,7 +144,13 @@ namespace AutosarBCM
 
         private void TransportProtocol_ReceiveError(object sender, Connection.Protocol.TransportErrorEventArs e)
         {
-            Helper.ShowErrorMessageBox(e.Message);
+            if (FormMain.IsTestRunning)
+            {
+                Helper.SendExtendedDiagSession();
+            }
+            
+            AppendTrace(e.Message, DateTime.Now, Color.Red);
+            //Helper.ShowErrorMessageBox(e.Message);
             //if (e. == CanHardware_ErrorStatus.Disconnect)
             //    Disconnect();
         }
@@ -454,7 +461,13 @@ namespace AutosarBCM
         /// <param name="e">The event arguments containing error information.</param>
         private void SerialHardware_ErrorAccured(object sender, SerialPortErrorEventArgs e)
         {
-            Helper.ShowErrorMessageBox(e.Message);
+            if (FormMain.IsTestRunning)
+            {
+                Helper.SendExtendedDiagSession();
+            }
+            var time = new DateTime((long)e.Timestamp);
+            AppendTrace(e.Message, time, Color.Red);
+            //Helper.ShowErrorMessageBox(e.Message);
             if (e.ErrorType == SerialHardware_ErrorType.Disposed)
                 Disconnect();
         }
@@ -557,7 +570,13 @@ namespace AutosarBCM
         /// <param name="e">The event arguments containing error information.</param>
         private void Hardware_CanError(object sender, CanErrorEventArgs e)
         {
-            Helper.ShowErrorMessageBox(e.ErrorMessage);
+            if (FormMain.IsTestRunning)
+            {
+                Helper.SendExtendedDiagSession();
+            }
+            var time = new DateTime((long)e.Timestamp);
+            AppendTrace(e.ErrorMessage, time, Color.Red);
+            //Helper.ShowErrorMessageBox(e.ErrorMessage);
             if (e.Status == CanHardware_ErrorStatus.Disconnect)
                 Disconnect();
         }

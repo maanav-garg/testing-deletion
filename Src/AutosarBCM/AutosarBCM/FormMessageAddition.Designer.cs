@@ -67,10 +67,10 @@ namespace AutosarBCM
             this.btnMsgAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMsgAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnMsgAdd.Image")));
             this.btnMsgAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMsgAdd.Location = new System.Drawing.Point(268, 218);
-            this.btnMsgAdd.Margin = new System.Windows.Forms.Padding(5);
+            this.btnMsgAdd.Location = new System.Drawing.Point(201, 177);
+            this.btnMsgAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnMsgAdd.Name = "btnMsgAdd";
-            this.btnMsgAdd.Size = new System.Drawing.Size(89, 38);
+            this.btnMsgAdd.Size = new System.Drawing.Size(67, 31);
             this.btnMsgAdd.TabIndex = 85;
             this.btnMsgAdd.Text = "Add";
             this.btnMsgAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -81,30 +81,30 @@ namespace AutosarBCM
             // txtArbID
             // 
             this.txtArbID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtArbID.Location = new System.Drawing.Point(21, 32);
-            this.txtArbID.Margin = new System.Windows.Forms.Padding(5);
+            this.txtArbID.Location = new System.Drawing.Point(16, 26);
+            this.txtArbID.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtArbID.Name = "txtArbID";
-            this.txtArbID.Size = new System.Drawing.Size(97, 22);
+            this.txtArbID.Size = new System.Drawing.Size(74, 20);
             this.txtArbID.TabIndex = 69;
             this.txtArbID.Text = "101";
             // 
             // lblArbID
             // 
             this.lblArbID.AutoSize = true;
-            this.lblArbID.Location = new System.Drawing.Point(17, 11);
-            this.lblArbID.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblArbID.Location = new System.Drawing.Point(13, 9);
+            this.lblArbID.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblArbID.Name = "lblArbID";
-            this.lblArbID.Size = new System.Drawing.Size(82, 16);
+            this.lblArbID.Size = new System.Drawing.Size(68, 13);
             this.lblArbID.TabIndex = 87;
             this.lblArbID.Text = "Arb ID (HEX)";
             // 
             // byteLabel
             // 
             this.byteLabel.AutoSize = true;
-            this.byteLabel.Location = new System.Drawing.Point(181, 11);
-            this.byteLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.byteLabel.Location = new System.Drawing.Point(136, 9);
+            this.byteLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.byteLabel.Name = "byteLabel";
-            this.byteLabel.Size = new System.Drawing.Size(111, 16);
+            this.byteLabel.Size = new System.Drawing.Size(90, 13);
             this.byteLabel.TabIndex = 88;
             this.byteLabel.Text = "Data Bytes (HEX)";
             // 
@@ -131,32 +131,31 @@ namespace AutosarBCM
             this.msgPanel.Controls.Add(this.byteLabel);
             this.msgPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.msgPanel.Location = new System.Drawing.Point(0, 0);
-            this.msgPanel.Margin = new System.Windows.Forms.Padding(4);
             this.msgPanel.Name = "msgPanel";
-            this.msgPanel.Size = new System.Drawing.Size(472, 279);
+            this.msgPanel.Size = new System.Drawing.Size(354, 227);
             this.msgPanel.TabIndex = 0;
             // 
             // pnlHexBytes
             // 
-            this.pnlHexBytes.Location = new System.Drawing.Point(184, 32);
+            this.pnlHexBytes.Location = new System.Drawing.Point(138, 26);
+            this.pnlHexBytes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlHexBytes.Name = "pnlHexBytes";
-            this.pnlHexBytes.Size = new System.Drawing.Size(285, 75);
+            this.pnlHexBytes.Size = new System.Drawing.Size(214, 61);
             this.pnlHexBytes.TabIndex = 80;
             // 
             // lblDelayTime
             // 
             this.lblDelayTime.AutoSize = true;
-            this.lblDelayTime.Location = new System.Drawing.Point(337, 120);
-            this.lblDelayTime.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblDelayTime.Location = new System.Drawing.Point(253, 98);
+            this.lblDelayTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDelayTime.Name = "lblDelayTime";
-            this.lblDelayTime.Size = new System.Drawing.Size(106, 16);
+            this.lblDelayTime.Size = new System.Drawing.Size(82, 13);
             this.lblDelayTime.TabIndex = 102;
             this.lblDelayTime.Text = "Delay Time (ms)";
             // 
             // numMessageLength
             // 
-            this.numMessageLength.Location = new System.Drawing.Point(129, 31);
-            this.numMessageLength.Margin = new System.Windows.Forms.Padding(4);
+            this.numMessageLength.Location = new System.Drawing.Point(97, 25);
             this.numMessageLength.Maximum = new decimal(new int[] {
             64,
             0,
@@ -168,7 +167,7 @@ namespace AutosarBCM
             0,
             0});
             this.numMessageLength.Name = "numMessageLength";
-            this.numMessageLength.Size = new System.Drawing.Size(48, 22);
+            this.numMessageLength.Size = new System.Drawing.Size(36, 20);
             this.numMessageLength.TabIndex = 79;
             this.numMessageLength.Value = new decimal(new int[] {
             8,
@@ -179,60 +178,57 @@ namespace AutosarBCM
             // 
             // numDelayTime
             // 
-            this.numDelayTime.Location = new System.Drawing.Point(340, 140);
-            this.numDelayTime.Margin = new System.Windows.Forms.Padding(4);
+            this.numDelayTime.Location = new System.Drawing.Point(255, 114);
             this.numDelayTime.Maximum = new decimal(new int[] {
             1661992959,
             1808227885,
             5,
             0});
             this.numDelayTime.Name = "numDelayTime";
-            this.numDelayTime.Size = new System.Drawing.Size(100, 22);
+            this.numDelayTime.Size = new System.Drawing.Size(75, 20);
             this.numDelayTime.TabIndex = 101;
             // 
             // numCycleCount
             // 
-            this.numCycleCount.Location = new System.Drawing.Point(228, 140);
-            this.numCycleCount.Margin = new System.Windows.Forms.Padding(4);
+            this.numCycleCount.Location = new System.Drawing.Point(171, 114);
             this.numCycleCount.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
+            1661992959,
+            1808227885,
+            5,
             0});
             this.numCycleCount.Name = "numCycleCount";
-            this.numCycleCount.Size = new System.Drawing.Size(100, 22);
+            this.numCycleCount.Size = new System.Drawing.Size(75, 20);
             this.numCycleCount.TabIndex = 100;
             // 
             // numCycleTime
             // 
-            this.numCycleTime.Location = new System.Drawing.Point(118, 138);
-            this.numCycleTime.Margin = new System.Windows.Forms.Padding(4);
+            this.numCycleTime.Location = new System.Drawing.Point(88, 112);
             this.numCycleTime.Maximum = new decimal(new int[] {
-            5000,
+            1000000,
             0,
             0,
             0});
             this.numCycleTime.Name = "numCycleTime";
-            this.numCycleTime.Size = new System.Drawing.Size(100, 22);
+            this.numCycleTime.Size = new System.Drawing.Size(75, 20);
             this.numCycleTime.TabIndex = 99;
             // 
             // lblCycleCount
             // 
             this.lblCycleCount.AutoSize = true;
-            this.lblCycleCount.Location = new System.Drawing.Point(227, 120);
-            this.lblCycleCount.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblCycleCount.Location = new System.Drawing.Point(170, 98);
+            this.lblCycleCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCycleCount.Name = "lblCycleCount";
-            this.lblCycleCount.Size = new System.Drawing.Size(78, 16);
+            this.lblCycleCount.Size = new System.Drawing.Size(64, 13);
             this.lblCycleCount.TabIndex = 98;
             this.lblCycleCount.Text = "Cycle Count";
             // 
             // lblMessageLength
             // 
             this.lblMessageLength.AutoSize = true;
-            this.lblMessageLength.Location = new System.Drawing.Point(125, 11);
-            this.lblMessageLength.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblMessageLength.Location = new System.Drawing.Point(94, 9);
+            this.lblMessageLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMessageLength.Name = "lblMessageLength";
-            this.lblMessageLength.Size = new System.Drawing.Size(47, 16);
+            this.lblMessageLength.Size = new System.Drawing.Size(40, 13);
             this.lblMessageLength.TabIndex = 0;
             this.lblMessageLength.Text = "Length";
             // 
@@ -242,10 +238,9 @@ namespace AutosarBCM
             this.cbTrigger.Items.AddRange(new object[] {
             "Manual",
             "Periodic"});
-            this.cbTrigger.Location = new System.Drawing.Point(23, 138);
-            this.cbTrigger.Margin = new System.Windows.Forms.Padding(4);
+            this.cbTrigger.Location = new System.Drawing.Point(17, 112);
             this.cbTrigger.Name = "cbTrigger";
-            this.cbTrigger.Size = new System.Drawing.Size(83, 24);
+            this.cbTrigger.Size = new System.Drawing.Size(63, 21);
             this.cbTrigger.TabIndex = 80;
             this.cbTrigger.Text = "Manual";
             this.cbTrigger.SelectedIndexChanged += new System.EventHandler(this.cbTrigger_SelectedIndexChanged);
@@ -253,38 +248,36 @@ namespace AutosarBCM
             // triggerLabel
             // 
             this.triggerLabel.AutoSize = true;
-            this.triggerLabel.Location = new System.Drawing.Point(19, 118);
-            this.triggerLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.triggerLabel.Location = new System.Drawing.Point(14, 96);
             this.triggerLabel.Name = "triggerLabel";
-            this.triggerLabel.Size = new System.Drawing.Size(51, 16);
+            this.triggerLabel.Size = new System.Drawing.Size(40, 13);
             this.triggerLabel.TabIndex = 81;
             this.triggerLabel.Text = "Trigger";
             // 
             // txtComment
             // 
-            this.txtComment.Location = new System.Drawing.Point(23, 187);
-            this.txtComment.Margin = new System.Windows.Forms.Padding(5);
+            this.txtComment.Location = new System.Drawing.Point(17, 152);
+            this.txtComment.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtComment.Name = "txtComment";
-            this.txtComment.Size = new System.Drawing.Size(417, 22);
+            this.txtComment.Size = new System.Drawing.Size(314, 20);
             this.txtComment.TabIndex = 84;
             // 
             // lblComment
             // 
             this.lblComment.AutoSize = true;
-            this.lblComment.Location = new System.Drawing.Point(19, 168);
-            this.lblComment.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblComment.Location = new System.Drawing.Point(14, 136);
             this.lblComment.Name = "lblComment";
-            this.lblComment.Size = new System.Drawing.Size(64, 16);
+            this.lblComment.Size = new System.Drawing.Size(51, 13);
             this.lblComment.TabIndex = 85;
             this.lblComment.Text = "Comment";
             // 
             // lblCycleTime
             // 
             this.lblCycleTime.AutoSize = true;
-            this.lblCycleTime.Location = new System.Drawing.Point(117, 120);
-            this.lblCycleTime.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblCycleTime.Location = new System.Drawing.Point(88, 98);
+            this.lblCycleTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCycleTime.Name = "lblCycleTime";
-            this.lblCycleTime.Size = new System.Drawing.Size(104, 16);
+            this.lblCycleTime.Size = new System.Drawing.Size(81, 13);
             this.lblCycleTime.TabIndex = 86;
             this.lblCycleTime.Text = "Cycle Time (ms)";
             // 
@@ -294,10 +287,10 @@ namespace AutosarBCM
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnCancel.Image")));
             this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCancel.Location = new System.Drawing.Point(352, 218);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(5);
+            this.btnCancel.Location = new System.Drawing.Point(264, 177);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(89, 38);
+            this.btnCancel.Size = new System.Drawing.Size(67, 31);
             this.btnCancel.TabIndex = 86;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -307,14 +300,13 @@ namespace AutosarBCM
             // 
             // FormMessageAddition
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(472, 279);
+            this.ClientSize = new System.Drawing.Size(354, 227);
             this.ControlBox = false;
             this.Controls.Add(this.msgPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormMessageAddition";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New Message";
