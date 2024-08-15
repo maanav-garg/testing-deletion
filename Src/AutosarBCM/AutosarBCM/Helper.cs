@@ -178,7 +178,7 @@ namespace AutosarBCM
                         productName = ((AssemblyTitleAttribute)attributes[0]).Title;
                     
                     var version = Assembly.GetExecutingAssembly().GetName().Version;
-                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, " Beta-1");
+                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, "Beta-3");
                 }
                 catch { }
                 return "";
@@ -393,11 +393,11 @@ namespace AutosarBCM
         /// </summary>
         /// <param name="count">The name of the item.</param>
         /// <param name="payloadName">The type of the item.</param>
-        public static void WriteUnopenedPayloadsToLogFile(int count, string payloadName)
+        public static void WriteUnopenedPayloadsToLogFile(int count, string payloadName, string controlName)
         {
-            string date = DateTime.Now.ToString("yyyyMMdd");
+            string date = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string logFilePath = $"{date}_Unopened_Payloads_log.txt";
-            string logMessage = $"{count}) Payload Name : {payloadName}{Environment.NewLine}";
+            string logMessage = $"{count}) Control Name : {controlName} - Payload Name : {payloadName}{System.Environment.NewLine}";
             File.AppendAllText(logFilePath, logMessage);
         }
 
@@ -1085,7 +1085,7 @@ namespace AutosarBCM
         /// </summary>
         public static void PrepareCsvHelper()
         {
-            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
             saveFileDialog.Filter = openFileDialog.Filter = "CSV File| *.csv";
             openFileDialog.Multiselect = false;
             openFileDialog.Title = "Please select a CSV file.";

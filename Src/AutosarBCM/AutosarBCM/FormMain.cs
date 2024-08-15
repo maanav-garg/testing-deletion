@@ -278,7 +278,7 @@ namespace AutosarBCM
         /// <param name="color">Optional text color. Default black</param>
         public void AppendTrace(string text, Color? color = null, bool flush = false)
         {
-            log.Add((color ?? Color.Black, $"{DateTime.Now.ToString("HH:mm:ss.fff")}: {text}{Environment.NewLine}"));
+            log.Add((color ?? Color.Black, $"{DateTime.Now.ToString("HH:mm:ss.fff")}: {text}{System.Environment.NewLine}"));
 
             if (flush || !IsTestRunning || log.Count > Settings.Default.FlushToUI)
             {
