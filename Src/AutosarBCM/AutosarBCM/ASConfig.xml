@@ -2316,14 +2316,14 @@
 				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.1_Door Unlock Relay - Passenger's Side</Output>
 				<Input parent="Differential_Control_Input">C5.12_DiffLock1DriverRequestSwitch</Input>
 			</Mapping>
-			<!-- <Mapping> -->
-			<!-- <Output parent="Passenger_Power_Window_Motor">C1.2_Passenger Power Window Motor Up</Output> -->
-			<!-- <Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.36_3 FrontResetLeftSwitch</Input> -->
-			<!-- </Mapping> -->
-			<!-- <Mapping> -->
-			<!-- <Output parent="Passenger_Power_Window_Motor">C1.3_Passenger Power Window Motor Down</Output> -->
-			<!-- <Input parent="Spare_Switch">C5.46_Spare Switch 30</Input> -->
-			<!-- </Mapping> -->
+			<Mapping>
+			<Output parent="Passenger_Power_Window_Motor">C1.2_Passenger Power Window Motor Up</Output>
+			<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.36_3 FrontResetLeftSwitch</Input>
+			</Mapping>
+			<Mapping>
+			<Output parent="Passenger_Power_Window_Motor">C1.3_Passenger Power Window Motor Down</Output>
+			<Input parent="Spare_Switch">C5.46_Spare Switch 30</Input>
+			</Mapping>
 			<Mapping>
 				<Output parent="All_Doors_Lock_and_Ajar_Output_Signal">C1.4_Passanger Door Lock Relay</Output>
 				<Input parent="Start_Stop_Switches">C5.14_Start Stop Switch 3</Input>
@@ -2852,8 +2852,7 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -2881,9 +2880,9 @@
 						<OpenAt>16</OpenAt>
 						<CloseAt>51</CloseAt>
 						<Functions>
-							<!-- <Function control="Passenger_Power_Window_Motor"> -->
-							<!-- <Payload>C1.3_Passenger Power Window Motor Down</Payload> -->
-							<!-- </Function> -->
+							<Function control="Passenger_Power_Window_Motor">
+							<Payload>C1.2_Passenger Power Window Motor Up</Payload>
+							</Function>
 							<!--><Function control="Sunroof_Motor">
 								<Payload>C1.8_MOT-A</Payload>
 							</Function></!-->
@@ -2916,8 +2915,8 @@
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Left_Lock"></Function>
-							<Function scenario="Door_Right_Lock"></Function>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+							
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -2929,8 +2928,7 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -2942,8 +2940,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -2994,8 +2992,7 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3007,8 +3004,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3044,8 +3041,7 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3057,8 +3053,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3070,8 +3066,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3103,8 +3099,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3116,8 +3112,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3129,8 +3125,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3178,8 +3174,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3191,8 +3187,8 @@
 								<Payload>C1.10_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3230,8 +3226,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3243,8 +3239,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3256,8 +3252,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3283,7 +3279,7 @@
 								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
 							</Function>
 							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
-								<Payload>C2.7_Left Rear Turn Signal Lamp Controlnctions</Payload>
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
 							</Function>
 							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
 								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
@@ -3299,8 +3295,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3312,8 +3308,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3325,8 +3321,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3362,8 +3358,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3375,8 +3371,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3424,9 +3420,9 @@
 						<OpenAt>56</OpenAt>
 						<CloseAt>16</CloseAt>
 						<Functions>
-							<!-- <Function control="Passenger_Power_Window_Motor"> -->
-							<!-- <Payload>C1.2_Passenger Power Window Motor Up</Payload> -->
-							<!-- </Function> -->
+							<Function control="Passenger_Power_Window_Motor">
+							<Payload>C1.3_Passenger Power Window Motor Down</Payload>
+							</Function>
 							<!--><Function control="Sunroof_Motor">
 								<Payload>C1.6_MOT-B</Payload>
 							</Function></!-->
@@ -3442,8 +3438,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3455,8 +3451,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3468,8 +3464,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3511,8 +3507,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3524,8 +3520,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3537,8 +3533,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3589,8 +3585,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3602,8 +3598,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3651,8 +3647,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3664,8 +3660,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3677,8 +3673,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3710,8 +3706,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3723,8 +3719,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3736,8 +3732,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3788,8 +3784,8 @@
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3801,8 +3797,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3843,8 +3839,8 @@
 								<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 								<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_UnLock"></Function>
-							<Function scenario="Door_Left_UnLock"></Function>
+							
+							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -3856,8 +3852,8 @@
 								<Payload>C1.10_Driver Door Lock Relay</Payload>
 								<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							</Function></!-->
-							<Function scenario="Door_Right_Lock"></Function>
-							<Function scenario="Door_Left_Lock"></Function>
+							
+							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
 				</Cycles>
@@ -3952,41 +3948,25 @@
 					</Scenario>
 					<Scenario>
 						<Address>C151</Address>
-						<Name>Door_Left_Lock</Name>
+						<Name>Door_Left_Right_Lock</Name>
 						<OpenPayloads>
 							<Payload>C1.4_Passanger Door Lock Relay</Payload>
-						</OpenPayloads>
-						<ClosePayloads>
-							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-						</ClosePayloads>
-					</Scenario>
-					<Scenario>
-						<Address>C151</Address>
-						<Name>Door_Left_UnLock</Name>
-						<OpenPayloads>
-							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-						</OpenPayloads>
-						<ClosePayloads>
-							<Payload>C1.4_Passanger Door Lock Relay</Payload>
-						</ClosePayloads>
-					</Scenario>
-					<Scenario>
-						<Address>C151</Address>
-						<Name>Door_Right_Lock</Name>
-						<OpenPayloads>
 							<Payload>C1.10_Driver Door Lock Relay</Payload>
 						</OpenPayloads>
 						<ClosePayloads>
+							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 						</ClosePayloads>
 					</Scenario>
 					<Scenario>
 						<Address>C151</Address>
-						<Name>Door_Right_UnLock</Name>
+						<Name>Door_Left_Right_UnLock</Name>
 						<OpenPayloads>
+							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 						</OpenPayloads>
 						<ClosePayloads>
+							<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							<Payload>C1.10_Driver Door Lock Relay</Payload>
 						</ClosePayloads>
 					</Scenario>
@@ -4331,41 +4311,25 @@
 					</Scenario>
 					<Scenario>
 						<Address>C151</Address>
-						<Name>Door_Left_Lock</Name>
+						<Name>Door_Left_Right_Lock</Name>
 						<OpenPayloads>
 							<Payload>C1.4_Passanger Door Lock Relay</Payload>
-						</OpenPayloads>
-						<ClosePayloads>
-							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-						</ClosePayloads>
-					</Scenario>
-					<Scenario>
-						<Address>C151</Address>
-						<Name>Door_Left_UnLock</Name>
-						<OpenPayloads>
-							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
-						</OpenPayloads>
-						<ClosePayloads>
-							<Payload>C1.4_Passanger Door Lock Relay</Payload>
-						</ClosePayloads>
-					</Scenario>
-					<Scenario>
-						<Address>C151</Address>
-						<Name>Door_Right_Lock</Name>
-						<OpenPayloads>
 							<Payload>C1.10_Driver Door Lock Relay</Payload>
 						</OpenPayloads>
 						<ClosePayloads>
+							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 						</ClosePayloads>
 					</Scenario>
 					<Scenario>
 						<Address>C151</Address>
-						<Name>Door_Right_UnLock</Name>
+						<Name>Door_Left_Right_UnLock</Name>
 						<OpenPayloads>
+							<Payload>C1.1_Door Unlock Relay - Passenger's Side</Payload>
 							<Payload>C1.7_Door Unlock Relay - Driver's Side</Payload>
 						</OpenPayloads>
 						<ClosePayloads>
+							<Payload>C1.4_Passanger Door Lock Relay</Payload>
 							<Payload>C1.10_Driver Door Lock Relay</Payload>
 						</ClosePayloads>
 					</Scenario>

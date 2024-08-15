@@ -178,7 +178,7 @@ namespace AutosarBCM
                         productName = ((AssemblyTitleAttribute)attributes[0]).Title;
                     
                     var version = Assembly.GetExecutingAssembly().GetName().Version;
-                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, "Beta-2");
+                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, "Beta-3");
                 }
                 catch { }
                 return "";
