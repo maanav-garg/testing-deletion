@@ -336,10 +336,10 @@ namespace AutosarBCM.Forms.Monitor
             {
                 return false;
             }
-            cycleRange = (int)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleRange;
-            endCycleIndex = (int)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.EndCycleIndex;
+            cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
+            endCycleIndex = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
 
-            scenarios = ASContext.Configuration.EnvironmentalTest.Scenarios;
+            scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
 
             var cycle = cycles[loopVal];
 

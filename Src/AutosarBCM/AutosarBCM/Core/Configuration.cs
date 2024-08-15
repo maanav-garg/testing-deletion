@@ -430,7 +430,8 @@ namespace AutosarBCM.Core
                                     PWMDutyCloseValue = short.Parse(c.Element("PWMDutyCloseValue").Value),
                                     PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
                                     PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
-                                    CycleRange = int.Parse(c.Element("CycleRange").Value),
+                                    SensitiveCtrlDuration = int.Parse(c.Element("SensitiveCtrlDuration").Value),
+                                    CycleRange = int.Parse(c.Element("CycleRange").Value)
                                 }).First(),
                             Cycles = e.Element("Cycles").Elements("Cycle")
                                 .Select(c => new Cycle
