@@ -17,6 +17,7 @@ namespace AutosarBCM.Forms.Monitor
         private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
         private Dictionary<string, ControlInfo> dtcList = new Dictionary<string, ControlInfo>();
         private Dictionary<int, Cycle> cycles;
+        private List<Scenario> scenarios;
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
 
@@ -35,6 +36,7 @@ namespace AutosarBCM.Forms.Monitor
         public FormEnvironmentalTest()
         {
             InitializeComponent();
+            LoadConfigSelection();
             LoadControls();
         }
         #endregion
@@ -44,6 +46,7 @@ namespace AutosarBCM.Forms.Monitor
         #endregion
 
         #region Private Methods
+
         private void LoadControls()
         {
             if (ASContext.Configuration == null)
@@ -55,9 +58,28 @@ namespace AutosarBCM.Forms.Monitor
 
             ResetTime();
 
-            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Cycles);
-            mappingData = (ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
-            continuousReadData = (ASContext.Configuration.EnvironmentalTest.ContinousReadList);
+            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
+            scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
+            mappingData = new List<Mapping>(ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
+            continuousReadData = (ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
+
+            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.Functions.SelectMany(a => a.Payloads)).Distinct();
+
+            var controlNamesInCycle = cycles.Values
+                .SelectMany(x => x.Functions)
+                .Select(a => a.Control).Where(s => s!= null).Distinct();
+
+            var scenarioNamesInCycle = cycles.Values
+                .SelectMany(x => x.Functions)
+                    .Select(b => b.Scenario).Where(s => s != null).Distinct();
+
+            var openPayloadsOfScenario = from scenario in scenarios
+                                       join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                       select scenario.OpenPayloads;
+
+            var closePayloadsOfScenario = from scenario in scenarios
+                                        join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                        select scenario.ClosePayloads;
 
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
@@ -65,10 +87,15 @@ namespace AutosarBCM.Forms.Monitor
                 allPayloads = new Dictionary<string, string>();
                 foreach (var payload in ctrl.Responses[0].Payloads)
                 {
-                    var ucItem = new UCReadOnlyItem(ctrl, payload);
-                    ucItems.Add(ucItem);
+                    if ((payloadNamesInCycle.Contains(payload.Name) && controlNamesInCycle.Contains(ctrl.Name))|| 
+                        openPayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)) ||
+                        closePayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)))
+                    {
+                        var ucItem = new UCReadOnlyItem(ctrl, payload);
+                        ucItems.Add(ucItem);
+                    }
 
-                  
+
                     if (string.IsNullOrEmpty(payload.DTCCode))
                         continue;
                     dtcList[payload.DTCCode] = ctrl;
@@ -175,6 +202,7 @@ namespace AutosarBCM.Forms.Monitor
                 }
                 cancellationTokenSource.Cancel();
                 btnStart.Enabled = false;
+                tsbConfigurationSelection.Enabled = false;
                 var count = 1;
                 if (allPayloads != null)
                 {
@@ -190,6 +218,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else //Start Test
             {
+                FormMain.MonitorTestTypeClone = MonitorTestType.Environmental;
                 cancellationTokenSource = new CancellationTokenSource();
                 Task.Run(async () =>
                 {
@@ -215,6 +244,7 @@ namespace AutosarBCM.Forms.Monitor
                     isActive = true;
                     btnStart.Text = "Stop";
                     btnStart.ForeColor = Color.Red;
+                    tsbConfigurationSelection.Enabled = false;
                 }
                 else
                 {
@@ -222,6 +252,7 @@ namespace AutosarBCM.Forms.Monitor
                     if (mainForm.dockMonitor.ActiveDocument is IPeriodicTest formInput)
                         formInput.SessionControlManagement(true);
                     btnStart.Enabled = true;
+                    tsbConfigurationSelection.Enabled = true;
                     isActive = false;
                     btnStart.Text = "Start";
                     btnStart.ForeColor = Color.Green;
@@ -298,11 +329,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleIOControlByIdentifierReceive(IOControlByIdentifierService ioService)
         {
-            for (var i = 0; i < ioService.Payloads.Count; i++)
-            {
-                Console.WriteLine($"Outloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
-            }
-                int loopVal;
+            int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             {
                 return false;
@@ -321,10 +348,9 @@ namespace AutosarBCM.Forms.Monitor
 
                     allPayloads.Remove(payloadName);
                 }
-                    Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
-                if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
+                if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
                 {
-                    
+
                     Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
 
                     matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
@@ -350,9 +376,9 @@ namespace AutosarBCM.Forms.Monitor
                         }
 
                     }                
-            }
+                }
 
-    }
+            }
             
             
             UpdateCounters();
@@ -387,11 +413,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleReadDataByIdenService(ReadDataByIdenService readByIdenService)
         {
-            for (var i = 0; i < readByIdenService.Payloads.Count; i++)
-            {
-                Console.WriteLine($"Outloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
-            }
-                int loopVal;
+            int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             { 
                 return false;
@@ -403,8 +425,6 @@ namespace AutosarBCM.Forms.Monitor
 
             for (var i = 0; i < readByIdenService.Payloads.Count; i++)
             {
-                Console.WriteLine($"Inloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
-                
                 if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
@@ -422,9 +442,31 @@ namespace AutosarBCM.Forms.Monitor
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
                     totalMessagesReceived++;
                 }
-             
+
+                if (Program.MappingStateDict.TryGetValue(readByIdenService.Payloads[i].PayloadInfo.Name, out var errorLogDetect))
+                {
+                    var mappingItem = inputName.FirstOrDefault(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name);
+                    if (mappingItem != null)
+                    {
+                        Program.MappingStateDict.UpdateValue(readByIdenService.Payloads[i].PayloadInfo.Name, errorLogDetect.UpdateInputResponse(MappingState.InputReceived, GetMappingResponse(readByIdenService.Payloads[i].Value)));
+
+                        if (errorLogDetect.ChcekIsError())
+                            Helper.WriteErrorMessageToLogFile(readByIdenService.ControlInfo.Name, $"O: {mappingItem.Output.Control} ({mappingItem.Output.Name}) - I: {mappingItem.Input.Control} ({mappingItem.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", mappingItem.Output.Name, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", mappingItem.Input.Name, errorLogDetect.InputResponse)}");
+
+                        Program.MappingStateDict.Remove(readByIdenService.Payloads[i].PayloadInfo.Name);
+                    }
+                }
+
             }
             return true;
+        }
+
+        private MappingResponse GetMappingResponse(byte[] value)
+        {
+            if (value[0] == 0) return MappingResponse.InputOff;
+            else if (value[0] == 1) return MappingResponse.InputOn;
+            else if (value[0] == 1) return MappingResponse.InputError;
+            return MappingResponse.NOC;
         }
 
         /// <summary>
@@ -541,7 +583,53 @@ namespace AutosarBCM.Forms.Monitor
             FilterUCItems(tspFilterTxb.Text);
             pnlMonitor.Refresh();
         }
+        private void LoadConfigSelection()
+        {
+            if (ASContext.Configuration == null)
+                return;
+            if (EnvironmentalTest.CurrentEnvironment == null)
+            {
+                var defaultEnvironment = ASContext.Configuration.EnvironmentalTest.Environments.First().Name;
+                EnvironmentalTest.CurrentEnvironment = defaultEnvironment;
+                tsbConfigurationSelection.Text = $"Configuration: {defaultEnvironment}";
+            }
 
+            tsbConfigurationSelection.DropDownItems.Clear();
+            foreach (var environment in ASContext.Configuration.EnvironmentalTest.Environments)
+                tsbConfigurationSelection.DropDownItems.Add(new ToolStripMenuItem(environment.Name, null, new EventHandler(tsbConfigurationSelection_Click)) { Tag = environment.Name });
+        }
+        private void tsbConfigurationSelection_Click(object sender, EventArgs e)
+        {
+            var environmentInfo = (sender as ToolStripMenuItem).Tag as string;
+            if (EnvironmentalTest.CurrentEnvironment == environmentInfo)
+            {
+                Helper.ShowWarningMessageBox(environmentInfo + " configuration is already loaded.");
+                return;
+            }
+
+            EnvironmentalTest.CurrentEnvironment = environmentInfo;
+            tsbConfigurationSelection.Text = $"Configuration: {environmentInfo}";
+            SuspendLayout();
+            ReloadControls();
+            ResumeLayout();
+        }
+        private void ReloadControls()
+        {
+            
+            tsbConfigurationSelection.Enabled = false;
+            groups.Clear();
+            cycles.Clear();
+            allPayloads.Clear();
+            mappingData.Clear();
+            continuousReadData.Clear();
+            ucItems.Clear();
+            dtcList.Clear();
+            pnlMonitor.Controls.Clear();
+            lblLoopVal.Text = lblCycleVal.Text = tslTransmitted.Text = tslReceived.Text = tslDiff.Text = "0";
+            totalMessagesTransmitted = totalMessagesReceived = 0;
+            LoadControls();
+            tsbConfigurationSelection.Enabled = true;
+        }
         public void SessionControlManagement(bool isActive)
         {
             throw new NotImplementedException();

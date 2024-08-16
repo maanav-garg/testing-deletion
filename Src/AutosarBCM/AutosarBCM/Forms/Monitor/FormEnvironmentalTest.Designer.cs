@@ -33,6 +33,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnStart = new System.Windows.Forms.ToolStripButton();
             this.btnClear = new System.Windows.Forms.ToolStripButton();
+            this.tsbConfigurationSelection = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tspFilterTxb = new System.Windows.Forms.ToolStripTextBox();
             this.tslReceived = new System.Windows.Forms.ToolStripLabel();
@@ -60,6 +61,7 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnStart,
             this.btnClear,
+            this.tsbConfigurationSelection,
             this.toolStripLabel2,
             this.tspFilterTxb,
             this.tslReceived,
@@ -90,6 +92,13 @@
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(109, 30);
             this.btnClear.Text = "Clear Fields";
+            // 
+            // tsbConfigurationSelection
+            // 
+            this.tsbConfigurationSelection.Image = global::AutosarBCM.Properties.Resources.gear_16xLG;
+            this.tsbConfigurationSelection.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbConfigurationSelection.Name = "tsbConfigurationSelection";
+            this.tsbConfigurationSelection.Size = new System.Drawing.Size(33, 24);
             // 
             // toolStripLabel2
             // 
@@ -158,7 +167,9 @@
             // 
             this.lblMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblMin.ForeColor = System.Drawing.Color.Orange;
-            this.lblMin.Location = new System.Drawing.Point(579, 11);
+
+            this.lblMin.Location = new System.Drawing.Point(544, 9);
+            this.lblMin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMin.Name = "lblMin";
             this.lblMin.Size = new System.Drawing.Size(28, 18);
             this.lblMin.TabIndex = 4;
@@ -168,7 +179,9 @@
             // 
             this.lblSec.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblSec.ForeColor = System.Drawing.Color.Orange;
-            this.lblSec.Location = new System.Drawing.Point(631, 11);
+            this.lblSec.Location = new System.Drawing.Point(583, 9);
+            this.lblSec.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+
             this.lblSec.Name = "lblSec";
             this.lblSec.Size = new System.Drawing.Size(28, 18);
             this.lblSec.TabIndex = 5;
@@ -178,7 +191,10 @@
             // 
             this.lblTimeTag.AutoSize = true;
             this.lblTimeTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblTimeTag.Location = new System.Drawing.Point(468, 7);
+
+            this.lblTimeTag.Location = new System.Drawing.Point(461, 6);
+            this.lblTimeTag.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+
             this.lblTimeTag.Name = "lblTimeTag";
             this.lblTimeTag.Size = new System.Drawing.Size(45, 18);
             this.lblTimeTag.TabIndex = 7;
@@ -188,7 +204,9 @@
             // 
             this.lblLoopTag.AutoSize = true;
             this.lblLoopTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblLoopTag.Location = new System.Drawing.Point(731, 7);
+
+            this.lblLoopTag.Location = new System.Drawing.Point(658, 6);
+            this.lblLoopTag.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblLoopTag.Name = "lblLoopTag";
             this.lblLoopTag.Size = new System.Drawing.Size(46, 18);
             this.lblLoopTag.TabIndex = 8;
@@ -198,7 +216,10 @@
             // 
             this.lblCycleTag.AutoSize = true;
             this.lblCycleTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblCycleTag.Location = new System.Drawing.Point(833, 7);
+
+            this.lblCycleTag.Location = new System.Drawing.Point(735, 6);
+            this.lblCycleTag.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+
             this.lblCycleTag.Name = "lblCycleTag";
             this.lblCycleTag.Size = new System.Drawing.Size(49, 18);
             this.lblCycleTag.TabIndex = 9;
@@ -208,7 +229,10 @@
             // 
             this.lblLoopVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblLoopVal.ForeColor = System.Drawing.Color.Orange;
-            this.lblLoopVal.Location = new System.Drawing.Point(787, 11);
+
+            this.lblLoopVal.Location = new System.Drawing.Point(700, 9);
+            this.lblLoopVal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+
             this.lblLoopVal.Name = "lblLoopVal";
             this.lblLoopVal.Size = new System.Drawing.Size(28, 18);
             this.lblLoopVal.TabIndex = 10;
@@ -218,7 +242,10 @@
             // 
             this.lblCycleVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCycleVal.ForeColor = System.Drawing.Color.Orange;
-            this.lblCycleVal.Location = new System.Drawing.Point(891, 11);
+
+            this.lblCycleVal.Location = new System.Drawing.Point(778, 9);
+            this.lblCycleVal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+
             this.lblCycleVal.Name = "lblCycleVal";
             this.lblCycleVal.Size = new System.Drawing.Size(52, 18);
             this.lblCycleVal.TabIndex = 11;
@@ -229,7 +256,10 @@
             this.lblCol2.AutoSize = true;
             this.lblCol2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCol2.ForeColor = System.Drawing.Color.Orange;
-            this.lblCol2.Location = new System.Drawing.Point(612, 7);
+
+            this.lblCol2.Location = new System.Drawing.Point(569, 6);
+            this.lblCol2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+
             this.lblCol2.Name = "lblCol2";
             this.lblCol2.Size = new System.Drawing.Size(12, 18);
             this.lblCol2.TabIndex = 13;
@@ -246,7 +276,10 @@
             this.lblHour.AutoSize = true;
             this.lblHour.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblHour.ForeColor = System.Drawing.Color.Orange;
-            this.lblHour.Location = new System.Drawing.Point(527, 7);
+
+            this.lblHour.Location = new System.Drawing.Point(505, 6);
+            this.lblHour.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+
             this.lblHour.Name = "lblHour";
             this.lblHour.Size = new System.Drawing.Size(24, 18);
             this.lblHour.TabIndex = 14;
@@ -257,7 +290,10 @@
             this.lblCol1.AutoSize = true;
             this.lblCol1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCol1.ForeColor = System.Drawing.Color.Orange;
-            this.lblCol1.Location = new System.Drawing.Point(560, 7);
+
+            this.lblCol1.Location = new System.Drawing.Point(530, 6);
+            this.lblCol1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+
             this.lblCol1.Name = "lblCol1";
             this.lblCol1.Size = new System.Drawing.Size(12, 18);
             this.lblCol1.TabIndex = 15;
@@ -317,5 +353,6 @@
         private System.Windows.Forms.ToolStripLabel tslReceived;
         private System.Windows.Forms.ToolStripLabel tslTransmitted;
         private System.Windows.Forms.ToolStripLabel tslDiff;
+        private System.Windows.Forms.ToolStripDropDownButton tsbConfigurationSelection;
     }
 }
