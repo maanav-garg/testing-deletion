@@ -188,7 +188,6 @@ namespace AutosarBCM.Core
                         }
 
                     }
-                    Console.WriteLine($" Send Control Name: {Name} -- Send Val: {payload.Name} -- {(isOpen ? Constants.Opened : Constants.Closed)}");
                     Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
 
                 }
@@ -199,7 +198,6 @@ namespace AutosarBCM.Core
                 bytes.Add(controlByte);
 
             if (Services.IndexOf((byte)SIDDescription.SID_WRITE_DATA_BY_IDENTIFIER) == -1)
-                //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
                 Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
             else
                 Transmit(ServiceInfo.WriteDataByIdentifier, bytes.ToArray());

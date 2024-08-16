@@ -274,7 +274,6 @@ namespace AutosarBCM
         {
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsStarted, Constants.DefaultEscapeCharacter);
-            Console.WriteLine(Constants.ClosingOutputsStarted);
             var txInterval = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.TxInterval;
             txInterval = false ? txInterval * 2 : txInterval;
 
@@ -308,7 +307,6 @@ namespace AutosarBCM
                 }
                 Thread.Sleep(txInterval);
             }
-            Console.WriteLine(Constants.ClosingOutputsFinished);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsFinished, Constants.DefaultEscapeCharacter);
             FormMain.IsTestRunning = !FormMain.IsTestRunning;
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
@@ -371,11 +369,9 @@ namespace AutosarBCM
             //TODO to be checked
             if (cycleIndex == 0 && reboots == 0)
                 Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
-            //Console.WriteLine(Constants.StartProcessStarted);
 
             //TODO to be checked
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
-            Console.WriteLine($"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}");
 
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest?.SetCounter(reboots + 1, cycleIndex + 1);
@@ -389,6 +385,7 @@ namespace AutosarBCM
                     StopCycle(cycle, dictMapping);
                 StartCycle(cycle, dictMapping);
             }
+
 
 
             //Console.WriteLine(Constants.StartProcessCompleted);
@@ -408,9 +405,12 @@ namespace AutosarBCM
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
 
                         Console.WriteLine($"Send Continousitem: {item.Name} inputName: {continousReadList[item]}");
+
                         Helper.WriteCycleMessageToLogFile(item.Name, continousReadList[item], Constants.ContinousRead);
                     }
-                    new ClearDTCInformation().Transmit();
+                    //TODO to be added again
+                    //ThreadSleep(txInterval);
+                    //new ClearDTCInformation().Transmit();
                 }
 
                 //    if(softContinuousDiagList.Count > 0)
@@ -423,12 +423,10 @@ namespace AutosarBCM
             }
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
-            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
 
             if (cycleIndex >= endCycleIndex - 1)
             {
                 Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
-                Helper.SendExtendedDiagSession();
             }
             else
                 Interlocked.Increment(ref cycleIndex);
@@ -512,7 +510,6 @@ namespace AutosarBCM
                         if (mappedItem.Item2 != null)
                         {
                             var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
-                            Console.WriteLine($"Start Send MappedItem {mappedItem.Item1.Input.Control} inputName {inputName}");
                             if (mapControls.Any(c => c.Name == mappedItem.Item1.Input.Control))
                                 continue;
                             mapControls.Add(mappedItem.Item2);
@@ -637,11 +634,9 @@ namespace AutosarBCM
                         if (mappedItem.Item2 != null)
                         {
                             var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
-                            Console.WriteLine($"Start Send MappedItem {mappedItem.Item1.Input.Control} inputName {inputName}");
                             if (mapControls.Any(c => c.Name == mappedItem.Item1.Input.Control))
                                 continue;
                             mapControls.Add(mappedItem.Item2);
-                            Console.WriteLine($"Stop Send MappedItem: {mappedItem.Item1.Input.Control} inputName: {inputName}");
                             Helper.WriteCycleMessageToLogFile(mappedItem.Item1.Input.Control, inputName, (Constants.MappingRead));
                         }
                     }
