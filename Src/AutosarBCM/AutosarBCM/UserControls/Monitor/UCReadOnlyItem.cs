@@ -148,69 +148,73 @@ namespace AutosarBCM.UserControls.Monitor
             if (Program.MappingStateDict.TryGetValue(ControlInfo.Name, out var errorLogDetect))
                 Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, GetMappingLogState(errorLogDetect.Operation)));
 
-            if (lblReceived.InvokeRequired)
+            if (!Program.FormEnvironmentalTest.cbDisableUi.Checked)
             {
-                lblReceived.BeginInvoke((MethodInvoker)delegate ()
+                if (lblReceived.InvokeRequired)
+                {
+                    lblReceived.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        MessagesReceived++;
+                        lblReceived.Text = MessagesReceived.ToString();
+                        Calculate();
+                    });
+                }
+                else
                 {
                     MessagesReceived++;
                     lblReceived.Text = MessagesReceived.ToString();
                     Calculate();
-                });
-            }
-            else
-            {
-                MessagesReceived++;
-                lblReceived.Text = MessagesReceived.ToString();
-                Calculate();
-            }
+                }
 
-            if (oldValue != null)
-            {
-                var areEqual = service.Payloads.Count == oldValue.Payloads.Count;
-
-                if (areEqual)
+                if (oldValue != null)
                 {
-                    for (int i = 0; i < service.Payloads.Count; i++)
+                    var areEqual = service.Payloads.Count == oldValue.Payloads.Count;
+
+                    if (areEqual)
                     {
-                        if (service.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
-                            service.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
+                        for (int i = 0; i < service.Payloads.Count; i++)
                         {
-                            areEqual = false;
-                            break;
+                            if (service.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
+                                service.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
+                            {
+                                areEqual = false;
+                                break;
+                            }
                         }
                     }
+
+                    if (areEqual)
+                        return;
                 }
 
-                if (areEqual)
-                    return;
-            }
+                oldValue = service;
 
-            oldValue = service;
-
-            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
-            {
-                if (service.Payloads[0].PayloadInfo.TypeName == "DID_PWM")
+                lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
                 {
-                    var payload = (service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name)).FormattedValue;
+                    if (service.Payloads[0].PayloadInfo.TypeName == "DID_PWM")
+                    {
+                        var payload = (service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name)).FormattedValue;
 
-                    string hexValue = payload.Replace("-", "");
-                    string decimalValue = (Convert.ToInt32(hexValue, 16)).ToString();
-                    lblWriteStatus.Text = decimalValue;
-                }
-                else
+                        string hexValue = payload.Replace("-", "");
+                        string decimalValue = (Convert.ToInt32(hexValue, 16)).ToString();
+                        lblWriteStatus.Text = decimalValue;
+                    }
+                    else
+                    {
+                        var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+                        lblWriteStatus.Text = payload?.FormattedValue.ToString();
+                    }
+                });
+
+
+
+                lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
                 {
                     var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
                     lblWriteStatus.Text = payload?.FormattedValue.ToString();
-                }
-            });
-
+                });
+            }
             
-
-            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
-            {
-                var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
-                lblWriteStatus.Text = payload?.FormattedValue.ToString();
-            });
         }
 
         /// <summary>
@@ -220,8 +224,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         internal void HandleMetrics()
         {
-          
-                MessagesTransmitted++;
+            MessagesTransmitted++;
             if (lblTransmitted.InvokeRequired)
             {
                 lblTransmitted.BeginInvoke((MethodInvoker)delegate ()

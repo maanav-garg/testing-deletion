@@ -369,8 +369,8 @@ namespace AutosarBCM.Forms.Monitor
                     if (!cbDisableUi.Checked)
                     {
                         totalMessagesReceived++;
-                        matchedControl.ChangeStatus(ioService);
                     }
+                    matchedControl.ChangeStatus(ioService);
                 }
 
                 if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
@@ -656,5 +656,7 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

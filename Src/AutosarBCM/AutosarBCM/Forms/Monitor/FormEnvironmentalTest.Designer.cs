@@ -347,6 +347,6 @@
         private System.Windows.Forms.ToolStripLabel tslTransmitted;
         private System.Windows.Forms.ToolStripLabel tslDiff;
         private System.Windows.Forms.ToolStripDropDownButton tsbConfigurationSelection;
-        private System.Windows.Forms.CheckBox cbDisableUi;
+        internal System.Windows.Forms.CheckBox cbDisableUi;
     }
 }
