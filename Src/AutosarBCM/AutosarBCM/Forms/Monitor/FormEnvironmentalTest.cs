@@ -245,6 +245,7 @@ namespace AutosarBCM.Forms.Monitor
                     btnStart.Text = "Stop";
                     btnStart.ForeColor = Color.Red;
                     tsbConfigurationSelection.Enabled = false;
+                    cbDisableUi.Enabled = false;
                 }
                 else
                 {
@@ -256,6 +257,7 @@ namespace AutosarBCM.Forms.Monitor
                     isActive = false;
                     btnStart.Text = "Start";
                     btnStart.ForeColor = Color.Green;
+                    cbDisableUi.Enabled = true;
                 }
             }));
 
@@ -290,7 +292,10 @@ namespace AutosarBCM.Forms.Monitor
                         bool titleMatch = ucItem.PayloadInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0
                             || ucItem.ControlInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
 
-                        ucItem.Visible = titleMatch;
+                        if (!cbDisableUi.Checked)
+                        { 
+                            ucItem.Visible = titleMatch; 
+                        }
                     }
                 }
                 flowPanel.ResumeLayout();
@@ -348,8 +353,6 @@ namespace AutosarBCM.Forms.Monitor
                 var payloadName = ioService.Payloads[i].PayloadInfo.Name;
                 if (cyclePayloads.Contains(payloadName))
                 {
-                   
-
                     allPayloads.Remove(payloadName);
                 }
                     Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
@@ -362,9 +365,12 @@ namespace AutosarBCM.Forms.Monitor
                     if (matchedControl == null)
                         return false;
 
-                    totalMessagesReceived++;
 
-                    matchedControl.ChangeStatus(ioService);
+                    if (!cbDisableUi.Checked)
+                    {
+                        totalMessagesReceived++;
+                        matchedControl.ChangeStatus(ioService);
+                    }
                 }
 
                 if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
@@ -376,7 +382,10 @@ namespace AutosarBCM.Forms.Monitor
 
                             Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, "ClosingResponse", "", "", ioService.Payloads[i].FormattedValue);
 
-                            totalMessagesReceived++;
+                            if (!cbDisableUi.Checked)
+                            {
+                                totalMessagesReceived++;
+                            }
                             break;
                         }
 
@@ -408,7 +417,7 @@ namespace AutosarBCM.Forms.Monitor
                 if (payload == null)
                     continue;
                 var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
-                if (uc != null && uc.CurrentDtcDescription != dtcValue.Description)
+                if (uc != null && uc.CurrentDtcDescription != dtcValue.Description && !cbDisableUi.Checked)
                     uc?.ChangeDtc(dtcValue.Description);
             }
         }
@@ -439,19 +448,22 @@ namespace AutosarBCM.Forms.Monitor
                 if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
-                    totalMessagesReceived++;
+                    if(!cbDisableUi.Checked)
+                        totalMessagesReceived++;
                 }
                     
                 if (inputName.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name)) 
                 { 
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.MappingResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
-                    totalMessagesReceived++;
+                    if(!cbDisableUi.Checked)
+                        totalMessagesReceived++;
                 }
                     
                 if (continuousReadData.Any(p => p.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
-                    totalMessagesReceived++;
+                    if(!cbDisableUi.Checked)
+                        totalMessagesReceived++;
                 }
 
                 if (Program.MappingStateDict.TryGetValue(readByIdenService.Payloads[i].PayloadInfo.Name, out var errorLogDetect))
@@ -485,7 +497,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private void UpdateCounters()
         {
-            if (tslTransmitted.GetCurrentParent().InvokeRequired)
+            if (tslTransmitted.GetCurrentParent().InvokeRequired && !cbDisableUi.Checked)
             {
                 tslTransmitted.GetCurrentParent().BeginInvoke((MethodInvoker)delegate ()
                 {
@@ -504,11 +516,14 @@ namespace AutosarBCM.Forms.Monitor
             }
             else
             {
-                tslTransmitted.Text = totalMessagesTransmitted.ToString();
-                tslReceived.Text = totalMessagesReceived.ToString();
-                double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
-                tslDiff.Text = (diff * 100).ToString("F2") + "%";
-                tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+                if (!cbDisableUi.Checked)
+                {
+                    tslTransmitted.Text = totalMessagesTransmitted.ToString();
+                    tslReceived.Text = totalMessagesReceived.ToString();
+                    double diff = (double)totalMessagesReceived / totalMessagesTransmitted;
+                    tslDiff.Text = (diff * 100).ToString("F2") + "%";
+                    tslDiff.BackColor = diff == 1 ? Color.Green : (diff > 0.9 ? Color.Orange : Color.Red);
+                }
             }
         }
 
@@ -530,13 +545,15 @@ namespace AutosarBCM.Forms.Monitor
             var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address).ToList();
             if (!matchedControls.Any())
                 return false;
-
-            totalMessagesTransmitted++;
+            if (!cbDisableUi.Checked)
+            {
+                totalMessagesTransmitted++;
+            }
             foreach (var uc in matchedControls)
             {
                 foreach (var payload in cycle.Functions.SelectMany(p => p.Payloads))
                 {
-                    if (uc.PayloadInfo.Name == payload)
+                    if (uc.PayloadInfo.Name == payload && !cbDisableUi.Checked)
                     {
                         uc.HandleMetrics();
                       
@@ -621,7 +638,6 @@ namespace AutosarBCM.Forms.Monitor
         }
         private void ReloadControls()
         {
-            
             tsbConfigurationSelection.Enabled = false;
             groups.Clear();
             cycles.Clear();
