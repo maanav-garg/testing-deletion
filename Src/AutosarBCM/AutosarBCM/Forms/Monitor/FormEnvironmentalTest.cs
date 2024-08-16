@@ -325,11 +325,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleIOControlByIdentifierReceive(IOControlByIdentifierService ioService)
         {
-            for (var i = 0; i < ioService.Payloads.Count; i++)
-            {
-                Console.WriteLine($"Outloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
-            }
-                int loopVal;
+            int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             {
                 return false;
@@ -348,7 +344,6 @@ namespace AutosarBCM.Forms.Monitor
 
                     allPayloads.Remove(payloadName);
                 }
-                    Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
                 {
 
@@ -414,11 +409,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleReadDataByIdenService(ReadDataByIdenService readByIdenService)
         {
-            for (var i = 0; i < readByIdenService.Payloads.Count; i++)
-            {
-                Console.WriteLine($"Outloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
-            }
-                int loopVal;
+            int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             { 
                 return false;
@@ -430,8 +421,6 @@ namespace AutosarBCM.Forms.Monitor
 
             for (var i = 0; i < readByIdenService.Payloads.Count; i++)
             {
-                Console.WriteLine($"Inloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
-                
                 if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
