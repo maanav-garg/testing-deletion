@@ -13,6 +13,10 @@ using System.Xml;
 using System.Windows.Forms;
 using System.Web.UI;
 using System.Reflection;
+using System.Web.UI.WebControls;
+using System.Drawing;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
 
 namespace AutosarBCM.Core
 {
@@ -300,6 +304,7 @@ namespace AutosarBCM.Core
 
             XmlDocument odxDoc = new XmlDocument();
             odxDoc.Load(filePath);
+
             List<string> reqNrespIDs = new List<string>();
             List<string> usedReqIDs = new List<string>();   
             List<string> typeNames = new List<string>();
@@ -307,6 +312,8 @@ namespace AutosarBCM.Core
             List<string> reqList = new List<string>();
             List<string> newReqList = new List<string>();
             List<string> idPaylNcontN = new List<string>();
+            List<string> seshList = new List<string>();
+            Dictionary<string, string> functIdNgroup = new Dictionary<string, string>();
             Dictionary<string, string> dtcCodeNtext = new Dictionary<string, string>(); 
             Dictionary<string, string> textNsdgDict = new Dictionary<string, string>();
             Dictionary<string, string> dopDict = new Dictionary<string, string>();
@@ -315,6 +322,20 @@ namespace AutosarBCM.Core
             List<DTCFailure> dTCFailures = new List<DTCFailure>();
             List<ControlInfo> controls = new List<ControlInfo>();
             List<SessionInfo> sessions = new List<SessionInfo>();
+            XmlNodeList basEVariants = odxDoc.GetElementsByTagName("BASE-VARIANT");
+            foreach (XmlNode basEVariant in basEVariants)
+            {
+                XmlNodeList functClassesVariants = basEVariant.SelectNodes("FUNCT-CLASSS");
+                foreach(XmlNode functClassesVariant in functClassesVariants)
+                {
+                    XmlNodeList functClassVariants = functClassesVariant.SelectNodes("FUNCT-CLASS");
+                    foreach(XmlNode functClassVariant in functClassVariants)
+                    {
+                        functIdNgroup.Add(functClassVariant.Attributes.Item(0).Value, functClassVariant.SelectSingleNode("LONG-NAME").InnerText);
+                    }
+                }
+            }
+
             XmlNodeList dopVariants = odxDoc.GetElementsByTagName("DATA-OBJECT-PROP");
             foreach (XmlNode dopVariant in dopVariants)
             {
@@ -329,7 +350,6 @@ namespace AutosarBCM.Core
                         SessionInfo session = new SessionInfo();
                         session.Name = seshName;
                         session.ID = Convert.ToByte(seshNum, 16);
-                        //session.ID = Convert.ToByte(SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL);
                         if (seshNum != "02")
                         {
                             session.AvailableServices = new List<byte>
@@ -408,6 +428,7 @@ namespace AutosarBCM.Core
                         XmlNode diagServ = ecuVar_diagService.SelectSingleNode("SHORT-NAME");
                         if (diagServ != null)
                         {
+
                             string[] tempArr = diagServ.InnerText.Split('_');
                             if (tempArr[tempArr.Length - 1] == "Read")
                             {
@@ -421,7 +442,21 @@ namespace AutosarBCM.Core
                                 c.Name = sName;
                                 //TODO type i fixle
                                 c.Type = "Not found yet";
-                                c.Group = "DID";
+
+                                string groupId = ecuVar_diagService.SelectSingleNode("FUNCT-CLASS-REFS").SelectSingleNode("FUNCT-CLASS-REF").Attributes.Item(0).Value;
+                                string groupName = functIdNgroup.Values.ElementAt(functIdNgroup.Keys.ToList().IndexOf(groupId));
+                                switch (groupName)
+                                {
+                                    case "ECU Configuration DIDs":
+                                        c.Group = "ECU-DID";
+                                        break;
+                                    case "DIDs":
+                                        c.Group = "DID";
+                                        break;
+                                    default:
+                                        c.Group = "DID";
+                                        break;
+                                }
                                 controls.Add(c);
                             }
                             else if (tempArr[tempArr.Length - 1] == "Adjustment" && tempArr[tempArr.Length - 2] == "Term" && tempArr[tempArr.Length - 3] == "Short")
@@ -499,6 +534,10 @@ namespace AutosarBCM.Core
                                                     }
                                                 }
                                             }
+                                            else if (paramName.InnerText == "Diagnostic_session")
+                                            {
+                                                seshList.Add(paramElem.SelectSingleNode("SHORT-NAME").InnerText.Split('_')[1] + "+" + Convert.ToByte(paramElem.SelectSingleNode("CODED-VALUE").InnerText));
+                                            }
                                         }
                                     }
                                     else if (paramElem.Attributes.Item(0).Value == "DATA-ID")
@@ -538,6 +577,8 @@ namespace AutosarBCM.Core
                                             if (paramElem.SelectSingleNode("DESC") != null)
                                             {
                                                 string descName = paramElem.SelectSingleNode("DESC").InnerText.Replace("\n",string.Empty).Trim().Replace("\t", " "); ;
+                                                if (descName.Contains("C4.24"))
+                                                    Console.Write("");
                                                 reqList.Add(idRef + "+" + descName);
                                             }
                                         }
@@ -548,7 +589,47 @@ namespace AutosarBCM.Core
                         }
                     }
                 }
+                XmlNodeList reqRespVars = odxDoc.GetElementsByTagName("REQUESTS");
+                foreach (XmlNode reqRespVar in reqRespVars)
+                {
+                    XmlNodeList reqResps = reqRespVar.SelectNodes("REQUEST");
+                    foreach (XmlNode reqResp in reqResps)
+                    {
+                        if (reqResp.LastChild.FirstChild.NextSibling != null)
+                        {
+                            if (reqResp.LastChild.FirstChild.NextSibling.Attributes.Item(0).Value == "SUBFUNCTION" && reqResp.LastChild.FirstChild.NextSibling.SelectSingleNode("SHORT-NAME").InnerText == "Diagnostic_session")
+                            {
+                                if(!seshList.Contains(reqResp.SelectSingleNode("SHORT-NAME").InnerText.Split('_')[1] + "+" + Convert.ToByte((reqResp.LastChild.FirstChild.SelectSingleNode("CODED-VALUE").InnerText))))
+                                    seshList.Add(reqResp.SelectSingleNode("SHORT-NAME").InnerText.Split('_')[1] + "+" + Convert.ToByte((reqResp.LastChild.FirstChild.SelectSingleNode("CODED-VALUE").InnerText)));
 
+                            }
+                        }
+                    }
+                }
+                XmlNodeList posRespVars = odxDoc.GetElementsByTagName("POS-RESPONSES");
+                foreach (XmlNode posRespVar in posRespVars)
+                {
+                    XmlNodeList posResps = posRespVar.SelectNodes("POS-RESPONSE");
+                    foreach(XmlNode posResp in posResps)
+                    {
+                        if (posResp.LastChild.FirstChild.NextSibling != null)
+                        {
+                            if (posResp.LastChild.FirstChild.NextSibling.Attributes.Item(0).Value == "SUBFUNCTION" && posResp.LastChild.FirstChild.NextSibling.SelectSingleNode("SHORT-NAME").InnerText == "Diagnostic_session")
+                            {
+                                string element = seshList.ElementAt(0);
+
+                                if (posResp.SelectSingleNode("SHORT-NAME").InnerText.Split('_')[1] == element.Split('+')[0])
+                                {
+                                    ServiceInfo service = new ServiceInfo();
+                                    service.ResponseID = Convert.ToByte(posResp.LastChild.FirstChild.SelectSingleNode("CODED-VALUE").InnerText);
+                                    service.RequestID = Convert.ToByte(element.Split('+')[1]);
+                                    service.Name = "DiagnosticSessionControl";
+                                    services.Add(service);
+                                }
+                            }
+                        }
+                    }
+                }
                 XmlNodeList ecuVars = odxDoc.GetElementsByTagName("ECU-VARIANT");
                 foreach (XmlNode ecuVar in ecuVars)
                 {
@@ -604,6 +685,8 @@ namespace AutosarBCM.Core
                                     //sikinti burada
                                     string dopSName = dopDop.SelectSingleNode("SHORT-NAME").InnerText;
                                     string newElm = element + "+" + dopSName;
+                                    if (element.Contains("C4.24") && dopSName == "DID_Byte_Present_notPresent")
+                                        Console.Write("");
 
                                     if (dopDop.Attributes.Item(0).Value == element.Split('+')[0] && !newReqList.Contains(newElm))
                                     {
@@ -616,9 +699,10 @@ namespace AutosarBCM.Core
                                         //if (!dopDict.ContainsKey(element.Split('+')[0]))
                                         //{
                                         if (!dopDict.ContainsKey(element.Split('+')[0]))
-                                            dopDict.Add(element.Split('+')[0], dopSName);
+                                            dopDict.Add(element.Split('+')[0], dopSName); 
                                         //string newElm = element + "+" + dopSName;
-                                        newReqList.Add(newElm);
+                                        if(!newReqList.Contains(newElm))
+                                            newReqList.Add(newElm);
                                         isReqAdded = true;
                                     }
                                     if (isReqAdded)
@@ -654,6 +738,7 @@ namespace AutosarBCM.Core
                     XmlNodeList posRespVariants = posRespsVariant.SelectNodes("POS-RESPONSE");
                     foreach (XmlNode respVariant in posRespVariants)
                     {
+                        
                         List<ResponseInfo> responses = new List<ResponseInfo>();
                         XmlNode respName = respVariant.SelectSingleNode("SHORT-NAME");
                         foreach (ControlInfo control in controls)
@@ -677,7 +762,261 @@ namespace AutosarBCM.Core
                                 {
                                     foreach (XmlNode paramVar in paramsVar.SelectNodes("PARAM"))
                                     {
-                                        if (paramVar.Attributes.Item(0).Value == "SERVICE-ID")
+                                        /*if (respName.InnerText == "PR_DE09_Read" && control.Name.Contains("DE09"))
+                                            Console.Write("");*/
+                                        //DEXX didlerinin cekilebildigi clause
+                                        if ((respName.InnerText.Contains("Read") && respVariant.NextSibling.SelectSingleNode("SHORT-NAME").InnerText.Contains("Write")) && paramVar.Attributes.Item(0).Value == "DATA" && paramsVar.FirstChild.NextSibling.Attributes.Item(0).Value == "ID" && paramsVar.FirstChild.NextSibling.Attributes.Item(0).Value == "ID") //&& paramVar.SelectSingleNode("DESC") != null)
+                                        {
+                                            //Payload ismi requestlerde yoksa pos responselardan bakma
+
+                                            XmlNode payloadDesc = paramVar.SelectSingleNode("SHORT-NAME");
+                                            PayloadInfo payload = new PayloadInfo();
+                                            payload.Name = payloadDesc.InnerText.Trim().Replace("_", " ");
+                                            //burada csvdeki isimlendirmelerin containl
+                                            if (payload.Name == "C4.24 MainRightMirrorUpCtrl")
+                                                Console.Write("");
+
+                                            //if (reqList.Contains(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name))
+                                            reqList.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name);
+                                            idPaylNcontN.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name + "+" + control.Name);
+                                            foreach (XmlNode baseVar in baseVars)
+                                            {
+                                                XmlNodeList diagDicts = baseVar.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
+                                                XmlNode matchingDop = null;
+                                                foreach (XmlNode diagDict in diagDicts)
+                                                {
+                                                    XmlNodeList dtcDops = diagDict.SelectNodes("DATA-OBJECT-PROPS");
+                                                    foreach (XmlNode dtcDop in dtcDops)
+                                                    {
+                                                        XmlNodeList dopDops = dtcDop.SelectNodes("DATA-OBJECT-PROP");
+                                                        foreach (XmlNode dopDop in dopDops)
+                                                        {
+                                                            foreach (string element in reqList)
+                                                            {
+                                                                if (dopDop.Attributes.Item(0).Value == element.Split('+')[0])
+                                                                {
+                                                                    matchingDop = dopDop;
+                                                                    XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
+                                                                    string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
+
+                                                                    if (!dopDict.ContainsKey(element.Split('+')[0]))
+                                                                        dopDict.Add(element.Split('+')[0], dopSName);
+                                                                    string newElm = element + "+" + dopSName;
+                                                                    if (!newReqList.Contains(newElm))
+                                                                        newReqList.Add(newElm);
+                                                                }
+                                                            }
+
+                                                            foreach (string element in idPaylNcontN)
+                                                            {
+                                                                if (element.Contains("DE09"))
+                                                                    Console.Write("");
+                                                                if (dopDop.Attributes.Item(0).Value == element.Split('+')[0])
+                                                                {
+                                                                    matchingDop = dopDop;
+                                                                    XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
+                                                                    string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                    if (!dopDict.ContainsKey(element.Split('+')[0]))
+                                                                        dopDict.Add(element.Split('+')[0], dopSName);
+                                                                    string newElm = element.Split('+')[0] + "+" + element.Split('+')[1] + "+" + dopSName;
+                                                                    if (!newReqList.Contains(newElm))
+                                                                    {
+                                                                        newReqList.Add(newElm);
+                                                                        //idPaylNcontN.Remove(newElm);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            PayloadValue payloadVal = new PayloadValue();
+                                            if (payloadDesc != null)
+                                            {
+                                                XmlNodeList baseVariants = odxDoc.GetElementsByTagName("BASE-VARIANT");
+                                                foreach (XmlNode baseVariant in baseVariants)
+                                                {
+                                                    XmlNodeList diagDataVars = baseVariant.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
+                                                    foreach (XmlNode diagDataVar in diagDataVars)
+                                                    {
+                                                        /*XmlNodeList dtcDops = diagDataVar.SelectNodes("DTC-DOPS");
+                                                        foreach (XmlNode dtcDop in dtcDops)
+                                                        {
+                                                            XmlNodeList dtcDopVariants = dtcDop.SelectNodes("DTC-DOP");
+                                                            foreach (XmlNode dtcDopVariant in dtcDopVariants)
+                                                            {
+                                                                XmlNodeList dtcsNodes = dtcDopVariant.SelectNodes("DTCS");
+                                                                foreach (XmlNode dtcsNode in dtcsNodes)
+                                                                {
+                                                                    XmlNodeList dtcVariants = dtcsNode.SelectNodes("DTC");
+                                                                    foreach (XmlNode dtcVariant in dtcVariants)
+                                                                    {
+                                                                        bool isDtcSet = false;
+                                                                        XmlNode dtcDop_Text = dtcVariant.SelectSingleNode("TEXT");
+                                                                        string[] textArr = dtcDop_Text.InnerText.Split(' ');
+                                                                        //if (payload.Name.Contains("HornActivateSwitch") && textNsdgDict.ContainsKey("HornActivateSwitch"))
+                                                                        //newReqList.Add(dtcVariant.SelectSingleNode("DOP-REF").Attributes.Item(0).Value+"+");
+                                                                        string payloadValName = payload.Name;
+                                                                        //Burasi 
+                                                                        if (payload.Name != "")
+                                                                        {
+                                                                            if (control.Name == "DE09" && textArr[0].Contains("DE09"))
+                                                                                Console.Write("");
+                                                                            if (textArr[0] == control.Name || textArr[0] == payload.Name || payload.Name.Contains(textArr[0]) || payload.Name.Contains(textArr[0].Replace("Output", "")))//textArr[0] == payload.Name.Substring(0,4)+"Activate"+payload.Name.Substring(4) )
+                                                                            {
+                                                                                XmlNode dtcDop_sNameNode = dtcVariant.SelectSingleNode("SHORT-NAME");
+                                                                                if (dtcDop_sNameNode != null)
+                                                                                {
+                                                                                    string tempStr = "";
+                                                                                    for (int i = 3; i < dtcDop_sNameNode.InnerText.Length - 2; i++)
+                                                                                    {
+                                                                                        tempStr += dtcDop_sNameNode.InnerText[i];
+                                                                                    }
+                                                                                    payload.DTCCode = tempStr;
+                                                                                    isDtcSet = true;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        if (isDtcSet)
+                                                                            break;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }*/
+                                                        if (respName.InnerText == "PR_DE09_Read")
+                                                            Console.Write("");
+                                                        XmlNodeList dopsVar = diagDataVar.SelectNodes("DATA-OBJECT-PROPS");
+                                                        foreach (XmlNode dopVar in dopsVar)
+                                                        {
+                                                            XmlNodeList dops = dopVar.SelectNodes("DATA-OBJECT-PROP");
+                                                            foreach (XmlNode dop in dops)
+                                                            {
+                                                                if (dopDict.Keys.Contains(dop.Attributes.Item(0).Value))
+                                                                {
+                                                                    PayloadInfo tempPayload = new PayloadInfo();
+                                                                    string dopID = dopDict.Keys.ElementAt(dopDict.Keys.ToList().IndexOf(dop.Attributes.Item(0).Value));
+                                                                    string typName = dop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                    if (typName == "HexDump_1Byte")
+                                                                        Console.Write("");
+                                                                    string bitLenStr = dop.SelectSingleNode("DIAG-CODED-TYPE").SelectSingleNode("BIT-LENGTH").InnerText;
+                                                                    int byteLen = int.Parse(bitLenStr) / 8;
+                                                                    payload.Length = byteLen;
+                                                                    payload.TypeName = typName;
+                                                                    foreach (string descN in newReqList)
+                                                                    {
+
+                                                                        //dictten text arr 0 ve descn ile girme
+                                                                        if (reqList.Contains(descN.Split('+')[0] + "+" + descN.Split('+')[1]) && /*!usedReqList.Contains(descN) &&*/ (descN.Split('+')[2] == payload.TypeName && (descN.Split('+')[1].Equals(payload.Name)))) // || textNsdgDict.ContainsValue(payload.Name)))
+                                                                        {
+                                                                            if (payload.Name == "C4.24 MainRightMirrorUpCtrl")
+                                                                                Console.Write("");
+                                                                            if (!usedReqList.Contains(descN))
+                                                                                usedReqList.Add(descN);
+                                                                            if (dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS") != null)
+                                                                            {
+                                                                                XmlNodeList valNodes = dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS").SelectSingleNode("COMPU-SCALES").SelectNodes("COMPU-SCALE");
+                                                                                foreach (XmlNode valNode in valNodes)
+                                                                                {
+                                                                                    PayloadValue tempPayVal = new PayloadValue();
+                                                                                    if (valNode.SelectSingleNode("COMPU-CONST") != null)
+                                                                                    {
+                                                                                        payloadVal.FormattedValue = valNode.SelectSingleNode("COMPU-CONST").SelectSingleNode("VT").InnerText;
+                                                                                        payloadVal.ValueString = (Convert.ToByte(valNode.SelectSingleNode("LOWER-LIMIT").InnerText).ToString("X2"));
+                                                                                        tempPayVal.ValueString = payloadVal.ValueString;
+                                                                                        tempPayVal.FormattedValue = payloadVal.FormattedValue;
+                                                                                        if (payload.Values != null)
+                                                                                            payload.Values.Add(tempPayVal);
+
+                                                                                        else
+                                                                                        {
+                                                                                            payload.Values = new List<PayloadValue>
+                                                                                    {
+                                                                                        tempPayVal
+                                                                                    };
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            /*if (payload.Name.Contains("Horn"))
+                                                                                Console.Write("");
+                                                                            if ((textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace("Ctrl", "") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name))) || (textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace(" Warning ", "") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name))) || textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace(" ", "Activate") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name)))
+                                                                            {
+                                                                                if (control.Name.Contains("Hazard Warning"))
+                                                                                {
+                                                                                    Console.Write("");
+                                                                                }
+                                                                                XmlNodeList valNodes = dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS").SelectSingleNode("COMPU-SCALES").SelectNodes("COMPU-SCALE");
+                                                                                foreach (XmlNode valNode in valNodes)
+                                                                                {
+                                                                                    PayloadValue tempPayVal = new PayloadValue();
+                                                                                    if (valNode.SelectSingleNode("COMPU-CONST") != null)
+                                                                                    {
+                                                                                        payloadVal.FormattedValue = valNode.SelectSingleNode("COMPU-CONST").SelectSingleNode("VT").InnerText;
+                                                                                        payloadVal.ValueString = (Convert.ToByte(valNode.SelectSingleNode("LOWER-LIMIT").InnerText).ToString("X2"));
+                                                                                        tempPayVal.ValueString = payloadVal.ValueString;
+                                                                                        tempPayVal.FormattedValue = payloadVal.FormattedValue;
+                                                                                        if (payload.Values != null)
+                                                                                            payload.Values.Add(tempPayVal);
+
+                                                                                        else
+                                                                                        {
+                                                                                            payload.Values = new List<PayloadValue>
+                                                                                            {
+                                                                                                tempPayVal
+                                                                                            };
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }*/
+                                                                            else
+                                                                            {
+                                                                                PayloadValue tempPayVal = new PayloadValue();
+                                                                                payload.Values = new List<PayloadValue>
+                                                                        {
+                                                                            tempPayVal
+                                                                        };
+                                                                            }
+                                                                            tempPayload.TypeName = payload.TypeName;
+                                                                            tempPayload.Length = payload.Length;
+                                                                            tempPayload.Values = payload.Values;
+                                                                            //if (tempPayload.Values != null)
+                                                                            //{ }
+                                                                            PayloadInfo tempInfo = new PayloadInfo();
+                                                                            tempInfo.TypeName = tempPayload.TypeName;
+                                                                            tempInfo.Length = tempPayload.Length;
+                                                                            tempInfo.Values = tempPayload.Values;
+                                                                            //if(payload.TypeName == tempPayload.TypeName
+                                                                            if (!typeNames.Contains(tempInfo.TypeName))
+                                                                            {
+                                                                                payloadInfos.Add(tempInfo);
+                                                                                typeNames.Add(tempInfo.TypeName);
+                                                                            }
+                                                                            //payloadlardaki ayni typenamede olanlari tekrar ekliyor bunu cikarmam lazim
+                                                                            if (tempPayload != null)
+                                                                            {
+                                                                                if (response.Payloads != null)
+                                                                                    response.Payloads.Add(tempPayload);
+                                                                                else
+                                                                                {
+                                                                                    response.Payloads = new List<PayloadInfo>
+                                                                            {
+                                                                                tempPayload
+                                                                            };
+                                                                                }
+                                                                            }
+
+                                                                            tempPayload.DTCCode = payload.DTCCode;
+                                                                            tempPayload.Name = payload.Name;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else if (paramVar.Attributes.Item(0).Value == "SERVICE-ID")
                                         {
                                             XmlNode serviceId = paramVar.SelectSingleNode("CODED-VALUE");
                                             response.ServiceID = Convert.ToByte(serviceId.InnerText);
@@ -688,7 +1027,7 @@ namespace AutosarBCM.Core
                                                     ServiceInfo service = new ServiceInfo();
                                                     service.ResponseID = Convert.ToByte(serviceId.InnerText);
                                                     service.RequestID = Convert.ToByte(element.Split('+')[0]);
-                                                    if(service.RequestID == 0x22)
+                                                    if (service.RequestID == 0x22)
                                                     {
                                                         service.Name = "ReadDataByIdentifier";
                                                     }
@@ -705,7 +1044,8 @@ namespace AutosarBCM.Core
                                                 }
                                             }
                                             //dene bakalim req ve responselardan ayni birkac adet olacak mi
-                                            if (response != null) {
+                                            if (response != null)
+                                            {
                                                 if (response.Payloads == null)
                                                 {
                                                     response.Payloads = new List<PayloadInfo>();
@@ -722,24 +1062,92 @@ namespace AutosarBCM.Core
                                             XmlNode payloadEl = paramVar.SelectSingleNode("CODED-VALUE");
                                         }
                                         //Structure ise
-                                        else if (paramVar.Attributes.Item(0).Value == "DATA" && paramVar.SelectSingleNode("DESC") == null && control.Name != "QF Output Signals" && control.Name!= "QF Output Signals2" &&  control.Name != "QF Input Signals" && control.Name != "Remote Key signal strength learning threshold" && control.Name != "Number of Programmed Remote Keys") 
+                                        //TODO BURAYA BAK LA
+                                        else if (paramVar.Attributes.Item(0).Value == "DATA" && paramVar.SelectSingleNode("DESC") == null)
                                         {
-                                            List<string> tempList = new List<string>();
-                                            foreach(string listEl in idPaylNcontN)
+
+
+                                            if (control.Name == "All Doors Lock and Ajar Input Signal")
+                                                Console.Write("");
+                                            string payLN = "";
+                                            for (int i = 0; i < paramVar.SelectSingleNode("SHORT-NAME").InnerText.Split('_').Length; i++)
                                             {
-                                                if (listEl.Split('+')[2] == control.Name)
-                                                    tempList.Add(listEl);
+                                                payLN += paramVar.SelectSingleNode("SHORT-NAME").InnerText.Split('_')[i] + " ";
                                             }
-                                            foreach(string listEl in tempList)
+                                            payLN = payLN.TrimEnd();
+                                            if (payLN == "C4.24 MainRightMirrorUpCtrl")
+                                                Console.Write("");
+                                            string tempTrialPayLN = "";
+                                            if (paramVar.SelectSingleNode("SHORT-NAME").InnerText.Split('_').Length > 2)
                                             {
-                                                string payloadDesc = listEl.Split('+')[1];
+                                                for (int i = 0; i < paramVar.SelectSingleNode("SHORT-NAME").InnerText.Split('_').Length; i++)
+                                                {
+                                                    if(i!=2)
+                                                        tempTrialPayLN += paramVar.SelectSingleNode("SHORT-NAME").InnerText.Split('_')[i] + " ";
+                                                }
+                                                tempTrialPayLN = tempTrialPayLN.TrimEnd();
+                                            }
+                                            //remote key rolling countrer specific clause
+                                            if (control.Name == tempTrialPayLN)
+                                            {
                                                 Console.WriteLine(control.Name);
-                                                if(control.Name == "All Doors Lock and Ajar Output Signal")
-                                                    Console.WriteLine(control.Name);
-                                                string dopId = paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value;
-                                                //foreach o list donecek 
+                                                string payloadDesc = paramVar.SelectSingleNode("LONG-NAME").InnerText;
                                                 PayloadInfo payload = new PayloadInfo();
-                                                payload.Name = payloadDesc.Trim().Replace("\t", " ");
+                                                payload.Name = payloadDesc;
+                                                //burada csvdeki isimlendirmelerin containl
+                                                if (!reqList.Contains(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name))
+                                                {
+                                                    reqList.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name);
+                                                    idPaylNcontN.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name + "+" + control.Name);
+
+                                                }
+                                                foreach (XmlNode baseVar in baseVars)
+                                                {
+                                                    XmlNodeList diagDicts = baseVar.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
+                                                    XmlNode matchingDop = null;
+                                                    foreach (XmlNode diagDict in diagDicts)
+                                                    {
+                                                        XmlNodeList dtcDops = diagDict.SelectNodes("DATA-OBJECT-PROPS");
+                                                        foreach (XmlNode dtcDop in dtcDops)
+                                                        {
+                                                            XmlNodeList dopDops = dtcDop.SelectNodes("DATA-OBJECT-PROP");
+                                                            foreach (XmlNode dopDop in dopDops)
+                                                            {
+                                                                foreach (string element in reqList)
+                                                                {
+                                                                    if (dopDop.Attributes.Item(0).Value == element.Split('+')[0])
+                                                                    {
+                                                                        matchingDop = dopDop;
+                                                                        XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
+                                                                        string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                        if (!dopDict.ContainsKey(element.Split('+')[0]))
+                                                                            dopDict.Add(element.Split('+')[0], dopSName);
+                                                                        string newElm = element + "+" + dopSName;
+                                                                        if (!newReqList.Contains(newElm))
+                                                                            newReqList.Add(newElm);
+                                                                    }
+                                                                }
+
+                                                                foreach (string element in idPaylNcontN)
+                                                                {
+                                                                    if (dopDop.Attributes.Item(0).Value == element.Split('+')[0])
+                                                                    {
+                                                                        matchingDop = dopDop;
+                                                                        XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
+                                                                        string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                        if (!dopDict.ContainsKey(element.Split('+')[0]))
+                                                                            dopDict.Add(element.Split('+')[0], dopSName);
+                                                                        string newElm = element.Split('+')[0] + "+" + element.Split('+')[1] + "+" + dopSName;
+                                                                        if (!newReqList.Contains(newElm))
+                                                                        {
+                                                                            newReqList.Add(newElm);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                                 PayloadValue payloadVal = new PayloadValue();
                                                 if (payloadDesc != null)
                                                 {
@@ -764,9 +1172,11 @@ namespace AutosarBCM.Core
                                                                             bool isDtcSet = false;
                                                                             XmlNode dtcDop_Text = dtcVariant.SelectSingleNode("TEXT");
                                                                             string[] textArr = dtcDop_Text.InnerText.Split(' ');
+                                                                            //if (payload.Name.Contains("HornActivateSwitch") && textNsdgDict.ContainsKey("HornActivateSwitch"))
+                                                                            //newReqList.Add(dtcVariant.SelectSingleNode("DOP-REF").Attributes.Item(0).Value+"+");
                                                                             string payloadValName = payload.Name;
                                                                             //Burasi 
-                                                                            if (payload.Name != "" && payload.Name!=null)
+                                                                            if (payload.Name != "")
                                                                             {
                                                                                 if (textArr[0] == control.Name || textArr[0] == payload.Name || payload.Name.Contains(textArr[0]) || payload.Name.Contains(textArr[0].Replace("Output", "")))//textArr[0] == payload.Name.Substring(0,4)+"Activate"+payload.Name.Substring(4) )
                                                                                 {
@@ -775,7 +1185,9 @@ namespace AutosarBCM.Core
                                                                                     {
                                                                                         string tempStr = "";
                                                                                         for (int i = 3; i < dtcDop_sNameNode.InnerText.Length - 2; i++)
+                                                                                        {
                                                                                             tempStr += dtcDop_sNameNode.InnerText[i];
+                                                                                        }
                                                                                         payload.DTCCode = tempStr;
                                                                                         isDtcSet = true;
                                                                                     }
@@ -802,17 +1214,46 @@ namespace AutosarBCM.Core
                                                                         int byteLen = int.Parse(bitLenStr) / 8;
                                                                         payload.Length = byteLen;
                                                                         payload.TypeName = typName;
-                                                                        if (listEl.Split('+')[2]== "All Doors Lock and Ajar Output Signal Status")
-                                                                            Console.WriteLine(listEl.Split('+')[2]);
                                                                         foreach (string descN in newReqList)
                                                                         {
                                                                             //dictten text arr 0 ve descn ile girme
-                                                                            if (/*!usedReqList.Contains(descN) && */(descN.Split('+')[2] == payload.TypeName && (descN.Split('+')[1].Equals(payload.Name)))) //|| textNsdgDict.ContainsValue(payload.Name)))
+                                                                            if (!usedReqList.Contains(descN) && (descN.Split('+')[2] == payload.TypeName && (descN.Split('+')[1].Equals(payload.Name)))) // || textNsdgDict.ContainsValue(payload.Name)))
                                                                             {
-                                                                                /*if (!usedReqList.Contains(descN) || control.Name == listEl.Split('+')[2])
-                                                                                    usedReqList.Add(descN);*/
+                                                                                if (!usedReqList.Contains(descN))
+                                                                                    usedReqList.Add(descN);
                                                                                 if (dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS") != null)
                                                                                 {
+                                                                                    XmlNodeList valNodes = dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS").SelectSingleNode("COMPU-SCALES").SelectNodes("COMPU-SCALE");
+                                                                                    foreach (XmlNode valNode in valNodes)
+                                                                                    {
+                                                                                        PayloadValue tempPayVal = new PayloadValue();
+                                                                                        if (valNode.SelectSingleNode("COMPU-CONST") != null)
+                                                                                        {
+                                                                                            payloadVal.FormattedValue = valNode.SelectSingleNode("COMPU-CONST").SelectSingleNode("VT").InnerText;
+                                                                                            payloadVal.ValueString = (Convert.ToByte(valNode.SelectSingleNode("LOWER-LIMIT").InnerText).ToString("X2"));
+                                                                                            tempPayVal.ValueString = payloadVal.ValueString;
+                                                                                            tempPayVal.FormattedValue = payloadVal.FormattedValue;
+                                                                                            if (payload.Values != null)
+                                                                                                payload.Values.Add(tempPayVal);
+
+                                                                                            else
+                                                                                            {
+                                                                                                payload.Values = new List<PayloadValue>
+                                                                                            {
+                                                                                                tempPayVal
+                                                                                            };
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                /*if (payload.Name.Contains("Horn"))
+                                                                                    Console.Write("");
+                                                                                if ((textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace("Ctrl", "") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name))) || (textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace(" Warning ", "") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name))) || textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace(" ", "Activate") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name)))
+                                                                                {
+                                                                                    if (control.Name.Contains("Hazard Warning"))
+                                                                                    {
+                                                                                        Console.Write("");
+                                                                                    }
                                                                                     XmlNodeList valNodes = dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS").SelectSingleNode("COMPU-SCALES").SelectNodes("COMPU-SCALE");
                                                                                     foreach (XmlNode valNode in valNodes)
                                                                                     {
@@ -835,13 +1276,13 @@ namespace AutosarBCM.Core
                                                                                             }
                                                                                         }
                                                                                     }
-                                                                                }
+                                                                                }*/
                                                                                 else
                                                                                 {
                                                                                     PayloadValue tempPayVal = new PayloadValue();
                                                                                     payload.Values = new List<PayloadValue>
                                                                                     {
-                                                                                        tempPayVal
+                                                                                    tempPayVal
                                                                                     };
                                                                                 }
                                                                                 tempPayload.TypeName = payload.TypeName;
@@ -867,14 +1308,665 @@ namespace AutosarBCM.Core
                                                                                     else
                                                                                     {
                                                                                         response.Payloads = new List<PayloadInfo>
-                                                                                        {
-                                                                                            tempPayload
-                                                                                        };
+                                                                                    {
+                                                                                        tempPayload
+                                                                                    };
                                                                                     }
                                                                                 }
 
                                                                                 tempPayload.DTCCode = payload.DTCCode;
                                                                                 tempPayload.Name = payload.Name;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    //else if()
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else if (control.Name == payLN)
+                                            {
+
+                                                Console.WriteLine(control.Name);
+                                                string payloadDesc = paramVar.SelectSingleNode("LONG-NAME").InnerText;
+                                                PayloadInfo payload = new PayloadInfo();
+                                                payload.Name = payloadDesc;
+                                                //burada csvdeki isimlendirmelerin containl
+                                                if (!reqList.Contains(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name))
+                                                {
+                                                    reqList.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name);
+                                                    idPaylNcontN.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name + "+" + control.Name);
+
+                                                }
+                                                foreach (XmlNode baseVar in baseVars)
+                                                {
+                                                    XmlNodeList diagDicts = baseVar.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
+                                                    XmlNode matchingDop = null;
+                                                    foreach (XmlNode diagDict in diagDicts)
+                                                    {
+                                                        XmlNodeList dtcDops = diagDict.SelectNodes("DATA-OBJECT-PROPS");
+                                                        foreach (XmlNode dtcDop in dtcDops)
+                                                        {
+                                                            XmlNodeList dopDops = dtcDop.SelectNodes("DATA-OBJECT-PROP");
+                                                            foreach (XmlNode dopDop in dopDops)
+                                                            {
+                                                                foreach (string element in reqList)
+                                                                {
+                                                                    if (dopDop.Attributes.Item(0).Value == element.Split('+')[0])
+                                                                    {
+                                                                        matchingDop = dopDop;
+                                                                        XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
+                                                                        string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                        if (!dopDict.ContainsKey(element.Split('+')[0]))
+                                                                            dopDict.Add(element.Split('+')[0], dopSName);
+                                                                        string newElm = element + "+" + dopSName;
+                                                                        if (!newReqList.Contains(newElm))
+                                                                            newReqList.Add(newElm);
+                                                                    }
+                                                                }
+
+                                                                foreach (string element in idPaylNcontN)
+                                                                {
+                                                                    if (dopDop.Attributes.Item(0).Value == element.Split('+')[0])
+                                                                    {
+                                                                        matchingDop = dopDop;
+                                                                        XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
+                                                                        string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                        if (!dopDict.ContainsKey(element.Split('+')[0]))
+                                                                            dopDict.Add(element.Split('+')[0], dopSName);
+                                                                        string newElm = element.Split('+')[0] + "+" + element.Split('+')[1] + "+" + dopSName;
+                                                                        if (!newReqList.Contains(newElm))
+                                                                        {
+                                                                            newReqList.Add(newElm);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                PayloadValue payloadVal = new PayloadValue();
+                                                if (payloadDesc != null)
+                                                {
+                                                    XmlNodeList baseVariants = odxDoc.GetElementsByTagName("BASE-VARIANT");
+                                                    foreach (XmlNode baseVariant in baseVariants)
+                                                    {
+                                                        XmlNodeList diagDataVars = baseVariant.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
+                                                        foreach (XmlNode diagDataVar in diagDataVars)
+                                                        {
+                                                            XmlNodeList dtcDops = diagDataVar.SelectNodes("DTC-DOPS");
+                                                            foreach (XmlNode dtcDop in dtcDops)
+                                                            {
+                                                                XmlNodeList dtcDopVariants = dtcDop.SelectNodes("DTC-DOP");
+                                                                foreach (XmlNode dtcDopVariant in dtcDopVariants)
+                                                                {
+                                                                    XmlNodeList dtcsNodes = dtcDopVariant.SelectNodes("DTCS");
+                                                                    foreach (XmlNode dtcsNode in dtcsNodes)
+                                                                    {
+                                                                        XmlNodeList dtcVariants = dtcsNode.SelectNodes("DTC");
+                                                                        foreach (XmlNode dtcVariant in dtcVariants)
+                                                                        {
+                                                                            bool isDtcSet = false;
+                                                                            XmlNode dtcDop_Text = dtcVariant.SelectSingleNode("TEXT");
+                                                                            string[] textArr = dtcDop_Text.InnerText.Split(' ');
+                                                                            //if (payload.Name.Contains("HornActivateSwitch") && textNsdgDict.ContainsKey("HornActivateSwitch"))
+                                                                            //newReqList.Add(dtcVariant.SelectSingleNode("DOP-REF").Attributes.Item(0).Value+"+");
+                                                                            string payloadValName = payload.Name;
+                                                                            //Burasi 
+                                                                            if (payload.Name != "")
+                                                                            {
+                                                                                if (textArr[0] == control.Name || textArr[0] == payload.Name || payload.Name.Contains(textArr[0]) || payload.Name.Contains(textArr[0].Replace("Output", "")))//textArr[0] == payload.Name.Substring(0,4)+"Activate"+payload.Name.Substring(4) )
+                                                                                {
+                                                                                    XmlNode dtcDop_sNameNode = dtcVariant.SelectSingleNode("SHORT-NAME");
+                                                                                    if (dtcDop_sNameNode != null)
+                                                                                    {
+                                                                                        string tempStr = "";
+                                                                                        for (int i = 3; i < dtcDop_sNameNode.InnerText.Length - 2; i++)
+                                                                                        {
+                                                                                            tempStr += dtcDop_sNameNode.InnerText[i];
+                                                                                        }
+                                                                                        payload.DTCCode = tempStr;
+                                                                                        isDtcSet = true;
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            if (isDtcSet)
+                                                                                break;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            XmlNodeList dopsVar = diagDataVar.SelectNodes("DATA-OBJECT-PROPS");
+                                                            foreach (XmlNode dopVar in dopsVar)
+                                                            {
+                                                                XmlNodeList dops = dopVar.SelectNodes("DATA-OBJECT-PROP");
+                                                                foreach (XmlNode dop in dops)
+                                                                {
+                                                                    if (dopDict.Keys.Contains(dop.Attributes.Item(0).Value))
+                                                                    {
+                                                                        PayloadInfo tempPayload = new PayloadInfo();
+                                                                        string dopID = dopDict.Keys.ElementAt(dopDict.Keys.ToList().IndexOf(dop.Attributes.Item(0).Value));
+                                                                        string typName = dop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                        string bitLenStr = dop.SelectSingleNode("DIAG-CODED-TYPE").SelectSingleNode("BIT-LENGTH").InnerText;
+                                                                        int byteLen = int.Parse(bitLenStr) / 8;
+                                                                        payload.Length = byteLen;
+                                                                        payload.TypeName = typName;
+                                                                        foreach (string descN in newReqList)
+                                                                        {
+                                                                            //dictten text arr 0 ve descn ile girme
+                                                                            if (!usedReqList.Contains(descN) && (descN.Split('+')[2] == payload.TypeName && (descN.Split('+')[1].Equals(payload.Name)))) // || textNsdgDict.ContainsValue(payload.Name)))
+                                                                            {
+                                                                                if (!usedReqList.Contains(descN))
+                                                                                    usedReqList.Add(descN);
+                                                                                if (dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS") != null)
+                                                                                {
+                                                                                    XmlNodeList valNodes = dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS").SelectSingleNode("COMPU-SCALES").SelectNodes("COMPU-SCALE");
+                                                                                    foreach (XmlNode valNode in valNodes)
+                                                                                    {
+                                                                                        PayloadValue tempPayVal = new PayloadValue();
+                                                                                        if (valNode.SelectSingleNode("COMPU-CONST") != null)
+                                                                                        {
+                                                                                            payloadVal.FormattedValue = valNode.SelectSingleNode("COMPU-CONST").SelectSingleNode("VT").InnerText;
+                                                                                            payloadVal.ValueString = (Convert.ToByte(valNode.SelectSingleNode("LOWER-LIMIT").InnerText).ToString("X2"));
+                                                                                            tempPayVal.ValueString = payloadVal.ValueString;
+                                                                                            tempPayVal.FormattedValue = payloadVal.FormattedValue;
+                                                                                            if (payload.Values != null)
+                                                                                                payload.Values.Add(tempPayVal);
+
+                                                                                            else
+                                                                                            {
+                                                                                                payload.Values = new List<PayloadValue>
+                                                                                            {
+                                                                                                tempPayVal
+                                                                                            };
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                /*if (payload.Name.Contains("Horn"))
+                                                                                    Console.Write("");
+                                                                                if ((textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace("Ctrl", "") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name))) || (textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace(" Warning ", "") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name))) || textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace(" ", "Activate") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name)))
+                                                                                {
+                                                                                    if (control.Name.Contains("Hazard Warning"))
+                                                                                    {
+                                                                                        Console.Write("");
+                                                                                    }
+                                                                                    XmlNodeList valNodes = dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS").SelectSingleNode("COMPU-SCALES").SelectNodes("COMPU-SCALE");
+                                                                                    foreach (XmlNode valNode in valNodes)
+                                                                                    {
+                                                                                        PayloadValue tempPayVal = new PayloadValue();
+                                                                                        if (valNode.SelectSingleNode("COMPU-CONST") != null)
+                                                                                        {
+                                                                                            payloadVal.FormattedValue = valNode.SelectSingleNode("COMPU-CONST").SelectSingleNode("VT").InnerText;
+                                                                                            payloadVal.ValueString = (Convert.ToByte(valNode.SelectSingleNode("LOWER-LIMIT").InnerText).ToString("X2"));
+                                                                                            tempPayVal.ValueString = payloadVal.ValueString;
+                                                                                            tempPayVal.FormattedValue = payloadVal.FormattedValue;
+                                                                                            if (payload.Values != null)
+                                                                                                payload.Values.Add(tempPayVal);
+
+                                                                                            else
+                                                                                            {
+                                                                                                payload.Values = new List<PayloadValue>
+                                                                                                {
+                                                                                                    tempPayVal
+                                                                                                };
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }*/
+                                                                                else
+                                                                                {
+                                                                                    PayloadValue tempPayVal = new PayloadValue();
+                                                                                    payload.Values = new List<PayloadValue>
+                                                                                    {
+                                                                                    tempPayVal
+                                                                                    };
+                                                                                }
+                                                                                tempPayload.TypeName = payload.TypeName;
+                                                                                tempPayload.Length = payload.Length;
+                                                                                tempPayload.Values = payload.Values;
+                                                                                //if (tempPayload.Values != null)
+                                                                                //{ }
+                                                                                PayloadInfo tempInfo = new PayloadInfo();
+                                                                                tempInfo.TypeName = tempPayload.TypeName;
+                                                                                tempInfo.Length = tempPayload.Length;
+                                                                                tempInfo.Values = tempPayload.Values;
+                                                                                //if(payload.TypeName == tempPayload.TypeName
+                                                                                if (!typeNames.Contains(tempInfo.TypeName))
+                                                                                {
+                                                                                    payloadInfos.Add(tempInfo);
+                                                                                    typeNames.Add(tempInfo.TypeName);
+                                                                                }
+                                                                                //payloadlardaki ayni typenamede olanlari tekrar ekliyor bunu cikarmam lazim
+                                                                                if (tempPayload != null)
+                                                                                {
+                                                                                    if (response.Payloads != null)
+                                                                                        response.Payloads.Add(tempPayload);
+                                                                                    else
+                                                                                    {
+                                                                                        response.Payloads = new List<PayloadInfo>
+                                                                                    {
+                                                                                        tempPayload
+                                                                                    };
+                                                                                    }
+                                                                                }
+
+                                                                                tempPayload.DTCCode = payload.DTCCode;
+                                                                                tempPayload.Name = payload.Name;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    //else if()
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                            //Special cases for QFs
+                                            else if (paramVar.SelectSingleNode("SHORT-NAME").InnerText.Split('_')[paramVar.SelectSingleNode("SHORT-NAME").InnerText.Split('_').Length - 1] == "STRUCTURE")
+                                            {
+                                                if (control.Name.Contains("QF"))
+                                                    Console.Write("");
+                                                if (control.Name == "All Doors Lock and Ajar Input Signal")
+                                                    Console.Write("");
+                                                Console.WriteLine(control.Name);
+                                                string payloadDesc = paramVar.SelectSingleNode("LONG-NAME").InnerText;
+                                                PayloadInfo payload = new PayloadInfo();
+                                                payload.Name = payloadDesc;
+                                                //burada csvdeki isimlendirmelerin containl
+                                                if (!reqList.Contains(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name))
+                                                {
+                                                    reqList.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name);
+                                                    idPaylNcontN.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name + "+" + control.Name);
+
+                                                }
+                                                foreach (XmlNode baseVar in baseVars)
+                                                {
+                                                    XmlNodeList diagDicts = baseVar.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
+                                                    XmlNode matchingDop = null;
+                                                    foreach (XmlNode diagDict in diagDicts)
+                                                    {
+                                                        XmlNodeList dtcDops = diagDict.SelectNodes("DATA-OBJECT-PROPS");
+                                                        foreach (XmlNode dtcDop in dtcDops)
+                                                        {
+                                                            XmlNodeList dopDops = dtcDop.SelectNodes("DATA-OBJECT-PROP");
+                                                            foreach (XmlNode dopDop in dopDops)
+                                                            {
+                                                                foreach (string element in reqList)
+                                                                {
+                                                                    if (dopDop.Attributes.Item(0).Value == element.Split('+')[0] )
+                                                                    {
+                                                                        matchingDop = dopDop;
+                                                                        XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
+                                                                        string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                        if (!dopDict.ContainsKey(element.Split('+')[0]))
+                                                                            dopDict.Add(element.Split('+')[0], dopSName);
+                                                                        string newElm = element + "+" + dopSName;
+                                                                        if (!newReqList.Contains(newElm))
+                                                                            newReqList.Add(newElm);
+                                                                    }
+                                                                }
+
+                                                                foreach (string element in idPaylNcontN)
+                                                                {
+                                                                    if (dopDop.Attributes.Item(0).Value == element.Split('+')[0])
+                                                                    {
+                                                                        matchingDop = dopDop;
+                                                                        XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
+                                                                        string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                        if (!dopDict.ContainsKey(element.Split('+')[0]))
+                                                                            dopDict.Add(element.Split('+')[0], dopSName);
+                                                                        string newElm = element.Split('+')[0] + "+" + element.Split('+')[1] + "+" + dopSName;
+                                                                        if (!newReqList.Contains(newElm))
+                                                                        {
+                                                                            newReqList.Add(newElm);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                PayloadValue payloadVal = new PayloadValue();
+                                                if (payloadDesc != null)
+                                                {
+                                                    XmlNodeList baseVariants = odxDoc.GetElementsByTagName("BASE-VARIANT");
+                                                    foreach (XmlNode baseVariant in baseVariants)
+                                                    {
+                                                        XmlNodeList diagDataVars = baseVariant.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
+                                                        foreach (XmlNode diagDataVar in diagDataVars)
+                                                        {
+                                                            XmlNodeList dtcDops = diagDataVar.SelectNodes("DTC-DOPS");
+                                                            foreach (XmlNode dtcDop in dtcDops)
+                                                            {
+                                                                XmlNodeList dtcDopVariants = dtcDop.SelectNodes("DTC-DOP");
+                                                                foreach (XmlNode dtcDopVariant in dtcDopVariants)
+                                                                {
+                                                                    XmlNodeList dtcsNodes = dtcDopVariant.SelectNodes("DTCS");
+                                                                    foreach (XmlNode dtcsNode in dtcsNodes)
+                                                                    {
+                                                                        XmlNodeList dtcVariants = dtcsNode.SelectNodes("DTC");
+                                                                        foreach (XmlNode dtcVariant in dtcVariants)
+                                                                        {
+                                                                            bool isDtcSet = false;
+                                                                            XmlNode dtcDop_Text = dtcVariant.SelectSingleNode("TEXT");
+                                                                            string[] textArr = dtcDop_Text.InnerText.Split(' ');
+                                                                            //if (payload.Name.Contains("HornActivateSwitch") && textNsdgDict.ContainsKey("HornActivateSwitch"))
+                                                                            //newReqList.Add(dtcVariant.SelectSingleNode("DOP-REF").Attributes.Item(0).Value+"+");
+                                                                            string payloadValName = payload.Name;
+                                                                            //Burasi 
+                                                                            if (payload.Name != "")
+                                                                            {
+                                                                                if (textArr[0] == control.Name || textArr[0] == payload.Name || payload.Name.Contains(textArr[0]) || payload.Name.Contains(textArr[0].Replace("Output", "")))//textArr[0] == payload.Name.Substring(0,4)+"Activate"+payload.Name.Substring(4) )
+                                                                                {
+                                                                                    XmlNode dtcDop_sNameNode = dtcVariant.SelectSingleNode("SHORT-NAME");
+                                                                                    if (dtcDop_sNameNode != null)
+                                                                                    {
+                                                                                        string tempStr = "";
+                                                                                        for (int i = 3; i < dtcDop_sNameNode.InnerText.Length - 2; i++)
+                                                                                        {
+                                                                                            tempStr += dtcDop_sNameNode.InnerText[i];
+                                                                                        }
+                                                                                        payload.DTCCode = tempStr;
+                                                                                        isDtcSet = true;
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            if (isDtcSet)
+                                                                                break;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            XmlNodeList dopsVar = diagDataVar.SelectNodes("DATA-OBJECT-PROPS");
+                                                            foreach (XmlNode dopVar in dopsVar)
+                                                            {
+                                                                XmlNodeList dops = dopVar.SelectNodes("DATA-OBJECT-PROP");
+                                                                foreach (XmlNode dop in dops)
+                                                                {
+                                                                    if (dopDict.Keys.Contains(dop.Attributes.Item(0).Value))
+                                                                    {
+                                                                        PayloadInfo tempPayload = new PayloadInfo();
+                                                                        string dopID = dopDict.Keys.ElementAt(dopDict.Keys.ToList().IndexOf(dop.Attributes.Item(0).Value));
+                                                                        string typName = dop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                        string bitLenStr = dop.SelectSingleNode("DIAG-CODED-TYPE").SelectSingleNode("BIT-LENGTH").InnerText;
+                                                                        int byteLen = int.Parse(bitLenStr) / 8;
+                                                                        payload.Length = byteLen;
+                                                                        payload.TypeName = typName;
+                                                                        foreach (string descN in newReqList)
+                                                                        {
+                                                                            //dictten text arr 0 ve descn ile girme
+                                                                            if (!usedReqList.Contains(descN) && (descN.Split('+')[2] == payload.TypeName && (descN.Split('+')[1].Equals(payload.Name)))) // || textNsdgDict.ContainsValue(payload.Name)))
+                                                                            {
+                                                                                if (!usedReqList.Contains(descN))
+                                                                                    usedReqList.Add(descN);
+                                                                                if (dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS") != null)
+                                                                                {
+                                                                                    XmlNodeList valNodes = dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS").SelectSingleNode("COMPU-SCALES").SelectNodes("COMPU-SCALE");
+                                                                                    foreach (XmlNode valNode in valNodes)
+                                                                                    {
+                                                                                        PayloadValue tempPayVal = new PayloadValue();
+                                                                                        if (valNode.SelectSingleNode("COMPU-CONST") != null)
+                                                                                        {
+                                                                                            payloadVal.FormattedValue = valNode.SelectSingleNode("COMPU-CONST").SelectSingleNode("VT").InnerText;
+                                                                                            payloadVal.ValueString = (Convert.ToByte(valNode.SelectSingleNode("LOWER-LIMIT").InnerText).ToString("X2"));
+                                                                                            tempPayVal.ValueString = payloadVal.ValueString;
+                                                                                            tempPayVal.FormattedValue = payloadVal.FormattedValue;
+                                                                                            if (payload.Values != null)
+                                                                                                payload.Values.Add(tempPayVal);
+
+                                                                                            else
+                                                                                            {
+                                                                                                payload.Values = new List<PayloadValue>
+                                                                                            {
+                                                                                                tempPayVal
+                                                                                            };
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                /*if (payload.Name.Contains("Horn"))
+                                                                                    Console.Write("");
+                                                                                if ((textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace("Ctrl", "") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name))) || (textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace(" Warning ", "") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name))) || textNsdgDict.ContainsValue(payload.Name) && control.Name.Replace(" ", "Activate") == textNsdgDict.Keys.ElementAt(textNsdgDict.Values.ToList().IndexOf(payload.Name)))
+                                                                                {
+                                                                                    if (control.Name.Contains("Hazard Warning"))
+                                                                                    {
+                                                                                        Console.Write("");
+                                                                                    }
+                                                                                    XmlNodeList valNodes = dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS").SelectSingleNode("COMPU-SCALES").SelectNodes("COMPU-SCALE");
+                                                                                    foreach (XmlNode valNode in valNodes)
+                                                                                    {
+                                                                                        PayloadValue tempPayVal = new PayloadValue();
+                                                                                        if (valNode.SelectSingleNode("COMPU-CONST") != null)
+                                                                                        {
+                                                                                            payloadVal.FormattedValue = valNode.SelectSingleNode("COMPU-CONST").SelectSingleNode("VT").InnerText;
+                                                                                            payloadVal.ValueString = (Convert.ToByte(valNode.SelectSingleNode("LOWER-LIMIT").InnerText).ToString("X2"));
+                                                                                            tempPayVal.ValueString = payloadVal.ValueString;
+                                                                                            tempPayVal.FormattedValue = payloadVal.FormattedValue;
+                                                                                            if (payload.Values != null)
+                                                                                                payload.Values.Add(tempPayVal);
+
+                                                                                            else
+                                                                                            {
+                                                                                                payload.Values = new List<PayloadValue>
+                                                                                                {
+                                                                                                    tempPayVal
+                                                                                                };
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }*/
+                                                                                else
+                                                                                {
+                                                                                    PayloadValue tempPayVal = new PayloadValue();
+                                                                                    payload.Values = new List<PayloadValue>
+                                                                                    {
+                                                                                    tempPayVal
+                                                                                    };
+                                                                                }
+                                                                                tempPayload.TypeName = payload.TypeName;
+                                                                                tempPayload.Length = payload.Length;
+                                                                                tempPayload.Values = payload.Values;
+                                                                                //if (tempPayload.Values != null)
+                                                                                //{ }
+                                                                                PayloadInfo tempInfo = new PayloadInfo();
+                                                                                tempInfo.TypeName = tempPayload.TypeName;
+                                                                                tempInfo.Length = tempPayload.Length;
+                                                                                tempInfo.Values = tempPayload.Values;
+                                                                                //if(payload.TypeName == tempPayload.TypeName
+                                                                                if (!typeNames.Contains(tempInfo.TypeName))
+                                                                                {
+                                                                                    payloadInfos.Add(tempInfo);
+                                                                                    typeNames.Add(tempInfo.TypeName);
+                                                                                }
+                                                                                //payloadlardaki ayni typenamede olanlari tekrar ekliyor bunu cikarmam lazim
+                                                                                if (tempPayload != null)
+                                                                                {
+                                                                                    if (response.Payloads != null)
+                                                                                        response.Payloads.Add(tempPayload);
+                                                                                    else
+                                                                                    {
+                                                                                        response.Payloads = new List<PayloadInfo>
+                                                                                    {
+                                                                                        tempPayload
+                                                                                    };
+                                                                                    }
+                                                                                }
+
+                                                                                tempPayload.DTCCode = payload.DTCCode;
+                                                                                tempPayload.Name = payload.Name;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    //else if()
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                List<string> tempList = new List<string>();
+                                                foreach (string listEl in idPaylNcontN)
+                                                {
+                                                    if (listEl.Contains("Field"))
+                                                        Console.Write("");
+                                                    if (listEl.Split('+')[2] == control.Name || control.Name.Contains(listEl.Split('+')[2]))
+                                                        tempList.Add(listEl);
+                                                }
+                                                foreach (string listEl in tempList)
+                                                {
+                                                    string payloadDesc = listEl.Split('+')[1];
+                                                    Console.WriteLine(control.Name);
+                                                    if (listEl.Split('+')[2] == "All Doors Lock and Ajar Output Signal Status")
+                                                        Console.WriteLine(control.Name);
+                                                    string dopId = paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value;
+                                                    //foreach o list donecek 
+                                                    PayloadInfo payload = new PayloadInfo();
+                                                    payload.Name = payloadDesc.Trim().Replace("\t", " ");
+                                                    if (payload.Name == "C4.24 MainRightMirrorUpCtrl")
+                                                        Console.Write("");
+                                                    PayloadValue payloadVal = new PayloadValue();
+                                                    if (payloadDesc != null)
+                                                    {
+                                                        XmlNodeList baseVariants = odxDoc.GetElementsByTagName("BASE-VARIANT");
+                                                        foreach (XmlNode baseVariant in baseVariants)
+                                                        {
+                                                            XmlNodeList diagDataVars = baseVariant.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
+                                                            foreach (XmlNode diagDataVar in diagDataVars)
+                                                            {
+                                                                XmlNodeList dtcDops = diagDataVar.SelectNodes("DTC-DOPS");
+                                                                foreach (XmlNode dtcDop in dtcDops)
+                                                                {
+                                                                    XmlNodeList dtcDopVariants = dtcDop.SelectNodes("DTC-DOP");
+                                                                    foreach (XmlNode dtcDopVariant in dtcDopVariants)
+                                                                    {
+                                                                        XmlNodeList dtcsNodes = dtcDopVariant.SelectNodes("DTCS");
+                                                                        foreach (XmlNode dtcsNode in dtcsNodes)
+                                                                        {
+                                                                            XmlNodeList dtcVariants = dtcsNode.SelectNodes("DTC");
+                                                                            foreach (XmlNode dtcVariant in dtcVariants)
+                                                                            {
+                                                                                bool isDtcSet = false;
+                                                                                XmlNode dtcDop_Text = dtcVariant.SelectSingleNode("TEXT");
+                                                                                string[] textArr = dtcDop_Text.InnerText.Split(' ');
+                                                                                string payloadValName = payload.Name;
+                                                                                //Burasi 
+                                                                                if (payload.Name != "" && payload.Name != null)
+                                                                                {
+                                                                                    if (textArr[0] == control.Name || textArr[0] == payload.Name || payload.Name.Contains(textArr[0]) || payload.Name.Contains(textArr[0].Replace("Output", "")))//textArr[0] == payload.Name.Substring(0,4)+"Activate"+payload.Name.Substring(4) )
+                                                                                    {
+                                                                                        XmlNode dtcDop_sNameNode = dtcVariant.SelectSingleNode("SHORT-NAME");
+                                                                                        if (dtcDop_sNameNode != null)
+                                                                                        {
+                                                                                            string tempStr = "";
+                                                                                            for (int i = 3; i < dtcDop_sNameNode.InnerText.Length - 2; i++)
+                                                                                                tempStr += dtcDop_sNameNode.InnerText[i];
+                                                                                            payload.DTCCode = tempStr;
+                                                                                            isDtcSet = true;
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                if (isDtcSet)
+                                                                                    break;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                XmlNodeList dopsVar = diagDataVar.SelectNodes("DATA-OBJECT-PROPS");
+                                                                foreach (XmlNode dopVar in dopsVar)
+                                                                {
+                                                                    XmlNodeList dops = dopVar.SelectNodes("DATA-OBJECT-PROP");
+                                                                    foreach (XmlNode dop in dops)
+                                                                    {
+                                                                        if (dopDict.Keys.Contains(dop.Attributes.Item(0).Value))
+                                                                        {
+                                                                            PayloadInfo tempPayload = new PayloadInfo();
+                                                                            string dopID = dopDict.Keys.ElementAt(dopDict.Keys.ToList().IndexOf(dop.Attributes.Item(0).Value));
+                                                                            string typName = dop.SelectSingleNode("SHORT-NAME").InnerText;
+                                                                            string bitLenStr = dop.SelectSingleNode("DIAG-CODED-TYPE").SelectSingleNode("BIT-LENGTH").InnerText;
+                                                                            int byteLen = int.Parse(bitLenStr) / 8;
+                                                                            payload.Length = byteLen;
+                                                                            payload.TypeName = typName;
+                                                                            if (listEl.Split('+')[2] == "All Doors Lock and Ajar Output Signal Status")
+                                                                                Console.WriteLine(listEl.Split('+')[2]);
+                                                                            foreach (string descN in newReqList)
+                                                                            {
+                                                                                //dictten text arr 0 ve descn ile girme
+                                                                                if (!usedReqList.Contains(descN) && (descN.Split('+')[2] == payload.TypeName && (descN.Split('+')[1].Equals(payload.Name)))) //|| textNsdgDict.ContainsValue(payload.Name)))
+                                                                                {
+                                                                                    if (!usedReqList.Contains(descN) || control.Name == listEl.Split('+')[2])
+                                                                                        usedReqList.Add(descN);
+                                                                                    if (dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS") != null)
+                                                                                    {
+                                                                                        XmlNodeList valNodes = dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS").SelectSingleNode("COMPU-SCALES").SelectNodes("COMPU-SCALE");
+                                                                                        foreach (XmlNode valNode in valNodes)
+                                                                                        {
+                                                                                            PayloadValue tempPayVal = new PayloadValue();
+                                                                                            if (valNode.SelectSingleNode("COMPU-CONST") != null)
+                                                                                            {
+                                                                                                payloadVal.FormattedValue = valNode.SelectSingleNode("COMPU-CONST").SelectSingleNode("VT").InnerText;
+                                                                                                payloadVal.ValueString = (Convert.ToByte(valNode.SelectSingleNode("LOWER-LIMIT").InnerText).ToString("X2"));
+                                                                                                tempPayVal.ValueString = payloadVal.ValueString;
+                                                                                                tempPayVal.FormattedValue = payloadVal.FormattedValue;
+                                                                                                if (payload.Values != null)
+                                                                                                    payload.Values.Add(tempPayVal);
+
+                                                                                                else
+                                                                                                {
+                                                                                                    payload.Values = new List<PayloadValue>
+                                                                                                    {
+                                                                                                        tempPayVal
+                                                                                                    };
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        PayloadValue tempPayVal = new PayloadValue();
+                                                                                        payload.Values = new List<PayloadValue>
+                                                                                        {
+                                                                                            tempPayVal
+                                                                                        };
+                                                                                    }
+                                                                                    tempPayload.TypeName = payload.TypeName;
+                                                                                    tempPayload.Length = payload.Length;
+                                                                                    tempPayload.Values = payload.Values;
+                                                                                    //if (tempPayload.Values != null)
+                                                                                    //{ }
+                                                                                    PayloadInfo tempInfo = new PayloadInfo();
+                                                                                    tempInfo.TypeName = tempPayload.TypeName;
+                                                                                    tempInfo.Length = tempPayload.Length;
+                                                                                    tempInfo.Values = tempPayload.Values;
+                                                                                    //if(payload.TypeName == tempPayload.TypeName
+                                                                                    if (!typeNames.Contains(tempInfo.TypeName))
+                                                                                    {
+                                                                                        payloadInfos.Add(tempInfo);
+                                                                                        typeNames.Add(tempInfo.TypeName);
+                                                                                    }
+                                                                                    //payloadlardaki ayni typenamede olanlari tekrar ekliyor bunu cikarmam lazim
+                                                                                    if (tempPayload != null)
+                                                                                    {
+                                                                                        if (response.Payloads != null)
+                                                                                            response.Payloads.Add(tempPayload);
+                                                                                        else
+                                                                                        {
+                                                                                            response.Payloads = new List<PayloadInfo>
+                                                                                            {
+                                                                                                tempPayload
+                                                                                            };
+                                                                                        }
+                                                                                    }
+
+                                                                                    tempPayload.DTCCode = payload.DTCCode;
+                                                                                    tempPayload.Name = payload.Name;
+                                                                                }
                                                                             }
                                                                         }
                                                                     }
@@ -888,13 +1980,19 @@ namespace AutosarBCM.Core
                                         //Payload ismi requestlerde yoksa pos responselardan bakma
                                         else if (paramVar.Attributes.Item(0).Value == "DATA" && paramVar.SelectSingleNode("DESC") != null)
                                         {
-                                            Console.WriteLine(control.Name);
                                             XmlNode payloadDesc = paramVar.SelectSingleNode("DESC");
                                             PayloadInfo payload = new PayloadInfo();
                                             payload.Name = payloadDesc.InnerText.Trim().Replace("\t", " ");
                                             //burada csvdeki isimlendirmelerin containl
+                                            if (payload.Name == "C4.24 MainRightMirrorUpCtrl")
+                                                Console.Write("");
                                             if (!reqList.Contains(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name))
+                                            { 
+                                                reqList.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name);
+
                                                 idPaylNcontN.Add(paramVar.SelectSingleNode("DOP-REF").Attributes.Item(0).Value + "+" + payload.Name + "+" + control.Name);
+                                            }
+
                                             foreach (XmlNode baseVar in baseVars)
                                             {
                                                 XmlNodeList diagDicts = baseVar.SelectNodes("DIAG-DATA-DICTIONARY-SPEC");
@@ -914,6 +2012,7 @@ namespace AutosarBCM.Core
                                                                     matchingDop = dopDop;
                                                                     XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
                                                                     string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
+
                                                                     if (!dopDict.ContainsKey(element.Split('+')[0]))
                                                                         dopDict.Add(element.Split('+')[0], dopSName);
                                                                     string newElm = element + "+" + dopSName;
@@ -926,6 +2025,8 @@ namespace AutosarBCM.Core
                                                             {
                                                                 if (dopDop.Attributes.Item(0).Value == element.Split('+')[0])
                                                                 {
+                                                                    if (element.Contains("Vestel Internal Software"))
+                                                                        Console.Write("");
                                                                     matchingDop = dopDop;
                                                                     XmlNodeList dops = dopDop.SelectNodes("DATA-OBJECT-PROP");
                                                                     string dopSName = matchingDop.SelectSingleNode("SHORT-NAME").InnerText;
@@ -1011,10 +2112,14 @@ namespace AutosarBCM.Core
                                                                     payload.TypeName = typName;
                                                                     foreach (string descN in newReqList)
                                                                     {
+                                                                        if (descN.Contains("Vestel Internal S"))
+                                                                            Console.Write("");
                                                                         //dictten text arr 0 ve descn ile girme
-                                                                        if (!usedReqList.Contains(descN) && (descN.Split('+')[2] == payload.TypeName && (descN.Split('+')[1].Equals(payload.Name)))) // || textNsdgDict.ContainsValue(payload.Name)))
+                                                                        if (reqList.Contains(descN.Split('+')[0]+"+"+descN.Split('+')[1])&&!usedReqList.Contains(descN) && (descN.Split('+')[2] == payload.TypeName && (descN.Split('+')[1].Equals(payload.Name)))) // || textNsdgDict.ContainsValue(payload.Name)))
                                                                         {
-                                                                            if(!usedReqList.Contains(descN))
+                                                                            if (payload.Name == "C4.24 MainRightMirrorUpCtrl")
+                                                                                Console.Write("");
+                                                                            if (!usedReqList.Contains(descN))
                                                                                  usedReqList.Add(descN);
                                                                             if (dop.SelectSingleNode("COMPU-METHOD").SelectSingleNode("COMPU-INTERNAL-TO-PHYS") != null)
                                                                             {
@@ -1114,7 +2219,6 @@ namespace AutosarBCM.Core
                                                                         }
                                                                     }
                                                                 }
-                                                                //else if()
                                                             }
                                                         }
                                                     }
