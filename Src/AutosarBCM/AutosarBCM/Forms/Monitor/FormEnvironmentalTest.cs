@@ -63,7 +63,11 @@ namespace AutosarBCM.Forms.Monitor
             mappingData = new List<Mapping>(ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
             continuousReadData = (ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
 
-            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.Functions.SelectMany(a => a.Payloads));
+            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.Functions.SelectMany(a => a.Payloads)).Distinct();
+
+            var controlNamesInCycle = cycles.Values
+                .SelectMany(x => x.Functions)
+                .Select(a => a.Control).Where(s => s!= null).Distinct();
 
             var scenarioNamesInCycle = cycles.Values
                 .SelectMany(x => x.Functions)
@@ -83,7 +87,7 @@ namespace AutosarBCM.Forms.Monitor
                 allPayloads = new Dictionary<string, string>();
                 foreach (var payload in ctrl.Responses[0].Payloads)
                 {
-                    if (payloadNamesInCycle.Contains(payload.Name) || 
+                    if ((payloadNamesInCycle.Contains(payload.Name) && controlNamesInCycle.Contains(ctrl.Name))|| 
                         openPayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)) ||
                         closePayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)))
                     {
