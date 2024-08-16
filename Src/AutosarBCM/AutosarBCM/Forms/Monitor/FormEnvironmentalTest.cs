@@ -29,6 +29,8 @@ namespace AutosarBCM.Forms.Monitor
         public static HashSet<string> openedPayloads = new HashSet<string>();
         public static HashSet<string> cyclePayloads = new HashSet<string>();
         private int loopCount = 1;
+        IEnumerable<List<string>> openPayloadsOfScenario;
+        IEnumerable<List<string>> closePayloadsOfScenario;
 
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
@@ -65,6 +67,9 @@ namespace AutosarBCM.Forms.Monitor
 
             ResetTime();
 
+            endCycleIndex = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
+            scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
+            cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
             cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
             scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
             mappingData = new List<Mapping>(ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
@@ -76,16 +81,15 @@ namespace AutosarBCM.Forms.Monitor
                 .SelectMany(x => x.Functions)
                     .Select(b => b.Scenario).Where(s => s != null).Distinct();
 
-            var openPayloadsOfScenario = from scenario in scenarios
+            openPayloadsOfScenario = from scenario in scenarios
                                        join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
                                        select scenario.OpenPayloads;
 
-            var closePayloadsOfScenario = from scenario in scenarios
+            closePayloadsOfScenario = from scenario in scenarios
                                         join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
                                         select scenario.ClosePayloads;
 
             groups.Add("DID", new List<UCReadOnlyItem>());
-            allPayloads = new HashSet<string>();
 
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
             {
@@ -119,19 +123,6 @@ namespace AutosarBCM.Forms.Monitor
                 }
 
                 pnlMonitor.Controls.Add(flowPanelGroup);
-            }
-
-            foreach (var cycle in cycles.Values)
-            {
-                foreach (var function in cycle.Functions)
-                {
-                    var controlName = function.Control;
-
-                    foreach (var payload in function.Payloads)
-                    {
-                        allPayloads.Add(payload);
-                    }
-                }
             }
         }
 
@@ -297,6 +288,7 @@ namespace AutosarBCM.Forms.Monitor
         }
         private int totalMessagesReceived = 0;
         private int totalMessagesTransmitted = 0;
+        private readonly object lockObj = new object();
 
         public bool Receive(Service baseService)
         {
@@ -321,39 +313,22 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleIOControlByIdentifierReceive(IOControlByIdentifierService ioService)
         {
-            string lastControlName = null;
-            for (var i = 0; i < ioService.Payloads.Count; i++)
-            {
-                Console.WriteLine($"Outloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
-            }
+            IEnumerable<string> payloadNamesInCurrentCycle = null;
+            IEnumerable<string> scenarioNamesInCurrentCycle = null;
+            IEnumerable<string> allScenariosInCurrentCycle = null;
             int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
-            {
                 return false;
-            }
-            int cycleVal;
-            if (!int.TryParse(lblCycleVal.Text, out cycleVal) || !cycles.ContainsKey(cycleVal))
-            {
-                return false;
-            }
-            cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
-            endCycleIndex = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
-
-            scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
 
             var cycle = cycles[loopVal];
-
-            var payloadNamesInCurrentCycle = cycle.Functions.SelectMany(a => a.Payloads);
-
-            var scenarioNamesInCurrentCycle = cycle.Functions.Select(b => b.Scenario).Where(s => s != null).Distinct();
-
-            var openPayloadsOfScenario = from scenario in scenarios
-                                         join scenarioName in scenarioNamesInCurrentCycle on scenario.Name equals scenarioName
-                                         select scenario.OpenPayloads;
-
-            var closePayloadsOfScenario = from scenario in scenarios
-                                          join scenarioName in scenarioNamesInCurrentCycle on scenario.Name equals scenarioName
-                                          select scenario.ClosePayloads;
+            if (cycle.OpenAt == loopVal)
+            {
+                payloadNamesInCurrentCycle = cycle.Name.Contains("Soft Continuous") ? cycle.OpenItems.SelectMany(a => a.Payloads).Concat(cycle.Functions.SelectMany(b => b.Payloads)) : cycle.OpenItems.SelectMany(a => a.Payloads);
+                scenarioNamesInCurrentCycle = cycle.OpenItems.Select(b => b.Scenario).Where(s => s != null).Distinct();
+                allScenariosInCurrentCycle = scenarios.SelectMany(scenario => scenario.OpenPayloads).Where(payload => scenarioNamesInCurrentCycle.Contains(payload)).Distinct();
+                cyclePayloads = new HashSet<string>(
+                payloadNamesInCurrentCycle.Concat(allScenariosInCurrentCycle));
+            }
 
             var payloadControlMap = new Dictionary<string, string>();
 
@@ -364,7 +339,6 @@ namespace AutosarBCM.Forms.Monitor
                     payloadControlMap[payload] = function.Control;
                 }
             }
-
             foreach (var scenario in scenarios)
             {
                 foreach (var payload in scenario.OpenPayloads)
@@ -377,112 +351,64 @@ namespace AutosarBCM.Forms.Monitor
                 }
             }
 
-
-            cyclePayloads = new HashSet<string>(
-                    payloadNamesInCurrentCycle
-                        .Concat(openPayloadsOfScenario.SelectMany(innerList => innerList))
-                        .Concat(closePayloadsOfScenario.SelectMany(innerList => innerList))
-            );
-
-
             UCReadOnlyItem matchedControl = null;
 
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
                 var payloadName = ioService.Payloads[i].PayloadInfo.Name;
-                lastControlName = cycle.Functions
-                              .FirstOrDefault(f => f.Payloads.Contains(payloadName))
-                              ?.Control;
-
-                if (payloadNamesInCurrentCycle.Contains(payloadName) ||
-                    openPayloadsOfScenario.Any(innerList => innerList.Contains(payloadName)) ||
-                    closePayloadsOfScenario.Any(innerList => innerList.Contains(payloadName)))
+                if(payloadNamesInCurrentCycle != null)
                 {
-                    allPayloads.Remove(payloadName);
-                    openedPayloads.Add(payloadName);
+                    if (payloadNamesInCurrentCycle.Contains(payloadName) || openPayloadsOfScenario.Any(x => x.Contains(payloadName)) ||closePayloadsOfScenario.Any(innerList => innerList.Contains(payloadName)))
+                        openedPayloads.Add(payloadName);
                 }
-
-                Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
+                
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
-                {
-
-                    Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
-
+                { 
                     matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
                     if (matchedControl == null)
-                        return false;
+                        continue;
 
+                    Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
                     totalMessagesReceived++;
-
                     matchedControl.ChangeStatus(ioService);
-
                 }
-
                 if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
                 {
                     foreach (var test in cycles)
                     {
                         if (test.Value.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
                         {
-
                             Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, "ClosingResponse", "", "", ioService.Payloads[i].FormattedValue);
-
                             totalMessagesReceived++;
                             break;
                         }
-
                     }
                 }
             }
-            int cycleOpenAt = cycle.OpenAt;
-            int cycleCloseAt = cycle.CloseAt;
-            DateTime currentTime = DateTime.Now;
-            if (loopVal == cycleCloseAt && (lastResetTime == null || (currentTime - lastResetTime.Value).TotalSeconds >= 1))
-            {
-                cycleCount++;
-
-                if (cycleCount >= cycleRange)
-                {
-                    cycleCount = 0;
-
-                }
-                if (loopVal == endCycleIndex)
-                {
-                    loopCount++;
-                }
-
-                ResetPayloads(cyclePayloads, payloadControlMap, cycleOpenAt, cycleCloseAt, loopCount);
-                allPayloads.Clear();
-                openedPayloads.Clear();
-
-
-                foreach (var payload in cyclePayloads)
-                {
-                    allPayloads.Add(payload);
-                }
-
-                lastResetTime = currentTime;
-            }
-
+            if (loopVal == cycle.CloseAt)
+                ResetPayloads(cyclePayloads, payloadControlMap, cycleRange, int.Parse(lblCycleVal.Text));
             UpdateCounters();
             return true;
         }
 
 
-        private static void ResetPayloads(HashSet<string> cyclePayloads, Dictionary<string, string> payloadControlMap, int openAt, int closeAt, int loopCount)
+        private static void ResetPayloads(HashSet<string> cyclePayloads, Dictionary<string, string> payloadControlMap, int loopCount, int cycleRange)
         {
-            int count = 1;
+            List<string> payloadsToRemove = new List<string>();
             foreach (var payload in cyclePayloads)
             {
                 if (!openedPayloads.Contains(payload))
-
                 {
                     string controlName = payloadControlMap.ContainsKey(payload) ? payloadControlMap[payload] : null;
-                    Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, openAt, closeAt, count, loopCount);
-                    count++;
+                    Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, cycleRange, loopCount);
+                    payloadsToRemove.Add(payload);
                 }
             }
+            foreach (var payload in payloadsToRemove)
+                cyclePayloads.Remove(payload);
         }
+
+
 
         /// <summary>
         /// Handles received ReadDTCInformationService type of data.

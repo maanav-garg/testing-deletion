@@ -365,7 +365,7 @@ namespace AutosarBCM
                 return;
 
             var txInterval = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.TxInterval;
-
+            var cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
             //TODO to be checked
             if (cycleIndex == 0 && reboots == 0)
                 Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
@@ -425,6 +425,9 @@ namespace AutosarBCM
             {
                 Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
                 Helper.SendExtendedDiagSession();
+                
+                if (reboots % cycleRange == 0)
+                    FormEnvironmentalTest.openedPayloads.Clear();
             }
             else
                 Interlocked.Increment(ref cycleIndex);
