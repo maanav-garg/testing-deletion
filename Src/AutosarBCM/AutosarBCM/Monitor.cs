@@ -400,7 +400,9 @@ namespace AutosarBCM
                         
                         Helper.WriteCycleMessageToLogFile(item.Name, continousReadList[item], Constants.ContinousRead);
                     }
-                    new ClearDTCInformation().Transmit();
+                    //TODO to be added again
+                    //ThreadSleep(txInterval);
+                    //new ClearDTCInformation().Transmit();
                 }
 
                 //    if(softContinuousDiagList.Count > 0)
@@ -417,7 +419,6 @@ namespace AutosarBCM
             if (cycleIndex >= endCycleIndex - 1)
             {
                 Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
-                Helper.SendExtendedDiagSession();
             }
             else
                 Interlocked.Increment(ref cycleIndex);
