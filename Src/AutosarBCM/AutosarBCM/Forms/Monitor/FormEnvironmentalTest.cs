@@ -70,12 +70,12 @@ namespace AutosarBCM.Forms.Monitor
                     .Select(b => b.Scenario).Where(s => s != null).Distinct();
 
             var openPayloadsOfScenario = from scenario in scenarios
-                                       join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
-                                       select scenario.OpenPayloads;
+                                         join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                         select scenario.OpenPayloads;
 
             var closePayloadsOfScenario = from scenario in scenarios
-                                        join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
-                                        select scenario.ClosePayloads;
+                                          join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                          select scenario.ClosePayloads;
 
             groups.Add("DID", new List<UCReadOnlyItem>());
             foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
@@ -83,7 +83,7 @@ namespace AutosarBCM.Forms.Monitor
                 allPayloads = new Dictionary<string, string>();
                 foreach (var payload in ctrl.Responses[0].Payloads)
                 {
-                    if (payloadNamesInCycle.Contains(payload.Name) || 
+                    if (payloadNamesInCycle.Contains(payload.Name) ||
                         openPayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)) ||
                         closePayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)))
                     {
@@ -192,7 +192,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             if (FormMain.IsTestRunning)
             {
-                if(!Helper.ShowConfirmationMessageBox("There is an ongoing test. Do you want to proceed"))
+                if (!Helper.ShowConfirmationMessageBox("There is an ongoing test. Do you want to proceed"))
                 {
                     return;
                 }
@@ -255,7 +255,7 @@ namespace AutosarBCM.Forms.Monitor
                 }
             }));
 
-            
+
         }
         public void StartTest(CancellationToken cancellationToken)
         {
@@ -315,7 +315,7 @@ namespace AutosarBCM.Forms.Monitor
             {
                 return HandleReadDataByIdenService(readByIdenService);
             }
-                
+
             return false;
         }
 
@@ -329,7 +329,7 @@ namespace AutosarBCM.Forms.Monitor
             {
                 Console.WriteLine($"Outloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
             }
-                int loopVal;
+            int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             {
                 return false;
@@ -344,11 +344,11 @@ namespace AutosarBCM.Forms.Monitor
                 var payloadName = ioService.Payloads[i].PayloadInfo.Name;
                 if (cyclePayloads.Contains(payloadName))
                 {
-                   
+
 
                     allPayloads.Remove(payloadName);
                 }
-                    Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
+                Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
                 {
 
@@ -376,12 +376,12 @@ namespace AutosarBCM.Forms.Monitor
                             break;
                         }
 
-                    }                
+                    }
                 }
 
             }
-            
-            
+
+
             UpdateCounters();
             return true;
         }
@@ -394,13 +394,13 @@ namespace AutosarBCM.Forms.Monitor
             foreach (var dtcValue in dtcService.Values)
             {
                 if (dtcValue.Mask != 0x0B || !dtcList.ContainsKey(dtcValue.Code))
-                { 
+                {
                     continue;
                 }
 
                 var control = dtcList[dtcValue.Code];
                 var payload = control.Responses?[0].Payloads.First(p => p.DTCCode == dtcValue.Code);
-                
+
                 if (payload == null)
                     continue;
                 var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
@@ -418,9 +418,9 @@ namespace AutosarBCM.Forms.Monitor
             {
                 Console.WriteLine($"Outloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
             }
-                int loopVal;
+            int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
-            { 
+            {
                 return false;
             }
 
@@ -431,19 +431,19 @@ namespace AutosarBCM.Forms.Monitor
             for (var i = 0; i < readByIdenService.Payloads.Count; i++)
             {
                 Console.WriteLine($"Inloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
-                
+
                 if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
                     totalMessagesReceived++;
                 }
-                    
-                if (inputName.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name)) 
-                { 
+
+                if (inputName.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
+                {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.MappingResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
                     totalMessagesReceived++;
                 }
-                    
+
                 if (continuousReadData.Any(p => p.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
@@ -457,7 +457,7 @@ namespace AutosarBCM.Forms.Monitor
                     {
                         Program.MappingStateDict.UpdateValue(readByIdenService.Payloads[i].PayloadInfo.Name, errorLogDetect.UpdateInputResponse(MappingState.InputReceived, GetMappingResponse(readByIdenService.Payloads[i].Value)));
 
-                        if (errorLogDetect.ChcekIsError())
+                        if (errorLogDetect.CheckIsError())
                             Helper.WriteErrorMessageToLogFile(readByIdenService.ControlInfo.Name, $"O: {mappingItem.Output.Control} ({mappingItem.Output.Name}) - I: {mappingItem.Input.Control} ({mappingItem.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", mappingItem.Output.Name, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", mappingItem.Input.Name, errorLogDetect.InputResponse)}");
 
                         Program.MappingStateDict.Remove(readByIdenService.Payloads[i].PayloadInfo.Name);
@@ -535,10 +535,10 @@ namespace AutosarBCM.Forms.Monitor
                     if (uc.PayloadInfo.Name == payload)
                     {
                         uc.HandleMetrics();
-                      
+
                         break;
                     }
-                  
+
                 }
             }
             return true;
@@ -617,7 +617,7 @@ namespace AutosarBCM.Forms.Monitor
         }
         private void ReloadControls()
         {
-            
+
             tsbConfigurationSelection.Enabled = false;
             groups.Clear();
             cycles.Clear();

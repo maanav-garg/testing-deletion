@@ -178,6 +178,7 @@ namespace AutosarBCM
         private TesterPresent TesterPresent;
         private ECUReset ECUReset;
         private System.Timers.Timer TesterPresentTimer;
+        public static string fileName;
 
         /// <summary>
         /// Gets the selected test type
@@ -1128,8 +1129,7 @@ namespace AutosarBCM
         internal void ParseMessages(string filePath)
         {
             ImportMessages(filePath);
-
-            string fileName = Path.GetFileName(filePath);
+            fileName = Path.GetFileName(filePath);
             LoadFile(fileName);
         }
 
