@@ -399,6 +399,8 @@ namespace AutosarBCM
             {
                 if (cycleIndex % 4 == 0)
                 {
+                    Helper.SendExtendedDiagSession();
+                    ThreadSleep(txInterval);
                     new ReadDTCInformationService().Transmit();
                     foreach (var item in continousReadList.Keys)
                     {
