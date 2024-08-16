@@ -399,7 +399,7 @@ namespace AutosarBCM
             string logFilePath = $"{DateTime.Now.ToString("dd-MM-yyyy")}_Unopened_Payloads_log.txt";
             string groupName = $"{count}. Group";
             string rangeHeader = $"{groupName} (Range: {rangeCount}) Started -- ({DateTime.Now.ToString("dd/MM_HH:mm:ss")}) {System.Environment.NewLine}";
-            string logMessage = $"Control: {controlName} - Payload: {payloadName}  {System.Environment.NewLine}";
+            string logMessage = $"Control: {controlName} - Payload: {payloadName}";
 
             List<string> lines = new List<string>();
 
