@@ -515,9 +515,16 @@ namespace AutosarBCM
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
-            var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session");
-            ASContext.CurrentSession = sessionInfo;
-            new DiagnosticSessionControl().Transmit(sessionInfo);
+            if (ASContext.Configuration != null)
+            {
+                var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session");
+                ASContext.CurrentSession = sessionInfo;
+                new DiagnosticSessionControl().Transmit(sessionInfo);
+            }
+            else
+            {
+                return;
+            }
         }
 
         #endregion

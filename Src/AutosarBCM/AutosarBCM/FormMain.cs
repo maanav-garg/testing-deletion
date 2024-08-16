@@ -178,6 +178,7 @@ namespace AutosarBCM
         private TesterPresent TesterPresent;
         private ECUReset ECUReset;
         private System.Timers.Timer TesterPresentTimer;
+        private System.Timers.Timer ExtDiagSesTimer;
 
         /// <summary>
         /// Gets the selected test type
@@ -236,6 +237,9 @@ namespace AutosarBCM
 
             TesterPresentTimer = new System.Timers.Timer(1000) { };
             TesterPresentTimer.Elapsed += (s, e) => TesterPresent.Transmit();
+
+            ExtDiagSesTimer = new System.Timers.Timer(5000) { };
+            ExtDiagSesTimer.Elapsed += (s, e) => Helper.SendExtendedDiagSession();
 
         }
 
@@ -341,7 +345,11 @@ namespace AutosarBCM
 
             TesterPresent = new TesterPresent();
             TesterPresentTimer.Start();
+
+            ExtDiagSesTimer.Start();
         }
+
+        
 
         #endregion
 
@@ -834,6 +842,8 @@ namespace AutosarBCM
             testerPresentDropDownButton.Image = Resources.reset;
 
             TesterPresentTimer?.Stop();
+
+            ExtDiagSesTimer?.Stop();
         }
         /// <summary>
         /// Clears the log panel

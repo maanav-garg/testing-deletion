@@ -573,6 +573,11 @@ namespace AutosarBCM.Forms.Monitor
             lblHour.Text = String.Format("{0:00}", timeHour);
         }
 
+        private void FormEnvironmentalTest_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void tspFilterTxb_TextChanged(object sender, EventArgs e)
         {
             FilterUCItems(tspFilterTxb.Text);

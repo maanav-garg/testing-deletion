@@ -364,6 +364,7 @@ namespace AutosarBCM
 
             var txInterval = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.TxInterval;
 
+            
             //TODO to be checked
             if (cycleIndex == 0 && reboots == 0)
                 Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
@@ -374,6 +375,7 @@ namespace AutosarBCM
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest?.SetCounter(reboots + 1, cycleIndex + 1);
 
+
             if (cycleIndex == startCycleIndex - 1 && reboots == 0)
                 Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
 
@@ -383,6 +385,7 @@ namespace AutosarBCM
                     StopCycle(cycle, dictMapping);
                 StartCycle(cycle, dictMapping);
             }
+
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
 
@@ -413,11 +416,20 @@ namespace AutosarBCM
                 //    }
                 //}                
             }
+            //if ((cycleIndex+1)%5 == 0)
+            //{
+            //    Helper.SendExtendedDiagSession();
+            //    Console.WriteLine("Extended session message sent");
+            //}
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
 
             if (cycleIndex >= endCycleIndex - 1)
             {
+                Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1);
+                reboots++;
+                Helper.SendExtendedDiagSession();
+
                 Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
             }
             else
