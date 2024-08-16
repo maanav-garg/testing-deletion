@@ -154,7 +154,6 @@ namespace AutosarBCM
                     }
                     else if (monitorTestType == MonitorTestType.Environmental)
                     {
-                        Helper.WriteErrorMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File: " + FormMain.fileName, string.Empty, string.Empty);
                         StartTime = DateTime.Now;
                         var cycles = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles;
                         var controlItems = ASContext.Configuration.Controls.Where(c => c.Group == "DID");
@@ -262,6 +261,7 @@ namespace AutosarBCM
             timer = new MMTimer(0, MMTimer.EventType.OneTime, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File:" + FormMain.fileName, Constants.DefaultEscapeCharacter);
+            Helper.WriteErrorMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File: " + FormMain.fileName, string.Empty, string.Empty);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
             timer.Next(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleTime);
             while (!cancellationToken.IsCancellationRequested)
@@ -297,7 +297,7 @@ namespace AutosarBCM
             {
                 if (function?.ControlInfo == null)
                     continue;
-                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off"); 
+                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
                 if (hasDIDBitsOnOff)
                 {
                     function.ControlInfo.SwitchForBits(function.Payloads.Distinct().ToList(), false);
@@ -456,22 +456,22 @@ namespace AutosarBCM
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
-                if(function.Control != null && !function.Control.Contains(Constants.DummyControl))
+                if (function.Control != null && !function.Control.Contains(Constants.DummyControl))
                 {
-                        var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                        if (hasDIDBitsOnOff)
-                        {
-                            function.ControlInfo.SwitchForBits(function.Payloads, true);
-                        }
-                        else
-                        {
-                            function.ControlInfo.Switch(function.Payloads, true);
-                        }
+                    var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        function.ControlInfo.SwitchForBits(function.Payloads, true);
+                    }
+                    else
+                    {
+                        function.ControlInfo.Switch(function.Payloads, true);
+                    }
 
-                        CloseSensitiveControls(function.ControlInfo, function.Payloads);
+                    CloseSensitiveControls(function.ControlInfo, function.Payloads);
                 }
-                
-                if(function.Scenario != null)
+
+                if (function.Scenario != null)
                 {
                     var scenario = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
                     if (scenario == null)
@@ -597,8 +597,8 @@ namespace AutosarBCM
                         function.ControlInfo.Switch(nonSensitivePayloads, false);
                     }
                 }
-                    
-                if(function.Scenario != null)
+
+                if (function.Scenario != null)
                 {
                     var scenario = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
                     if (scenario == null)
