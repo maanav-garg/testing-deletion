@@ -366,6 +366,7 @@ namespace AutosarBCM
 
             var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
 
+            
             //TODO to be checked
             if (cycleIndex == 0 && reboots == 0)
                 Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
@@ -377,17 +378,6 @@ namespace AutosarBCM
 
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest?.SetCounter(reboots + 1, cycleIndex + 1);
-
-            if (cycleIndex == startCycleIndex - 1 && reboots == 0)
-                Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
-
-            if (cycleDict.TryGetValue(cycleIndex + 1, out Cycle cycle))
-            {
-                if(!(cycleIndex+1 == 16 &&  reboots+1 == 1))
-                    StopCycle(cycle, dictMapping);
-                StartCycle(cycle, dictMapping);
-            }
-
             
             //Console.WriteLine(Constants.StartProcessCompleted);
 
@@ -417,13 +407,19 @@ namespace AutosarBCM
                 //    }
                 //}                
             }
+            //if ((cycleIndex+1)%5 == 0)
+            //{
+            //    Helper.SendExtendedDiagSession();
+            //    Console.WriteLine("Extended session message sent");
+            //}
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
             Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
 
             if (cycleIndex >= endCycleIndex - 1)
             {
-                Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
+                Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1);
+                reboots++;
                 Helper.SendExtendedDiagSession();
             }
             else

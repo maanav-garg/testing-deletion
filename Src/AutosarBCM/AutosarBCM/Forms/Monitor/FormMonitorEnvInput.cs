@@ -293,5 +293,10 @@ namespace AutosarBCM.Forms.Monitor
         }
 
         #endregion
+
+        private void FormMonitorEnvInput_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
