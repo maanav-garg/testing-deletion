@@ -2299,7 +2299,7 @@
 		<Type value="16">Circuit Voltage Below Threshold</Type>
 		<Type value="17">Circuit Voltage Above Threshold</Type>
 		<Type value="18">Circuit Current Below Threshold</Type>
-		<Type value="19">Circuikt Current Above Threshold</Type>
+		<Type value="19">Circuit Current Above Threshold</Type>
 		<Type value="41">General Checksum Failure</Type>
 		<Type value="42">General Memory Failure</Type>
 		<Type value="43">Special Memory Failure</Type>
@@ -2741,9 +2741,9 @@
 								<Payload>C4.8_SpareDigitalOutput4</Payload>
 								<Payload>C4.7_SparePWM4</Payload>
 							</Function>
-							<!--<Function control="WCInhibit">
+							<Function control="WCInhibit">
 								<Payload>C4.47_WCInhibit</Payload>
-							</Function>-->
+							</Function>
 							<Function control="DoorLockIndicatorSupply">
 								<Payload>C5.37_DoorLockIndicatorSupply</Payload>
 							</Function>

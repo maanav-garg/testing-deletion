@@ -21,14 +21,8 @@ namespace AutosarBCM.Forms.Monitor
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
         private int cycleRange;
-        private int endCycleIndex;
-        private EnvironmentalConfig EnvironmentalConfig;
-        private int cycleCount = 0;
-        private DateTime? lastResetTime = null;
-        public static HashSet<string> allPayloads;
         public static HashSet<string> openedPayloads = new HashSet<string>();
         public static HashSet<string> cyclePayloads = new HashSet<string>();
-        private int loopCount = 1;
         IEnumerable<List<string>> openPayloadsOfScenario;
         IEnumerable<List<string>> closePayloadsOfScenario;
 
@@ -67,7 +61,6 @@ namespace AutosarBCM.Forms.Monitor
 
             ResetTime();
 
-            endCycleIndex = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
             scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
             cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
             cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
@@ -288,7 +281,6 @@ namespace AutosarBCM.Forms.Monitor
         }
         private int totalMessagesReceived = 0;
         private int totalMessagesTransmitted = 0;
-        private readonly object lockObj = new object();
 
         public bool Receive(Service baseService)
         {
@@ -645,7 +637,6 @@ namespace AutosarBCM.Forms.Monitor
             tsbConfigurationSelection.Enabled = false;
             groups.Clear();
             cycles.Clear();
-            allPayloads.Clear();
             mappingData.Clear();
             continuousReadData.Clear();
             ucItems.Clear();
