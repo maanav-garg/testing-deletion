@@ -17,7 +17,11 @@ namespace AutosarBCM.Core
         public string Name { get; set; }
         public List<byte> AvailableServices { get; set; }
     }
-
+    public class CycleInfo
+    {
+        public string PayloadName { get; set; }
+        public List<int> Cycles { get; set; } = new List<int>();
+    }
     public class ServiceInfo
     {
         public byte RequestID { get; set; }
@@ -424,6 +428,8 @@ namespace AutosarBCM.Core
                                     PWMDutyCloseValue = short.Parse(c.Element("PWMDutyCloseValue").Value),
                                     PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
                                     PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
+                                    SensitiveCtrlDuration = int.Parse(c.Element("SensitiveCtrlDuration").Value),
+                                    CycleRange = int.Parse(c.Element("CycleRange").Value)
                                 }).First(),
                             Cycles = e.Element("Cycles").Elements("Cycle")
                                 .Select(c => new Cycle
@@ -616,6 +622,11 @@ namespace AutosarBCM.Core
         /// Gets or sets the duration of sensitive control
         /// </summary>
         public int SensitiveCtrlDuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the frequency of loop
+        /// </summary>
+        public int CycleRange { get; set; }
 
         #endregion
     }
