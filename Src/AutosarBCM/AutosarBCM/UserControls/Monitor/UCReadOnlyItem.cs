@@ -148,72 +148,72 @@ namespace AutosarBCM.UserControls.Monitor
             if (Program.MappingStateDict.TryGetValue(ControlInfo.Name, out var errorLogDetect))
                 Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, GetMappingLogState(errorLogDetect.Operation)));
 
-            if (!Program.FormEnvironmentalTest.cbDisableUi.Checked)
+            if (Program.FormEnvironmentalTest.cbDisableUi.Checked)
+                return;
+            
+            if (lblReceived.InvokeRequired)
             {
-                if (lblReceived.InvokeRequired)
-                {
-                    lblReceived.BeginInvoke((MethodInvoker)delegate ()
-                    {
-                        MessagesReceived++;
-                        lblReceived.Text = MessagesReceived.ToString();
-                        Calculate();
-                    });
-                }
-                else
+                lblReceived.BeginInvoke((MethodInvoker)delegate ()
                 {
                     MessagesReceived++;
                     lblReceived.Text = MessagesReceived.ToString();
                     Calculate();
-                }
+                });
+            }
+            else
+            {
+                MessagesReceived++;
+                lblReceived.Text = MessagesReceived.ToString();
+                Calculate();
+            }
 
-                if (oldValue != null)
+            if (oldValue != null)
+            {
+                var areEqual = service.Payloads.Count == oldValue.Payloads.Count;
+
+                if (areEqual)
                 {
-                    var areEqual = service.Payloads.Count == oldValue.Payloads.Count;
-
-                    if (areEqual)
+                    for (int i = 0; i < service.Payloads.Count; i++)
                     {
-                        for (int i = 0; i < service.Payloads.Count; i++)
+                        if (service.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
+                            service.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
                         {
-                            if (service.Payloads[i].FormattedValue != oldValue.Payloads[i].FormattedValue ||
-                                service.Payloads[i].PayloadInfo.Name != oldValue.Payloads[i].PayloadInfo.Name)
-                            {
-                                areEqual = false;
-                                break;
-                            }
+                            areEqual = false;
+                            break;
                         }
                     }
-
-                    if (areEqual)
-                        return;
                 }
 
-                oldValue = service;
+                if (areEqual)
+                    return;
+            }
 
-                lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
+            oldValue = service;
+
+            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
+            {
+                if (service.Payloads[0].PayloadInfo.TypeName == "DID_PWM")
                 {
-                    if (service.Payloads[0].PayloadInfo.TypeName == "DID_PWM")
-                    {
-                        var payload = (service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name)).FormattedValue;
+                    var payload = (service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name)).FormattedValue;
 
-                        string hexValue = payload.Replace("-", "");
-                        string decimalValue = (Convert.ToInt32(hexValue, 16)).ToString();
-                        lblWriteStatus.Text = decimalValue;
-                    }
-                    else
-                    {
-                        var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
-                        lblWriteStatus.Text = payload?.FormattedValue.ToString();
-                    }
-                });
-
-
-
-                lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
+                    string hexValue = payload.Replace("-", "");
+                    string decimalValue = (Convert.ToInt32(hexValue, 16)).ToString();
+                    lblWriteStatus.Text = decimalValue;
+                }
+                else
                 {
                     var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
                     lblWriteStatus.Text = payload?.FormattedValue.ToString();
-                });
-            }
+                }
+            });
+
+
+
+            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
+            {
+                var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+                lblWriteStatus.Text = payload?.FormattedValue.ToString();
+            });
             
         }
 

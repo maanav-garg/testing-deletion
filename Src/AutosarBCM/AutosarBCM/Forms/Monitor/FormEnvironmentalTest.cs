@@ -245,7 +245,7 @@ namespace AutosarBCM.Forms.Monitor
                     btnStart.Text = "Stop";
                     btnStart.ForeColor = Color.Red;
                     tsbConfigurationSelection.Enabled = false;
-                    cbDisableUi.Enabled = false;
+                    chkDisableUi.Enabled = false;
                 }
                 else
                 {
@@ -257,7 +257,7 @@ namespace AutosarBCM.Forms.Monitor
                     isActive = false;
                     btnStart.Text = "Start";
                     btnStart.ForeColor = Color.Green;
-                    cbDisableUi.Enabled = true;
+                    chkDisableUi.Enabled = true;
                 }
             }));
 
@@ -292,7 +292,7 @@ namespace AutosarBCM.Forms.Monitor
                         bool titleMatch = ucItem.PayloadInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0
                             || ucItem.ControlInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
 
-                        if (!cbDisableUi.Checked)
+                        if (!chkDisableUi.Checked)
                         { 
                             ucItem.Visible = titleMatch; 
                         }
@@ -366,7 +366,7 @@ namespace AutosarBCM.Forms.Monitor
                         return false;
 
 
-                    if (!cbDisableUi.Checked)
+                    if (!chkDisableUi.Checked)
                     {
                         totalMessagesReceived++;
                     }
@@ -382,7 +382,7 @@ namespace AutosarBCM.Forms.Monitor
 
                             Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, "ClosingResponse", "", "", ioService.Payloads[i].FormattedValue);
 
-                            if (!cbDisableUi.Checked)
+                            if (!chkDisableUi.Checked)
                             {
                                 totalMessagesReceived++;
                             }
@@ -417,7 +417,7 @@ namespace AutosarBCM.Forms.Monitor
                 if (payload == null)
                     continue;
                 var uc = ucItems.First(c => c.PayloadInfo.Name == payload.Name);
-                if (uc != null && uc.CurrentDtcDescription != dtcValue.Description && !cbDisableUi.Checked)
+                if (uc != null && uc.CurrentDtcDescription != dtcValue.Description && !chkDisableUi.Checked)
                     uc?.ChangeDtc(dtcValue.Description);
             }
         }
@@ -448,21 +448,21 @@ namespace AutosarBCM.Forms.Monitor
                 if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
-                    if(!cbDisableUi.Checked)
+                    if(!chkDisableUi.Checked)
                         totalMessagesReceived++;
                 }
                     
                 if (inputName.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name)) 
                 { 
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.MappingResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
-                    if(!cbDisableUi.Checked)
+                    if(!chkDisableUi.Checked)
                         totalMessagesReceived++;
                 }
                     
                 if (continuousReadData.Any(p => p.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
-                    if(!cbDisableUi.Checked)
+                    if(!chkDisableUi.Checked)
                         totalMessagesReceived++;
                 }
 
@@ -497,7 +497,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private void UpdateCounters()
         {
-            if (tslTransmitted.GetCurrentParent().InvokeRequired && !cbDisableUi.Checked)
+            if (tslTransmitted.GetCurrentParent().InvokeRequired && !chkDisableUi.Checked)
             {
                 tslTransmitted.GetCurrentParent().BeginInvoke((MethodInvoker)delegate ()
                 {
@@ -516,7 +516,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else
             {
-                if (!cbDisableUi.Checked)
+                if (!chkDisableUi.Checked)
                 {
                     tslTransmitted.Text = totalMessagesTransmitted.ToString();
                     tslReceived.Text = totalMessagesReceived.ToString();
@@ -545,7 +545,7 @@ namespace AutosarBCM.Forms.Monitor
             var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address).ToList();
             if (!matchedControls.Any())
                 return false;
-            if (!cbDisableUi.Checked)
+            if (!chkDisableUi.Checked)
             {
                 totalMessagesTransmitted++;
             }
@@ -553,7 +553,7 @@ namespace AutosarBCM.Forms.Monitor
             {
                 foreach (var payload in cycle.Functions.SelectMany(p => p.Payloads))
                 {
-                    if (uc.PayloadInfo.Name == payload && !cbDisableUi.Checked)
+                    if (uc.PayloadInfo.Name == payload && !chkDisableUi.Checked)
                     {
                         uc.HandleMetrics();
                       

@@ -51,7 +51,7 @@
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.lblHour = new System.Windows.Forms.Label();
             this.lblCol1 = new System.Windows.Forms.Label();
-            this.cbDisableUi = new System.Windows.Forms.CheckBox();
+            this.chkDisableUi = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -283,22 +283,22 @@
             this.lblCol1.TabIndex = 15;
             this.lblCol1.Text = ":";
             // 
-            // cbDisableUi
+            // chkDisableUi
             // 
-            this.cbDisableUi.AutoSize = true;
-            this.cbDisableUi.Location = new System.Drawing.Point(835, 7);
-            this.cbDisableUi.Name = "cbDisableUi";
-            this.cbDisableUi.Size = new System.Drawing.Size(133, 17);
-            this.cbDisableUi.TabIndex = 16;
-            this.cbDisableUi.Text = "Disable UI Interactions";
-            this.cbDisableUi.UseVisualStyleBackColor = true;
+            this.chkDisableUi.AutoSize = true;
+            this.chkDisableUi.Location = new System.Drawing.Point(835, 7);
+            this.chkDisableUi.Name = "chkDisableUi";
+            this.chkDisableUi.Size = new System.Drawing.Size(133, 17);
+            this.chkDisableUi.TabIndex = 16;
+            this.chkDisableUi.Text = "Disable UI Interactions";
+            this.chkDisableUi.UseVisualStyleBackColor = true;
             // 
             // FormEnvironmentalTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 761);
-            this.Controls.Add(this.cbDisableUi);
+            this.Controls.Add(this.chkDisableUi);
             this.Controls.Add(this.lblCol1);
             this.Controls.Add(this.lblHour);
             this.Controls.Add(this.lblCol2);
@@ -347,6 +347,6 @@
         private System.Windows.Forms.ToolStripLabel tslTransmitted;
         private System.Windows.Forms.ToolStripLabel tslDiff;
         private System.Windows.Forms.ToolStripDropDownButton tsbConfigurationSelection;
-        internal System.Windows.Forms.CheckBox cbDisableUi;
+        internal System.Windows.Forms.CheckBox chkDisableUi;
     }
 }
