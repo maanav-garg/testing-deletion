@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using AutosarBCM.Forms.Monitor;
 using LicenseHelper;
 using log4net;
 using log4net.Config;
@@ -22,6 +23,8 @@ namespace AutosarBCM
         public static FormMain MainForm => (FormMain)Application.OpenForms["FormMain"];
         public static FormControlChecker FormControlChecker => (FormControlChecker)Application.OpenForms["FormControlChecker"];
         public static FormEMCView FormEMCView => (FormEMCView)Application.OpenForms["FormEMCView"];
+
+        public static FormEnvironmentalTest FormEnvironmentalTest => (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
 
         public static MultiKeyDictionary<string, string, ErrorLogDetectObject> MappingStateDict = new MultiKeyDictionary<string, string, ErrorLogDetectObject>();
 
