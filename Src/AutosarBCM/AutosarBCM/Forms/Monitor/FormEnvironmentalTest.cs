@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace AutosarBCM.Forms.Monitor
 {
-    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver, IDTCReceiver, IReadDataByIdenReceiver
+    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IWriteByIdenReceiver,IIOControlByIdenReceiver, IDTCReceiver, IReadDataByIdenReceiver
     {
         #region Variables
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
@@ -305,9 +305,105 @@ namespace AutosarBCM.Forms.Monitor
             {
                 return HandleReadDataByIdenService(readByIdenService);
             }
+            else if (baseService is WriteDataByIdentifierService writeByIdenService)
+            {
+                  return HandleWriteDataByIdenService(writeByIdenService);
+            }
 
             return false;
         }
+
+        /// <summary>
+        /// Handles received HandleWriteDataByIdenService type of data.
+        /// </summary>
+        private bool HandleWriteDataByIdenService(WriteDataByIdentifierService ioService)
+        {
+            IEnumerable<string> payloadNamesInCurrentCycle = null;
+            IEnumerable<string> scenarioNamesInCurrentCycle = null;
+            IEnumerable<string> allScenariosInCurrentCycle = null;
+            int loopVal;
+            if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
+                return false;
+
+            var cycle = cycles[loopVal];
+            if (cycle.OpenAt == loopVal)
+            {
+                payloadNamesInCurrentCycle = cycle.Name.Contains("Soft Continuous") ? cycle.OpenItems.SelectMany(a => a.Payloads).Concat(cycle.Functions.SelectMany(b => b.Payloads)) : cycle.OpenItems.SelectMany(a => a.Payloads);
+                scenarioNamesInCurrentCycle = cycle.OpenItems.Select(b => b.Scenario).Where(s => s != null).Distinct();
+                allScenariosInCurrentCycle = scenarios.SelectMany(scenario => scenario.OpenPayloads).Where(payload => scenarioNamesInCurrentCycle.Contains(payload)).Distinct();
+                cyclePayloads = new HashSet<string>(
+                payloadNamesInCurrentCycle.Concat(allScenariosInCurrentCycle));
+            }
+
+            var payloadControlMap = new Dictionary<string, string>();
+
+            foreach (var function in cycle.Functions)
+            {
+                foreach (var payload in function.Payloads)
+                {
+                    payloadControlMap[payload] = function.Control;
+                }
+            }
+            foreach (var scenario in scenarios)
+            {
+                foreach (var payload in scenario.OpenPayloads)
+                {
+                    payloadControlMap[payload] = payloadControlMap.ContainsKey(payload) ? payloadControlMap[payload] : null;
+                }
+                foreach (var payload in scenario.ClosePayloads)
+                {
+                    payloadControlMap[payload] = payloadControlMap.ContainsKey(payload) ? payloadControlMap[payload] : null;
+                }
+            }
+
+            UCReadOnlyItem matchedControl = null;
+
+            for (var i = 0; i < ioService.Payloads.Count; i++)
+            {
+                var payloadName = ioService.Payloads[i].PayloadInfo.Name;
+                if (payloadNamesInCurrentCycle != null)
+                {
+                    if (payloadNamesInCurrentCycle.Contains(payloadName) || openPayloadsOfScenario.Any(x => x.Contains(payloadName)) || closePayloadsOfScenario.Any(innerList => innerList.Contains(payloadName)))
+                        openedPayloads.Add(payloadName);
+                }
+
+                if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
+                {
+                    matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
+                    if (matchedControl == null)
+                        continue;
+
+
+                    if (!chkDisableUi.Checked)
+                    {
+                        totalMessagesReceived++;
+                    }
+                    Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
+                    matchedControl.ChangeStatusForWriteService(ioService);
+                }
+                if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
+                {
+                    foreach (var test in cycles)
+                    {
+                        if (test.Value.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
+                        {
+                            Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, "ClosingResponse", "", "", ioService.Payloads[i].FormattedValue);
+
+                            if (!chkDisableUi.Checked)
+                            {
+                                totalMessagesReceived++;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            if (loopVal == cycle.CloseAt)
+                ResetPayloads(cyclePayloads, payloadControlMap, cycleRange, int.Parse(lblCycleVal.Text));
+            UpdateCounters();
+            return true;
+        }
+
 
         /// <summary>
         /// Handles received IOControlByIdentifierService type of data.
