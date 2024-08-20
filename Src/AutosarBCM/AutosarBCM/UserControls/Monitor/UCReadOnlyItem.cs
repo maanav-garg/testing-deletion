@@ -69,9 +69,14 @@ namespace AutosarBCM.UserControls.Monitor
 
 
         /// <summary>
-        /// Gets or sets the previous (old) value of the input item.
+        /// Gets or sets the previous (old) value of the input item for IO Control service.
         /// </summary>
         private IOControlByIdentifierService oldValue;
+
+        /// <summary>
+        /// Gets or sets the previous (old) value of the input item for Write service.
+        /// </summary>
+        private WriteDataByIdentifierService oldValueForWriteService;
         #endregion
 
         #region Constructor
@@ -136,6 +141,90 @@ namespace AutosarBCM.UserControls.Monitor
         #endregion
 
         #region Public Methods
+
+
+        /// <summary>
+        /// Change status of the input window regarding to read data from the device.
+        /// </summary>
+        /// <param name="monitorItem">Monitor item to be updated</param>
+        /// <param name="inputResponse">Data comes from device</param>
+        public void ChangeStatusForWriteService(WriteDataByIdentifierService service)
+        {
+            if (Program.MappingStateDict.TryGetValue(ControlInfo.Name, out var errorLogDetect))
+                Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, GetMappingLogState(errorLogDetect.Operation)));
+
+            if (Program.FormEnvironmentalTest.chkDisableUi.Checked)
+                return;
+
+            if (lblReceived.InvokeRequired)
+            {
+                lblReceived.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    MessagesReceived++;
+                    lblReceived.Text = MessagesReceived.ToString();
+                    Calculate();
+                });
+            }
+            else
+            {
+                MessagesReceived++;
+                lblReceived.Text = MessagesReceived.ToString();
+                Calculate();
+            }
+
+            if (oldValueForWriteService != null)
+            {
+                var areEqual = service.Payloads.Count == oldValueForWriteService.Payloads.Count;
+
+                if (areEqual)
+                {
+                    for (int i = 0; i < service.Payloads.Count; i++)
+                    {
+                        if (service.Payloads[i].FormattedValue != oldValueForWriteService.Payloads[i].FormattedValue ||
+                            service.Payloads[i].PayloadInfo.Name != oldValueForWriteService.Payloads[i].PayloadInfo.Name)
+                        {
+                            areEqual = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (areEqual)
+                    return;
+            }
+
+            oldValueForWriteService = service;
+
+            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
+            {
+                if (service.Payloads[0].PayloadInfo.TypeName == "DID_PWM")
+                {
+                    var payload = (service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name)).FormattedValue;
+                    if (payload != "")
+                    {
+                        string hexValue = payload.Replace("-", "");
+                        string decimalValue = (Convert.ToInt32(hexValue, 16)).ToString();
+                        lblWriteStatus.Text = decimalValue;
+                    }
+                }
+
+                else
+                {
+                    var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+                    lblWriteStatus.Text = payload?.FormattedValue.ToString();
+                }
+            });
+
+
+
+            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
+            {
+                var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+                lblWriteStatus.Text = payload?.FormattedValue.ToString();
+            });
+
+        }
+
 
 
         /// <summary>
