@@ -1454,7 +1454,7 @@ namespace AutosarBCM
         /// <summary> 
         /// Returns the status of the Error statement
         /// </summary> 
-        public bool ChcekIsError()
+        public bool CheckIsError()
         {
             if (OutputState == MappingState.OutputSent || InputState == MappingState.InputSent)
                 return true;
