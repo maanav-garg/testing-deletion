@@ -394,7 +394,7 @@ namespace AutosarBCM
                 {
                     Helper.SendExtendedDiagSession();
                     ThreadSleep(txInterval);
-                    new ReadDTCInformationService().Transmit();
+                    //new ReadDTCInformationService().Transmit();
                     foreach (var item in continousReadList.Keys)
                     {
                         ThreadSleep(txInterval);
