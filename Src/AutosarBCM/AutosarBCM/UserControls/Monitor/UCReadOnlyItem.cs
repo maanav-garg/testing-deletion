@@ -227,7 +227,7 @@ namespace AutosarBCM.UserControls.Monitor
             MessagesTransmitted++;
             if (lblTransmitted.InvokeRequired)
             {
-                lblTransmitted.BeginInvoke((MethodInvoker)delegate ()
+                lblTransmitted.Invoke((MethodInvoker)delegate ()
                 {
                     lblTransmitted.Text = MessagesTransmitted.ToString();
                 

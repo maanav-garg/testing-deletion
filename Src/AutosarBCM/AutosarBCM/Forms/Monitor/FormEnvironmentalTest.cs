@@ -14,7 +14,7 @@ namespace AutosarBCM.Forms.Monitor
     {
         #region Variables
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
-        private List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
+        internal List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
         private Dictionary<string, ControlInfo> dtcList = new Dictionary<string, ControlInfo>();
         private Dictionary<int, Cycle> cycles;
         private List<Scenario> scenarios;
@@ -25,6 +25,9 @@ namespace AutosarBCM.Forms.Monitor
         public static HashSet<string> cyclePayloads = new HashSet<string>();
         IEnumerable<List<string>> openPayloadsOfScenario;
         IEnumerable<List<string>> closePayloadsOfScenario;
+        public Dictionary<string, Config.SentMessage> sentMessagesDict = new Dictionary<string, Config.SentMessage>();
+        private int totalMessagesReceived = 0;
+        internal int totalMessagesTransmitted = 0;
 
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
@@ -288,8 +291,6 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
-        private int totalMessagesReceived = 0;
-        private int totalMessagesTransmitted = 0;
 
         public bool Receive(Service baseService)
         {
@@ -314,6 +315,8 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleIOControlByIdentifierReceive(IOControlByIdentifierService ioService)
         {
+            CleanupSentMessagesDictionary();
+
             IEnumerable<string> payloadNamesInCurrentCycle = null;
             IEnumerable<string> scenarioNamesInCurrentCycle = null;
             IEnumerable<string> allScenariosInCurrentCycle = null;
@@ -352,7 +355,8 @@ namespace AutosarBCM.Forms.Monitor
                 }
             }
 
-            UCReadOnlyItem matchedControl = null;
+            var currentTime = DateTime.Now;
+            var timeout = TimeSpan.FromSeconds(1);
 
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
@@ -362,34 +366,50 @@ namespace AutosarBCM.Forms.Monitor
                     if (payloadNamesInCurrentCycle.Contains(payloadName) || openPayloadsOfScenario.Any(x => x.Contains(payloadName)) ||closePayloadsOfScenario.Any(innerList => innerList.Contains(payloadName)))
                         openedPayloads.Add(payloadName);
                 }
-                
-                if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
-                { 
-                    matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
-                    if (matchedControl == null)
-                        continue;
 
 
-                    if (!chkDisableUi.Checked)
-                    {
-                        totalMessagesReceived++;
-                    }
-                    Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
-                    matchedControl.ChangeStatus(ioService);
-                }
                 if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
                 {
-                    foreach (var test in cycles)
+                    timeout = TimeSpan.FromSeconds(2);
+                    foreach (var sentMessage in sentMessagesDict.Values.ToList())
                     {
-                        if (test.Value.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name))
+                        if (currentTime - sentMessage.timestamp <= timeout)
                         {
-                            Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, "ClosingResponse", "", "", ioService.Payloads[i].FormattedValue);
-
-                            if (!chkDisableUi.Checked)
+                            if (sentMessage.itemType == ioService.Payloads[i].PayloadInfo.Name && sentMessage.itemName == ioService.ControlInfo.Name)
                             {
-                                totalMessagesReceived++;
+                                var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
+                                if (matchedControl == null)
+                                    return false;
+
+                                if (!chkDisableUi.Checked)
+                                    totalMessagesReceived++;
+                                Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, "ClosingResponse", "", "", ioService.Payloads[i].FormattedValue);
+                                matchedControl.ChangeStatus(ioService);
+                                sentMessagesDict.Remove(sentMessage.Id);
+                                break;
                             }
-                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var sentMessage in sentMessagesDict.Values.ToList())
+                    {
+                        if (currentTime - sentMessage.timestamp <= timeout)
+                        {
+                            if (sentMessage.itemType == ioService.Payloads[i].PayloadInfo.Name && sentMessage.itemName == ioService.ControlInfo.Name)
+                            {
+                                var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
+                                if (matchedControl == null)
+                                    return false;
+
+                                if (!chkDisableUi.Checked)
+                                    totalMessagesReceived++;
+                                Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
+                                matchedControl.ChangeStatus(ioService);
+                                sentMessagesDict.Remove(sentMessage.Id);
+                                break;
+                            }
                         }
                     }
                 }
@@ -417,7 +437,25 @@ namespace AutosarBCM.Forms.Monitor
                 cyclePayloads.Remove(payload);
         }
 
+        /// <summary>
+        /// Cleans up the sent messages dictionary by removing entries 
+        /// that have exceeded the specified time interval.
+        /// </summary>
+        /// <param name="interval">Time interval in seconds to check for message timeout. Default is 2 seconds.</param>
+        internal void CleanupSentMessagesDictionary(int interval = 2)
+        {
+            var currentTime = DateTime.Now;
+            var timeout = TimeSpan.FromSeconds(interval);
 
+            foreach (var key in sentMessagesDict.Keys.ToList()) // Iterate over a copy of the keys
+            {
+                if (currentTime - sentMessagesDict[key].timestamp > timeout)
+                {
+                    Console.WriteLine("Queue'dan Silindi: " + sentMessagesDict[key].itemType);
+                    sentMessagesDict.Remove(key);
+                }
+            }
+        }
 
         /// <summary>
         /// Handles received ReadDTCInformationService type of data.
@@ -447,53 +485,50 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleReadDataByIdenService(ReadDataByIdenService readByIdenService)
         {
+            CleanupSentMessagesDictionary();
+
             int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             {
                 return false;
             }
 
-            var cycle = cycles[loopVal];
-            UCReadOnlyItem matchedControl = null;
-            var inputName = mappingData.Where(m => cycle.OpenItems.Any(x => x.Payloads.Contains(m.Output.Name)) || cycle.CloseItems.Any(x => x.Payloads.Contains(m.Output.Name)));
+            var timeout = TimeSpan.FromSeconds(1);
+            var currentTime = DateTime.Now;
+            var sentMessages = sentMessagesDict.Values.ToList();
+            var inputName = mappingData.Where(m => sentMessages.Any(x => x.itemType == m.Output.Name));
 
             for (var i = 0; i < readByIdenService.Payloads.Count; i++)
             {
-                if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
+                foreach (var sentMessage in sentMessagesDict.Values.ToList())
                 {
-                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
-                    if(!chkDisableUi.Checked)
-                        totalMessagesReceived++;
-                }
-
-                if (inputName.Any(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
-                {
-                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.MappingResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
-                    if(!chkDisableUi.Checked)
-                        totalMessagesReceived++;
-                }
-
-                if (continuousReadData.Any(p => p.Name == readByIdenService.Payloads[i].PayloadInfo.Name))
-                {
-                    Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.ContinuousReadResponse, "", "", readByIdenService.Payloads[i].FormattedValue);
-                    if(!chkDisableUi.Checked)
-                        totalMessagesReceived++;
-                }
-
-                if (Program.MappingStateDict.TryGetValue(readByIdenService.Payloads[i].PayloadInfo.Name, out var errorLogDetect))
-                {
-                    var mappingItem = inputName.FirstOrDefault(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name);
-                    if (mappingItem != null)
+                    if (currentTime - sentMessage.timestamp <= timeout)
                     {
-                        Program.MappingStateDict.UpdateValue(readByIdenService.Payloads[i].PayloadInfo.Name, errorLogDetect.UpdateInputResponse(MappingState.InputReceived, GetMappingResponse(readByIdenService.Payloads[i].Value)));
 
-                        if (errorLogDetect.ChcekIsError())
-                            Helper.WriteErrorMessageToLogFile(readByIdenService.ControlInfo.Name, $"O: {mappingItem.Output.Control} ({mappingItem.Output.Name}) - I: {mappingItem.Input.Control} ({mappingItem.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", mappingItem.Output.Name, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", mappingItem.Input.Name, errorLogDetect.InputResponse)}", lblCycleVal.Text, lblLoopVal.Text);
+                        if (sentMessage.itemType == readByIdenService.Payloads[i].PayloadInfo.Name && sentMessage.itemName == readByIdenService.ControlInfo.Name)
+                        {
+                            if (Program.MappingStateDict.TryGetValue(readByIdenService.Payloads[i].PayloadInfo.Name, out var errorLogDetect))
+                            {
+                                var mappingItem = inputName.FirstOrDefault(p => p.Input.Name == readByIdenService.Payloads[i].PayloadInfo.Name);
+                                if (mappingItem != null)
+                                {
+                                    Program.MappingStateDict.UpdateValue(readByIdenService.Payloads[i].PayloadInfo.Name, errorLogDetect.UpdateInputResponse(MappingState.InputReceived, GetMappingResponse(readByIdenService.Payloads[i].Value)));
 
-                        Program.MappingStateDict.Remove(readByIdenService.Payloads[i].PayloadInfo.Name);
+                                    if (errorLogDetect.ChcekIsError())
+                                        Helper.WriteErrorMessageToLogFile(readByIdenService.ControlInfo.Name, $"O: {mappingItem.Output.Control} ({mappingItem.Output.Name}) - I: {mappingItem.Input.Control} ({mappingItem.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", mappingItem.Output.Name, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", mappingItem.Input.Name, errorLogDetect.InputResponse)}");
+
+                                    Program.MappingStateDict.Remove(readByIdenService.Payloads[i].PayloadInfo.Name);
+                                }
+                            }
+
+                            Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue);
+                            if (!chkDisableUi.Checked)
+                                totalMessagesReceived++;
+                            sentMessagesDict.Remove(sentMessage.Id);
+                            break;
+                        }
                     }
                 }
-
             }
             return true;
         }
@@ -548,34 +583,6 @@ namespace AutosarBCM.Forms.Monitor
         /// <param name="e">Argument</param>
         public bool Sent(ushort address)
         {
-            if (!int.TryParse(lblLoopVal.Text, out int loopVal))
-                return false;
-
-            if (!cycles.ContainsKey(loopVal))
-                return false;
-
-            var cycle = cycles[loopVal];
-
-            var matchedControls = ucItems.Where(c => c.ControlInfo.Address == address).ToList();
-            if (!matchedControls.Any())
-                return false;
-            if (!chkDisableUi.Checked)
-            {
-                totalMessagesTransmitted++;
-            }
-            foreach (var uc in matchedControls)
-            {
-                foreach (var payload in cycle.Functions.SelectMany(p => p.Payloads))
-                {
-                    if (uc.PayloadInfo.Name == payload && !chkDisableUi.Checked)
-                    {
-                        uc.HandleMetrics();
-
-                        break;
-                    }
-
-                }
-            }
             return true;
         }
         /// <summary>
@@ -670,6 +677,7 @@ namespace AutosarBCM.Forms.Monitor
             LoadControls();
             tsbConfigurationSelection.Enabled = true;
         }
+
         public void SessionControlManagement(bool isActive)
         {
             throw new NotImplementedException();

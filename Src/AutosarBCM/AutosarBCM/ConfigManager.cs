@@ -414,7 +414,10 @@ namespace AutosarBCM.Config
         /// Gets or sets the EEProm instance.
         /// </summary>
         public EEProm EEProm { get; set; }
-
+        /// <summary>
+        /// Gets or sets the SentMessage instance.
+        /// </summary>
+        public SentMessage SentMessage { get; set; }
         #endregion
 
         #region Methods
@@ -1263,5 +1266,16 @@ namespace AutosarBCM.Config
         public string LowerAddressLimit { get; set; }
 
         #endregion
+    }
+
+    /// <summary>
+    /// This class represents sent data and is used for performing message log and counter operations.
+    /// </summary>
+    public class SentMessage
+    {
+        public string Id { get; set; }
+        public string itemType { get; set; }
+        public string itemName { get; set; }
+        public DateTime timestamp { get; set; }
     }
 }

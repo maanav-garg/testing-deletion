@@ -95,6 +95,7 @@ namespace AutosarBCM.Core
                         }
                     }
                     Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
+                    Helper.AddMessageMappingDict(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
                     bitIndex++;
                 }
             }
@@ -185,6 +186,7 @@ namespace AutosarBCM.Core
 
                     }
                     Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
+                    Helper.AddMessageMappingDict(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
 
                 }
 

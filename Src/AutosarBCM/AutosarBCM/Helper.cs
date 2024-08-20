@@ -11,6 +11,7 @@ using AutosarBCM.Config;
 using System.ComponentModel;
 using AutosarBCM.Core;
 using static System.Windows.Forms.LinkLabel;
+using AutosarBCM.Forms.Monitor;
 
 namespace AutosarBCM
 {
@@ -465,6 +466,36 @@ namespace AutosarBCM
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")} [{cycleId}-{loopId}];{itemName};{itemType};{operation};{data};{escapeChars}");
                 else
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}#{comment}#{escapeChars}");
+            }
+        }
+
+        /// <summary>
+        /// Adds a message to the sentMessagesQueue during an environmental test.
+        /// </summary>
+        /// <param name="itemName">The name of the item.</param>
+        /// <param name="itemType">The type of the item.</param>
+        /// <param name="operation">The operation performed.</param>
+        public static void AddMessageMappingDict(string itemName, string itemType, string operation)
+        {
+            var formEnv = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
+            if (FormMain.IsTestRunning)
+            {
+                if (!formEnv.chkDisableUi.Checked)
+                    formEnv.totalMessagesTransmitted++;
+
+                var uc = formEnv.ucItems.FirstOrDefault(x => x.ControlInfo.Name == itemName && x.PayloadInfo.Name == itemType);
+                if (uc != null)
+                    uc.HandleMetrics();
+
+                var messageId = Guid.NewGuid().ToString();
+                var sentMessage = new SentMessage
+                {
+                    Id = messageId,
+                    itemName = itemName,
+                    itemType = itemType,
+                    timestamp = DateTime.Now
+                };
+                formEnv.sentMessagesDict[messageId] = sentMessage;
             }
         }
 

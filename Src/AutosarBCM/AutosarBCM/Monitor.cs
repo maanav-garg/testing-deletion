@@ -281,7 +281,7 @@ namespace AutosarBCM
                 var ctrl = functions.Where(f => f.Control == function.Control).FirstOrDefault();
                 if (ctrl == null)
                 {
-                    var func = new Function { Control = function.Control, ControlInfo = function.ControlInfo, Payloads = function.Payloads.ToList() };
+                    var func = new Function { Control = function.Control, ControlInfo = function.ControlInfo, Payloads = function.Payloads.ToList() ,Scenario  = function.Scenario};
                     functions.Add(func);
                 }
                 else
@@ -294,14 +294,37 @@ namespace AutosarBCM
             {
                 if (function?.ControlInfo == null)
                     continue;
-                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off"); 
-                if (hasDIDBitsOnOff)
+
+                if (function.Scenario == null)
                 {
-                    function.ControlInfo.SwitchForBits(function.Payloads.Distinct().ToList(), false);
+                    var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        function.ControlInfo.SwitchForBits(function.Payloads.Distinct().ToList(), false);
+                    }
+                    else
+                    {
+                        function.ControlInfo.Switch(function.Payloads.Distinct().ToList(), false);
+                    }
                 }
                 else
                 {
-                    function.ControlInfo.Switch(function.Payloads.Distinct().ToList(), false);
+                    var scenario = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                    if (scenario == null)
+                        continue;
+
+                    var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
+                    var payloads = scenario.OpenPayloads.Union(scenario.ClosePayloads).ToDictionary(x => x, x => false);
+
+                    var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        controlInfo.SwitchForBits(payloads);
+                    }
+                    else
+                    {
+                        controlInfo.Switch(payloads);
+                    }
                 }
                 Thread.Sleep(txInterval);
             }
@@ -398,9 +421,11 @@ namespace AutosarBCM
                     foreach (var item in continousReadList.Keys)
                     {
                         ThreadSleep(txInterval);
+                        Helper.WriteCycleMessageToLogFile(item.Name, continousReadList[item], Constants.ContinousRead);
+                        Helper.AddMessageMappingDict(item.Name, continousReadList[item], Constants.ContinousRead);
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
                         
-                        Helper.WriteCycleMessageToLogFile(item.Name, continousReadList[item], Constants.ContinousRead);
+                        
                     }
                     //TODO to be added again
                     //ThreadSleep(txInterval);
@@ -457,7 +482,7 @@ namespace AutosarBCM
             var txInterval = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.TxInterval;
             var pwmDuty = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue;
             var pwmFreq = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMFreqOpenValue;
-            var mapControls = new List<Core.ControlInfo>();
+            var mapControls = new Dictionary<ControlInfo, string>();
             foreach (var function in cycle.OpenItems)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -517,9 +542,9 @@ namespace AutosarBCM
                         if (mappedItem.Item2 != null)
                         {
                             var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
-                            if (mapControls.Any(c => c.Name == mappedItem.Item1.Input.Control))
+                            if (mapControls.Any(c => c.Key.Name == mappedItem.Item1.Input.Control))
                                 continue;
-                            mapControls.Add(mappedItem.Item2);
+                            mapControls.Add(mappedItem.Item2, inputName);
                             Helper.WriteCycleMessageToLogFile(mappedItem.Item1.Input.Control, inputName, (Constants.MappingRead));
                         }
                     }
@@ -547,7 +572,8 @@ namespace AutosarBCM
             }
             foreach (var mapControl in mapControls)
             {
-                mapControl.Transmit(ServiceInfo.ReadDataByIdentifier);
+                Helper.AddMessageMappingDict(mapControl.Key.Name, mapControl.Value, Constants.MappingRead);
+                mapControl.Key.Transmit(ServiceInfo.ReadDataByIdentifier);
                 ThreadSleep(txInterval);
             }
         }
@@ -583,7 +609,7 @@ namespace AutosarBCM
 
             var pwmDuty = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyCloseValue;
             var pwmFreq = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMFreqCloseValue;
-            var mapControls = new List<Core.ControlInfo>();
+            var mapControls = new Dictionary<ControlInfo, string>();
 
             foreach (var function in cycle.CloseItems)
             {
@@ -641,9 +667,9 @@ namespace AutosarBCM
                         if (mappedItem.Item2 != null)
                         {
                             var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
-                            if (mapControls.Any(c => c.Name == mappedItem.Item1.Input.Control))
+                            if (mapControls.Any(c => c.Key.Name == mappedItem.Item1.Input.Control))
                                 continue;
-                            mapControls.Add(mappedItem.Item2);
+                            mapControls.Add(mappedItem.Item2, inputName);
                             Helper.WriteCycleMessageToLogFile(mappedItem.Item1.Input.Control, inputName, (Constants.MappingRead));
                         }
                     }
@@ -662,7 +688,8 @@ namespace AutosarBCM
             }
             foreach (var mapControl in mapControls)
             {
-                mapControl.Transmit(ServiceInfo.ReadDataByIdentifier);
+                Helper.AddMessageMappingDict(mapControl.Key.Name, mapControl.Value, Constants.MappingRead);
+                mapControl.Key.Transmit(ServiceInfo.ReadDataByIdentifier);
                 ThreadSleep(txInterval);
             }
         }
