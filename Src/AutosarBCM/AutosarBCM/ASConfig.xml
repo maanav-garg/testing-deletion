@@ -1011,8 +1011,8 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C6.44_Ignition/Crank" dtcCode="F00D" typeName="DID_Byte_On_Off"></Payload>
-					<Payload name="C6.19_Ignition Switch" dtcCode="F00E" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C6.44_IgnitionON" dtcCode="F00D" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C5.44_IgnitionON2" dtcCode="F00E" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1349,8 +1349,8 @@
 				<Response serviceId="62">
 					<Payload name="C5.42_ClockSpring1LHSensor" typeName="HexDump_3Bytes"></Payload>
 					<Payload name="C5.43_ClockSpring1RHSensor" typeName="HexDump_3Bytes"></Payload>
-					<Payload name="C5.23_ClockSpring2LHSensor 1" typeName="HexDump_3Bytes"></Payload>
-					<Payload name="C5.22_ClockSpring2RHSensor 1" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.23_ClockSpring2LHSensor" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.22_ClockSpring2RHSensor" typeName="HexDump_3Bytes"></Payload>
 					<Payload name="C5.25_ClockSpring3LHSensor" typeName="HexDump_3Bytes"></Payload>
 					<Payload name="C5.26_ClockSpring3RHSensor" typeName="HexDump_3Bytes"></Payload>
 				</Response>
@@ -1819,14 +1819,14 @@
 				<Response serviceId="62">
 					<Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
-					<Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
-					<Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.16_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.17_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
-					<Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.3_Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
