@@ -259,7 +259,8 @@ namespace AutosarBCM
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest.SetCounter(1, 1);
             timer = new MMTimer(0, MMTimer.EventType.OneTime, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
-
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File: " + FormMain.fileName, Constants.DefaultEscapeCharacter);
+            Helper.WriteErrorMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File: " + FormMain.fileName, string.Empty, string.Empty);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
             timer.Next(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleTime);
             while (!cancellationToken.IsCancellationRequested)
@@ -507,7 +508,7 @@ namespace AutosarBCM
                     {
                         if (Program.MappingStateDict.TryGetValue(mappedItem.Item1.Input.Name, out var errorLogDetect))
                         {
-                            if (errorLogDetect.ChcekIsError())
+                            if (errorLogDetect.CheckIsError())
                                 Helper.WriteErrorMessageToLogFile(mappedItem.Item1.Input.Control, $"O: {mappedItem.Item1.Output.Control} ({mappedItem.Item1.Output.Name}) - I: {mappedItem.Item1.Input.Control} ({mappedItem.Item1.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Item1.Input.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Item1.Input.Name).Item2, errorLogDetect.InputResponse)}");
 
                             Program.MappingStateDict.Remove(mappedItem.Item1.Input.Name);
@@ -631,7 +632,7 @@ namespace AutosarBCM
                     {
                         if (Program.MappingStateDict.TryGetValue(mappedItem.Item1.Input.Name, out var errorLogDetect))
                         {
-                            if (errorLogDetect.ChcekIsError())
+                            if (errorLogDetect.CheckIsError())
                                 Helper.WriteErrorMessageToLogFile(mappedItem.Item1.Input.Control, $"O: {mappedItem.Item1.Output.Control} ({mappedItem.Item1.Output.Name}) - I: {mappedItem.Item1.Input.Control} ({mappedItem.Item1.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Item1.Input.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Item1.Input.Name).Item2, errorLogDetect.InputResponse)}");
 
                             Program.MappingStateDict.Remove(mappedItem.Item1.Input.Name);
