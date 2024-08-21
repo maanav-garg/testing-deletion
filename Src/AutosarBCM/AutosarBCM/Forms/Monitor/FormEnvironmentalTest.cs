@@ -25,9 +25,11 @@ namespace AutosarBCM.Forms.Monitor
         public static HashSet<string> cyclePayloads = new HashSet<string>();
         IEnumerable<List<string>> openPayloadsOfScenario;
         IEnumerable<List<string>> closePayloadsOfScenario;
+        IEnumerable<string> openItemTypes;
         public Dictionary<string, Config.SentMessage> sentMessagesDict = new Dictionary<string, Config.SentMessage>();
         private int totalMessagesReceived = 0;
         internal int totalMessagesTransmitted = 0;
+        private int endCycleIndex;
 
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
@@ -64,12 +66,16 @@ namespace AutosarBCM.Forms.Monitor
 
             ResetTime();
 
+            openItemTypes = ASContext.Configuration.Payloads.SelectMany(X => X.Values.Where(v => v.IsOpen == true).Select(f => f.FormattedValue)).Distinct();
+            openItemTypes = openItemTypes.Append("10000").ToList();
             scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
             cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
             cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
             scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
             mappingData = new List<Mapping>(ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
             continuousReadData = (ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
+            endCycleIndex = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
+
 
             var payloadNamesInCycle = cycles.Values.SelectMany(x => x.Functions.SelectMany(a => a.Payloads)).Distinct();
 
@@ -363,8 +369,7 @@ namespace AutosarBCM.Forms.Monitor
                 var payloadName = ioService.Payloads[i].PayloadInfo.Name;
                 if(payloadNamesInCurrentCycle != null)
                 {
-                    if (payloadNamesInCurrentCycle.Contains(payloadName) || openPayloadsOfScenario.Any(x => x.Contains(payloadName)) ||closePayloadsOfScenario.Any(innerList => innerList.Contains(payloadName)))
-                        openedPayloads.Add(payloadName);
+                    
                 }
 
 
@@ -401,20 +406,24 @@ namespace AutosarBCM.Forms.Monitor
                             {
                                 var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
                                 if (matchedControl == null)
-                                    return false;
+                                    return false; 
+
+                                if (openItemTypes.Any(o=> o == ioService.Payloads[i].FormattedValue))
+                                    openedPayloads.Add(sentMessage.itemType);
 
                                 if (!chkDisableUi.Checked)
                                     totalMessagesReceived++;
-                                Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
+                                Helper.WriteCycleMessageToLogFile(sentMessage.itemName, sentMessage.itemType, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
                                 matchedControl.ChangeStatus(ioService);
                                 sentMessagesDict.Remove(sentMessage.Id);
-                                break;
+                                continue;
+                                //maybe break
                             }
                         }
                     }
                 }
             }
-            if (loopVal == cycle.CloseAt)
+            if (loopVal == endCycleIndex)
                 ResetPayloads(cyclePayloads, payloadControlMap, cycleRange, int.Parse(lblCycleVal.Text));
             UpdateCounters();
             return true;
