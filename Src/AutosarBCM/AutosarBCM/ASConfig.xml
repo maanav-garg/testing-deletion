@@ -3482,7 +3482,7 @@
 						<Name>CycleLoad 61 - Group 1</Name>
 						<OpenAt>76</OpenAt>
 						<CloseAt>77</CloseAt>
-						<Functions>ü
+						<Functions>
 							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
@@ -3510,7 +3510,7 @@
 						<Name>CycleLoad 62 - Group 1</Name>
 						<OpenAt>77</OpenAt>
 						<CloseAt>78</CloseAt>
-						<Functions>ü
+						<Functions>
 							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
