@@ -416,14 +416,13 @@ namespace AutosarBCM.Forms.Monitor
                                 Helper.WriteCycleMessageToLogFile(sentMessage.itemName, sentMessage.itemType, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
                                 matchedControl.ChangeStatus(ioService);
                                 sentMessagesDict.Remove(sentMessage.Id);
-                                continue;
-                                //maybe break
+                                break;
                             }
                         }
                     }
                 }
             }
-            if (loopVal == endCycleIndex)
+            if (loopVal == cycle.CloseAt)
                 ResetPayloads(cyclePayloads, payloadControlMap, cycleRange, int.Parse(lblCycleVal.Text));
             UpdateCounters();
             return true;

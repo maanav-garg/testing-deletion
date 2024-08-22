@@ -408,23 +408,27 @@ namespace AutosarBCM
             {
                 lines = File.ReadAllLines(logFilePath).ToList();
             }
+            
+            if (count > 1 && !lines.Any(line => line.Contains($"{count - 1}. Group Finished")))
+            {
+                lines.Add($"Group Finished -- ({DateTime.Now.ToString("dd/MM_HH:mm:ss")}) {System.Environment.NewLine}");
+            }
 
             bool rangeHeaderExists = lines.Any(line => line.Contains(groupName));
             if (!rangeHeaderExists)
             {
-                if(count != 1)
-                    lines.Add($"{count-1}. Group Finished -- ({DateTime.Now.ToString("dd/MM_HH:mm:ss")}) {System.Environment.NewLine}");
                 lines.Add(rangeHeader);
             }
+
             int rangeHeaderIndex = lines.FindIndex(line => line.StartsWith(rangeHeader.Trim()));
-            if (rangeHeaderIndex != -1)
+            bool logMessageExists = lines.Skip(rangeHeaderIndex + 1).TakeWhile(line => !line.Contains("Group Finished")).Any(line => line.Contains(logMessage.Trim()));
+
+            if (!logMessageExists)
             {
-                bool logMessageExists = lines.Skip(rangeHeaderIndex + 1).TakeWhile(line => !line.Contains("Range")).Any(line => line.Contains(logMessage.Trim()));
-                if (!logMessageExists)
-                    lines.Add(logMessage);
-                File.WriteAllLines(logFilePath, lines);
+                lines.Add(logMessage);
             }
 
+            File.WriteAllLines(logFilePath, lines);
         }
 
 
