@@ -279,6 +279,14 @@ namespace AutosarBCM
             List<Function> functions = new List<Function>();
             foreach (var function in cycleDict.SelectMany(c => c.Value.CloseItems))
             {
+                if (function.Scenario != null)
+                {
+                    var func = functions.FirstOrDefault(x => x.Scenario == function.Scenario);
+                    if (func == null)
+                        functions.Add(function);
+                    continue;
+                }
+
                 var ctrl = functions.Where(f => f.Control == function.Control).FirstOrDefault();
                 if (ctrl == null)
                 {
