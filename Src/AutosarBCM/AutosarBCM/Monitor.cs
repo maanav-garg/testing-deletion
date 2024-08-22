@@ -428,9 +428,6 @@ namespace AutosarBCM
                 Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1);
                 reboots++;
                 Helper.SendExtendedDiagSession();
-
-                Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
-                Helper.SendExtendedDiagSession();
                 
                 if (reboots % cycleRange == 0)
                     FormEnvironmentalTest.openedPayloads.Clear();
