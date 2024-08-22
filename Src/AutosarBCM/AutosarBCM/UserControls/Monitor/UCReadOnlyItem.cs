@@ -234,12 +234,11 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(IOControlByIdentifierService service)
         {
-            if (Program.MappingStateDict.TryGetValue(ControlInfo.Name, out var errorLogDetect))
-                Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, GetMappingLogState(errorLogDetect.Operation)));
+            HandleMapping(service);
 
             if (Program.FormEnvironmentalTest.chkDisableUi.Checked)
                 return;
-            
+
             if (lblReceived.InvokeRequired)
             {
                 lblReceived.BeginInvoke((MethodInvoker)delegate ()
@@ -303,7 +302,35 @@ namespace AutosarBCM.UserControls.Monitor
                 var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
                 lblWriteStatus.Text = payload?.FormattedValue.ToString();
             });
-            
+
+        }
+
+        private void HandleMapping(IOControlByIdentifierService service)
+        {
+            var mappingResponse = MappingResponse.OutputError;
+            var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+
+            if (payload.PayloadInfo.TypeName == "DID_PWM")
+            {
+                int value = Convert.ToInt32(payload.FormattedValue.Replace("-", ""), 16);
+
+                if (value == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue)
+                    mappingResponse = MappingResponse.OutputOpen;
+                else if (value == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyCloseValue)
+                    mappingResponse = MappingResponse.OutputClose;
+            }
+            else
+            {
+                var value = ASContext.Configuration.GetPayloadInfoByType(payload.PayloadInfo.TypeName).GetPayloadValue(payload.Value);
+                if (value != null)
+                {
+                    if (value.IsOpen) mappingResponse = MappingResponse.OutputOpen;
+                    else if (value.IsClose) mappingResponse = MappingResponse.OutputClose;
+                }
+            }
+
+            if (Program.MappingStateDict.TryGetValue(payload.PayloadInfo.Name, out var errorLogDetect))
+                Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, mappingResponse));
         }
 
         /// <summary>
