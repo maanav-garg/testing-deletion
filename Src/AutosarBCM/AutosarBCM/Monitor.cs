@@ -293,6 +293,26 @@ namespace AutosarBCM
 
             foreach (var function in functions)
             {
+                if (function.Scenario != null)
+                {
+                    var scenario = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                    if (scenario == null)
+                        continue;
+
+                    var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
+                    var payloads = scenario.OpenPayloads.Union(scenario.ClosePayloads).ToDictionary(x => x, x => false);
+
+                    var scenarioBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (scenarioBitsOnOff)
+                    {
+                        controlInfo.SwitchForBits(payloads);
+                    }
+                    else
+                    {
+                        controlInfo.Switch(payloads);
+                    }
+                }
+
                 if (function?.ControlInfo == null)
                     continue;
                 var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off"); 
