@@ -156,6 +156,7 @@ namespace AutosarBCM
         }
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
+            return;
             // Tester present
             if (e.Data[0] == ServiceInfo.TesterPresent.RequestID)
                 return;

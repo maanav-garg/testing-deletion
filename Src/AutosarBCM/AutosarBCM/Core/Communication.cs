@@ -67,6 +67,7 @@ namespace AutosarBCM.Core
 
         public Service Parse()
         {
+            return null;
             if (Data[0] == ServiceInfo.TesterPresent.ResponseID)
             {
                 IsPositiveRx = true;

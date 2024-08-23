@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -337,5 +338,13 @@ namespace AutosarBCM{
             Helper.ApplyFilterAndRestoreSelection(dgvMessages, currentFilter);
         }
         #endregion
+
+        private void stopPeriodicMessageBtn_Click(object sender, EventArgs e)
+        {
+
+            var baseMessage = ((BaseMessage)dgvMessages.CurrentRow.DataBoundItem);
+            baseMessage.StopPeriodicMessage();
+
+        }
     }
 }

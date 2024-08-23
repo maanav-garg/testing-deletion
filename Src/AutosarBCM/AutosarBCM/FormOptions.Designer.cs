@@ -189,7 +189,7 @@ namespace AutosarBCM
             // 
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer.Location = new System.Drawing.Point(0, 24);
-            this.splitContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer.Name = "splitContainer";
             // 
             // splitContainer.Panel1
@@ -210,7 +210,7 @@ namespace AutosarBCM
             this.treeView.FullRowSelect = true;
             this.treeView.HideSelection = false;
             this.treeView.Location = new System.Drawing.Point(0, 0);
-            this.treeView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeView.Margin = new System.Windows.Forms.Padding(4);
             this.treeView.Name = "treeView";
             treeNode1.Name = "NodeToolGeneral";
             treeNode1.Text = "General";
@@ -246,7 +246,7 @@ namespace AutosarBCM
             this.tabControl.Controls.Add(this.tabEMCDataLimitation);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
-            this.tabControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(621, 429);
@@ -269,9 +269,9 @@ namespace AutosarBCM
             this.tabPageProp1.Controls.Add(this.textBoxUserName);
             this.tabPageProp1.Controls.Add(this.label1);
             this.tabPageProp1.Location = new System.Drawing.Point(4, 25);
-            this.tabPageProp1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageProp1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageProp1.Name = "tabPageProp1";
-            this.tabPageProp1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageProp1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageProp1.Size = new System.Drawing.Size(613, 400);
             this.tabPageProp1.TabIndex = 0;
             this.tabPageProp1.Text = "Config group 1";
@@ -290,7 +290,7 @@ namespace AutosarBCM
             // numRollingAfter
             // 
             this.numRollingAfter.Location = new System.Drawing.Point(103, 132);
-            this.numRollingAfter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numRollingAfter.Margin = new System.Windows.Forms.Padding(4);
             this.numRollingAfter.Maximum = new decimal(new int[] {
             20,
             0,
@@ -343,7 +343,7 @@ namespace AutosarBCM
             // btnBrowse
             // 
             this.btnBrowse.Location = new System.Drawing.Point(103, 206);
-            this.btnBrowse.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnBrowse.Margin = new System.Windows.Forms.Padding(4);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(100, 28);
             this.btnBrowse.TabIndex = 8;
@@ -354,7 +354,7 @@ namespace AutosarBCM
             // txtFilePath
             // 
             this.txtFilePath.Location = new System.Drawing.Point(103, 165);
-            this.txtFilePath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtFilePath.Margin = new System.Windows.Forms.Padding(4);
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.Size = new System.Drawing.Size(272, 22);
             this.txtFilePath.TabIndex = 7;
@@ -372,7 +372,7 @@ namespace AutosarBCM
             // numFlushToFile
             // 
             this.numFlushToFile.Location = new System.Drawing.Point(103, 100);
-            this.numFlushToFile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numFlushToFile.Margin = new System.Windows.Forms.Padding(4);
             this.numFlushToFile.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -395,7 +395,7 @@ namespace AutosarBCM
             // numFlushToUI
             // 
             this.numFlushToUI.Location = new System.Drawing.Point(103, 66);
-            this.numFlushToUI.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numFlushToUI.Margin = new System.Windows.Forms.Padding(4);
             this.numFlushToUI.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -438,7 +438,7 @@ namespace AutosarBCM
             // textBoxUserName
             // 
             this.textBoxUserName.Location = new System.Drawing.Point(103, 23);
-            this.textBoxUserName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxUserName.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxUserName.Name = "textBoxUserName";
             this.textBoxUserName.Size = new System.Drawing.Size(132, 22);
             this.textBoxUserName.TabIndex = 1;
@@ -471,10 +471,10 @@ namespace AutosarBCM
             this.tabPageProp2.Controls.Add(this.txtTransmitAdress);
             this.tabPageProp2.Controls.Add(this.lblTransmitAdress);
             this.tabPageProp2.Location = new System.Drawing.Point(4, 25);
-            this.tabPageProp2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageProp2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageProp2.Name = "tabPageProp2";
-            this.tabPageProp2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPageProp2.Size = new System.Drawing.Size(612, 394);
+            this.tabPageProp2.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPageProp2.Size = new System.Drawing.Size(613, 400);
             this.tabPageProp2.TabIndex = 1;
             this.tabPageProp2.Text = "General";
             this.tabPageProp2.UseVisualStyleBackColor = true;
@@ -527,7 +527,7 @@ namespace AutosarBCM
             // txtPaddingByte
             // 
             this.txtPaddingByte.Location = new System.Drawing.Point(197, 153);
-            this.txtPaddingByte.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPaddingByte.Margin = new System.Windows.Forms.Padding(4);
             this.txtPaddingByte.MaxLength = 2;
             this.txtPaddingByte.Name = "txtPaddingByte";
             this.txtPaddingByte.Size = new System.Drawing.Size(132, 22);
@@ -547,7 +547,7 @@ namespace AutosarBCM
             // txtStMin
             // 
             this.txtStMin.Location = new System.Drawing.Point(197, 121);
-            this.txtStMin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtStMin.Margin = new System.Windows.Forms.Padding(4);
             this.txtStMin.MaxLength = 2;
             this.txtStMin.Name = "txtStMin";
             this.txtStMin.Size = new System.Drawing.Size(132, 22);
@@ -567,7 +567,7 @@ namespace AutosarBCM
             // txtBlockSize
             // 
             this.txtBlockSize.Location = new System.Drawing.Point(197, 89);
-            this.txtBlockSize.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBlockSize.Margin = new System.Windows.Forms.Padding(4);
             this.txtBlockSize.MaxLength = 2;
             this.txtBlockSize.Name = "txtBlockSize";
             this.txtBlockSize.Size = new System.Drawing.Size(132, 22);
@@ -587,7 +587,7 @@ namespace AutosarBCM
             // txtReceiveAdress
             // 
             this.txtReceiveAdress.Location = new System.Drawing.Point(197, 57);
-            this.txtReceiveAdress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtReceiveAdress.Margin = new System.Windows.Forms.Padding(4);
             this.txtReceiveAdress.MaxLength = 3;
             this.txtReceiveAdress.Name = "txtReceiveAdress";
             this.txtReceiveAdress.Size = new System.Drawing.Size(132, 22);
@@ -607,7 +607,7 @@ namespace AutosarBCM
             // txtTransmitAdress
             // 
             this.txtTransmitAdress.Location = new System.Drawing.Point(197, 26);
-            this.txtTransmitAdress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTransmitAdress.Margin = new System.Windows.Forms.Padding(4);
             this.txtTransmitAdress.MaxLength = 3;
             this.txtTransmitAdress.Name = "txtTransmitAdress";
             this.txtTransmitAdress.Size = new System.Drawing.Size(132, 22);
@@ -643,10 +643,10 @@ namespace AutosarBCM
             this.tabSerialPort.Controls.Add(this.txtPort);
             this.tabSerialPort.Controls.Add(this.lblPort);
             this.tabSerialPort.Location = new System.Drawing.Point(4, 25);
-            this.tabSerialPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabSerialPort.Margin = new System.Windows.Forms.Padding(4);
             this.tabSerialPort.Name = "tabSerialPort";
-            this.tabSerialPort.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabSerialPort.Size = new System.Drawing.Size(612, 394);
+            this.tabSerialPort.Padding = new System.Windows.Forms.Padding(4);
+            this.tabSerialPort.Size = new System.Drawing.Size(613, 400);
             this.tabSerialPort.TabIndex = 2;
             this.tabSerialPort.Text = "Serial Port";
             this.tabSerialPort.UseVisualStyleBackColor = true;
@@ -672,7 +672,7 @@ namespace AutosarBCM
             "Mark",
             "Space"});
             this.cmbSerialPortType.Location = new System.Drawing.Point(125, 15);
-            this.cmbSerialPortType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbSerialPortType.Margin = new System.Windows.Forms.Padding(4);
             this.cmbSerialPortType.Name = "cmbSerialPortType";
             this.cmbSerialPortType.Size = new System.Drawing.Size(132, 24);
             this.cmbSerialPortType.TabIndex = 17;
@@ -680,7 +680,7 @@ namespace AutosarBCM
             // numWriteTimeout
             // 
             this.numWriteTimeout.Location = new System.Drawing.Point(125, 242);
-            this.numWriteTimeout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numWriteTimeout.Margin = new System.Windows.Forms.Padding(4);
             this.numWriteTimeout.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -708,7 +708,7 @@ namespace AutosarBCM
             // numReadTimeout
             // 
             this.numReadTimeout.Location = new System.Drawing.Point(125, 210);
-            this.numReadTimeout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numReadTimeout.Margin = new System.Windows.Forms.Padding(4);
             this.numReadTimeout.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -743,7 +743,7 @@ namespace AutosarBCM
             "Two",
             "OnePointFive"});
             this.cmbStopBits.Location = new System.Drawing.Point(125, 175);
-            this.cmbStopBits.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbStopBits.Margin = new System.Windows.Forms.Padding(4);
             this.cmbStopBits.Name = "cmbStopBits";
             this.cmbStopBits.Size = new System.Drawing.Size(132, 24);
             this.cmbStopBits.TabIndex = 12;
@@ -759,7 +759,7 @@ namespace AutosarBCM
             "Mark",
             "Space"});
             this.cmbParity.Location = new System.Drawing.Point(125, 143);
-            this.cmbParity.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbParity.Margin = new System.Windows.Forms.Padding(4);
             this.cmbParity.Name = "cmbParity";
             this.cmbParity.Size = new System.Drawing.Size(132, 24);
             this.cmbParity.TabIndex = 11;
@@ -767,7 +767,7 @@ namespace AutosarBCM
             // numDataBits
             // 
             this.numDataBits.Location = new System.Drawing.Point(125, 112);
-            this.numDataBits.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numDataBits.Margin = new System.Windows.Forms.Padding(4);
             this.numDataBits.Name = "numDataBits";
             this.numDataBits.Size = new System.Drawing.Size(133, 22);
             this.numDataBits.TabIndex = 10;
@@ -775,7 +775,7 @@ namespace AutosarBCM
             // numBaudRate
             // 
             this.numBaudRate.Location = new System.Drawing.Point(125, 80);
-            this.numBaudRate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numBaudRate.Margin = new System.Windows.Forms.Padding(4);
             this.numBaudRate.Maximum = new decimal(new int[] {
             99999999,
             0,
@@ -828,7 +828,7 @@ namespace AutosarBCM
             // txtPort
             // 
             this.txtPort.Location = new System.Drawing.Point(125, 48);
-            this.txtPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPort.Margin = new System.Windows.Forms.Padding(4);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(132, 22);
             this.txtPort.TabIndex = 1;
@@ -1023,7 +1023,7 @@ namespace AutosarBCM
             this.tabFilterPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabFilterPage.Name = "tabFilterPage";
             this.tabFilterPage.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabFilterPage.Size = new System.Drawing.Size(612, 394);
+            this.tabFilterPage.Size = new System.Drawing.Size(613, 400);
             this.tabFilterPage.TabIndex = 4;
             this.tabFilterPage.Text = "TX/RX Filter";
             this.tabFilterPage.UseVisualStyleBackColor = true;
@@ -1085,10 +1085,10 @@ namespace AutosarBCM
             this.tabEMCDataLimitation.Controls.Add(this.lblEMCDataLimit);
             this.tabEMCDataLimitation.Controls.Add(this.tbEMCDataLimit);
             this.tabEMCDataLimitation.Location = new System.Drawing.Point(4, 25);
-            this.tabEMCDataLimitation.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabEMCDataLimitation.Margin = new System.Windows.Forms.Padding(4);
             this.tabEMCDataLimitation.Name = "tabEMCDataLimitation";
-            this.tabEMCDataLimitation.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabEMCDataLimitation.Size = new System.Drawing.Size(612, 394);
+            this.tabEMCDataLimitation.Padding = new System.Windows.Forms.Padding(4);
+            this.tabEMCDataLimitation.Size = new System.Drawing.Size(613, 400);
             this.tabEMCDataLimitation.TabIndex = 5;
             this.tabEMCDataLimitation.Text = "EMC Data Limitation";
             this.tabEMCDataLimitation.UseVisualStyleBackColor = true;
@@ -1107,7 +1107,7 @@ namespace AutosarBCM
             // tbEMCDataLimit
             // 
             this.tbEMCDataLimit.Location = new System.Drawing.Point(188, 39);
-            this.tbEMCDataLimit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbEMCDataLimit.Margin = new System.Windows.Forms.Padding(4);
             this.tbEMCDataLimit.Name = "tbEMCDataLimit";
             this.tbEMCDataLimit.Size = new System.Drawing.Size(132, 22);
             this.tbEMCDataLimit.TabIndex = 0;
@@ -1119,7 +1119,7 @@ namespace AutosarBCM
             this.panel1.Controls.Add(this.buttonCancel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 453);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(832, 44);
             this.panel1.TabIndex = 2;
@@ -1128,7 +1128,7 @@ namespace AutosarBCM
             // 
             this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonOk.Location = new System.Drawing.Point(612, 9);
-            this.buttonOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonOk.Margin = new System.Windows.Forms.Padding(4);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(100, 28);
             this.buttonOk.TabIndex = 1;
@@ -1140,7 +1140,7 @@ namespace AutosarBCM
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Location = new System.Drawing.Point(720, 9);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(100, 28);
             this.buttonCancel.TabIndex = 0;
@@ -1157,7 +1157,7 @@ namespace AutosarBCM
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormOptions";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
