@@ -68,7 +68,7 @@ namespace AutosarBCM.Forms.Monitor
             mappingData = new List<Mapping>(ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
             continuousReadData = (ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
 
-            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.Functions.SelectMany(a => a.Payloads)).Distinct();
+            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.OpenItems.SelectMany(a => a.Payloads).Concat(x.CloseItems.SelectMany(a => a.Payloads))).Distinct();
 
             var controlNamesInCycle = cycles.Values
                 .SelectMany(x => x.Functions)

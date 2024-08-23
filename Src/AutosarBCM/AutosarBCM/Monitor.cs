@@ -466,7 +466,7 @@ namespace AutosarBCM
 
             stopwatch.Stop();
             var elapsed = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleTime - stopwatch.ElapsedMilliseconds;
-            if (elapsed < 0)
+            if (elapsed <= 0)
                 TickHandler(softContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots);
             else
                 timer.Next((int)elapsed);
