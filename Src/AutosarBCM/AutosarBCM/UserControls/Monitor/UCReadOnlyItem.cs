@@ -312,7 +312,7 @@ namespace AutosarBCM.UserControls.Monitor
 
             if (payload.PayloadInfo.TypeName == "DID_PWM")
             {
-                int value = Convert.ToInt32(payload.FormattedValue.Replace("-", ""), 16);
+                short value = short.Parse(payload.FormattedValue);
 
                 if (value == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue)
                     mappingResponse = MappingResponse.OutputOpen;
