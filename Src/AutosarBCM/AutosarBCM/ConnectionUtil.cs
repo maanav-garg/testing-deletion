@@ -78,6 +78,7 @@ namespace AutosarBCM
                 InitHardware(hardware);
 
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+
                 formMain.txtTrace.ForeColor = Color.Blue;
                 formMain.openConnection.Text = "Stop Connection";
                 formMain.openConnection.Image = formMain.imageList1.Images[3];
@@ -233,6 +234,11 @@ namespace AutosarBCM
                 foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
                     if (receiver.Receive(service)) continue;
             }
+            else if (service?.ServiceInfo == ServiceInfo.WriteDataByIdentifier)
+            {
+                foreach (var receiver in FormMain.Receivers.OfType<IWriteByIdenReceiver>())
+                    if (receiver.Receive(service)) continue;
+            }
             else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
                     || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
             {
@@ -342,6 +348,7 @@ namespace AutosarBCM
                         transportProtocol.Config.PhysicalAddr.TxId = (uint)canId;
                     else
                         transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
+                    formMain.AppendTrace($"Message Sent: {BitConverter.ToString(dataBytes)}");
                     transportProtocol.SendBytes(dataBytes);
                 }
                 catch (Exception ex)

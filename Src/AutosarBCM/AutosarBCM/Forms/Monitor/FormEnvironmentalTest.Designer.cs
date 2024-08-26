@@ -51,6 +51,7 @@
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.lblHour = new System.Windows.Forms.Label();
             this.lblCol1 = new System.Windows.Forms.Label();
+            this.chkDisableUi = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -222,10 +223,10 @@
             // 
             this.lblLoopVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblLoopVal.ForeColor = System.Drawing.Color.Orange;
-            this.lblLoopVal.Location = new System.Drawing.Point(700, 9);
+            this.lblLoopVal.Location = new System.Drawing.Point(700, 6);
             this.lblLoopVal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblLoopVal.Name = "lblLoopVal";
-            this.lblLoopVal.Size = new System.Drawing.Size(21, 15);
+            this.lblLoopVal.Size = new System.Drawing.Size(31, 15);
             this.lblLoopVal.TabIndex = 10;
             this.lblLoopVal.Text = "00";
             // 
@@ -233,7 +234,7 @@
             // 
             this.lblCycleVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCycleVal.ForeColor = System.Drawing.Color.Orange;
-            this.lblCycleVal.Location = new System.Drawing.Point(778, 9);
+            this.lblCycleVal.Location = new System.Drawing.Point(778, 6);
             this.lblCycleVal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCycleVal.Name = "lblCycleVal";
             this.lblCycleVal.Size = new System.Drawing.Size(39, 15);
@@ -282,11 +283,22 @@
             this.lblCol1.TabIndex = 15;
             this.lblCol1.Text = ":";
             // 
+            // chkDisableUi
+            // 
+            this.chkDisableUi.AutoSize = true;
+            this.chkDisableUi.Location = new System.Drawing.Point(835, 7);
+            this.chkDisableUi.Name = "chkDisableUi";
+            this.chkDisableUi.Size = new System.Drawing.Size(133, 17);
+            this.chkDisableUi.TabIndex = 16;
+            this.chkDisableUi.Text = "Disable UI Interactions";
+            this.chkDisableUi.UseVisualStyleBackColor = true;
+            // 
             // FormEnvironmentalTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 761);
+            this.Controls.Add(this.chkDisableUi);
             this.Controls.Add(this.lblCol1);
             this.Controls.Add(this.lblHour);
             this.Controls.Add(this.lblCol2);
@@ -335,5 +347,6 @@
         private System.Windows.Forms.ToolStripLabel tslTransmitted;
         private System.Windows.Forms.ToolStripLabel tslDiff;
         private System.Windows.Forms.ToolStripDropDownButton tsbConfigurationSelection;
+        internal System.Windows.Forms.CheckBox chkDisableUi;
     }
 }
