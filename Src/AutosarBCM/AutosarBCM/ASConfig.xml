@@ -71,7 +71,7 @@
 	<Controls>
 		<Control>
 			<Address>DE00</Address>
-			<Name>DE00</Name>
+			<Name>DE00</Name>	
 			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
@@ -1809,6 +1809,7 @@
 				<Response serviceId="6E"></Response>
 			</Responses>
 		</Control>
+		<!--Important: deactivated because there was no response in the control.-->
 		<Control>
 			<Address>402A</Address>
 			<Name>Vehicle_Battery_Voltage</Name>

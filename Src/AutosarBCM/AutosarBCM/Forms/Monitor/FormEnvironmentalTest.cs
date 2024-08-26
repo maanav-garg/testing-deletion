@@ -78,13 +78,13 @@ namespace AutosarBCM.Forms.Monitor
                 .SelectMany(x => x.Functions)
                     .Select(b => b.Scenario).Where(s => s != null).Distinct();
 
-            openPayloadsOfScenario = from scenario in scenarios
-                                       join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
-                                       select scenario.OpenPayloads;
+            var openPayloadsOfScenario = from scenario in scenarios
+                                         join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                         select scenario.OpenPayloads;
 
-            closePayloadsOfScenario = from scenario in scenarios
-                                        join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
-                                        select scenario.ClosePayloads;
+            var closePayloadsOfScenario = from scenario in scenarios
+                                          join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                          select scenario.ClosePayloads;
 
             groups.Add("DID", new List<UCReadOnlyItem>());
 
@@ -92,7 +92,7 @@ namespace AutosarBCM.Forms.Monitor
             {
                 foreach (var payload in ctrl.Responses[0].Payloads)
                 {
-                    if ((payloadNamesInCycle.Contains(payload.Name) && controlNamesInCycle.Contains(ctrl.Name))|| 
+                    if ((payloadNamesInCycle.Contains(payload.Name) && controlNamesInCycle.Contains(ctrl.Name))||
                         openPayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)) ||
                         closePayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)))
                     {
@@ -413,6 +413,12 @@ namespace AutosarBCM.Forms.Monitor
             IEnumerable<string> payloadNamesInCurrentCycle = null;
             IEnumerable<string> scenarioNamesInCurrentCycle = null;
             IEnumerable<string> allScenariosInCurrentCycle = null;
+
+            for (var i = 0; i < ioService.Payloads.Count; i++)
+            {
+                Console.WriteLine($"Outloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
+            }
+
             int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
                 return false;
@@ -458,7 +464,9 @@ namespace AutosarBCM.Forms.Monitor
                     if (payloadNamesInCurrentCycle.Contains(payloadName) || openPayloadsOfScenario.Any(x => x.Contains(payloadName)) ||closePayloadsOfScenario.Any(innerList => innerList.Contains(payloadName)))
                         openedPayloads.Add(payloadName);
                 }
-                
+
+                Console.WriteLine($"Inloop Control Name: {ioService.Payloads[i].PayloadInfo.Name} -- Val: {ioService.Payloads[i].FormattedValue}");
+
                 if (cycle.OpenItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || cycle.CloseItems.SelectMany(p => p.Payloads).Any(x => x == ioService.Payloads[i].PayloadInfo.Name) || ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => cycle.OpenItems.Union(cycle.CloseItems).Where(a => a.Scenario != null).Select(b => b.Scenario).Contains(s.Name)).Any(s => s.OpenPayloads.Union(s.ClosePayloads).Contains(ioService.Payloads[i].PayloadInfo.Name)))
                 { 
                     matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
@@ -487,6 +495,7 @@ namespace AutosarBCM.Forms.Monitor
                             }
                             break;
                         }
+
                     }
                 }
             }
@@ -543,6 +552,12 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleReadDataByIdenService(ReadDataByIdenService readByIdenService)
         {
+
+            for (var i = 0; i < readByIdenService.Payloads.Count; i++)
+            {
+                Console.WriteLine($"Outloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
+            }
+
             int loopVal;
             if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
             {
@@ -555,6 +570,9 @@ namespace AutosarBCM.Forms.Monitor
 
             for (var i = 0; i < readByIdenService.Payloads.Count; i++)
             {
+
+                Console.WriteLine($"Inloop Control Name2: {readByIdenService.Payloads[i].PayloadInfo.Name} -- Val: {readByIdenService.Payloads[i].FormattedValue}");
+
                 if (cycle.Functions.SelectMany(p => p.Payloads).Any(x => x == readByIdenService.Payloads[i].PayloadInfo.Name))
                 {
                     Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, "Test123", "", "", readByIdenService.Payloads[i].FormattedValue);
@@ -753,6 +771,7 @@ namespace AutosarBCM.Forms.Monitor
         }
         private void ReloadControls()
         {
+
             tsbConfigurationSelection.Enabled = false;
             groups.Clear();
             cycles.Clear();

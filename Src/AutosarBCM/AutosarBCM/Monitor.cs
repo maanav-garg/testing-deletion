@@ -183,7 +183,7 @@ namespace AutosarBCM
 
                             var controlItem = controlItems.Where(x => x.Name.Equals(funcName.Control)).FirstOrDefault();
                             if (controlItem != null)
-                                continousReadList.Add(controlItem,funcName.Name);
+                                continousReadList.Add(controlItem, funcName.Name);
 
                         }
                         //continousReadList = continousReadList.Distinct;
@@ -202,7 +202,7 @@ namespace AutosarBCM
 
                         ThreadSleep(250);
 
-                        StopEnvironmentalTest(cycleDict,dictMapping);
+                        StopEnvironmentalTest(cycleDict, dictMapping);
                     }
                 }
                 finally
@@ -260,13 +260,13 @@ namespace AutosarBCM
             formEnvTest.SetCounter(1, 1);
             timer = new MMTimer(0, MMTimer.EventType.OneTime, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File: " + FormMain.fileName, Constants.DefaultEscapeCharacter);
-            Helper.WriteErrorMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File: " + FormMain.fileName, string.Empty, string.Empty);
+            Helper.WriteErrorMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File: " + FormMain.fileName, Constants.DefaultEscapeCharacter);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
             timer.Next(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleTime);
             while (!cancellationToken.IsCancellationRequested)
                 ThreadSleep(250);
             timer.Stop();
-            
+
         }
 
         private static void StopEnvironmentalTest(Dictionary<int, Cycle> cycleDict, Dictionary<string, (Mapping, ControlInfo)> dictMapping)
@@ -323,7 +323,7 @@ namespace AutosarBCM
 
                 if (function?.ControlInfo == null)
                     continue;
-                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off"); 
+                var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
                 if (hasDIDBitsOnOff)
                 {
                     function.ControlInfo.SwitchForBits(function.Payloads.Distinct().ToList(), false);
@@ -409,11 +409,14 @@ namespace AutosarBCM
 
             if (cycleDict.TryGetValue(cycleIndex + 1, out Cycle cycle))
             {
-                if(!(cycleIndex+1 == 16 &&  reboots+1 == 1))
+                if (!(cycleIndex + 1 == 16 && reboots + 1 == 1))
                     StopCycle(cycle, dictMapping);
                 StartCycle(cycle, dictMapping);
             }
 
+
+
+            //Console.WriteLine(Constants.StartProcessCompleted);
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
 
@@ -428,7 +431,9 @@ namespace AutosarBCM
                     {
                         ThreadSleep(txInterval);
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
-                        
+
+                        Console.WriteLine($"Send Continousitem: {item.Name} inputName: {continousReadList[item]}");
+
                         Helper.WriteCycleMessageToLogFile(item.Name, continousReadList[item], Constants.ContinousRead);
                     }
                     //TODO to be added again
@@ -516,20 +521,20 @@ namespace AutosarBCM
 
                 if(function.Control != null && !function.Control.Contains(Constants.DummyControl))
                 {
-                        var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                        if (hasDIDBitsOnOff)
-                        {
-                            function.ControlInfo.SwitchForBits(function.Payloads, true);
-                        }
-                        else
-                        {
-                            function.ControlInfo.Switch(function.Payloads, true);
-                        }
+                    var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (hasDIDBitsOnOff)
+                    {
+                        function.ControlInfo.SwitchForBits(function.Payloads, true);
+                    }
+                    else
+                    {
+                        function.ControlInfo.Switch(function.Payloads, true);
+                    }
 
-                        CloseSensitiveControls(function.ControlInfo, function.Payloads);
+                    CloseSensitiveControls(function.ControlInfo, function.Payloads);
                 }
-                
-                if(function.Scenario != null)
+
+                if (function.Scenario != null)
                 {
                     var scenario = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
                     if (scenario == null)
@@ -654,8 +659,8 @@ namespace AutosarBCM
                         function.ControlInfo.Switch(nonSensitivePayloads, false);
                     }
                 }
-                    
-                if(function.Scenario != null)
+
+                if (function.Scenario != null)
                 {
                     var scenario = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
                     if (scenario == null)

@@ -551,6 +551,14 @@ namespace AutosarBCM
                 return;
             }
         }
+        public static void SendDefaultSession()
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+            var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.ID == 0x01);
+            ASContext.CurrentSession = sessionInfo;
+            new DiagnosticSessionControl().Transmit(sessionInfo);
+        }
 
         #endregion
     }

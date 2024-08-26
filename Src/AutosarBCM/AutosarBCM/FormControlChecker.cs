@@ -94,7 +94,7 @@ namespace AutosarBCM
         private void btnStart_Click(object sender, EventArgs e)
         {
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
-            
+
 
             Task.Run(async () =>
             {
@@ -215,7 +215,8 @@ namespace AutosarBCM
                     {
                         var cInf = (ControlInfo)row.Tag;
                         var hasDIDBitsOnOff = cInf.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                        if (hasDIDBitsOnOff)
+                        var isDoorLock = cInf.Address.Equals(0xC51);
+                        if (hasDIDBitsOnOff || isDoorLock)
                         {
                             ciDictBits.Add(row.Cells[2].Value.ToString(), (new List<string> { row.Cells[2].Value.ToString() }, false));
                         }
@@ -236,12 +237,13 @@ namespace AutosarBCM
                     {
                         var item = ciDict.Keys.ElementAt(i);
                         var hasDIDBitsOnOff = item.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-                        if (item.Address == 0xDF5E)
-                        {
-                            continue;
-                        }
+                        var isDoorLock = item.Address.Equals(0xC51);
+                        //if (item.Address == 0xDF5E)
+                        //{
+                        //    continue;
+                        //}
 
-                        if (hasDIDBitsOnOff)
+                        if (hasDIDBitsOnOff || isDoorLock)
                         {
                             item.SwitchForBits(ciDictBits.Keys.ToList(), true);
                             await Task.Delay(txIntervalCC);
@@ -835,7 +837,7 @@ namespace AutosarBCM
         #endregion
 
         #region Public Methods
-        
+
         public void UpdateUI(Action updateAction)
         {
             if (this.InvokeRequired)

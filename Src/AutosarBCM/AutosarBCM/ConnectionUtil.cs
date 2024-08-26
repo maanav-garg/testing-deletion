@@ -332,12 +332,12 @@ namespace AutosarBCM
         public static void TransmitData(uint canId, byte[] dataBytes)
         {
             if (Thread.CurrentThread != Program.UIThread)
-                TransmitDataInternal(dataBytes,canId);
+                TransmitDataInternal(dataBytes, canId);
             else
-                Task.Run(() => TransmitDataInternal(dataBytes,canId));
+                Task.Run(() => TransmitDataInternal(dataBytes, canId));
         }
 
-        private static void TransmitDataInternal( byte[] dataBytes, uint? canId = null)
+        private static void TransmitDataInternal(byte[] dataBytes, uint? canId = null)
         {
             FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
             lock (lockObj)
@@ -736,7 +736,7 @@ namespace AutosarBCM
                         formMain.Invoke(new MethodInvoker(() => formMain.SetEmbeddedSoftwareVersion(embeddedSwVersion)));
                     else
                         formMain.SetEmbeddedSoftwareVersion(embeddedSwVersion);
-                    
+
                 }
             }
         }
