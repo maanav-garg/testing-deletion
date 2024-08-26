@@ -80,7 +80,7 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return WriteDataByIdentifierService.Receive(this);
             }
-            else if (Data[0] == ServiceInfo.ReadDTCInformation.ResponseID)
+            else if (Data[0] == ServiceInfo.ReadDTCInformation?.ResponseID)
             {
                 IsPositiveRx = true;
                 return ReadDTCInformationService.Receive(this);
@@ -96,7 +96,7 @@ namespace AutosarBCM.Core
                 IsPositiveRx = true;
                 return DiagnosticSessionControl.Receive(this);
             }
-            else if (Data[0] == ServiceInfo.NegativeResponse.ResponseID)
+            else if (Data[0] == ServiceInfo.NegativeResponse?.ResponseID)
             {
                 if (Enum.IsDefined(typeof(NRCDescription), Data[2]))
                     NegativeResponseCode = ((NRCDescription)Data[2]).ToString();

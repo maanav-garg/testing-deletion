@@ -375,47 +375,8 @@ namespace AutosarBCM
             errorLogMessageTimer.Start();
         }
 
-
-/*        private void LoadODXDoc()
-        {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Odx|*.odx";
-            openFileDialog.Multiselect = false;
-            openFileDialog.RestoreDirectory = true;
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var filePath = openFileDialog.FileName;
-                ParseMessages(filePath);
-                ASContext = new ASContext(filePath);
-                LoadSessions();
-
-                if (ASContext.Configuration == null)
-                    return;
-                else
-                    tspFilterTxb.Enabled = true;
-
-                if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput genericInput)
-                {
-                    genericInput.ClearPreviousConfiguration();
-                    genericInput.LoadConfiguration(ASContext.Configuration);
-                    formDTCPanel.LoadConfiguration();
-                    if (tsbSession.Text != "Session: N/A")
-                    {
-                        genericInput.SessionFiltering();
-                    }
-                    //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
-                }
-                else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
-                {
-                    envInput.LoadConfiguration(Configuration);
-                    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
-                }
-            }
-        }*/
-
         private void LoadXMLDoc()
         {
-
             var openFileDialog = new OpenFileDialog();
             if (isMdxFile)
                 openFileDialog.Filter = "Mdx|*.mdx";
@@ -524,8 +485,6 @@ namespace AutosarBCM
 
             #endregion
 
-            var progressForm = new FormProgress();
-            var resultArgs = progressForm.Run(doWork);
             if (resultArgs.Error == null)
             {
                 #region write to trace

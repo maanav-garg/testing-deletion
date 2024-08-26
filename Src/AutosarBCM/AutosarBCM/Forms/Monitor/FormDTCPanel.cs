@@ -81,6 +81,8 @@ namespace AutosarBCM.Forms.Monitor
 
         internal void Session_Changed()
         {
+            pnlMonitor.Enabled = true;
+            return;
             pnlMonitor.Enabled = ServiceInfo.ReadDTCInformation.Sessions.Contains(ASContext.CurrentSession.ID);
         }
 
