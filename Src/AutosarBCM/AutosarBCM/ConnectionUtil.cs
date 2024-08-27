@@ -401,7 +401,8 @@ namespace AutosarBCM
                         transportProtocol.Config.PhysicalAddr.TxId = (uint)canId;
                     else
                         transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
-                    formMain.AppendTrace($"Message Sent: {BitConverter.ToString(dataBytes)}");
+                    if (Settings.Default.DebugLogging)
+                        formMain.AppendTrace($"Message Sent: {BitConverter.ToString(dataBytes)}");
                     transportProtocol.SendBytes(dataBytes);
                 }
                 catch (Exception ex)

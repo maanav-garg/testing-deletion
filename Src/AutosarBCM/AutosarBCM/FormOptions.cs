@@ -7,6 +7,7 @@ using Connection.Hardware.SP;
 using AutosarBCM.Properties;
 using System.Linq;
 using System.Collections.Specialized;
+using AutosarBCM.Forms;
 
 namespace AutosarBCM
 {
@@ -71,6 +72,7 @@ namespace AutosarBCM
             numRollingAfter.Value = Settings.Default.RollingAfter;
             txtFilePath.Text = Settings.Default.TraceFilePath;
             tbEMCDataLimit.Text = Settings.Default.EmcDataLimit;
+            chkDebugLogging.Checked = Settings.Default.DebugLogging;
 
             foreach (var item in Settings.Default.FilterData)
             {
@@ -205,6 +207,7 @@ namespace AutosarBCM
             Settings.Default.RollingAfter = (int)numRollingAfter.Value;
             Settings.Default.TraceFilePath = txtFilePath.Text;
             Settings.Default.EmcDataLimit = tbEMCDataLimit.Text;
+            Settings.Default.DebugLogging = chkDebugLogging.Checked;
 
             var intrepidDevice = new IntrepidCsCan()
             {
