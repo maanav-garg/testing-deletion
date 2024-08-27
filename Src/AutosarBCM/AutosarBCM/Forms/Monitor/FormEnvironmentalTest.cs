@@ -415,7 +415,8 @@ namespace AutosarBCM.Forms.Monitor
                 {
                     OpenedControlList.Add(sentMessage);
                     var fIndex = UnopenedControlList.FindIndex(u => u.itemType == sentMessage.itemType && u.itemName == sentMessage.itemName);
-                    UnopenedControlList.RemoveAt(fIndex);
+                    if(fIndex != -1)
+                        UnopenedControlList.RemoveAt(fIndex);
                 }
                 else
                 {
@@ -452,14 +453,12 @@ namespace AutosarBCM.Forms.Monitor
         {
             if (payload.FormattedValue == ASContext.Configuration.GetPayloadInfoByType(payload.PayloadInfo.TypeName).Values.FirstOrDefault(x => x.IsOpen == true)?.FormattedValue
                 || (payload.PayloadInfo.TypeName == "DID_PWM" && payload.FormattedValue == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue.ToString()) 
-                || (payload.PayloadInfo.TypeName == "HexDump_1Byte" && int.Parse(payload.FormattedValue) == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.HexDump1ByteOpenValue))
+                || (payload.PayloadInfo.TypeName == "HexDump_1Byte" && payload.FormattedValue == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.HexDump1ByteOpenValue))
             {
                 return true;
             }
             else
                 return false;
-
-
         }
 
         /// <summary>
@@ -483,11 +482,13 @@ namespace AutosarBCM.Forms.Monitor
 
             foreach (var msg in messagesToRemove)
             {
-                if (msg.operation == Constants.Opened)
+                
+                if (!OpenedControlList.Any(u => u.itemType == msg.itemType && u.itemName == msg.itemName) && msg.operation == Constants.Opened)
                 {
                     if (!UnopenedControlList.Any(u => u.itemType == msg.itemType && u.itemName == msg.itemName) && msg.operation == Constants.Opened)
                         UnopenedControlList.Add(msg);
                 }
+                
                 sentMessagesList.Remove(msg);
             }
                 

@@ -177,6 +177,8 @@ namespace AutosarBCM
                         //var continousReadList = new List<InputMonitorItem>();
                         Dictionary<ControlInfo, string> continousReadList = new Dictionary<ControlInfo, string>();
                         Helper.InitializeUnopenedPayloadLogFile();
+                        FormEnvironmentalTest.OpenedControlList.Clear();
+                        FormEnvironmentalTest.UnopenedControlList.Clear();
 
                         var cycleDict = GetCycleDict(cycles);
 
@@ -810,6 +812,7 @@ namespace AutosarBCM
             var groupStartCount = ((reboots - 1) / cycleRange) * cycleRange;
             Helper.WriteUnopenedPayloadsToLogFile(FormEnvironmentalTest.UnopenedControlList, groupStartCount, reboots, cycleRange, RangeStartTime, DateTime.Now.ToString("dd-MM-yyyy_HH:mm:ss"));
             FormEnvironmentalTest.UnopenedControlList.Clear();
+            FormEnvironmentalTest.OpenedControlList.Clear();
         }
 
         #endregion
