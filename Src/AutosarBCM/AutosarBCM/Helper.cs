@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -10,6 +10,7 @@ using System.Linq;
 using AutosarBCM.Config;
 using System.ComponentModel;
 using AutosarBCM.Core;
+using static System.Windows.Forms.LinkLabel;
 
 namespace AutosarBCM
 {
@@ -176,9 +177,9 @@ namespace AutosarBCM
                     object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                     if (attributes.Length != 0)
                         productName = ((AssemblyTitleAttribute)attributes[0]).Title;
-                    
+
                     var version = Assembly.GetExecutingAssembly().GetName().Version;
-                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, " Beta-1");
+                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, "Beta-9");
                 }
                 catch { }
                 return "";
@@ -371,7 +372,7 @@ namespace AutosarBCM
         {
             try
             {
-                if(currentFilter == String.Empty)
+                if (currentFilter == String.Empty)
                     return;
 
                 int? selectedRowIndex = dgvMessages.CurrentRow?.Index;
@@ -386,19 +387,43 @@ namespace AutosarBCM
             catch
             {
                 dgvMessages.ClearSelection();
-            }            
+            }
         }
         /// <summary>
         /// Create a txt file to the unopened DIDS during an environmental test.
         /// </summary>
         /// <param name="count">The name of the item.</param>
         /// <param name="payloadName">The type of the item.</param>
-        public static void WriteUnopenedPayloadsToLogFile(int count, string payloadName)
+        public static void WriteUnopenedPayloadsToLogFile(string payloadName, string controlName, int count, int rangeCount)
         {
-            string date = DateTime.Now.ToString("yyyyMMdd");
-            string logFilePath = $"{date}_Unopened_Payloads_log.txt";
-            string logMessage = $"{count}) Payload Name : {payloadName}{Environment.NewLine}";
-            File.AppendAllText(logFilePath, logMessage);
+            string logFilePath = $"{DateTime.Now.ToString("dd-MM-yyyy")}_Unopened_Payloads_log.txt";
+            string groupName = $"{count}. Group";
+            string rangeHeader = $"{groupName} (Range: {rangeCount}) Started -- ({DateTime.Now.ToString("dd/MM_HH:mm:ss")}) {System.Environment.NewLine}";
+            string logMessage = $"Control: {controlName} - Payload: {payloadName}";
+
+            List<string> lines = new List<string>();
+
+            if (File.Exists(logFilePath))
+            {
+                lines = File.ReadAllLines(logFilePath).ToList();
+            }
+
+            bool rangeHeaderExists = lines.Any(line => line.Contains(groupName));
+            if (!rangeHeaderExists)
+            {
+                if(count != 1)
+                    lines.Add($"{count-1}. Group Finished -- ({DateTime.Now.ToString("dd/MM_HH:mm:ss")}) {System.Environment.NewLine}");
+                lines.Add(rangeHeader);
+            }
+            int rangeHeaderIndex = lines.FindIndex(line => line.StartsWith(rangeHeader.Trim()));
+            if (rangeHeaderIndex != -1)
+            {
+                bool logMessageExists = lines.Skip(rangeHeaderIndex + 1).TakeWhile(line => !line.Contains("Range")).Any(line => line.Contains(logMessage.Trim()));
+                if (!logMessageExists)
+                    lines.Add(logMessage);
+                File.WriteAllLines(logFilePath, lines);
+            }
+
         }
 
 
@@ -412,7 +437,7 @@ namespace AutosarBCM
         /// <param name="comment">Optional comment.</param>
         /// <param name="escapeChars">Optional escape characters for formatting.</param>
         /// <param name="data">Additional data related to the message.</param>
-        public static void WriteCycleMessageToLogFile(string itemName, string itemType, string operation,string comment = "",string escapeChars = "",string data = "")
+        public static void WriteCycleMessageToLogFile(string itemName, string itemType, string operation, string comment = "", string escapeChars = "", string data = "")
         {
             if (FormMain.IsTestRunning)
             {
@@ -432,15 +457,15 @@ namespace AutosarBCM
         /// <param name="comment">Optional comment.</param>
         /// <param name="escapeChars">Optional escape characters for formatting.</param>
         /// <param name="data">Additional data related to the error.</param>
-        public static void WriteErrorMessageToLogFile(string itemName, string itemType, string operation, string comment = "", string escapeChars = "", string data = "")
+        public static void WriteErrorMessageToLogFile(string itemName, string itemType, string operation, string comment = "", string escapeChars = "", string data = "", string cycleId = "", string loopId = "")
         {
             if (FormMain.IsTestRunning && FormMain.MonitorTestTypeClone == MonitorTestType.Environmental)
             {
                 if (String.IsNullOrEmpty(comment))
-                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")};{itemName};{itemType};{operation};{data};{escapeChars}");
+                    ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")} [{cycleId}-{loopId}];{itemName};{itemType};{operation};{data};{escapeChars}");
                 else
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}#{comment}#{escapeChars}");
-            }                
+            }
         }
 
         /// <summary>
@@ -515,7 +540,22 @@ namespace AutosarBCM
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
-            var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session");
+            if (ASContext.Configuration != null)
+            {
+                var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session");
+                ASContext.CurrentSession = sessionInfo;
+                new DiagnosticSessionControl().Transmit(sessionInfo);
+            }
+            else
+            {
+                return;
+            }
+        }
+        public static void SendDefaultSession()
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+            var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.ID == 0x01);
             ASContext.CurrentSession = sessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
         }
@@ -1026,7 +1066,7 @@ namespace AutosarBCM
             // add to recent file list
             AddToRecentFiles(fileName);
         }
-        
+
         /// <summary>
         /// Notifies parent control that the recent file list is updated.
         /// </summary>
@@ -1077,7 +1117,7 @@ namespace AutosarBCM
         /// </summary>
         public static void PrepareCsvHelper()
         {
-            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            saveFileDialog.InitialDirectory = openFileDialog.InitialDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
             saveFileDialog.Filter = openFileDialog.Filter = "CSV File| *.csv";
             openFileDialog.Multiselect = false;
             openFileDialog.Title = "Please select a CSV file.";
@@ -1092,6 +1132,7 @@ namespace AutosarBCM
             {
                 using (openFileDialog)
                 {
+                    openFileDialog.Filter = "Csv|*.csv";
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         switch (protocol)
@@ -1165,7 +1206,7 @@ namespace AutosarBCM
                                 if (!isPrevMulti && ninth)
                                 {
                                     csv.AppendLine("-;Multi Messages;x;x;x;x;x;Text;");
-                                    foreach(BaseMessage subMessage in subMesages)
+                                    foreach (BaseMessage subMessage in subMesages)
                                     {
                                         first = subMessage.Id;
                                         dataBytes = subMessage.Data;
@@ -1206,7 +1247,7 @@ namespace AutosarBCM
 
         #region Private Methods
 
-        
+
         private static List<CanMessage> CanMessageCsvParser(List<string> lines)
         {
             var result = new List<CanMessage>();
@@ -1399,7 +1440,7 @@ namespace AutosarBCM
         /// <param name="operation">CurrentOperation</param>
         /// <param name="state">Message State</param>
         /// <param name="outputResponse">Message Response</param>
-        public ErrorLogDetectObject UpdateOutputResponse (MappingOperation operation, MappingState state, MappingResponse outputResponse)
+        public ErrorLogDetectObject UpdateOutputResponse(MappingOperation operation, MappingState state, MappingResponse outputResponse)
         {
             Operation = operation;
             OutputResponse = outputResponse;
@@ -1412,7 +1453,7 @@ namespace AutosarBCM
         /// </summary> 
         /// <param name="state">Message State</param>
         /// <param name="inputResponse">Message Response</param>
-        public ErrorLogDetectObject UpdateInputResponse (MappingState state, MappingResponse inputResponse)
+        public ErrorLogDetectObject UpdateInputResponse(MappingState state, MappingResponse inputResponse)
         {
             InputResponse = inputResponse;
             InputState = state;
@@ -1422,7 +1463,7 @@ namespace AutosarBCM
         /// <summary> 
         /// Returns the status of the Error statement
         /// </summary> 
-        public bool ChcekIsError()
+        public bool CheckIsError()
         {
             if (OutputState == MappingState.OutputSent || InputState == MappingState.InputSent)
                 return true;

@@ -155,12 +155,12 @@ namespace AutosarBCM
                     else if (monitorTestType == MonitorTestType.Environmental)
                     {
                         StartTime = DateTime.Now;
-                        var cycles = ASContext.Configuration.EnvironmentalTest.Cycles;
+                        var cycles = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles;
                         var controlItems = ASContext.Configuration.Controls.Where(c => c.Group == "DID");
-                        var startCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.StartCycleIndex;
-                        var endCycleIndex = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.EndCycleIndex;
+                        var startCycleIndex = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.StartCycleIndex;
+                        var endCycleIndex = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
                         //var dictMapping = new Dictionary<string, InputMonitorItem>();
-                        var dictMapping = new Dictionary<string, ControlInfo>();
+                        var dictMapping = new Dictionary<string, (Mapping, ControlInfo)>();
                         //var continousReadList = new List<InputMonitorItem>();
                         Dictionary<ControlInfo, string> continousReadList = new Dictionary<ControlInfo, string>();
 
@@ -175,15 +175,15 @@ namespace AutosarBCM
                         foreach (var mapping in ASContext.Configuration.EnvironmentalTest.ConnectionMappings)
                         {
                             var controlItem = controlItems.Where(x => x.Name.Equals(mapping.Input.Control)).FirstOrDefault();
-                            dictMapping.Add(mapping.Output.Name, controlItem);
+                            dictMapping.Add(mapping.Output.Name, (mapping, controlItem));
                         }
 
-                        foreach (var funcName in ASContext.Configuration.EnvironmentalTest.ContinousReadList)
+                        foreach (var funcName in ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList)
                         {
 
                             var controlItem = controlItems.Where(x => x.Name.Equals(funcName.Control)).FirstOrDefault();
                             if (controlItem != null)
-                                continousReadList.Add(controlItem,funcName.Name);
+                                continousReadList.Add(controlItem, funcName.Name);
 
                         }
                         //continousReadList = continousReadList.Distinct;
@@ -202,7 +202,7 @@ namespace AutosarBCM
 
                         ThreadSleep(250);
 
-                        StopEnvironmentalTest(cycleDict,dictMapping);
+                        StopEnvironmentalTest(cycleDict, dictMapping);
                     }
                 }
                 finally
@@ -239,7 +239,7 @@ namespace AutosarBCM
 
         #region Private Methods
 
-        private static void StartEnvironmentalTest(Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, ControlInfo> dictMapping, Dictionary<ControlInfo, string> continousReadList)
+        private static void StartEnvironmentalTest(Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, (Mapping, ControlInfo)> dictMapping, Dictionary<ControlInfo, string> continousReadList)
         {
             var cycleIndex = 0;
             var reboots = 0;
@@ -259,26 +259,34 @@ namespace AutosarBCM
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest.SetCounter(1, 1);
             timer = new MMTimer(0, MMTimer.EventType.OneTime, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
-
+            Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File: " + FormMain.fileName, Constants.DefaultEscapeCharacter);
+            Helper.WriteErrorMessageToLogFile(string.Empty, string.Empty, string.Empty, "Imported File: " + FormMain.fileName, Constants.DefaultEscapeCharacter);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
-            timer.Next(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleTime);
+            timer.Next(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleTime);
             while (!cancellationToken.IsCancellationRequested)
                 ThreadSleep(250);
             timer.Stop();
-            
+
         }
 
-        private static void StopEnvironmentalTest(Dictionary<int, Cycle> cycleDict, Dictionary<string, ControlInfo> dictMapping)
+        private static void StopEnvironmentalTest(Dictionary<int, Cycle> cycleDict, Dictionary<string, (Mapping, ControlInfo)> dictMapping)
         {
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalFinished, Constants.DefaultEscapeCharacter);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsStarted, Constants.DefaultEscapeCharacter);
-            Console.WriteLine(Constants.ClosingOutputsStarted);
-            var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
+            var txInterval = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.TxInterval;
             txInterval = false ? txInterval * 2 : txInterval;
 
             List<Function> functions = new List<Function>();
             foreach (var function in cycleDict.SelectMany(c => c.Value.CloseItems))
             {
+                if (function.Scenario != null)
+                {
+                    var func = functions.FirstOrDefault(x => x.Scenario == function.Scenario);
+                    if (func == null)
+                        functions.Add(function);
+                    continue;
+                }
+
                 var ctrl = functions.Where(f => f.Control == function.Control).FirstOrDefault();
                 if (ctrl == null)
                 {
@@ -293,6 +301,28 @@ namespace AutosarBCM
 
             foreach (var function in functions)
             {
+                if (function.Scenario != null)
+                {
+                    var scenario = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                    if (scenario == null)
+                        continue;
+
+                    var controlInfo = ASContext.Configuration.GetControlByAddress(scenario.Address);
+                    var payloads = scenario.OpenPayloads.Union(scenario.ClosePayloads).ToDictionary(x => x, x => false);
+
+                    var scenarioBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
+                    if (scenarioBitsOnOff)
+                    {
+                        controlInfo.SwitchForBits(payloads);
+                    }
+                    else
+                    {
+                        controlInfo.Switch(payloads);
+                    }
+                }
+
+                if (function?.ControlInfo == null)
+                    continue;
                 var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
                 if (hasDIDBitsOnOff)
                 {
@@ -304,7 +334,6 @@ namespace AutosarBCM
                 }
                 Thread.Sleep(txInterval);
             }
-            Console.WriteLine(Constants.ClosingOutputsFinished);
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsFinished, Constants.DefaultEscapeCharacter);
             FormMain.IsTestRunning = !FormMain.IsTestRunning;
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
@@ -356,37 +385,37 @@ namespace AutosarBCM
         /// <param name="continousReadList">List of items for continuous reading.</param>
         /// <param name="cycleIndex">Reference to the current cycle index.</param>
         /// <param name="reboots">Reference to the count of reboots.</param>
-        private static void TickHandler(List<List<Config.OutputMonitorItem>> softContinuousDiagList, Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, ControlInfo> dictMapping, Dictionary<ControlInfo, string> continousReadList, ref int cycleIndex, ref int reboots)
+        private static void TickHandler(List<List<Config.OutputMonitorItem>> softContinuousDiagList, Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, (Mapping, ControlInfo)> dictMapping, Dictionary<ControlInfo, string> continousReadList, ref int cycleIndex, ref int reboots)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             if (cancellationToken.IsCancellationRequested)
                 return;
 
-            var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
-
+            var txInterval = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.TxInterval;
+            var cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
             //TODO to be checked
             if (cycleIndex == 0 && reboots == 0)
                 Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
-            //Console.WriteLine(Constants.StartProcessStarted);
 
             //TODO to be checked
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
-            Console.WriteLine($"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}");
 
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest?.SetCounter(reboots + 1, cycleIndex + 1);
+
 
             if (cycleIndex == startCycleIndex - 1 && reboots == 0)
                 Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessCompleted, Constants.DefaultEscapeCharacter);
 
             if (cycleDict.TryGetValue(cycleIndex + 1, out Cycle cycle))
             {
-                if(!(cycleIndex+1 == 16 &&  reboots+1 == 1))
+                if (!(cycleIndex + 1 == 16 && reboots + 1 == 1))
                     StopCycle(cycle, dictMapping);
                 StartCycle(cycle, dictMapping);
             }
 
-            
+
+
             //Console.WriteLine(Constants.StartProcessCompleted);
 
             //OnEnvMonitorProgress(reboots, cycleIndex);
@@ -395,16 +424,21 @@ namespace AutosarBCM
             {
                 if (cycleIndex % 4 == 0)
                 {
-                    new ReadDTCInformationService().Transmit();
+                    Helper.SendExtendedDiagSession();
+                    ThreadSleep(txInterval);
+                    //new ReadDTCInformationService().Transmit();
                     foreach (var item in continousReadList.Keys)
                     {
                         ThreadSleep(txInterval);
                         item.Transmit(ServiceInfo.ReadDataByIdentifier);
-                        
+
                         Console.WriteLine($"Send Continousitem: {item.Name} inputName: {continousReadList[item]}");
+
                         Helper.WriteCycleMessageToLogFile(item.Name, continousReadList[item], Constants.ContinousRead);
                     }
-                    new ClearDTCInformation().Transmit();
+                    //TODO to be added again
+                    //ThreadSleep(txInterval);
+                    //new ClearDTCInformation().Transmit();
                 }
 
                 //    if(softContinuousDiagList.Count > 0)
@@ -415,21 +449,29 @@ namespace AutosarBCM
                 //    }
                 //}                
             }
+            //if ((cycleIndex+1)%5 == 0)
+            //{
+            //    Helper.SendExtendedDiagSession();
+            //    Console.WriteLine("Extended session message sent");
+            //}
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}", "\n");
-            Console.WriteLine($"Loop {cycleIndex + 1} finished at Cycle {reboots + 1}");
 
             if (cycleIndex >= endCycleIndex - 1)
             {
-                Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
+                Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1);
+                reboots++;
                 Helper.SendExtendedDiagSession();
+                
+                if (reboots % cycleRange == 0)
+                    FormEnvironmentalTest.openedPayloads.Clear();
             }
             else
                 Interlocked.Increment(ref cycleIndex);
 
             stopwatch.Stop();
-            var elapsed = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.CycleTime - stopwatch.ElapsedMilliseconds;
-            if (elapsed < 0)
+            var elapsed = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleTime - stopwatch.ElapsedMilliseconds;
+            if (elapsed <= 0)
                 TickHandler(softContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots);
             else
                 timer.Next((int)elapsed);
@@ -441,18 +483,43 @@ namespace AutosarBCM
         /// <param name="monitorConfig">Configuration for the monitor.</param>
         /// <param name="cycle">The cycle to start.</param>
         /// <param name="dictMapping">Mapping dictionary for input monitor items.</param>
-        private static void StartCycle(Cycle cycle, Dictionary<string, ControlInfo> dictMapping)
+        private static void StartCycle(Cycle cycle, Dictionary<string, (Mapping, ControlInfo)> dictMapping)
         {
-            var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
-            var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue;
-            var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqOpenValue;
+            var txInterval = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.TxInterval;
+            var pwmDuty = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue;
+            var pwmFreq = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMFreqOpenValue;
             var mapControls = new List<Core.ControlInfo>();
             foreach (var function in cycle.OpenItems)
             {
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
-                if (function.Scenario == null)
+                (Mapping, ControlInfo) mappedItem = (null, null);
+                foreach (var payload in function.Payloads)
+                {
+                    if (dictMapping.TryGetValue(payload, out mappedItem))
+                    {
+                        if (Program.MappingStateDict.TryGetValue(mappedItem.Item1.Input.Name, out var errorLogDetect))
+                        {
+                            if (errorLogDetect.CheckIsError())
+                                Helper.WriteErrorMessageToLogFile(mappedItem.Item1.Input.Control, $"O: {mappedItem.Item1.Output.Control} ({mappedItem.Item1.Output.Name}) - I: {mappedItem.Item1.Input.Control} ({mappedItem.Item1.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Item1.Input.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Item1.Input.Name).Item2, errorLogDetect.InputResponse)}");
+
+                            Program.MappingStateDict.Remove(mappedItem.Item1.Input.Name);
+                        }
+                        Program.MappingStateDict.Add(payload, mappedItem.Item1.Input.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
+
+                        if (mappedItem.Item2 != null)
+                        {
+                            var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
+                            if (mapControls.Any(c => c.Name == mappedItem.Item1.Input.Control))
+                                continue;
+                            mapControls.Add(mappedItem.Item2);
+                            Helper.WriteCycleMessageToLogFile(mappedItem.Item1.Input.Control, inputName, (Constants.MappingRead));
+                        }
+                    }
+                }
+
+                if(function.Control != null && !function.Control.Contains(Constants.DummyControl))
                 {
                     var hasDIDBitsOnOff = function.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
                     if (hasDIDBitsOnOff)
@@ -466,9 +533,10 @@ namespace AutosarBCM
 
                     CloseSensitiveControls(function.ControlInfo, function.Payloads);
                 }
-                else
+
+                if (function.Scenario != null)
                 {
-                    var scenario = ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                    var scenario = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
                     if (scenario == null)
                         continue;
 
@@ -488,38 +556,12 @@ namespace AutosarBCM
                     CloseSensitiveControls(controlInfo, scenario.OpenPayloads);
                 }
 
-                ControlInfo mappedItem = null;
-                foreach (var payload in function.Payloads)
-                {
-                    if (dictMapping.TryGetValue(payload, out mappedItem))
-                    {
-                        if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
-                        {
-                            if (errorLogDetect.ChcekIsError())
-                                Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
-
-                            Program.MappingStateDict.Remove(mappedItem.Name);
-                        }
-                        Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Open, MappingState.OutputSent, MappingResponse.NOC));
-
-                        if (mappedItem != null)
-                        {
-                            var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
-                            Console.WriteLine($"Start Send MappedItem {mappedItem.Name} inputName {inputName}");
-                            if (mapControls.Any(c => c.Name == mappedItem.Name))
-                                continue;
-                            mapControls.Add(mappedItem);
-                            Helper.WriteCycleMessageToLogFile(mappedItem.Name, inputName, (Constants.MappingRead));
-                        }
-                    }
-                }
-
                 ThreadSleep(txInterval);
 
-                if (mappedItem != null)
+                if (mappedItem.Item2 != null)
                 {
-                    if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
-                        Program.MappingStateDict.UpdateValue(mappedItem.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
+                    if (Program.MappingStateDict.TryGetValue(mappedItem.Item1.Input.Control, out var errorLogDetect))
+                        Program.MappingStateDict.UpdateValue(mappedItem.Item1.Input.Control, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
                 }
 
                 //if (ouputItem.ItemType == Constants.PEPS)
@@ -543,9 +585,9 @@ namespace AutosarBCM
 
         private static void CloseSensitiveControls(ControlInfo controlInfo, List<string> payloads)
         {
-            var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == controlInfo.Name).FirstOrDefault()?.Payloads.Intersect(payloads).ToList();
+            var sensitivePayloads = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).SensitiveControls.Where(f => f.Control == controlInfo.Name).FirstOrDefault()?.Payloads.Intersect(payloads).ToList();
             if (sensitivePayloads?.Count > 0)
-                Task.Delay(ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
+                Task.Delay(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.SensitiveCtrlDuration).ContinueWith((_) =>
                 {
                     var hasDIDBitsOnOff = controlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
                     if (hasDIDBitsOnOff)
@@ -565,20 +607,45 @@ namespace AutosarBCM
         /// <param name="monitorConfig">Configuration for the monitor.</param>
         /// <param name="cycle">The cycle to stop.</param>
         /// <param name="dictMapping">Mapping dictionary for input monitor items.</param>
-        private static void StopCycle(Cycle cycle, Dictionary<string, ControlInfo> dictMapping, bool isTestClosing = false)
+        private static void StopCycle(Cycle cycle, Dictionary<string, (Mapping, ControlInfo)> dictMapping, bool isTestClosing = false)
         {
-            var txInterval = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.TxInterval;
+            var txInterval = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.TxInterval;
             txInterval = isTestClosing ? txInterval * 2 : txInterval;
 
-            var pwmDuty = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue;
-            var pwmFreq = ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMFreqCloseValue;
+            var pwmDuty = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyCloseValue;
+            var pwmFreq = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMFreqCloseValue;
             var mapControls = new List<Core.ControlInfo>();
 
             foreach (var function in cycle.CloseItems)
             {
-                if (function.Scenario == null)
+                (Mapping, ControlInfo) mappedItem = (null, null);
+                foreach (var payload in function.Payloads)
                 {
-                    var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
+                    if (dictMapping.TryGetValue(payload, out mappedItem))
+                    {
+                        if (Program.MappingStateDict.TryGetValue(mappedItem.Item1.Input.Name, out var errorLogDetect))
+                        {
+                            if (errorLogDetect.CheckIsError())
+                                Helper.WriteErrorMessageToLogFile(mappedItem.Item1.Input.Control, $"O: {mappedItem.Item1.Output.Control} ({mappedItem.Item1.Output.Name}) - I: {mappedItem.Item1.Input.Control} ({mappedItem.Item1.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Item1.Input.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Item1.Input.Name).Item2, errorLogDetect.InputResponse)}");
+
+                            Program.MappingStateDict.Remove(mappedItem.Item1.Input.Name);
+                        }
+                        Program.MappingStateDict.Add(payload, mappedItem.Item1.Input.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
+
+                        if (mappedItem.Item2 != null)
+                        {
+                            var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
+                            if (mapControls.Any(c => c.Name == mappedItem.Item1.Input.Control))
+                                continue;
+                            mapControls.Add(mappedItem.Item2);
+                            Helper.WriteCycleMessageToLogFile(mappedItem.Item1.Input.Control, inputName, (Constants.MappingRead));
+                        }
+                    }
+                }
+
+                if (function.Control != null && !function.Control.Contains(Constants.DummyControl))
+                {
+                    var nonSensitivePayloads = function.Payloads.Except(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).SensitiveControls.Where(f => f.Control == function.ControlInfo.Name).FirstOrDefault()?.Payloads ?? new List<string>()).ToList();
                     if (nonSensitivePayloads?.Count == 0)
                         continue;
 
@@ -592,9 +659,10 @@ namespace AutosarBCM
                         function.ControlInfo.Switch(nonSensitivePayloads, false);
                     }
                 }
-                else
+
+                if (function.Scenario != null)
                 {
-                    var scenario = ASContext.Configuration.EnvironmentalTest.Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
+                    var scenario = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios.Where(s => s.Name == function.Scenario).FirstOrDefault();
                     if (scenario == null)
                         continue;
 
@@ -612,42 +680,14 @@ namespace AutosarBCM
                     }
                 }
 
-                ControlInfo mappedItem = null;
-                foreach (var payload in function.Payloads)
-                {
-                    if (dictMapping.TryGetValue(payload, out mappedItem))
-                    {
-                        if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
-                        {
-                            if (errorLogDetect.ChcekIsError())
-                                Helper.WriteErrorMessageToLogFile(mappedItem.Name, mappedItem.Type, Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item1, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", Program.MappingStateDict.GetMatch(mappedItem.Name).Item2, errorLogDetect.InputResponse)}");
-
-                            Program.MappingStateDict.Remove(mappedItem.Name);
-                        }
-                        Program.MappingStateDict.Add(function.ControlInfo.Name, mappedItem.Name, new ErrorLogDetectObject().UpdateOutputResponse(MappingOperation.Close, MappingState.OutputSent, MappingResponse.NOC));
-
-                        if (mappedItem != null)
-                        {
-                            var inputName = ASContext.Configuration.EnvironmentalTest.ConnectionMappings.First(m => m.Output.Name == payload).Input.Name;
-                            Console.WriteLine($"Start Send MappedItem {mappedItem.Name} inputName {inputName}");
-                            if (mapControls.Any(c => c.Name == mappedItem.Name))
-                                continue;
-                            mapControls.Add(mappedItem);
-                            Console.WriteLine($"Stop Send MappedItem: {mappedItem.Name} inputName: {inputName}");
-                            Helper.WriteCycleMessageToLogFile(mappedItem.Name, inputName, (Constants.MappingRead));
-                        }
-                    }
-                }
-
-                
                 //controlItem.Close(pwmDuty, pwmFreq);
                 ThreadSleep(txInterval);
                 //ReadDiagAdcCurrent(controlItem, txInterval);
 
-                if (mappedItem != null)
+                if (mappedItem.Item2 != null)
                 {
-                    if (Program.MappingStateDict.TryGetValue(mappedItem.Name, out var errorLogDetect))
-                        Program.MappingStateDict.UpdateValue(mappedItem.Name, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
+                    if (Program.MappingStateDict.TryGetValue(mappedItem.Item1.Input.Control, out var errorLogDetect))
+                        Program.MappingStateDict.UpdateValue(mappedItem.Item1.Input.Control, errorLogDetect.UpdateInputResponse(MappingState.InputSent, MappingResponse.NOC));
                 }
             }
             foreach (var mapControl in mapControls)

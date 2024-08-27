@@ -114,10 +114,14 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments.</param>
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (!ConnectionUtil.CheckConnection())
-                return;
-            if (!ConnectionUtil.CheckSession())
-                return;
+            FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
+            Task.Run(async () =>
+            {
+                Helper.SendDefaultSession();
+                mainForm.UpdateSessionLabel();
+
+                await Task.Delay(1000);
+            });
 
             Start(!FormMain.EMCMonitoring);
         }

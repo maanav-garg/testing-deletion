@@ -118,7 +118,7 @@ namespace AutosarBCM
         /// <summary>
         /// An instance of the 'FormEMCView' control.
         /// </summary>
-        private FormEMCView formEMCView;
+        public FormEMCView formEMCView;
         /// <summary>
         /// An instance of the 'FormLogReader' control for displaying trace messages.
         /// </summary>
@@ -178,6 +178,8 @@ namespace AutosarBCM
         private TesterPresent TesterPresent;
         private ECUReset ECUReset;
         private System.Timers.Timer TesterPresentTimer;
+        private System.Timers.Timer ExtDiagSesTimer;
+        public static string fileName;
 
         internal static bool isMdxFile;
 
@@ -239,6 +241,9 @@ namespace AutosarBCM
             TesterPresentTimer = new System.Timers.Timer(1000) { };
             TesterPresentTimer.Elapsed += (s, e) => TesterPresent.Transmit();
 
+            ExtDiagSesTimer = new System.Timers.Timer(5000) { };
+            ExtDiagSesTimer.Elapsed += (s, e) => Helper.SendExtendedDiagSession();
+
         }
 
         #endregion
@@ -280,7 +285,7 @@ namespace AutosarBCM
         /// <param name="color">Optional text color. Default black</param>
         public void AppendTrace(string text, Color? color = null, bool flush = false)
         {
-            log.Add((color ?? Color.Black, $"{DateTime.Now.ToString("HH:mm:ss.fff")}: {text}{Environment.NewLine}"));
+            log.Add((color ?? Color.Black, $"{DateTime.Now.ToString("HH:mm:ss.fff")}: {text}{System.Environment.NewLine}"));
 
             if (flush || !IsTestRunning || log.Count > Settings.Default.FlushToUI)
             {
@@ -343,7 +348,11 @@ namespace AutosarBCM
 
             TesterPresent = new TesterPresent();
             TesterPresentTimer.Start();
+
+            ExtDiagSesTimer.Start();
         }
+
+        
 
         #endregion
 
@@ -850,6 +859,8 @@ namespace AutosarBCM
             testerPresentDropDownButton.Image = Resources.reset;
 
             TesterPresentTimer?.Stop();
+
+            ExtDiagSesTimer?.Stop();
         }
         /// <summary>
         /// Clears the log panel
@@ -872,6 +883,8 @@ namespace AutosarBCM
         {
             isMdxFile = false;
             LoadXMLDoc(isMdxFile);
+
+            ConnectionUtil.LoadControlDictionary();
         }
 
         /// <summary>
@@ -984,6 +997,7 @@ namespace AutosarBCM
                 if (tsbSession.Text != "Session: N/A")
                 {
                     genericInput.SessionFiltering();
+                    tspFilterTxb.Text = "";
                 }
                 //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
             }
@@ -1135,6 +1149,7 @@ namespace AutosarBCM
             //// add to recent file list
             //recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
             LoadXMLDoc(false);
+            ConnectionUtil.LoadControlDictionary();
         }
 
         /// <summary>
@@ -1145,7 +1160,7 @@ namespace AutosarBCM
         {
             ImportMessages(filePath);
 
-            string fileName = Path.GetFileName(filePath);
+            fileName = Path.GetFileName(filePath);
             LoadFile(fileName);
         }
 
@@ -1331,6 +1346,7 @@ namespace AutosarBCM
 
         private void tsmiEMCView_Click(object sender, EventArgs e)
         {
+            formEMCView = null;
             if (CheckConfigurationFile())
             {
                 if (formEMCView == null || formEMCView.IsDisposed)

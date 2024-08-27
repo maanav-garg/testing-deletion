@@ -70,7 +70,11 @@ namespace AutosarBCM.Forms
 
         public FormTestLogView()
         {
-            InitializeComponent();           
+            InitializeComponent();
+            backgroundWorker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
+            backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(backgroundWorker_ProgressChanged);
+            backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker_RunWorkerCompleted);
+            backgroundWorker.WorkerReportsProgress = true;
         }
 
         #endregion
@@ -96,23 +100,26 @@ namespace AutosarBCM.Forms
                         continue;
 
                     var cells = line.Trim('#').Replace("\",\"", ";").Split(';');
+                    //var cells = line.Trim('#').Split('\t');
+                    //string result = cells.Length > 1 ? cells[1].Trim('#') : string.Empty;
+
 
                     switch (cells.Length)
                     {
                         case 1:
-                            if (cells[0] == Constants.StartProcessStarted)
+                            if (cells[0].Contains(Constants.StartProcessStarted))
                             {
                                 currentNode = currentNode.Nodes.Add(cells[0]);
                             }
-                            else if (cells[0] == Constants.StartProcessCompleted)
+                            else if (cells[0].Contains(Constants.StartProcessCompleted))
                             {
                                 currentNode = currentNode.Nodes.Add(cells[0]).Parent.Parent;
                             }
-                            else if (cells[0] == Constants.ClosingOutputsStarted)
+                            else if (cells[0].Contains(Constants.ClosingOutputsStarted))
                             {
                                 childNode = currentNode.Nodes.Add(cells[0]);
                             }
-                            else if (cells[0].StartsWith("Loop") && cells[0].Contains("Started"))
+                            else if (cells[0].Contains("Loop") && cells[0].Contains("Started"))
                             {
                                 var cycle = cells[0].Substring(cells[0].IndexOf("Cycle"));
                                 if (cycle != currentCycle)
@@ -128,7 +135,7 @@ namespace AutosarBCM.Forms
                                 }
                                 childNode = currentNode.Nodes.Add(cells[0]);   
                             }
-                            else if (cells[0].StartsWith("Loop") && cells[0].Contains("finished"))
+                            else if (cells[0].Contains("Loop") && cells[0].Contains("finished"))
                             {
                                 int loopNumber = int.Parse(cells[0].Split(' ')[1]);
                                 if (childNode.Nodes.Count > 0 && loopNumber > 16)
@@ -167,8 +174,8 @@ namespace AutosarBCM.Forms
                             node.Tag = new LogObject
                             {
                                 DateTime = cells[0],
-                                Name = cells[1],
-                                ItemType = cells[2],
+                                Control = cells[1],
+                                DID = cells[2],
                                 Operation = cells[3],
                                 Response = cells[4]
                             };
@@ -211,8 +218,8 @@ namespace AutosarBCM.Forms
                             node.Tag = new LogObject
                             {
                                 DateTime = cells[0],
-                                Name = cells[1],
-                                ItemType = cells[2],
+                                Control = cells[1],
+                                DID = cells[2],
                                 Operation = cells[3],
                                 Response = cells[4]
                             };
@@ -303,7 +310,47 @@ namespace AutosarBCM.Forms
             if (fileName.Contains("CycleLog"))
                 LoadCycle_treeView();
             else
-                LoadError_treeView();
+            {
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    var stringList = File.ReadAllLines(fileName);
+                    var currentNode = tempTreeView.Nodes.Add("Error Logs");
+                    LineNum = stringList.Length;
+
+
+                    foreach (var line in stringList)
+                    {
+                        LineNum--;
+                        if (string.IsNullOrEmpty(line))
+                            continue;
+
+                        var cells = line.Trim('#').Replace("\",\"", ";").Split(';');
+
+                        switch (cells.Length)
+                        {
+                            case 1:
+                                currentNode = currentNode.Nodes.Add(cells[0]);
+                                break;
+                            case 6:
+                                var node = currentNode.Nodes.Add(cells[1]);
+                                node.Tag = new LogObject
+                                {
+                                    DateTime = cells[0],
+                                    Control = cells[1],
+                                    DID = cells[2],
+                                    Operation = cells[3],
+                                    Response = cells[4]
+                                };
+                                break;
+                            default:
+                                break;
+                        }
+                        backgroundWorker.ReportProgress(LineNum * 100 / stringList.Length);
+
+                    }
+                }
+            }
+                //LoadError_treeView();
                   
             logObjects = new BindingList<LogObject>();
         }
@@ -417,11 +464,11 @@ namespace AutosarBCM.Forms
         private class LogObject
         {
             public string DateTime { get; set; }
-            public string Name { get; set; }
-            public string ItemType { get; set; }
+            public string Control { get; set; }
+            public string DID { get; set; }
             public string Operation { get; set; }
             public string Response { get; set; }
-            public string _RowData { get { return (DateTime + Name + ItemType + Operation + Response).ToLower(); } }
+            public string _RowData { get { return (DateTime + Control + DID + Operation + Response).ToLower(); } }
         }
 
         /// <summary>

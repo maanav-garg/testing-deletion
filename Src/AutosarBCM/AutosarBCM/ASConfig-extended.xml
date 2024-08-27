@@ -71,7 +71,7 @@
 	<Controls>
 		<Control>
 			<Address>DE00</Address>
-			<Name>DE00</Name>	
+			<Name>DE00</Name>
 			<Type></Type>
 			<Group>ECU-DID</Group>
 			<Services>22;2E</Services>
@@ -1011,8 +1011,8 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="C6.44_IgnitionON" dtcCode="F00D" typeName="DID_Byte_On_Off"></Payload>
-					<Payload name="C5.44_IgnitionON2" dtcCode="F00E" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C6.44_Ignition/Crank" dtcCode="F00D" typeName="DID_Byte_On_Off"></Payload>
+					<Payload name="C6.19_Ignition Switch" dtcCode="F00E" typeName="DID_Byte_On_Off"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1090,7 +1090,7 @@
 			<Services>22</Services>
 			<Responses>
 				<Response serviceId="62">
-					<Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte" />
+					<Payload name="All Doors Lock and Ajar Input Signal" typeName="HexDump_1Byte">
 						<Payload name="C5.28_7 Door Ajar Switch - Driver" dtcCode="91E9" typeName="DID_Bits_On_Off" />
 						<Payload name="C5.33_6 Door Ajar Switch - Passenger" dtcCode="91EA" typeName="DID_Bits_On_Off" />
 						<Payload name="C6.31_5 Cabin Lock" dtcCode="908F" typeName="DID_Bits_On_Off" />
@@ -1099,6 +1099,7 @@
 						<Payload name="C6.3_2 FrontResetRightSwitch" dtcCode="93A3" typeName="DID_Bits_On_Off" />
 						<Payload name="C5.13_1 FrontSetLeftSwitch" dtcCode="939D" typeName="DID_Bits_On_Off" />
 						<Payload name="C5.32_0 FrontSetRightSwitch" dtcCode="BA86" typeName="DID_Bits_On_Off" />
+					</Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -1348,8 +1349,8 @@
 				<Response serviceId="62">
 					<Payload name="C5.42_ClockSpring1LHSensor" typeName="HexDump_3Bytes"></Payload>
 					<Payload name="C5.43_ClockSpring1RHSensor" typeName="HexDump_3Bytes"></Payload>
-					<Payload name="C5.23_ClockSpring2LHSensor" typeName="HexDump_3Bytes"></Payload>
-					<Payload name="C5.22_ClockSpring2RHSensor" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.23_ClockSpring2LHSensor 1" typeName="HexDump_3Bytes"></Payload>
+					<Payload name="C5.22_ClockSpring2RHSensor 1" typeName="HexDump_3Bytes"></Payload>
 					<Payload name="C5.25_ClockSpring3LHSensor" typeName="HexDump_3Bytes"></Payload>
 					<Payload name="C5.26_ClockSpring3RHSensor" typeName="HexDump_3Bytes"></Payload>
 				</Response>
@@ -1808,7 +1809,6 @@
 				<Response serviceId="6E"></Response>
 			</Responses>
 		</Control>
-		<!--Important: deactivated because there was no response in the control.-->
 		<Control>
 			<Address>402A</Address>
 			<Name>Vehicle_Battery_Voltage</Name>
@@ -1819,14 +1819,14 @@
 				<Response serviceId="62">
 					<Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
-					<Payload name="C1.16_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
-					<Payload name="C1.17_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.13_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C1.14_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C2.10_Vbat24VSupply#2_1" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C2.11_Vbat24VSupply#2_2" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C3.19_Vbat24VSupply#3_1" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C3.20_Vbat24VSupply#3_2" typeName="Unsigned_1Byte"></Payload>
 					<Payload name="C3.2_Vbat24VSupply#4_1" typeName="Unsigned_1Byte"></Payload>
-					<Payload name="C3.3_Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
+					<Payload name="C3.3Vbat24VSupply#4_2" typeName="Unsigned_1Byte"></Payload>
 				</Response>
 			</Responses>
 		</Control>
@@ -2588,7 +2588,7 @@
 					<CycleTime>200</CycleTime>
 					<TxInterval>15</TxInterval>
 					<StartCycleIndex>16</StartCycleIndex>
-					<EndCycleIndex>90</EndCycleIndex>
+					<EndCycleIndex>315</EndCycleIndex>
 					<PWMDutyOpenValue>10000</PWMDutyOpenValue>
 					<PWMDutyCloseValue>0</PWMDutyCloseValue>
 					<PWMFreqOpenValue>200</PWMFreqOpenValue>
@@ -2843,7 +2843,7 @@
 							</Function>
 						</Functions>
 					</Cycle>
-
+					<!-- Start Group 1 -->
 					<Cycle>
 						<Name>CycleLoad 01 - Group 1</Name>
 						<OpenAt>16</OpenAt>
@@ -2861,12 +2861,6 @@
 								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
 							</Function>
 							<Function scenario="Power_Mirror_Control_Right_Up"></Function>
-							<Function control="Washer_Pump_Front_Relay">
-								<Payload>C1.15_Washer Pump Front Relay</Payload>
-							</Function>
-							<Function control="ReverseGearSupply">
-								<Payload>C3.15_ReverseGearSupply</Payload>
-							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
@@ -2877,7 +2871,6 @@
 							<Function control="Passenger_Power_Window_Motor">
 							<Payload>C1.2_Passenger Power Window Motor Up</Payload>
 							</Function>
-							<Function scenario="Sunroof_Open"></Function>
 							<Function control="Hall_Sensor_Supply">
 								<Payload>C4.28_HallSensorLeftSupply</Payload>
 								<Payload>C4.46_HallSensorRightSupply</Payload>
@@ -2907,23 +2900,34 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 04 - Group 1</Name>
-						<OpenAt>19</OpenAt>
-						<CloseAt>20</CloseAt>
+						<Name>CycleLoad 03 - Group 1</Name>
+						<OpenAt>21</OpenAt>
+						<CloseAt>22</CloseAt>
 						<Functions>
 							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 06 - Group 1</Name>
+						<Name>CycleLoad 03 - Group 2</Name>
 						<OpenAt>21</OpenAt>
-						<CloseAt>22</CloseAt>
+						<CloseAt>23</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 06 - Group 2</Name>
+						<Name>CycleLoad 03 - Group 3</Name>
 						<OpenAt>21</OpenAt>
 						<CloseAt>26</CloseAt>
 						<Functions>
@@ -2937,11 +2941,81 @@
 								<Payload>C4.44_InterLockValveSupply</Payload>
 							</Function>
 							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 04 - Group 1</Name>
+						<OpenAt>22</OpenAt>
+						<CloseAt>23</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 05 - Group 1</Name>
+						<OpenAt>25</OpenAt>
+						<CloseAt>27</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 06 - Group 1</Name>
+						<OpenAt>26</OpenAt>
+						<CloseAt>27</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 06 - Group 2</Name>
+						<OpenAt>26</OpenAt>
+						<CloseAt>31</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
 						<Name>CycleLoad 06 - Group 3</Name>
-						<OpenAt>21</OpenAt>
+						<OpenAt>26</OpenAt>
+						<CloseAt>36</CloseAt>
+						<Functions>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 07 - Group 1</Name>
+						<OpenAt>27</OpenAt>
+						<CloseAt>28</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 08 - Group 1</Name>
+						<OpenAt>29</OpenAt>
 						<CloseAt>31</CloseAt>
 						<Functions>
 							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
@@ -2959,63 +3033,7 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 08 - Group 1</Name>
-						<OpenAt>23</OpenAt>
-						<CloseAt>24</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 10 - Group 1</Name>
-						<OpenAt>25</OpenAt>
-						<CloseAt>26</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 11 - Group 1</Name>
-						<OpenAt>26</OpenAt>
-						<CloseAt>31</CloseAt>
-						<Functions>
-							<Function control="Battery_Saver_System_Output_Signals">
-								<Payload>C4.52_Battery Saver Reset Control</Payload>
-							</Function>
-							<Function control="TrailerTagAxleLifting1Supply">
-								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
-							</Function>
-							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 11 - Group 2</Name>
-						<OpenAt>26</OpenAt>
-						<CloseAt>36</CloseAt>
-						<Functions>
-							<Function control="DifferentialLockValve1Supply">
-								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
-							</Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 12 - Group 1</Name>
-						<OpenAt>27</OpenAt>
-						<CloseAt>28</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 14 - Group 1</Name>
-						<OpenAt>29</OpenAt>
-						<CloseAt>30</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 16 - Group 1</Name>
+						<Name>CycleLoad 09 - Group 1</Name>
 						<OpenAt>31</OpenAt>
 						<CloseAt>32</CloseAt>
 						<Functions>
@@ -3023,7 +3041,7 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 16 - Group 2</Name>
+						<Name>CycleLoad 09 - Group 2</Name>
 						<OpenAt>31</OpenAt>
 						<CloseAt>36</CloseAt>
 						<Functions>
@@ -3034,13 +3052,10 @@
 								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
 							</Function>
 							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
-							<Function control="Washer_Pump_Front_Relay">
-								<Payload>C1.15_Washer Pump Front Relay</Payload>
-							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 17 - Group 1</Name>
+						<Name>CycleLoad 10 - Group 1</Name>
 						<OpenAt>32</OpenAt>
 						<CloseAt>33</CloseAt>
 						<Functions>
@@ -3048,23 +3063,26 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 19 - Group 1</Name>
-						<OpenAt>34</OpenAt>
+						<Name>CycleLoad 11 - Group 1</Name>
+						<OpenAt>33</OpenAt>
 						<CloseAt>35</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 21 - Group 1</Name>
-						<OpenAt>36</OpenAt>
-						<CloseAt>37</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 21 - Group 2</Name>
+						<Name>CycleLoad 12 - Group 1</Name>
 						<OpenAt>36</OpenAt>
 						<CloseAt>41</CloseAt>
 						<Functions>
@@ -3084,7 +3102,7 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 21 - Group 3</Name>
+						<Name>CycleLoad 12 - Group 2</Name>
 						<OpenAt>36</OpenAt>
 						<CloseAt>46</CloseAt>
 						<Functions>
@@ -3097,23 +3115,45 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 23 - Group 1</Name>
-						<OpenAt>38</OpenAt>
+						<Name>CycleLoad 13 - Group 1</Name>
+						<OpenAt>37</OpenAt>
 						<CloseAt>39</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 25 - Group 1</Name>
-						<OpenAt>40</OpenAt>
-						<CloseAt>41</CloseAt>
+						<Name>CycleLoad 14 - Group 1</Name>
+						<OpenAt>41</OpenAt>
+						<CloseAt>43</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 26 - Group 1</Name>
+						<Name>CycleLoad 14 - Group 2</Name>
 						<OpenAt>41</OpenAt>
 						<CloseAt>46</CloseAt>
 						<Functions>
@@ -3136,44 +3176,9 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 27 - Group 1</Name>
-						<OpenAt>42</OpenAt>
-						<CloseAt>43</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 29 - Group 1</Name>
-						<OpenAt>44</OpenAt>
-						<CloseAt>45</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 31 - Group 1</Name>
-						<OpenAt>46</OpenAt>
+						<Name>CycleLoad 15 - Group 1</Name>
+						<OpenAt>45</OpenAt>
 						<CloseAt>47</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 31 - Group 2</Name>
-						<OpenAt>46</OpenAt>
-						<CloseAt>51</CloseAt>
-						<Functions>
-							<Function control="Blower_Control_Relay_Supply">
-								<Payload>C3.9_Blower Control Relay Supply</Payload>
-							</Function>
-							<Function scenario="Power_Mirror_Control_Left_Left"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 31 - Group 3</Name>
-						<OpenAt>46</OpenAt>
-						<CloseAt>61</CloseAt>
 						<Functions>
 							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
 								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
@@ -3190,31 +3195,40 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 32 - Group 1</Name>
-						<OpenAt>47</OpenAt>
-						<CloseAt>48</CloseAt>
+						<Name>CycleLoad 16 - Group 1</Name>
+						<OpenAt>46</OpenAt>
+						<CloseAt>51</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Left"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 34 - Group 1</Name>
+						<Name>CycleLoad 17 - Group 1</Name>
 						<OpenAt>49</OpenAt>
-						<CloseAt>50</CloseAt>
+						<CloseAt>51</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 36 - Group 1</Name>
-						<OpenAt>51</OpenAt>
-						<CloseAt>52</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 36 - Group 2</Name>
+						<Name>CycleLoad 18 - Group 1</Name>
 						<OpenAt>51</OpenAt>
 						<CloseAt>56</CloseAt>
 						<Functions>
@@ -3227,9 +3241,6 @@
 							<Function control="Cabin_Tilt_Valve_Supply">
 								<Payload>C4.38_CabinTiltValveSupply</Payload>
 							</Function>
-							<Function control="Washer_Pump_Front_Relay">
-								<Payload>C1.15_Washer Pump Front Relay</Payload>
-							</Function>
 							<Function control="ReverseGearSupply">
 								<Payload>C3.15_ReverseGearSupply</Payload>
 							</Function>
@@ -3238,23 +3249,26 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 38 - Group 1</Name>
+						<Name>CycleLoad 19 - Group 1</Name>
 						<OpenAt>53</OpenAt>
-						<CloseAt>54</CloseAt>
+						<CloseAt>55</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 40 - Group 1</Name>
-						<OpenAt>55</OpenAt>
-						<CloseAt>56</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 41 - Group 1</Name>
+						<Name>CycleLoad 20 - Group 1</Name>
 						<OpenAt>56</OpenAt>
 						<CloseAt>61</CloseAt>
 						<Functions>
@@ -3267,11 +3281,14 @@
 							<Function control="LowLinerFrontSideLiftedValveSupply">
 								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
 							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
 							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 41 - Group 2</Name>
+						<Name>CycleLoad 20 - Group 2</Name>
 						<OpenAt>56</OpenAt>
 						<CloseAt>66</CloseAt>
 						<Functions>
@@ -3281,7 +3298,7 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 41 - Group 3</Name>
+						<Name>CycleLoad 20 - Group 3</Name>
 						<OpenAt>56</OpenAt>
 						<CloseAt>76</CloseAt>
 						<Functions>
@@ -3291,42 +3308,55 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 41 - Group 4</Name>
+						<Name>CycleLoad 20 - Group 4</Name>
 						<OpenAt>56</OpenAt>
-						<CloseAt>16</CloseAt>
+						<CloseAt>91</CloseAt>
 						<Functions>
 							<Function control="Passenger_Power_Window_Motor">
 							<Payload>C1.3_Passenger Power Window Motor Down</Payload>
 							</Function>
-							<Function scenario="Sunroof_Close"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 42 - Group 1</Name>
+						<Name>CycleLoad 21 - Group 1</Name>
 						<OpenAt>57</OpenAt>
-						<CloseAt>58</CloseAt>
+						<CloseAt>59</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 44 - Group 1</Name>
-						<OpenAt>59</OpenAt>
-						<CloseAt>60</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 46 - Group 1</Name>
+						<Name>CycleLoad 22 - Group 1</Name>
 						<OpenAt>61</OpenAt>
-						<CloseAt>62</CloseAt>
+						<CloseAt>63</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 46 - Group 2</Name>
+						<Name>CycleLoad 22 - Group 2</Name>
 						<OpenAt>61</OpenAt>
 						<CloseAt>66</CloseAt>
 						<Functions>
@@ -3340,9 +3370,9 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 46 - Group 3</Name>
+						<Name>CycleLoad 22 - Group 3</Name>
 						<OpenAt>61</OpenAt>
-						<CloseAt>16</CloseAt>
+						<CloseAt>91</CloseAt>
 						<Functions>
 							<Function control="Windscreen_Wipers_System_Output_Signal">
 								<Payload>C1.9_Wiper High Relay</Payload>
@@ -3353,31 +3383,26 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 47 - Group 1</Name>
-						<OpenAt>62</OpenAt>
-						<CloseAt>63</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 49 - Group 1</Name>
-						<OpenAt>64</OpenAt>
-						<CloseAt>65</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 51 - Group 1</Name>
-						<OpenAt>66</OpenAt>
+						<Name>CycleLoad 23 - Group 1</Name>
+						<OpenAt>65</OpenAt>
 						<CloseAt>67</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 51 - Group 2</Name>
+						<Name>CycleLoad 24 - Group 1</Name>
 						<OpenAt>66</OpenAt>
 						<CloseAt>71</CloseAt>
 						<Functions>
@@ -3403,7 +3428,7 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 51 - Group 3</Name>
+						<Name>CycleLoad 24 - Group 2</Name>
 						<OpenAt>66</OpenAt>
 						<CloseAt>76</CloseAt>
 						<Functions>
@@ -3413,39 +3438,9 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 53 - Group 1</Name>
-						<OpenAt>68</OpenAt>
-						<CloseAt>69</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 55 - Group 1</Name>
-						<OpenAt>70</OpenAt>
+						<Name>CycleLoad 25 - Group 1</Name>
+						<OpenAt>69</OpenAt>
 						<CloseAt>71</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 56 - Group 1</Name>
-						<OpenAt>71</OpenAt>
-						<CloseAt>76</CloseAt>
-						<Functions>
-							<Function control="Battery_Saver_System_Output_Signals">
-								<Payload>C4.54_Battery Saver Set Control</Payload>
-							</Function>
-							<Function control="Cabin_Tilt_Valve_Supply">
-								<Payload>C4.38_CabinTiltValveSupply</Payload>
-							</Function>
-							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 56 - Group 2</Name>
-						<OpenAt>71</OpenAt>
-						<CloseAt>81</CloseAt>
 						<Functions>
 							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
 								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
@@ -3459,35 +3454,43 @@
 							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
 								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
 							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 26 - Group 1</Name>
+						<OpenAt>71</OpenAt>
+						<CloseAt>76</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
 							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 57 - Group 1</Name>
-						<OpenAt>72</OpenAt>
-						<CloseAt>73</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 59 - Group 1</Name>
-						<OpenAt>74</OpenAt>
+						<Name>CycleLoad 27 - Group 1</Name>
+						<OpenAt>73</OpenAt>
 						<CloseAt>75</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 61 - Group 1</Name>
-						<OpenAt>76</OpenAt>
-						<CloseAt>77</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 61 - Group 2</Name>
+						<Name>CycleLoad 28 - Group 1</Name>
 						<OpenAt>76</OpenAt>
 						<CloseAt>81</CloseAt>
 						<Functions>
@@ -3503,35 +3506,52 @@
 							<Function control="Horn_Output_Control">
 								<Payload>C1.11_Horn Output Control</Payload>
 							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
 							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 62 - Group 1</Name>
+						<Name>CycleLoad 29 - Group 1</Name>
 						<OpenAt>77</OpenAt>
-						<CloseAt>78</CloseAt>
+						<CloseAt>79</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 64 - Group 1</Name>
-						<OpenAt>79</OpenAt>
-						<CloseAt>80</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 66 - Group 1</Name>
+						<Name>CycleLoad 30 - Group 1</Name>
 						<OpenAt>81</OpenAt>
-						<CloseAt>82</CloseAt>
+						<CloseAt>83</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 66 - Group 2</Name>
+						<Name>CycleLoad 30 - Group 2</Name>
 						<OpenAt>81</OpenAt>
 						<CloseAt>86</CloseAt>
 						<Functions>
@@ -3551,41 +3571,31 @@
 							<Function control="TrailerTagAxleLifting1Supply">
 								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
 							</Function>
-							<Function control="Washer_Pump_Front_Relay">
-								<Payload>C1.15_Washer Pump Front Relay</Payload>
-							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 66 - Group 3</Name>
-						<OpenAt>81</OpenAt>
-						<CloseAt>16</CloseAt>
-						<Functions>
-							<Function control="AirHornActivateSupply">
-								<Payload>C4.16_AirHornActivateSupply</Payload>
-							</Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 68 - Group 1</Name>
-						<OpenAt>83</OpenAt>
-						<CloseAt>84</CloseAt>
-						<Functions>
-							<Function scenario="Door_Left_Right_UnLock"></Function>
-						</Functions>
-					</Cycle>
-					<Cycle>
-						<Name>CycleLoad 70 - Group 1</Name>
+						<Name>CycleLoad 31 - Group 1</Name>
 						<OpenAt>85</OpenAt>
-						<CloseAt>86</CloseAt>
+						<CloseAt>87</CloseAt>
 						<Functions>
-							<Function scenario="Door_Left_Right_Lock"></Function>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 71 - Group 1</Name>
+						<Name>CycleLoad 32 - Group 1</Name>
 						<OpenAt>86</OpenAt>
-						<CloseAt>16</CloseAt>
+						<CloseAt>91</CloseAt>
 						<Functions>
 							<Function control="Battery_Saver_System_Output_Signals">
 								<Payload>C4.52_Battery Saver Reset Control</Payload>
@@ -3597,6 +3607,597 @@
 								<Payload>C1.11_Horn Output Control</Payload>
 							</Function>
 							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 32 - Group 2</Name>
+						<OpenAt>86</OpenAt>
+						<CloseAt>96</CloseAt>
+						<Functions>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 33 - Group 1</Name>
+						<OpenAt>89</OpenAt>
+						<CloseAt>91</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<!-- End Group 1 -->
+					<!-- Start Group 2 -->
+					<Cycle>
+						<Name>CycleLoad 2-01 Group 1</Name>
+						<OpenAt>91</OpenAt>
+						<CloseAt>92</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-01 Group 2</Name>
+						<OpenAt>91</OpenAt>
+						<CloseAt>96</CloseAt>
+						<Functions>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Up"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-01 Group 3</Name>
+						<OpenAt>91</OpenAt>
+						<CloseAt>126</CloseAt>
+						<Functions>
+						<Function control="Hall_Sensor_Supply">
+								<Payload>C4.28_HallSensorLeftSupply</Payload>
+								<Payload>C4.46_HallSensorRightSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-01 Group 4</Name>
+						<OpenAt>91</OpenAt>
+						<CloseAt>131</CloseAt>
+						<Functions>
+							<Function control="Windscreen_Wipers_System_Output_Signal">
+								<Payload>C1.18_Wiper Low Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-02 Group 1</Name>
+						<OpenAt>92</OpenAt>
+						<CloseAt>93</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-03 Group 1</Name>
+						<OpenAt>96</OpenAt>
+						<CloseAt>97</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-03 Group 2</Name>
+						<OpenAt>96</OpenAt>
+						<CloseAt>98</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-03 Group 3</Name>
+						<OpenAt>96</OpenAt>
+						<CloseAt>101</CloseAt>
+						<Functions>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Inter_Lock_Valve_Supply">
+								<Payload>C4.44_InterLockValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-04 Group 1</Name>
+						<OpenAt>97</OpenAt>
+						<CloseAt>98</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-05 Group 1</Name>
+						<OpenAt>100</OpenAt>
+						<CloseAt>102</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-06 Group 1</Name>
+						<OpenAt>101</OpenAt>
+						<CloseAt>102</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-06 Group 2</Name>
+						<OpenAt>101</OpenAt>
+						<CloseAt>106</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-06 Group 3</Name>
+						<OpenAt>101</OpenAt>
+						<CloseAt>111</CloseAt>
+						<Functions>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-07 Group 1</Name>
+						<OpenAt>102</OpenAt>
+						<CloseAt>103</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-08 Group 1</Name>
+						<OpenAt>104</OpenAt>
+						<CloseAt>106</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-09 Group 1</Name>
+						<OpenAt>106</OpenAt>
+						<CloseAt>107</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-09 Group 2</Name>
+						<OpenAt>106</OpenAt>
+						<CloseAt>111</CloseAt>
+						<Functions>
+							<Function control="AirHornActivateSupply">
+								<Payload>C4.16_AirHornActivateSupply</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-10 Group 1</Name>
+						<OpenAt>107</OpenAt>
+						<CloseAt>108</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-11 Group 1</Name>
+						<OpenAt>108</OpenAt>
+						<CloseAt>110</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-12 Group 1</Name>
+						<OpenAt>111</OpenAt>
+						<CloseAt>116</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-12 Group 2</Name>
+						<OpenAt>111</OpenAt>
+						<CloseAt>121</CloseAt>
+						<Functions>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-13 Group 1</Name>
+						<OpenAt>112</OpenAt>
+						<CloseAt>114</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-14 Group 1</Name>
+						<OpenAt>116</OpenAt>
+						<CloseAt>118</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-14 Group 2</Name>
+						<OpenAt>116</OpenAt>
+						<CloseAt>121</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Right"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-15 Group 1</Name>
+						<OpenAt>120</OpenAt>
+						<CloseAt>122</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-16 Group 1</Name>
+						<OpenAt>121</OpenAt>
+						<CloseAt>126</CloseAt>
+						<Functions>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-17 Group 1</Name>
+						<OpenAt>124</OpenAt>
+						<CloseAt>126</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-18 Group 1</Name>
+						<OpenAt>126</OpenAt>
+						<CloseAt>131</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Down">
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-19 Group 1</Name>
+						<OpenAt>128</OpenAt>
+						<CloseAt>130</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-20 Group 1</Name>
+						<OpenAt>131</OpenAt>
+						<CloseAt>136</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-20 Group 2</Name>
+						<OpenAt>131</OpenAt>
+						<CloseAt>141</CloseAt>
+						<Functions>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-20 Group 3</Name>
+						<OpenAt>131</OpenAt>
+						<CloseAt>151</CloseAt>
+						<Functions>
+							<Function control="AirHornActivateSupply">
+								<Payload>C4.16_AirHornActivateSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-21 Group 1</Name>
+						<OpenAt>132</OpenAt>
+						<CloseAt>134</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-22 Group 1</Name>
+						<OpenAt>136</OpenAt>
+						<CloseAt>138</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-22 Group 2</Name>
+						<OpenAt>136</OpenAt>
+						<CloseAt>141</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-22 Group 3</Name>
+						<OpenAt>136</OpenAt>
+						<CloseAt>166</CloseAt>
+						<Functions>
+							<Function control="Windscreen_Wipers_System_Output_Signal">
+								<Payload>C1.9_Wiper High Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-23 Group 1</Name>
+						<OpenAt>140</OpenAt>
+						<CloseAt>142</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-24 Group 1</Name>
+						<OpenAt>141</OpenAt>
+						<CloseAt>146</CloseAt>
+						<Functions>
+							<Function control="Inter_Lock_Valve_Supply">
+								<Payload>C4.44_InterLockValveSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Up"></Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
 							<Function control="ReverseGearSupply">
 								<Payload>C3.15_ReverseGearSupply</Payload>
 							</Function>
@@ -3609,21 +4210,1803 @@
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 72 - Group 1</Name>
-						<OpenAt>87</OpenAt>
-						<CloseAt>88</CloseAt>
+						<Name>CycleLoad 2-24 Group 2</Name>
+						<OpenAt>141</OpenAt>
+						<CloseAt>151</CloseAt>
+						<Functions>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-25 Group 1</Name>
+						<OpenAt>144</OpenAt>
+						<CloseAt>146</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-26 Group 1</Name>
+						<OpenAt>146</OpenAt>
+						<CloseAt>151</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-27 Group 1</Name>
+						<OpenAt>148</OpenAt>
+						<CloseAt>150</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-28 Group 1</Name>
+						<OpenAt>151</OpenAt>
+						<CloseAt>156</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-29 Group 1</Name>
+						<OpenAt>152</OpenAt>
+						<CloseAt>154</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-30 Group 1</Name>
+						<OpenAt>156</OpenAt>
+						<CloseAt>158</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-30 Group 2</Name>
+						<OpenAt>156</OpenAt>
+						<CloseAt>161</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-31 Group 1</Name>
+						<OpenAt>160</OpenAt>
+						<CloseAt>162</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-32 Group 1</Name>
+						<OpenAt>161</OpenAt>
+						<CloseAt>166</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Up">
+							</Function>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 2-32 Group 2</Name>
+						<OpenAt>161</OpenAt>
+						<CloseAt>171</CloseAt>
+						<Functions>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					
+					<Cycle>
+						<Name>CycleLoad 2-33 Group 1</Name>
+						<OpenAt>164</OpenAt>
+						<CloseAt>166</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>
+					<!-- End Group 2 -->
+					<!-- Start Group 3 -->
+					<Cycle>
+						<Name>CycleLoad 3-01 Group 1</Name>
+						<OpenAt>166</OpenAt>
+						<CloseAt>167</CloseAt>
 						<Functions>
 							<Function scenario="Door_Left_Right_UnLock"></Function>
 						</Functions>
 					</Cycle>
 					<Cycle>
-						<Name>CycleLoad 74 - Group 1</Name>
-						<OpenAt>89</OpenAt>
-						<CloseAt>90</CloseAt>
+						<Name>CycleLoad 3-01 Group 2</Name>
+						<OpenAt>166</OpenAt>
+						<CloseAt>171</CloseAt>
+						<Functions>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Up"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-01 Group 3</Name>
+						<OpenAt>166</OpenAt>
+						<CloseAt>201</CloseAt>
+						<Functions>
+							<Function scenario="Sunroof_Open"></Function>
+							<Function control="Hall_Sensor_Supply">
+								<Payload>C4.28_HallSensorLeftSupply</Payload>
+								<Payload>C4.46_HallSensorRightSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-01 Group 4</Name>
+						<OpenAt>166</OpenAt>
+						<CloseAt>206</CloseAt>
+						<Functions>
+							<Function control="Windscreen_Wipers_System_Output_Signal">
+								<Payload>C1.18_Wiper Low Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-02 Group 1</Name>
+						<OpenAt>167</OpenAt>
+						<CloseAt>168</CloseAt>
 						<Functions>
 							<Function scenario="Door_Left_Right_Lock"></Function>
 						</Functions>
 					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-03 Group 1</Name>
+						<OpenAt>171</OpenAt>
+						<CloseAt>172</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-03 Group 2</Name>
+						<OpenAt>171</OpenAt>
+						<CloseAt>173</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-03 Group 3</Name>
+						<OpenAt>171</OpenAt>
+						<CloseAt>176</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function control="Inter_Lock_Valve_Supply">
+								<Payload>C4.44_InterLockValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-04 Group 1</Name>
+						<OpenAt>172</OpenAt>
+						<CloseAt>173</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-05 Group 1</Name>
+						<OpenAt>175</OpenAt>
+						<CloseAt>177</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-06 Group 1</Name>
+						<OpenAt>176</OpenAt>
+						<CloseAt>177</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-06 Group 2</Name>
+						<OpenAt>176</OpenAt>
+						<CloseAt>181</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-06 Group 3</Name>
+						<OpenAt>176</OpenAt>
+						<CloseAt>186</CloseAt>
+						<Functions>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-07 Group 1</Name>
+						<OpenAt>177</OpenAt>
+						<CloseAt>178</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-08 Group 1</Name>
+						<OpenAt>179</OpenAt>
+						<CloseAt>181</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>		
+					<Cycle>
+						<Name>CycleLoad 3-09 Group 1</Name>
+						<OpenAt>181</OpenAt>
+						<CloseAt>182</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-09 Group 2</Name>
+						<OpenAt>181</OpenAt>
+						<CloseAt>186</CloseAt>
+						<Functions>
+							<Function control="AirHornActivateSupply">
+								<Payload>C4.16_AirHornActivateSupply</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-10 Group 1</Name>
+						<OpenAt>182</OpenAt>
+						<CloseAt>183</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-11 Group 1</Name>
+						<OpenAt>183</OpenAt>
+						<CloseAt>185</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-12 Group 1</Name>
+						<OpenAt>186</OpenAt>
+						<CloseAt>191</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-12 Group 2</Name>
+						<OpenAt>186</OpenAt>
+						<CloseAt>196</CloseAt>
+						<Functions>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>		
+					<Cycle>
+						<Name>CycleLoad 3-13 Group 1</Name>
+						<OpenAt>187</OpenAt>
+						<CloseAt>189</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>	
+					<Cycle>
+						<Name>CycleLoad 3-14 Group 1</Name>
+						<OpenAt>191</OpenAt>
+						<CloseAt>193</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-14 Group 2</Name>
+						<OpenAt>191</OpenAt>
+						<CloseAt>196</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Right"></Function>
+						</Functions>
+					</Cycle>		
+					<Cycle>
+						<Name>CycleLoad 3-15 Group 1</Name>
+						<OpenAt>195</OpenAt>
+						<CloseAt>197</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>	
+					<Cycle>
+						<Name>CycleLoad 3-16 Group 1</Name>
+						<OpenAt>196</OpenAt>
+						<CloseAt>201</CloseAt>
+						<Functions>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Left"></Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-17 Group 1</Name>
+						<OpenAt>199</OpenAt>
+						<CloseAt>201</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>	
+					<Cycle>
+						<Name>CycleLoad 3-18 Group 1</Name>
+						<OpenAt>201</OpenAt>
+						<CloseAt>206</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Down">
+							</Function>
+						</Functions>
+					</Cycle>					
+					<Cycle>
+						<Name>CycleLoad 3-19 Group 1</Name>
+						<OpenAt>203</OpenAt>
+						<CloseAt>205</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-20 Group 1</Name>
+						<OpenAt>206</OpenAt>
+						<CloseAt>211</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+						</Functions>
+					</Cycle>		
+					<Cycle>
+						<Name>CycleLoad 3-20 Group 2</Name>
+						<OpenAt>206</OpenAt>
+						<CloseAt>216</CloseAt>
+						<Functions>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>	
+					<Cycle>
+						<Name>CycleLoad 3-20 Group 3</Name>
+						<OpenAt>206</OpenAt>
+						<CloseAt>226</CloseAt>
+						<Functions>
+							<Function control="AirHornActivateSupply">
+								<Payload>C4.16_AirHornActivateSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-20 Group 4</Name>
+						<OpenAt>206</OpenAt>
+						<CloseAt>241</CloseAt>
+						<Functions>
+							<Function scenario="Sunroof_Close"></Function>
+						</Functions>
+					</Cycle>		
+					<Cycle>
+						<Name>CycleLoad 3-21 Group 1</Name>
+						<OpenAt>207</OpenAt>
+						<CloseAt>209</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>			
+					<Cycle>
+						<Name>CycleLoad 3-22 Group 1</Name>
+						<OpenAt>211</OpenAt>
+						<CloseAt>213</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-22 Group 2</Name>
+						<OpenAt>211</OpenAt>
+						<CloseAt>216</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+						</Functions>
+					</Cycle>				
+					<Cycle>
+						<Name>CycleLoad 3-22 Group 3</Name>
+						<OpenAt>211</OpenAt>
+						<CloseAt>241</CloseAt>
+						<Functions>
+							<Function control="Windscreen_Wipers_System_Output_Signal">
+								<Payload>C1.9_Wiper High Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>	
+					<Cycle>
+						<Name>CycleLoad 3-23 Group 1</Name>
+						<OpenAt>215</OpenAt>
+						<CloseAt>217</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>		
+					<Cycle>
+						<Name>CycleLoad 3-24 Group 1</Name>
+						<OpenAt>216</OpenAt>
+						<CloseAt>221</CloseAt>
+						<Functions>
+							<Function control="Inter_Lock_Valve_Supply">
+								<Payload>C4.44_InterLockValveSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Up"></Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>		
+					<Cycle>
+						<Name>CycleLoad 3-24 Group 2</Name>
+						<OpenAt>216</OpenAt>
+						<CloseAt>226</CloseAt>
+						<Functions>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>		
+					<Cycle>
+						<Name>CycleLoad 3-25 Group 1</Name>
+						<OpenAt>219</OpenAt>
+						<CloseAt>221</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-26 Group 1</Name>
+						<OpenAt>221</OpenAt>
+						<CloseAt>226</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>						
+					<Cycle>
+						<Name>CycleLoad 3-27 Group 1</Name>
+						<OpenAt>223</OpenAt>
+						<CloseAt>225</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-28 Group 1</Name>
+						<OpenAt>226</OpenAt>
+						<CloseAt>231</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-29 Group 1</Name>
+						<OpenAt>227</OpenAt>
+						<CloseAt>229</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-30 Group 1</Name>
+						<OpenAt>231</OpenAt>
+						<CloseAt>233</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-30 Group 2</Name>
+						<OpenAt>231</OpenAt>
+						<CloseAt>236</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-31 Group 1</Name>
+						<OpenAt>235</OpenAt>
+						<CloseAt>237</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-32 Group 1</Name>
+						<OpenAt>236</OpenAt>
+						<CloseAt>241</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-32 Group 2</Name>
+						<OpenAt>236</OpenAt>
+						<CloseAt>246</CloseAt>
+						<Functions>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 3-33 Group 1</Name>
+						<OpenAt>239</OpenAt>
+						<CloseAt>241</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<!-- End Group 3 -->
+					<!-- Start Group 4 -->
+					<Cycle>
+						<Name>CycleLoad 4-01 Group 1</Name>
+						<OpenAt>241</OpenAt>
+						<CloseAt>242</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-01 Group 2</Name>
+						<OpenAt>241</OpenAt>
+						<CloseAt>246</CloseAt>
+						<Functions>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Up"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-01 Group 3</Name>
+						<OpenAt>241</OpenAt>
+						<CloseAt>276</CloseAt>
+						<Functions>
+							<Function control="Hall_Sensor_Supply">
+								<Payload>C4.28_HallSensorLeftSupply</Payload>
+								<Payload>C4.46_HallSensorRightSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-01 Group 4</Name>
+						<OpenAt>241</OpenAt>
+						<CloseAt>281</CloseAt>
+						<Functions>
+							<Function control="Windscreen_Wipers_System_Output_Signal">
+								<Payload>C1.18_Wiper Low Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-02 Group 1</Name>
+						<OpenAt>242</OpenAt>
+						<CloseAt>243</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-03 Group 1</Name>
+						<OpenAt>246</OpenAt>
+						<CloseAt>247</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-03 Group 2</Name>
+						<OpenAt>246</OpenAt>
+						<CloseAt>248</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-03 Group 3</Name>
+						<OpenAt>246</OpenAt>
+						<CloseAt>251</CloseAt>
+						<Functions>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Inter_Lock_Valve_Supply">
+								<Payload>C4.44_InterLockValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-04 Group 1</Name>
+						<OpenAt>247</OpenAt>
+						<CloseAt>248</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-05 Group 1</Name>
+						<OpenAt>250</OpenAt>
+						<CloseAt>252</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-06 Group 1</Name>
+						<OpenAt>251</OpenAt>
+						<CloseAt>252</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-06 Group 2</Name>
+						<OpenAt>251</OpenAt>
+						<CloseAt>256</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-06 Group 3</Name>
+						<OpenAt>251</OpenAt>
+						<CloseAt>261</CloseAt>
+						<Functions>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-07 Group 1</Name>
+						<OpenAt>252</OpenAt>
+						<CloseAt>253</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-08 Group 1</Name>
+						<OpenAt>254</OpenAt>
+						<CloseAt>256</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-09 Group 1</Name>
+						<OpenAt>256</OpenAt>
+						<CloseAt>257</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_UnLock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-09 Group 2</Name>
+						<OpenAt>256</OpenAt>
+						<CloseAt>261</CloseAt>
+						<Functions>
+							<Function control="AirHornActivateSupply">
+								<Payload>C4.16_AirHornActivateSupply</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-10 Group 1</Name>
+						<OpenAt>257</OpenAt>
+						<CloseAt>258</CloseAt>
+						<Functions>
+							<Function scenario="Door_Left_Right_Lock"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-11 Group 1</Name>
+						<OpenAt>258</OpenAt>
+						<CloseAt>260</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-12 Group 1</Name>
+						<OpenAt>261</OpenAt>
+						<CloseAt>266</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-12 Group 2</Name>
+						<OpenAt>261</OpenAt>
+						<CloseAt>271</CloseAt>
+						<Functions>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-13 Group 1</Name>
+						<OpenAt>262</OpenAt>
+						<CloseAt>264</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-14 Group 1</Name>
+						<OpenAt>266</OpenAt>
+						<CloseAt>268</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-14 Group 2</Name>
+						<OpenAt>266</OpenAt>
+						<CloseAt>271</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Right"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-15 Group 1</Name>
+						<OpenAt>270</OpenAt>
+						<CloseAt>272</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-16 Group 1</Name>
+						<OpenAt>271</OpenAt>
+						<CloseAt>276</CloseAt>
+						<Functions>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-17 Group 1</Name>
+						<OpenAt>274</OpenAt>
+						<CloseAt>276</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-18 Group 1</Name>
+						<OpenAt>276</OpenAt>
+						<CloseAt>281</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Down">
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-19 Group 1</Name>
+						<OpenAt>278</OpenAt>
+						<CloseAt>280</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-20 Group 1</Name>
+						<OpenAt>281</OpenAt>
+						<CloseAt>286</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-20 Group 2</Name>
+						<OpenAt>281</OpenAt>
+						<CloseAt>291</CloseAt>
+						<Functions>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-20 Group 3</Name>
+						<OpenAt>281</OpenAt>
+						<CloseAt>301</CloseAt>
+						<Functions>
+							<Function control="AirHornActivateSupply">
+								<Payload>C4.16_AirHornActivateSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-21 Group 1</Name>
+						<OpenAt>282</OpenAt>
+						<CloseAt>284</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-22 Group 1</Name>
+						<OpenAt>286</OpenAt>
+						<CloseAt>288</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-22 Group 2</Name>
+						<OpenAt>286</OpenAt>
+						<CloseAt>291</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-22 Group 3</Name>
+						<OpenAt>286</OpenAt>
+						<CloseAt>16</CloseAt>
+						<Functions>
+							<Function control="Windscreen_Wipers_System_Output_Signal">
+								<Payload>C1.9_Wiper High Relay</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-23 Group 1</Name>
+						<OpenAt>290</OpenAt>
+						<CloseAt>292</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-24 Group 1</Name>
+						<OpenAt>291</OpenAt>
+						<CloseAt>296</CloseAt>
+						<Functions>
+							<Function control="Inter_Lock_Valve_Supply">
+								<Payload>C4.44_InterLockValveSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Up"></Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-24 Group 2</Name>
+						<OpenAt>291</OpenAt>
+						<CloseAt>301</CloseAt>
+						<Functions>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-25 Group 1</Name>
+						<OpenAt>294</OpenAt>
+						<CloseAt>296</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-26 Group 1</Name>
+						<OpenAt>296</OpenAt>
+						<CloseAt>301</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Cabin_Tilt_Valve_Supply">
+								<Payload>C4.38_CabinTiltValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Down"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-27 Group 1</Name>
+						<OpenAt>298</OpenAt>
+						<CloseAt>300</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-28 Group 1</Name>
+						<OpenAt>301</OpenAt>
+						<CloseAt>306</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="LED_Outputs">
+								<Payload>C4.51_BlendingFuncIlluminationLED</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function control="Washer_Pump_Front_Relay">
+								<Payload>C1.15_Washer Pump Front Relay</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Left"></Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-29 Group 1</Name>
+						<OpenAt>302</OpenAt>
+						<CloseAt>304</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-30 Group 1</Name>
+						<OpenAt>306</OpenAt>
+						<CloseAt>308</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-30 Group 2</Name>
+						<OpenAt>306</OpenAt>
+						<CloseAt>311</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.54_Battery Saver Set Control</Payload>
+							</Function>
+							<Function control="Blower_Control_Relay_Supply">
+								<Payload>C3.9_Blower Control Relay Supply</Payload>
+							</Function>
+							<Function control="EngineBrakeSupply">
+								<Payload>C2.6_EngineBrakeSupply</Payload>
+							</Function>
+							<Function control="LowLinerFrontSideLiftedValveSupply">
+								<Payload>C5.8_LowLinerFrontSideLiftedValveSupply</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Right_Right"></Function>
+							<Function control="TrailerTagAxleLifting1Supply">
+								<Payload>C4.39_TrailerTagAxleLifting1Supply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-31 Group 1</Name>
+						<OpenAt>310</OpenAt>
+						<CloseAt>312</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-32 Group 1</Name>
+						<OpenAt>311</OpenAt>
+						<CloseAt>16</CloseAt>
+						<Functions>
+							<Function control="Battery_Saver_System_Output_Signals">
+								<Payload>C4.52_Battery Saver Reset Control</Payload>
+							</Function>
+							<Function control="DifferentialLockValve1Supply">
+								<Payload>C3.1_DifferentialLockValve1Supply</Payload>
+							</Function>
+							<Function control="Horn_Output_Control">
+								<Payload>C1.11_Horn Output Control</Payload>
+							</Function>
+							<Function scenario="Power_Mirror_Control_Left_Up"></Function>
+							<Function control="HeatedMirrorSupply">
+								<Payload>C4.1_HeatedMirrorSupply</Payload>
+							</Function>
+							<Function control="HeatedWindshieldSupply">
+								<Payload>C4.2_HeatedWindshieldSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-32 Group 2</Name>
+						<OpenAt>311</OpenAt>
+						<CloseAt>21</CloseAt>
+						<Functions>
+							<Function control="ReverseGearSupply">
+								<Payload>C3.15_ReverseGearSupply</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<Cycle>
+						<Name>CycleLoad 4-33 Group 1</Name>
+						<OpenAt>314</OpenAt>
+						<CloseAt>16</CloseAt>
+						<Functions>
+							<Function control="Left_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.8_Left Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Right_Front_Turn_Lamp_Outage_Feedback">
+								<Payload>C3.21_Right Front Turn Lamp Outage Feedback</Payload>
+							</Function>
+							<Function control="Left_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C2.7_Left Rear Turn Signal Lamp Control</Payload>
+							</Function>
+							<Function control="Right_Rear_Turn_Signal_Lamp_Control">
+								<Payload>C3.13_Right Rear Turn Signal Lamp Control</Payload>
+							</Function>
+						</Functions>
+					</Cycle>
+					<!-- End Group 4 -->
 				</Cycles>
 				<Scenarios>
 					<Scenario>

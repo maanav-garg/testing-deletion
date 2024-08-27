@@ -30,12 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTestLogView));
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.dateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.itemType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.response = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rowData = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.treeView = new System.Windows.Forms.TreeView();
             this.dgvSettings = new System.Windows.Forms.Panel();
             this.btnReadFile = new System.Windows.Forms.Button();
@@ -60,6 +54,12 @@
             this.lblShortestLoopName = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.dateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.control = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.did = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.response = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rowData = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.dgvSettings.SuspendLayout();
             this.pnlStats.SuspendLayout();
@@ -77,8 +77,8 @@
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dateTime,
-            this.name,
-            this.itemType,
+            this.control,
+            this.did,
             this.operation,
             this.response,
             this.rowData});
@@ -93,55 +93,6 @@
             this.dataGridView.Size = new System.Drawing.Size(824, 571);
             this.dataGridView.TabIndex = 0;
             this.dataGridView.DataSourceChanged += new System.EventHandler(this.dataGridView_DataSourceChanged);
-            // 
-            // dateTime
-            // 
-            this.dateTime.DataPropertyName = "DateTime";
-            this.dateTime.HeaderText = "Time";
-            this.dateTime.MinimumWidth = 6;
-            this.dateTime.Name = "dateTime";
-            this.dateTime.ReadOnly = true;
-            // 
-            // name
-            // 
-            this.name.DataPropertyName = "Name";
-            this.name.HeaderText = "Name";
-            this.name.MinimumWidth = 6;
-            this.name.Name = "name";
-            this.name.ReadOnly = true;
-            // 
-            // itemType
-            // 
-            this.itemType.DataPropertyName = "ItemType";
-            this.itemType.HeaderText = "Item Type";
-            this.itemType.MinimumWidth = 6;
-            this.itemType.Name = "itemType";
-            this.itemType.ReadOnly = true;
-            // 
-            // operation
-            // 
-            this.operation.DataPropertyName = "Operation";
-            this.operation.HeaderText = "Operation";
-            this.operation.MinimumWidth = 6;
-            this.operation.Name = "operation";
-            this.operation.ReadOnly = true;
-            // 
-            // response
-            // 
-            this.response.DataPropertyName = "Response";
-            this.response.HeaderText = "Response";
-            this.response.MinimumWidth = 6;
-            this.response.Name = "response";
-            this.response.ReadOnly = true;
-            // 
-            // rowData
-            // 
-            this.rowData.DataPropertyName = "_RowData";
-            this.rowData.HeaderText = "RowData";
-            this.rowData.MinimumWidth = 6;
-            this.rowData.Name = "rowData";
-            this.rowData.ReadOnly = true;
-            this.rowData.Visible = false;
             // 
             // treeView
             // 
@@ -391,6 +342,55 @@
             this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
             this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
             // 
+            // dateTime
+            // 
+            this.dateTime.DataPropertyName = "DateTime";
+            this.dateTime.HeaderText = "Time";
+            this.dateTime.MinimumWidth = 6;
+            this.dateTime.Name = "dateTime";
+            this.dateTime.ReadOnly = true;
+            // 
+            // control
+            // 
+            this.control.DataPropertyName = "Control";
+            this.control.HeaderText = "Control";
+            this.control.MinimumWidth = 6;
+            this.control.Name = "control";
+            this.control.ReadOnly = true;
+            // 
+            // did
+            // 
+            this.did.DataPropertyName = "DID";
+            this.did.HeaderText = "DID";
+            this.did.MinimumWidth = 6;
+            this.did.Name = "did";
+            this.did.ReadOnly = true;
+            // 
+            // operation
+            // 
+            this.operation.DataPropertyName = "Operation";
+            this.operation.HeaderText = "Operation";
+            this.operation.MinimumWidth = 6;
+            this.operation.Name = "operation";
+            this.operation.ReadOnly = true;
+            // 
+            // response
+            // 
+            this.response.DataPropertyName = "Response";
+            this.response.HeaderText = "Response";
+            this.response.MinimumWidth = 6;
+            this.response.Name = "response";
+            this.response.ReadOnly = true;
+            // 
+            // rowData
+            // 
+            this.rowData.DataPropertyName = "_RowData";
+            this.rowData.HeaderText = "RowData";
+            this.rowData.MinimumWidth = 6;
+            this.rowData.Name = "rowData";
+            this.rowData.ReadOnly = true;
+            this.rowData.Visible = false;
+            // 
             // FormTestLogView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -422,12 +422,6 @@
         public System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.Panel dgvSettings;
         private System.Windows.Forms.TextBox txtFilter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dateTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn itemType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn response;
-        private System.Windows.Forms.DataGridViewTextBoxColumn rowData;
         private System.Windows.Forms.Label lblTotalCount;
         private System.Windows.Forms.Label lblTotalCountHeader;
         private System.Windows.Forms.Label label1;
@@ -449,5 +443,11 @@
         private System.Windows.Forms.Label lblShortestLoopName;
         private System.Windows.Forms.Label lblShortestLoopNameHeader;
         private System.Windows.Forms.Panel pnlStats;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dateTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn control;
+        private System.Windows.Forms.DataGridViewTextBoxColumn did;
+        private System.Windows.Forms.DataGridViewTextBoxColumn operation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn response;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rowData;
     }
 }

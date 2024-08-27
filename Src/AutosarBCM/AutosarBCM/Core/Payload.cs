@@ -1,5 +1,6 @@
 ﻿using AutosarBCM.Core.Config;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -27,7 +28,14 @@ namespace AutosarBCM.Core.Config
             if (value != null && payloadInfo.IsBit)
                 Value = new byte[] { (byte)((value[0] & (1 << index)) == 0 ? 0 : 1) };
 
-            if (value != null) SetFormattedValue();
+            if (value != null)
+                if (value.Any(x => x > 0)) SetFormattedValue();
+                else
+                {
+                    Value = new byte[] { 0x0, 0x0 };
+                    SetFormattedValue();
+                }
+
             return this;
         }
 
@@ -78,7 +86,7 @@ namespace AutosarBCM.Core.Config
     }
     public class HexDump_3Bytes : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = Convert.ToUInt32(Value.FirstOrDefault().ToString("X2"), 16).ToString();
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
 
     public class HexDump_4Bytes : Payload
@@ -111,7 +119,7 @@ namespace AutosarBCM.Core.Config
 
     public class DID_PWM : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToUInt16(Value, 0).ToString();
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToUInt16(Value.Reverse().ToArray(), 0).ToString();
     }
     public class DID_DE26 : Payload
     {
