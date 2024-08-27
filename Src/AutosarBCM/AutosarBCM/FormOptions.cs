@@ -7,6 +7,7 @@ using Connection.Hardware.SP;
 using AutosarBCM.Properties;
 using System.Linq;
 using System.Collections.Specialized;
+using AutosarBCM.Forms;
 
 namespace AutosarBCM
 {
@@ -390,6 +391,11 @@ namespace AutosarBCM
             {
                 e.Handled = true; // Reject the input
             }
+        }
+
+        private void chkEnableTrace_CheckedChanged(object sender, EventArgs e)
+        {
+            GlobalSettings.IsTraceEnabled = chkEnableTrace.Checked;
         }
     }
     
