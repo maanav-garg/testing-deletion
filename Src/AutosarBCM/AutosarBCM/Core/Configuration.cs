@@ -431,7 +431,8 @@ namespace AutosarBCM.Core
                                     PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
                                     PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
                                     SensitiveCtrlDuration = int.Parse(c.Element("SensitiveCtrlDuration").Value),
-                                    CycleRange = int.Parse(c.Element("CycleRange").Value)
+                                    CycleRange = int.Parse(c.Element("CycleRange").Value),
+                                    HexDump1ByteOpenValue = int.Parse(c.Element("CycleRange").Value)
                                 }).First(),
                             Cycles = e.Element("Cycles").Elements("Cycle")
                                 .Select(c => new Cycle
@@ -629,6 +630,10 @@ namespace AutosarBCM.Core
         /// Gets or sets the frequency of loop
         /// </summary>
         public int CycleRange { get; set; }
+        /// <summary>
+        /// Gets or sets the message of HexDump_1Byte Open value
+        /// </summary>
+        public int HexDump1ByteOpenValue { get; set; }
 
         #endregion
     }

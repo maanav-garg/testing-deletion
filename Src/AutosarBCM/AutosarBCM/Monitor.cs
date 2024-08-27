@@ -84,6 +84,18 @@ namespace AutosarBCM
         /// Static property to store the start time of environmental monitoring.
         /// </summary>
         private static DateTime StartTime { get; set; }
+        /// <summary>
+        /// Static property to store the start time of range group.
+        /// </summary>
+        private static string RangeStartTime { get; set; }
+        /// <summary>
+        /// Static property to store cycle loop value.
+        /// </summary>
+        private static int reboots = 0;
+        /// <summary>
+        /// Static property to store cycle range value.
+        /// </summary>
+        private static int cycleRange = 0;
 
         ///// <summary>
         ///// UDS messages used in environmental monitoring.
@@ -159,10 +171,12 @@ namespace AutosarBCM
                         var controlItems = ASContext.Configuration.Controls.Where(c => c.Group == "DID");
                         var startCycleIndex = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.StartCycleIndex;
                         var endCycleIndex = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
+                        cycleRange = ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
                         //var dictMapping = new Dictionary<string, InputMonitorItem>();
                         var dictMapping = new Dictionary<string, (Mapping, ControlInfo)>();
                         //var continousReadList = new List<InputMonitorItem>();
                         Dictionary<ControlInfo, string> continousReadList = new Dictionary<ControlInfo, string>();
+                        Helper.InitializeUnopenedPayloadLogFile();
 
                         var cycleDict = GetCycleDict(cycles);
 
@@ -242,8 +256,6 @@ namespace AutosarBCM
         private static void StartEnvironmentalTest(Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, (Mapping, ControlInfo)> dictMapping, Dictionary<ControlInfo, string> continousReadList)
         {
             var cycleIndex = 0;
-            var reboots = 0;
-
             List<Config.OutputMonitorItem> softContinuousDiagList = new List<Config.OutputMonitorItem>();
 
             //TODO to be checked
@@ -258,7 +270,7 @@ namespace AutosarBCM
             var groupedSoftContinuousDiagList = Helper.GroupList(softContinuousDiagList, (endCycleIndex - startCycleIndex + 1) > softContinuousDiagList.Count ? softContinuousDiagList.Count : (endCycleIndex - startCycleIndex + 1));
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest.SetCounter(1, 1);
-            timer = new MMTimer(0, MMTimer.EventType.OneTime, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots));
+            timer = new MMTimer(0, MMTimer.EventType.OneTime, () => TickHandler(groupedSoftContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex));
 
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.EnvironmentalStarted, Constants.DefaultEscapeCharacter);
             timer.Next(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleTime);
@@ -328,7 +340,11 @@ namespace AutosarBCM
                 }
                 Thread.Sleep(txInterval);
             }
+
+            ProcessUnopenedPayloads();
+            
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.ClosingOutputsFinished, Constants.DefaultEscapeCharacter);
+            
             FormMain.IsTestRunning = !FormMain.IsTestRunning;
             FormEnvironmentalTest formEnvTest = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
             formEnvTest.SetStartBtnVisual();
@@ -379,17 +395,19 @@ namespace AutosarBCM
         /// <param name="continousReadList">List of items for continuous reading.</param>
         /// <param name="cycleIndex">Reference to the current cycle index.</param>
         /// <param name="reboots">Reference to the count of reboots.</param>
-        private static void TickHandler(List<List<Config.OutputMonitorItem>> softContinuousDiagList, Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, (Mapping, ControlInfo)> dictMapping, Dictionary<ControlInfo, string> continousReadList, ref int cycleIndex, ref int reboots)
+        private static void TickHandler(List<List<Config.OutputMonitorItem>> softContinuousDiagList, Dictionary<int, Cycle> cycleDict, int startCycleIndex, int endCycleIndex, Dictionary<string, (Mapping, ControlInfo)> dictMapping, Dictionary<ControlInfo, string> continousReadList, ref int cycleIndex)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             if (cancellationToken.IsCancellationRequested)
                 return;
 
             var txInterval = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.TxInterval;
-            var cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
             //TODO to be checked
             if (cycleIndex == 0 && reboots == 0)
+            {
                 Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, Constants.StartProcessStarted, Constants.DefaultEscapeCharacter);
+                RangeStartTime = DateTime.Now.ToString("dd-MM-yyyy_HH:mm:ss");
+            }
 
             //TODO to be checked
             Helper.WriteCycleMessageToLogFile(string.Empty, string.Empty, string.Empty, $"Loop {cycleIndex + 1} Started at Cycle {reboots + 1}", "\n");
@@ -454,11 +472,11 @@ namespace AutosarBCM
                 reboots++;
                 Helper.SendExtendedDiagSession();
 
-                Interlocked.Exchange(ref cycleIndex, startCycleIndex - 1); reboots++;
-                Helper.SendExtendedDiagSession();
-                
                 if (reboots % cycleRange == 0)
-                    FormEnvironmentalTest.openedPayloads.Clear();
+                {
+                    ProcessUnopenedPayloads();
+                    RangeStartTime = DateTime.Now.ToString("dd-MM-yyyy_HH:mm:ss");
+                }   
             }
             else
                 Interlocked.Increment(ref cycleIndex);
@@ -466,7 +484,7 @@ namespace AutosarBCM
             stopwatch.Stop();
             var elapsed = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleTime - stopwatch.ElapsedMilliseconds;
             if (elapsed < 0)
-                TickHandler(softContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex, ref reboots);
+                TickHandler(softContinuousDiagList, cycleDict, startCycleIndex, endCycleIndex, dictMapping, continousReadList, ref cycleIndex);
             else
                 timer.Next((int)elapsed);
         }
@@ -782,6 +800,16 @@ namespace AutosarBCM
         {
             if (threadSleep > 0)
                 Thread.Sleep(threadSleep);
+        }
+
+        /// <summary>
+        /// Processes and logs the unopened payloads, then clears the unopened payload list.
+        /// </summary>
+        private static void ProcessUnopenedPayloads()
+        {
+            var groupStartCount = ((reboots - 1) / cycleRange) * cycleRange;
+            Helper.WriteUnopenedPayloadsToLogFile(FormEnvironmentalTest.UnopenedControlList, groupStartCount, reboots, cycleRange, RangeStartTime, DateTime.Now.ToString("dd-MM-yyyy_HH:mm:ss"));
+            FormEnvironmentalTest.UnopenedControlList.Clear();
         }
 
         #endregion

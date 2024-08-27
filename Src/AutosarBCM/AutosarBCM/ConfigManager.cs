@@ -1276,6 +1276,7 @@ namespace AutosarBCM.Config
         public string Id { get; set; }
         public string itemType { get; set; }
         public string itemName { get; set; }
+        public string operation { get; set; }
         public DateTime timestamp { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace AutosarBCM.Forms.Monitor
 {
-    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IIOControlByIdenReceiver, IDTCReceiver, IReadDataByIdenReceiver
+    public partial class FormEnvironmentalTest : Form, IPeriodicTest, IWriteByIdenReceiver, IIOControlByIdenReceiver, IDTCReceiver, IReadDataByIdenReceiver
     {
         #region Variables
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
@@ -21,12 +21,11 @@ namespace AutosarBCM.Forms.Monitor
         private List<Mapping> mappingData;
         private List<Function> continuousReadData;
         private int cycleRange;
-        public static HashSet<string> openedPayloads = new HashSet<string>();
-        public static HashSet<string> cyclePayloads = new HashSet<string>();
         IEnumerable<List<string>> openPayloadsOfScenario;
         IEnumerable<List<string>> closePayloadsOfScenario;
-        IEnumerable<string> openItemTypes;
-        public Dictionary<string, Config.SentMessage> sentMessagesDict = new Dictionary<string, Config.SentMessage>();
+        public List<Config.SentMessage> sentMessagesList = new List<Config.SentMessage>();
+        internal static List<Config.SentMessage> UnopenedControlList = new List<Config.SentMessage>();
+        internal static List<Config.SentMessage> OpenedControlList = new List<Config.SentMessage>();
         private int totalMessagesReceived = 0;
         internal int totalMessagesTransmitted = 0;
         private int endCycleIndex;
@@ -66,8 +65,6 @@ namespace AutosarBCM.Forms.Monitor
 
             ResetTime();
 
-            openItemTypes = ASContext.Configuration.Payloads.SelectMany(X => X.Values.Where(v => v.IsOpen == true).Select(f => f.FormattedValue)).Distinct();
-            openItemTypes = openItemTypes.Append("10000").ToList();
             scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
             cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
             cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
@@ -77,7 +74,7 @@ namespace AutosarBCM.Forms.Monitor
             endCycleIndex = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
 
 
-            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.Functions.SelectMany(a => a.Payloads)).Distinct();
+            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.OpenItems.SelectMany(o => o.Payloads).Concat(x.CloseItems.SelectMany(c => c.Payloads))).Distinct();
 
             var controlNamesInCycle = cycles.Values
                 .SelectMany(x => x.Functions)
@@ -312,6 +309,10 @@ namespace AutosarBCM.Forms.Monitor
             {
                 return HandleReadDataByIdenService(readByIdenService);
             }
+            else if (baseService is WriteDataByIdentifierService writeByIdenService)
+            {
+                return HandleWriteDataByIdenService(writeByIdenService);
+            }
 
             return false;
         }
@@ -321,45 +322,7 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleIOControlByIdentifierReceive(IOControlByIdentifierService ioService)
         {
-            CleanupSentMessagesDictionary();
-
-            IEnumerable<string> payloadNamesInCurrentCycle = null;
-            IEnumerable<string> scenarioNamesInCurrentCycle = null;
-            IEnumerable<string> allScenariosInCurrentCycle = null;
-            int loopVal;
-            if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
-                return false;
-
-            var cycle = cycles[loopVal];
-            if (cycle.OpenAt == loopVal)
-            {
-                payloadNamesInCurrentCycle = cycle.Name.Contains("Soft Continuous") ? cycle.OpenItems.SelectMany(a => a.Payloads).Concat(cycle.Functions.SelectMany(b => b.Payloads)) : cycle.OpenItems.SelectMany(a => a.Payloads);
-                scenarioNamesInCurrentCycle = cycle.OpenItems.Select(b => b.Scenario).Where(s => s != null).Distinct();
-                allScenariosInCurrentCycle = scenarios.SelectMany(scenario => scenario.OpenPayloads).Where(payload => scenarioNamesInCurrentCycle.Contains(payload)).Distinct();
-                cyclePayloads = new HashSet<string>(
-                payloadNamesInCurrentCycle.Concat(allScenariosInCurrentCycle));
-            }
-
-            var payloadControlMap = new Dictionary<string, string>();
-
-            foreach (var function in cycle.Functions)
-            {
-                foreach (var payload in function.Payloads)
-                {
-                    payloadControlMap[payload] = function.Control;
-                }
-            }
-            foreach (var scenario in scenarios)
-            {
-                foreach (var payload in scenario.OpenPayloads)
-                {
-                    payloadControlMap[payload] = payloadControlMap.ContainsKey(payload) ? payloadControlMap[payload] : null;
-                }
-                foreach (var payload in scenario.ClosePayloads)
-                {
-                    payloadControlMap[payload] = payloadControlMap.ContainsKey(payload) ? payloadControlMap[payload] : null;
-                }
-            }
+            CleanupSentMessages();
 
             var currentTime = DateTime.Now;
             var timeout = TimeSpan.FromSeconds(1);
@@ -367,102 +330,167 @@ namespace AutosarBCM.Forms.Monitor
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
                 var payloadName = ioService.Payloads[i].PayloadInfo.Name;
-                if(payloadNamesInCurrentCycle != null)
-                {
-                    
-                }
 
-
-                if (cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
-                {
+                if (cancellationTokenSource != null && cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
                     timeout = TimeSpan.FromSeconds(2);
-                    foreach (var sentMessage in sentMessagesDict.Values.ToList())
-                    {
-                        if (currentTime - sentMessage.timestamp <= timeout)
-                        {
-                            if (sentMessage.itemType == ioService.Payloads[i].PayloadInfo.Name && sentMessage.itemName == ioService.ControlInfo.Name)
-                            {
-                                var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
-                                if (matchedControl == null)
-                                    return false;
 
-                                if (!chkDisableUi.Checked)
-                                    totalMessagesReceived++;
-                                Helper.WriteCycleMessageToLogFile(ioService.ControlInfo.Name, ioService.Payloads[i].PayloadInfo.Name, "ClosingResponse", "", "", ioService.Payloads[i].FormattedValue);
-                                matchedControl.ChangeStatus(ioService);
-                                sentMessagesDict.Remove(sentMessage.Id);
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
+                var itemsToRemove = new List<Config.SentMessage>();
+
+                foreach (var sentMessage in sentMessagesList.ToList())
                 {
-                    foreach (var sentMessage in sentMessagesDict.Values.ToList())
+                    if (currentTime - sentMessage.timestamp <= timeout)
                     {
-                        if (currentTime - sentMessage.timestamp <= timeout)
+                        if (sentMessage.itemType == ioService.Payloads[i].PayloadInfo.Name && sentMessage.itemName == ioService.ControlInfo.Name && !itemsToRemove.Contains(sentMessage))
                         {
-                            if (sentMessage.itemType == ioService.Payloads[i].PayloadInfo.Name && sentMessage.itemName == ioService.ControlInfo.Name)
-                            {
-                                var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == ioService.Payloads[i].PayloadInfo.Name);
-                                if (matchedControl == null)
-                                    return false; 
-
-                                if (openItemTypes.Any(o=> o == ioService.Payloads[i].FormattedValue))
-                                    openedPayloads.Add(sentMessage.itemType);
-
-                                if (!chkDisableUi.Checked)
-                                    totalMessagesReceived++;
-                                Helper.WriteCycleMessageToLogFile(sentMessage.itemName, sentMessage.itemType, Constants.Response, "", "", ioService.Payloads[i].FormattedValue);
-                                matchedControl.ChangeStatus(ioService);
-                                sentMessagesDict.Remove(sentMessage.Id);
-                                break;
-                            }
+                            ProcessSentMessage(ioService, ioService.Payloads[i], sentMessage, itemsToRemove);
+                            break;
                         }
                     }
                 }
+
+                foreach (var item in itemsToRemove)
+                    sentMessagesList.Remove(item);
             }
-            if (loopVal == cycle.CloseAt)
-                ResetPayloads(cyclePayloads, payloadControlMap, cycleRange, int.Parse(lblCycleVal.Text));
+
             UpdateCounters();
             return true;
         }
 
-
-        private static void ResetPayloads(HashSet<string> cyclePayloads, Dictionary<string, string> payloadControlMap, int loopCount, int cycleRange)
+        /// <summary>
+        /// Handles received HandleWriteDataByIdenService type of data.
+        /// </summary>
+        private bool HandleWriteDataByIdenService(WriteDataByIdentifierService ioService)
         {
-            List<string> payloadsToRemove = new List<string>();
-            foreach (var payload in cyclePayloads)
+            CleanupSentMessages();
+
+            var currentTime = DateTime.Now;
+            var timeout = TimeSpan.FromSeconds(1);
+
+            for (var i = 0; i < ioService.Payloads.Count; i++)
             {
-                if (!openedPayloads.Contains(payload))
+                var payloadName = ioService.Payloads[i].PayloadInfo.Name;
+
+                if (cancellationTokenSource != null && cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
+                    timeout = TimeSpan.FromSeconds(2);
+
+                var itemsToRemove = new List<Config.SentMessage>();
+
+                foreach (var sentMessage in sentMessagesList.ToList())
                 {
-                    string controlName = payloadControlMap.ContainsKey(payload) ? payloadControlMap[payload] : null;
-                    Helper.WriteUnopenedPayloadsToLogFile(payload, controlName, cycleRange, loopCount);
-                    payloadsToRemove.Add(payload);
+                    if (currentTime - sentMessage.timestamp <= timeout)
+                    {
+                        if (sentMessage.itemType == ioService.Payloads[i].PayloadInfo.Name && sentMessage.itemName == ioService.ControlInfo.Name && !itemsToRemove.Contains(sentMessage))
+                        {
+                            ProcessSentMessage(ioService, ioService.Payloads[i], sentMessage, itemsToRemove);
+                            break;
+                        }
+                    }
                 }
+
+                foreach (var item in itemsToRemove)
+                    sentMessagesList.Remove(item);
             }
-            foreach (var payload in payloadsToRemove)
-                cyclePayloads.Remove(payload);
+
+            UpdateCounters();
+            return true;
         }
 
         /// <summary>
-        /// Cleans up the sent messages dictionary by removing entries 
-        /// that have exceeded the specified time interval.
+        /// Processes a sent message, updates relevant lists, logs the message, and updates control status.
         /// </summary>
-        /// <param name="interval">Time interval in seconds to check for message timeout. Default is 2 seconds.</param>
-        internal void CleanupSentMessagesDictionary(int interval = 2)
+        /// <typeparam name="T">A type derived from the Service class.</typeparam>
+        /// <param name="service">The service handling the message.</param>
+        /// <param name="payload">The data associated with the message.</param>
+        /// <param name="sentMessage">The configuration of the sent message.</param>
+        /// <param name="itemsToRemove">List of messages to be removed after processing.</param>
+        private void ProcessSentMessage<T>(T service, Payload payload, Config.SentMessage sentMessage, List<Config.SentMessage> itemsToRemove) where T : Service
         {
-            var currentTime = DateTime.Now;
-            var timeout = TimeSpan.FromSeconds(interval);
+            var matchedControl = ucItems.FirstOrDefault(c => c.PayloadInfo.Name == payload.PayloadInfo.Name);
+            if (matchedControl == null)
+                return;
 
-            foreach (var key in sentMessagesDict.Keys.ToList()) // Iterate over a copy of the keys
+            if (!OpenedControlList.Any(u => u.itemType == sentMessage.itemType && u.itemName == sentMessage.itemName) && sentMessage.operation == Constants.Opened)
             {
-                if (currentTime - sentMessagesDict[key].timestamp > timeout)
+                if (CheckValueIsOpened(payload))
                 {
-                    Console.WriteLine("Queue'dan Silindi: " + sentMessagesDict[key].itemType);
-                    sentMessagesDict.Remove(key);
+                    OpenedControlList.Add(sentMessage);
+                    var fIndex = UnopenedControlList.FindIndex(u => u.itemType == sentMessage.itemType && u.itemName == sentMessage.itemName);
+                    UnopenedControlList.RemoveAt(fIndex);
+                }
+                else
+                {
+                    if (!UnopenedControlList.Any(u => u.itemType == sentMessage.itemType && u.itemName == sentMessage.itemName))
+                        UnopenedControlList.Add(sentMessage);
                 }
             }
+
+            if (!chkDisableUi.Checked)
+                totalMessagesReceived++;
+
+            itemsToRemove.Add(sentMessage);
+            Helper.WriteCycleMessageToLogFile(sentMessage.itemName, sentMessage.itemType, Constants.Response, "", "", payload.FormattedValue);
+
+            if (service is IOControlByIdentifierService ioService)
+            {
+                matchedControl.ChangeStatus(ioService);
+            }
+            else if (service is WriteDataByIdentifierService writeByIdenService)
+            {
+                matchedControl.ChangeStatus(writeByIdenService);
+            }   
+        }
+
+        /// <summary>
+        /// Checks if the given payload is in an "opened" state based on its type and formatted value.
+        /// </summary>
+        /// <param name="payload">The payload to be checked.</param>
+        /// <returns>
+        /// Returns <c>true</c> if the payload is considered "opened" based on its type and value; 
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public bool CheckValueIsOpened(Payload payload)
+        {
+            if (payload.FormattedValue == ASContext.Configuration.GetPayloadInfoByType(payload.PayloadInfo.TypeName).Values.FirstOrDefault(x => x.IsOpen == true)?.FormattedValue
+                || (payload.PayloadInfo.TypeName == "DID_PWM" && payload.FormattedValue == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue.ToString()) 
+                || (payload.PayloadInfo.TypeName == "HexDump_1Byte" && int.Parse(payload.FormattedValue) == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.HexDump1ByteOpenValue))
+            {
+                return true;
+            }
+            else
+                return false;
+
+
+        }
+
+        /// <summary>
+        /// Cleans up the sent messages dictionary by removing entries that have exceeded the specified time interval.
+        /// </summary>
+        internal void CleanupSentMessages()
+        {
+            var currentTime = DateTime.Now;
+            var timeout = TimeSpan.FromSeconds(2);
+
+            var messagesToRemove = new List<Config.SentMessage>(); // Collect keys to remove
+
+            foreach (var message in sentMessagesList.ToList())
+            {
+                if (currentTime - message.timestamp > timeout)
+                {
+                    Console.WriteLine("Queue'dan Silindi: " + message.itemType);
+                    messagesToRemove.Add(message);
+                }
+            }
+
+            foreach (var msg in messagesToRemove)
+            {
+                if (msg.operation == Constants.Opened)
+                {
+                    if (!UnopenedControlList.Any(u => u.itemType == msg.itemType && u.itemName == msg.itemName) && msg.operation == Constants.Opened)
+                        UnopenedControlList.Add(msg);
+                }
+                sentMessagesList.Remove(msg);
+            }
+                
         }
 
         /// <summary>
@@ -493,27 +521,22 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         private bool HandleReadDataByIdenService(ReadDataByIdenService readByIdenService)
         {
-            CleanupSentMessagesDictionary();
-
-            int loopVal;
-            if (!int.TryParse(lblLoopVal.Text, out loopVal) || !cycles.ContainsKey(loopVal))
-            {
-                return false;
-            }
+            CleanupSentMessages();
 
             var timeout = TimeSpan.FromSeconds(1);
             var currentTime = DateTime.Now;
-            var sentMessages = sentMessagesDict.Values.ToList();
+            var sentMessages = sentMessagesList.ToList();
             var inputName = mappingData.Where(m => sentMessages.Any(x => x.itemType == m.Output.Name));
 
             for (var i = 0; i < readByIdenService.Payloads.Count; i++)
             {
-                foreach (var sentMessage in sentMessagesDict.Values.ToList())
+                var itemsToRemove = new List<Config.SentMessage>();
+                foreach (var sentMessage in sentMessagesList.ToList())
                 {
                     if (currentTime - sentMessage.timestamp <= timeout)
                     {
 
-                        if (sentMessage.itemType == readByIdenService.Payloads[i].PayloadInfo.Name && sentMessage.itemName == readByIdenService.ControlInfo.Name)
+                        if (sentMessage.itemType == readByIdenService.Payloads[i].PayloadInfo.Name && sentMessage.itemName == readByIdenService.ControlInfo.Name && !itemsToRemove.Contains(sentMessage))
                         {
                             if (Program.MappingStateDict.TryGetValue(readByIdenService.Payloads[i].PayloadInfo.Name, out var errorLogDetect))
                             {
@@ -532,11 +555,13 @@ namespace AutosarBCM.Forms.Monitor
                             Helper.WriteCycleMessageToLogFile(readByIdenService.ControlInfo.Name, readByIdenService.Payloads[i].PayloadInfo.Name, Constants.Response, "", "", readByIdenService.Payloads[i].FormattedValue);
                             if (!chkDisableUi.Checked)
                                 totalMessagesReceived++;
-                            sentMessagesDict.Remove(sentMessage.Id);
+                            itemsToRemove.Add(sentMessage);
                             break;
                         }
                     }
                 }
+                foreach (var item in itemsToRemove)
+                    sentMessagesList.Remove(item);
             }
             return true;
         }
@@ -593,6 +618,7 @@ namespace AutosarBCM.Forms.Monitor
         {
             return true;
         }
+
         /// <summary>
         /// Timer starting event.
         /// </summary>
@@ -629,12 +655,6 @@ namespace AutosarBCM.Forms.Monitor
             lblMin.Text = String.Format("{0:00}", timeMin);
             lblHour.Text = String.Format("{0:00}", timeHour);
         }
-
-        private void FormEnvironmentalTest_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void tspFilterTxb_TextChanged(object sender, EventArgs e)
         {
             FilterUCItems(tspFilterTxb.Text);

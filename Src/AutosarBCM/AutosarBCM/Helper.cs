@@ -37,6 +37,11 @@ namespace AutosarBCM
             get { return log; }
         }
 
+        /// <summary>
+        /// The name of a unopened payload log file by instant time.
+        /// </summary>
+        private static string unopenedPayloadLogFile = DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss_");
+
         #endregion
 
         #region Public Methods
@@ -390,48 +395,38 @@ namespace AutosarBCM
                 dgvMessages.ClearSelection();
             }
         }
+
+        /// <summary>
+        /// Initializes the unopened payload log file with a name that includes the current date and time.
+        /// </summary>
+        public static void InitializeUnopenedPayloadLogFile()
+        {
+            unopenedPayloadLogFile = $"{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}_Unopened_Payloads_log.txt";
+        }
+
         /// <summary>
         /// Create a txt file to the unopened DIDS during an environmental test.
         /// </summary>
         /// <param name="count">The name of the item.</param>
         /// <param name="payloadName">The type of the item.</param>
-        public static void WriteUnopenedPayloadsToLogFile(string payloadName, string controlName, int count, int rangeCount)
+        public static void WriteUnopenedPayloadsToLogFile(List<Config.SentMessage> unOpenedControlList, int groupStartCount, int groupEndCount, int cycleRange, string groupStartTime, string groupEndTime, bool isTestFinished = false)
         {
-            string logFilePath = $"{DateTime.Now.ToString("dd-MM-yyyy")}_Unopened_Payloads_log.txt";
-            string groupName = $"{count}. Group";
-            string rangeHeader = $"{groupName} (Range: {rangeCount}) Started -- ({DateTime.Now.ToString("dd/MM_HH:mm:ss")}) {System.Environment.NewLine}";
-            string logMessage = $"Control: {controlName} - Payload: {payloadName}";
-
             List<string> lines = new List<string>();
+            if (File.Exists(unopenedPayloadLogFile))
+                lines = File.ReadAllLines(unopenedPayloadLogFile).ToList();
+            var distinctUnopenedControls = unOpenedControlList.GroupBy(item => item.itemType).Select(group => group.First());
 
-            if (File.Exists(logFilePath))
-            {
-                lines = File.ReadAllLines(logFilePath).ToList();
-            }
+            lines.Add($"{System.Environment.NewLine}Group {groupStartCount}&{groupEndCount} Started at ({groupStartTime}) -  (Range: {cycleRange}){System.Environment.NewLine}");
             
-            if (count > 1 && !lines.Any(line => line.Contains($"{count - 1}. Group Finished")))
+            foreach(var unOpenControl in distinctUnopenedControls)
             {
-                lines.Add($"Group Finished -- ({DateTime.Now.ToString("dd/MM_HH:mm:ss")}) {System.Environment.NewLine}");
+                lines.Add($"Control: {unOpenControl.itemName} -- Payload: {unOpenControl.itemType}");
             }
 
-            bool rangeHeaderExists = lines.Any(line => line.Contains(groupName));
-            if (!rangeHeaderExists)
-            {
-                lines.Add(rangeHeader);
-            }
+            lines.Add($"{System.Environment.NewLine}Group {groupStartCount}&{groupEndCount} Finished at ({groupEndTime}) -  (Range: {cycleRange}){System.Environment.NewLine}");
 
-            int rangeHeaderIndex = lines.FindIndex(line => line.StartsWith(rangeHeader.Trim()));
-            bool logMessageExists = lines.Skip(rangeHeaderIndex + 1).TakeWhile(line => !line.Contains("Group Finished")).Any(line => line.Contains(logMessage.Trim()));
-
-            if (!logMessageExists)
-            {
-                lines.Add(logMessage);
-            }
-
-            File.WriteAllLines(logFilePath, lines);
+            File.WriteAllLines(unopenedPayloadLogFile, lines);
         }
-
-
 
         /// <summary>
         /// Writes a cycle message to the log file during an environmental test.
@@ -497,9 +492,10 @@ namespace AutosarBCM
                     Id = messageId,
                     itemName = itemName,
                     itemType = itemType,
-                    timestamp = DateTime.Now
+                    timestamp = DateTime.Now,
+                    operation = operation
                 };
-                formEnv.sentMessagesDict[messageId] = sentMessage;
+                formEnv.sentMessagesList.Add(sentMessage);
             }
         }
 
