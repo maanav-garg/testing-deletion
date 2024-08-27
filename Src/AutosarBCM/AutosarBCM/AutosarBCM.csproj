@@ -168,7 +168,6 @@
     <Compile Include="Forms\FormTestLogView.Designer.cs">
       <DependentUpon>FormTestLogView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GlobalSettings.cs" />
     <Compile Include="Forms\Monitor\FormDTCPanel.cs">
       <SubType>Form</SubType>
     </Compile>

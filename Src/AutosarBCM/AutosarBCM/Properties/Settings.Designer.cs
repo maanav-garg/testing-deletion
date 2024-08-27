@@ -316,5 +316,20 @@ namespace AutosarBCM.Properties {
                 this["FilterData"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public bool DebugLogging
+        {
+            get
+            {
+                return ((bool)(this["DebugLogging"]));
+            }
+            set
+            {
+                this["DebugLogging"] = value;
+            }
+        }
     }
 }

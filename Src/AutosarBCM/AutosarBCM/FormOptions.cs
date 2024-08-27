@@ -72,6 +72,7 @@ namespace AutosarBCM
             numRollingAfter.Value = Settings.Default.RollingAfter;
             txtFilePath.Text = Settings.Default.TraceFilePath;
             tbEMCDataLimit.Text = Settings.Default.EmcDataLimit;
+            chkDebugLogging.Checked = Settings.Default.DebugLogging;
 
             foreach (var item in Settings.Default.FilterData)
             {
@@ -206,6 +207,7 @@ namespace AutosarBCM
             Settings.Default.RollingAfter = (int)numRollingAfter.Value;
             Settings.Default.TraceFilePath = txtFilePath.Text;
             Settings.Default.EmcDataLimit = tbEMCDataLimit.Text;
+            Settings.Default.DebugLogging = chkDebugLogging.Checked;
 
             var intrepidDevice = new IntrepidCsCan()
             {
@@ -391,11 +393,6 @@ namespace AutosarBCM
             {
                 e.Handled = true; // Reject the input
             }
-        }
-
-        private void chkEnableTrace_CheckedChanged(object sender, EventArgs e)
-        {
-            GlobalSettings.IsTraceEnabled = chkEnableTrace.Checked;
         }
     }
     
