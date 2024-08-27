@@ -37,12 +37,11 @@ namespace AutosarBCM{
         /// </summary>
         public List<CanMessage> Messages { get => bindingList.ToList(); }
 
+
         /// <summary>
-        /// Check whether the Stop Periodics Message button has been clicked or not.
+        /// Determinates whether the transmit operation is currently being performed.
         /// </summary>
-        private bool isStopButtonClicked = false;
-
-
+        private bool isTransmitting = false;
 
         #endregion
 
@@ -85,7 +84,6 @@ namespace AutosarBCM{
             FormMain formMain = new FormMain();
             this.Height = formMain.Height / 2;
             UpdateStopPeriodicMessageButton();
-
         }
 
         /// <summary>
@@ -106,11 +104,12 @@ namespace AutosarBCM{
 
             if (baseMessage.CheckForTransmit())
             {
-                isStopButtonClicked |= true;
+                isTransmitting = true;
                 tsbTransmit.Enabled = false;
+                UpdateStopPeriodicMessageButton();
                 await Task.Run(() => baseMessage.Transmit());
                 tsbTransmit.Enabled = true;
-                isStopButtonClicked = false;
+                isTransmitting = false;
                 bindingList.ResetBindings();
                 Helper.ApplyFilterAndRestoreSelection(dgvMessages, currentFilter);
                 UpdateStopPeriodicMessageButton();
@@ -152,7 +151,6 @@ namespace AutosarBCM{
         private void tsbTransmit_Click(object sender, EventArgs e)
         {
             TransmitMessage();
-            isStopButtonClicked = true;
         }
 
 
@@ -171,7 +169,6 @@ namespace AutosarBCM{
             {
                 bindingList.Add(message);
                 Helper.ApplyFilterAndRestoreSelection(this.dgvMessages, currentFilter);
-                UpdateStopPeriodicMessageButton();
             }
         }
 
@@ -198,7 +195,6 @@ namespace AutosarBCM{
         {
             currentFilter = txtFilter.Text.ToLower();
             Helper.ApplyFilter(dgvMessages, currentFilter);
-            UpdateStopPeriodicMessageButton();
         }
 
         /// <summary>
@@ -254,7 +250,6 @@ namespace AutosarBCM{
             if (dgvMessages.CurrentRow == null)
                 return;
             dgvMessages.Rows.Remove(dgvMessages.CurrentRow);
-            UpdateStopPeriodicMessageButton();
         }
 
         /// <summary>
@@ -282,7 +277,6 @@ namespace AutosarBCM{
             }
             bindingList.ResetBindings();
             Helper.ApplyFilterAndRestoreSelection(dgvMessages, currentFilter);
-            UpdateStopPeriodicMessageButton();
         }
 
         /// <summary>
@@ -351,7 +345,6 @@ namespace AutosarBCM{
             dgvMessages.ClearSelection();
             dgvMessages.CurrentCell = dgvMessages.Rows[newIndex].Cells[0];
             Helper.ApplyFilterAndRestoreSelection(dgvMessages, currentFilter);
-            UpdateStopPeriodicMessageButton();
         }
         #endregion
 
@@ -385,22 +378,9 @@ namespace AutosarBCM{
 
             if (baseMessage != null && baseMessage.Trigger == "Periodic" && baseMessage.CycleCount > 0)
             {
-                if (isStopButtonClicked)
-                {
-                    tsbStopPeriodicMessage.Enabled = false;
-                }
-                else
-                {
 
-                    if (baseMessage.Count != 0 && (baseMessage.Count % baseMessage.CycleCount == 0))
-                    {
-                        tsbStopPeriodicMessage.Enabled = false;
-                    }
-                    else
-                    {
-                        tsbStopPeriodicMessage.Enabled = true;
-                    }
-                }
+                tsbStopPeriodicMessage.Enabled = isTransmitting;
+
             }
             else
             {
@@ -409,6 +389,4 @@ namespace AutosarBCM{
         }
 
     }
-
-
 }
