@@ -19,6 +19,7 @@ using Connection.Protocol.Uds;
 using AutosarBCM.Config;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices;
+using System.Net;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace AutosarBCM
@@ -51,6 +52,9 @@ namespace AutosarBCM
         /// A synchronization object used for locking critical sections of code to ensure thread safety.
         /// </summary>
         private static object lockObj = new object();
+        private ushort address;
+        private byte session;
+        private Dictionary<ushort, string> controlDict = new Dictionary<ushort, string>();
 
         #endregion
 
@@ -141,6 +145,17 @@ namespace AutosarBCM
                 return false;
             }
         }
+        public void LoadControlDictionary()
+        {
+            if (ASContext.Configuration == null)
+                return;
+            foreach (var control in ASContext.Configuration.Controls)
+            {
+                if (!controlDict.ContainsKey(control.Address))
+                    controlDict.Add(control.Address, control.Name);
+            }
+
+        }
 
         private void TransportProtocol_ReceiveError(object sender, Connection.Protocol.TransportErrorEventArs e)
         {
@@ -157,7 +172,8 @@ namespace AutosarBCM
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
             // Tester present
-            if (e.Data[0] == ServiceInfo.TesterPresent.RequestID)
+            if (e.Data[0] == (byte)SIDDescription.SID_TESTER_PRESENT)
+                //ServiceInfo.TesterPresent.RequestID)
                 return;
 
             var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
@@ -170,12 +186,12 @@ namespace AutosarBCM
                 return;
             }
 
-            // Handle transmitted data -TX-
-            if (e.Data[0] == ServiceInfo.ReadDataByIdentifier.RequestID
-                || e.Data[0] == ServiceInfo.InputOutputControlByIdentifier.RequestID)
+            // Handle transmitted data -TX- 
+            if (e.Data[0] == (byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER
+                || e.Data[0] == (byte)SIDDescription.SID_INPUT_OUTPUT_CONTROL_BY_IDENTIFIER)
             {
                 foreach (var receiver in FormMain.Receivers)
-                    if (receiver.Sent(BitConverter.ToUInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0)));
+                    if (receiver.Sent(BitConverter.ToUInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0))) ;
             }
 
             if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
@@ -185,100 +201,137 @@ namespace AutosarBCM
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
         {
             var service = new ASResponse(e.Data).Parse();
-
             var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            if (e.Data[0] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL + 0x40)
+            {
+                session = (byte)e.Data[1];
+            }
+            var selectedSession = (SessionInfo)ASContext.Configuration?.Sessions?.FirstOrDefault(x => x.ID == session);
+            string sName = selectedSession?.Name;
 
-            var rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
+            if (e.Data[0] == (byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER + 0x40
+            || e.Data[0] == (byte)SIDDescription.SID_INPUT_OUTPUT_CONTROL_BY_IDENTIFIER + 0x40)
+            {
+                address = BitConverter.ToUInt16(e.Data.Skip(1).Take(2).Reverse().ToArray(), 0);
+            }
+            else
+                address = 0;
+            string enumName = service.ServiceInfo != null ? service.ServiceInfo.Name : Enum.GetName(typeof(SIDDescription), (byte)(e.Data[0] - 0x40));
+            controlDict.TryGetValue(address, out string cName);
+            var value = cName != null ? cName : sName != null ? sName : "";
+            var rxRead = "";
+            if (e.Data[0] != (byte)SIDDescription.SID_NEGATIVE_RESPONSE)
+            {
+                rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)} ({value} | {enumName})";
+            }
+            else
+            {
+                rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
+            }
             var time = new DateTime((long)e.Timestamp);
-            if (service?.ServiceInfo == ServiceInfo.TesterPresent)
-                return;
-
-            if (service?.ServiceInfo == ServiceInfo.NegativeResponse)
+            if (service.ServiceInfo != null)
             {
-                if (e.Data[1] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL)
-                {
-                    Helper.ShowWarningMessageBox("Session failed to activate, try again.");
+                if (service?.ServiceInfo == ServiceInfo.TesterPresent)
+                    return;
 
-                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                        formInput.SessionControlManagement(false);
+                if (service?.ServiceInfo == ServiceInfo.NegativeResponse)
+                {
+                    if (e.Data[1] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL)
+                    {
+                        FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                        if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                            formInput.SessionControlManagement(false);
+                    }
+                    AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
+                    return;
+                }
+                if (FormMain.ControlChecker)
+                {
+                    AppendTrace(rxRead, time);
+                    if (address == 0xC151)
+                        SendByteDataToControlChecker(e.Data,address);
+                    else
+                        SendServiceDataToControlChecker(service);
+                    return;
+                }
+                if (FormMain.EMCMonitoring)
+                {
+                    AppendTrace(rxRead, time);
+                    Program.FormEMCView?.HandleResponse(service);
+                    return;
                 }
 
-                AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
-                return;
-            }
-
-
-            if (FormMain.ControlChecker)
-            {
-                AppendTrace(rxRead, time);
-                SendDataToControlChecker(service);
-                return;
-            }
-
-            if (FormMain.EMCMonitoring)
-            {
-                AppendTrace(rxRead, time);
-                Program.FormEMCView?.HandleResponse(service);
-                return;
-            }
-
-            if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
-            {
-                HandleGeneralMessages(service);
-                foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
-                    if (receiver.Receive(service)) continue;
-            }
-            else if (service?.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
-            {
-                foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
-                    if (receiver.Receive(service)) continue;
-            }
-            else if (service?.ServiceInfo == ServiceInfo.WriteDataByIdentifier)
-            {
-                foreach (var receiver in FormMain.Receivers.OfType<IWriteByIdenReceiver>())
-                    if (receiver.Receive(service)) continue;
-            }
-            else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
-                    || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
-            {
-                foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
-                    if (receiver.Receive(service)) continue;
-            }
-            if (service?.ServiceInfo == ServiceInfo.DiagnosticSessionControl)
-            {
-                if (!FormMain.ControlChecker)
+                if (service?.ServiceInfo == ServiceInfo.ReadDataByIdentifier)
                 {
-                    FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-                    if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
-                        formInput.SessionFiltering();
+                    HandleGeneralMessages(service);
+                    foreach (var receiver in FormMain.Receivers.OfType<IReadDataByIdenReceiver>())
+                        if (receiver.Receive(service)) continue;
                 }
+                else if (service?.ServiceInfo == ServiceInfo.InputOutputControlByIdentifier)
+                {
+                    foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
+                        if (receiver.Receive(service)) continue;
+                }
+                else if (service?.ServiceInfo == ServiceInfo.WriteDataByIdentifier)
+                {
+                    foreach (var receiver in FormMain.Receivers.OfType<IWriteByIdenReceiver>())
+                        if (receiver.Receive(service)) continue;
+                }
+                else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
+                        || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
+                {
+                    foreach (var receiver in FormMain.Receivers.OfType<IDTCReceiver>())
+                        if (receiver.Receive(service)) continue;
+                }
+                if (service?.ServiceInfo == ServiceInfo.DiagnosticSessionControl)
+                {
+                    if (!FormMain.ControlChecker)
+                    {
+                        FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+                        if (formMain.dockMonitor.ActiveDocument is IPeriodicTest formInput)
+                            formInput.SessionFiltering();
+                    }
+                }
+
+
+
+                //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
+
+                ////HandleSWVersion(bytes);
+
+                if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
+                {
+                    if (!string.IsNullOrEmpty(service.Response.NegativeResponseCode))
+                        AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
+                    else
+                        AppendTrace($"{rxRead}", time);
+                    //AppendTraceRx($"{rxRead} ({service.Response.NegativeResponseCode})", time);
+                }
+                address = 0;
+                session = 0x00;
+
             }
-
-
-
-            //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
-
-            ////HandleSWVersion(bytes);
-
-            if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
-            {
-                AppendTrace(rxRead, time);
-                AppendTraceRx(rxRead, time);
-            }
-
-
         }
-        public void SendDataToControlChecker(Service service)
+
+        public void SendServiceDataToControlChecker(Service service)
         {
             if (!(service is ReadDataByIdenService || service is IOControlByIdentifierService))
                 return;
             FormControlChecker formChecker = Application.OpenForms[Constants.Form_Control_Checker] as FormControlChecker;
             if (formChecker != null)
             {
-                formChecker.LogDataToDGV(service);
+                formChecker.LogDataToDGVFromService(service);
             }
         }
+        public void SendByteDataToControlChecker(byte[] data, ushort address)
+        {
+            FormControlChecker formChecker = Application.OpenForms[Constants.Form_Control_Checker] as FormControlChecker;
+            if (formChecker != null)
+            {
+                formChecker.LogDataToDGVFromBytes(data, address);
+            }
+        }
+
 
         /// <summary>
         /// Checks whether the connection has been established or not.
