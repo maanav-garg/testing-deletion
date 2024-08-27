@@ -398,11 +398,13 @@ namespace AutosarBCM
                 {
                     tsmiEMCView.Enabled = false;
                     environmentalTestTsmi.Enabled = false;
+                    tsmiCheck.Enabled = false;
                 }
                 else
                 {
                     tsmiEMCView.Enabled = true;
                     environmentalTestTsmi.Enabled = true;
+                    tsmiCheck.Enabled = true;
                 }
                 ParseMessages(filePath);
                 ASContext = new ASContext(filePath);
