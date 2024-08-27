@@ -19,6 +19,8 @@ namespace AutosarBCM.Core
     internal interface IReadDataByIdenReceiver : IReceiver { }
     internal interface IDTCReceiver : IReceiver { }
 
+    internal interface IWriteByIdenReceiver : IReceiver { }
+
     public class ASRequest
     {
         private ServiceInfo ServiceInfo;

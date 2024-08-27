@@ -20,6 +20,7 @@ using AutosarBCM.Config;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices;
 using System.Net;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace AutosarBCM
 {
@@ -81,6 +82,7 @@ namespace AutosarBCM
                 InitHardware(hardware);
 
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
+
                 formMain.txtTrace.ForeColor = Color.Blue;
                 formMain.openConnection.Text = "Stop Connection";
                 formMain.openConnection.Image = formMain.imageList1.Images[3];
@@ -157,7 +159,13 @@ namespace AutosarBCM
 
         private void TransportProtocol_ReceiveError(object sender, Connection.Protocol.TransportErrorEventArs e)
         {
-            Helper.ShowErrorMessageBox(e.Message);
+            if (FormMain.IsTestRunning)
+            {
+                Helper.SendExtendedDiagSession();
+            }
+            
+            AppendTrace(e.Message, DateTime.Now, Color.Red);
+            //Helper.ShowErrorMessageBox(e.Message);
             //if (e. == CanHardware_ErrorStatus.Disconnect)
             //    Disconnect();
         }
@@ -264,6 +272,11 @@ namespace AutosarBCM
                     foreach (var receiver in FormMain.Receivers.OfType<IIOControlByIdenReceiver>())
                         if (receiver.Receive(service)) continue;
                 }
+                else if (service?.ServiceInfo == ServiceInfo.WriteDataByIdentifier)
+                {
+                    foreach (var receiver in FormMain.Receivers.OfType<IWriteByIdenReceiver>())
+                        if (receiver.Receive(service)) continue;
+                }
                 else if (service?.ServiceInfo == ServiceInfo.ReadDTCInformation
                         || service?.ServiceInfo == ServiceInfo.ClearDTCInformation)
                 {
@@ -279,25 +292,25 @@ namespace AutosarBCM
                             formInput.SessionFiltering();
                     }
                 }
+
+
+
+                //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
+
+                ////HandleSWVersion(bytes);
+
+                if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
+                {
+                    if (!string.IsNullOrEmpty(service.Response.NegativeResponseCode))
+                        AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
+                    else
+                        AppendTrace($"{rxRead}", time);
+                    //AppendTraceRx($"{rxRead} ({service.Response.NegativeResponseCode})", time);
+                }
+                address = 0;
+                session = 0x00;
+
             }
-
-
-
-            //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
-
-            ////HandleSWVersion(bytes);
-
-            if (!Settings.Default.FilterData.Contains(e.Data[0].ToString("X")))
-            {
-                if (!string.IsNullOrEmpty(service.Response.NegativeResponseCode))
-                    AppendTrace($"{rxRead} ({service.Response.NegativeResponseCode})", time);
-                else
-                    AppendTrace($"{rxRead}", time);
-                //AppendTraceRx($"{rxRead} ({service.Response.NegativeResponseCode})", time);
-            }
-            address = 0;
-            session = 0x00;
-
         }
 
         public void SendServiceDataToControlChecker(Service service)
@@ -388,6 +401,7 @@ namespace AutosarBCM
                         transportProtocol.Config.PhysicalAddr.TxId = (uint)canId;
                     else
                         transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
+                    formMain.AppendTrace($"Message Sent: {BitConverter.ToString(dataBytes)}");
                     transportProtocol.SendBytes(dataBytes);
                 }
                 catch (Exception ex)
@@ -506,7 +520,13 @@ namespace AutosarBCM
         /// <param name="e">The event arguments containing error information.</param>
         private void SerialHardware_ErrorAccured(object sender, SerialPortErrorEventArgs e)
         {
-            Helper.ShowErrorMessageBox(e.Message);
+            if (FormMain.IsTestRunning)
+            {
+                Helper.SendExtendedDiagSession();
+            }
+            var time = new DateTime((long)e.Timestamp);
+            AppendTrace(e.Message, time, Color.Red);
+            //Helper.ShowErrorMessageBox(e.Message);
             if (e.ErrorType == SerialHardware_ErrorType.Disposed)
                 Disconnect();
         }
@@ -609,7 +629,13 @@ namespace AutosarBCM
         /// <param name="e">The event arguments containing error information.</param>
         private void Hardware_CanError(object sender, CanErrorEventArgs e)
         {
-            Helper.ShowErrorMessageBox(e.ErrorMessage);
+            if (FormMain.IsTestRunning)
+            {
+                Helper.SendExtendedDiagSession();
+            }
+            var time = new DateTime((long)e.Timestamp);
+            AppendTrace(e.ErrorMessage, time, Color.Red);
+            //Helper.ShowErrorMessageBox(e.ErrorMessage);
             if (e.Status == CanHardware_ErrorStatus.Disconnect)
                 Disconnect();
         }

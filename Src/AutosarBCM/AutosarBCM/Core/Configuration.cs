@@ -6,6 +6,8 @@ using System.Xml.Serialization;
 using AutosarBCM.UserControls.Monitor;
 using System.Threading.Tasks;
 using AutosarBCM.Core.Config;
+using System.Collections;
+using AutosarBCM.Config;
 
 namespace AutosarBCM.Core
 {
@@ -15,7 +17,11 @@ namespace AutosarBCM.Core
         public string Name { get; set; }
         public List<byte> AvailableServices { get; set; }
     }
-
+    public class CycleInfo
+    {
+        public string PayloadName { get; set; }
+        public List<int> Cycles { get; set; } = new List<int>();
+    }
     public class ServiceInfo
     {
         public byte RequestID { get; set; }
@@ -88,6 +94,7 @@ namespace AutosarBCM.Core
                             bits |= (byte)(1 << (7 - bitIndex));
                         }
                     }
+                    Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
                     bitIndex++;
                 }
             }
@@ -116,9 +123,14 @@ namespace AutosarBCM.Core
             var bitIndex = 0;
 
             var bytes = new List<byte>();
-            bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
+            var isControlMaskActive = false;
+            
+            if (Services.IndexOf((byte)SIDDescription.SID_WRITE_DATA_BY_IDENTIFIER) == -1)
+            {
+                bytes.Add((byte)InputControlParameter.ShortTermAdjustment);
+                isControlMaskActive = Responses[0].Payloads.Count > 1;
+            }
 
-            var isControlMaskActive = Responses[0].Payloads.Count > 1;
             foreach (var payload in Responses?[0].Payloads)
             {
                 payloads.TryGetValue(payload.Name, out bool isOpen);
@@ -161,11 +173,11 @@ namespace AutosarBCM.Core
                         {
                             byte[] pwmBytes;
                             if (isOpen)
-                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyOpenValue);
+                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue).Reverse().ToArray();
                             else
-                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.EnvironmentalConfig.PWMDutyCloseValue);
+                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyCloseValue).Reverse().ToArray();
 
-                            Array.Reverse(pwmBytes);
+                            //Array.Reverse(pwmBytes);
                             bytes.AddRange(pwmBytes);
                         }
                         else
@@ -180,7 +192,6 @@ namespace AutosarBCM.Core
                         }
 
                     }
-                    Console.WriteLine($" Send Control Name: {Name} -- Send Val: {payload.Name} -- {(isOpen ? Constants.Opened : Constants.Closed)}");
                     Helper.WriteCycleMessageToLogFile(Name, payload.Name, (isOpen ? Constants.Opened : Constants.Closed));
 
                 }
@@ -190,26 +201,54 @@ namespace AutosarBCM.Core
             if (isControlMaskActive)
                 bytes.Add(controlByte);
 
-            //Console.WriteLine($"DID {Name} {(isOpen ? "opened" : "closed")}");
-            Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            if (Services.IndexOf((byte)SIDDescription.SID_WRITE_DATA_BY_IDENTIFIER) == -1)
+                Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            else
+                Transmit(ServiceInfo.WriteDataByIdentifier, bytes.ToArray());
 
         }
 
-        internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data)
+        internal List<Payload> GetPayloads(ServiceInfo serviceInfo, byte[] data = null)
         {
             var payloads = new List<Payload>();
             var responseIndex = serviceInfo.ResponseIndex;
-
+            int counter = 0;
+            var address = 0;
+            byte[] bitArray = new byte[4];
             foreach (var pInfo in Responses.First()?.Payloads)
             {
                 var pDef = ASContext.Configuration.GetPayloadInfoByType(pInfo.TypeName);
                 if (pDef == null) continue;
                 var value = data?.Skip(responseIndex).Take(pDef.Length).ToArray();
 
-                payloads.Add(InitializeType(pInfo, value));
-                responseIndex += pDef?.Length ?? 0;
+                if(data != null)
+                {
+                    address = BitConverter.ToUInt16(data.Skip(1).Take(2).Reverse().ToArray(), 0);
+                }
 
-                if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+                if (data != null && pDef.TypeName == "HexDump_1Byte" && address == 0xC151)
+                {
+                    byte upperNibble = (byte)((value[0] & 0xF0) >> 4);
+                    for (int i = 0; i < 4; i++)
+                    {
+                        bitArray[i] = (byte)((upperNibble >> (3 - i)) & 1);
+                    }
+                }
+
+                if (address == 0xC151 && pDef.TypeName != "HexDump_1Byte")
+                {
+                    payloads.Add(InitializeType(pInfo, new byte[] { bitArray[counter] }));
+                    responseIndex += pDef?.Length ?? 0;
+                    counter++;
+                    if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+                }
+                else
+                {
+                    payloads.Add(InitializeType(pInfo, value));
+                    responseIndex += pDef?.Length ?? 0;
+
+                    if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+                }
             }
             return payloads.ToList();
         }
@@ -366,18 +405,6 @@ namespace AutosarBCM.Core
             var environmentalTest = doc.Descendants("EnvironmentalTest")
                 .Select(t => new EnvironmentalTest
                 {
-                    EnvironmentalConfig = t.Descendants("EnvironmentalConfig")
-                        .Select(c => new EnvironmentalConfig
-                        {
-                            CycleTime = int.Parse(c.Element("CycleTime").Value),
-                            TxInterval = int.Parse(c.Element("TxInterval").Value),
-                            StartCycleIndex = int.Parse(c.Element("StartCycleIndex").Value),
-                            EndCycleIndex = int.Parse(c.Element("EndCycleIndex").Value),
-                            PWMDutyOpenValue = byte.Parse(c.Element("PWMDutyOpenValue").Value),
-                            PWMDutyCloseValue = byte.Parse(c.Element("PWMDutyCloseValue").Value),
-                            PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
-                            PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
-                        }).First(),
                     ConnectionMappings = t.Element("ConnectionMappings").Elements("Mapping")
                         .Select(m => new Mapping
                         {
@@ -394,40 +421,61 @@ namespace AutosarBCM.Core
                                     Control = f.Attribute("parent")?.Value ?? null,
                                 }).First(),
                         }).ToList(),
-                    ContinousReadList = t.Element("ContinousReadList").Elements("Func")
-                         .Select(f => new Function
-                         {
-                             Name = f.Value,
-                             Control = f.Attribute("parent")?.Value ?? null,
-                         }).ToList(),
-                    Cycles = t.Element("Cycles").Elements("Cycle")
-                        .Select(c => new Cycle
+                    Environments = t.Element("Environments").Elements("Environment")
+                        .Select(e => new Environment
                         {
-                            Name = c.Element("Name").Value,
-                            OpenAt = int.Parse(c.Element("OpenAt").Value),
-                            CloseAt = int.Parse(c.Element("CloseAt").Value),
-                            Functions = c.Element("Functions").Elements("Function")
+                            Name = e.Element("Name").Value,
+                            EnvironmentalConfig = e.Descendants("EnvironmentalConfig")
+                                .Select(c => new EnvironmentalConfig
+                                {
+                                    CycleTime = int.Parse(c.Element("CycleTime").Value),
+                                    TxInterval = int.Parse(c.Element("TxInterval").Value),
+                                    StartCycleIndex = int.Parse(c.Element("StartCycleIndex").Value),
+                                    EndCycleIndex = int.Parse(c.Element("EndCycleIndex").Value),
+                                    PWMDutyOpenValue = short.Parse(c.Element("PWMDutyOpenValue").Value),
+                                    PWMDutyCloseValue = short.Parse(c.Element("PWMDutyCloseValue").Value),
+                                    PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
+                                    PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
+                                    SensitiveCtrlDuration = int.Parse(c.Element("SensitiveCtrlDuration").Value),
+                                    CycleRange = int.Parse(c.Element("CycleRange").Value)
+                                }).First(),
+                            Cycles = e.Element("Cycles").Elements("Cycle")
+                                .Select(c => new Cycle
+                                {
+                                    Name = c.Element("Name").Value,
+                                    OpenAt = int.Parse(c.Element("OpenAt").Value),
+                                    CloseAt = int.Parse(c.Element("CloseAt").Value),
+                                    Functions = c.Element("Functions").Elements("Function")
+                                        .Select(f => new Function
+                                        {
+                                            Control = f.Attribute("control")?.Value,
+                                            ControlInfo = controls.FirstOrDefault(x => x.Name == f.Attribute("control")?.Value),
+                                            Scenario = f.Attribute("scenario")?.Value,
+                                            Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
+                                        }).ToList(),
+                                }).ToList(),
+                            ContinousReadList = e.Element("ContinousReadList").Elements("Func")
+                                 .Select(f => new Function
+                                 {
+                                     Name = f.Value,
+                                     Control = f.Attribute("parent")?.Value ?? null,
+                                 }).ToList(),
+
+                            SensitiveControls = e.Element("SensitiveControls").Elements("Function")
                                 .Select(f => new Function
                                 {
                                     Control = f.Attribute("control")?.Value,
-                                    ControlInfo = controls.FirstOrDefault(x => x.Name == f.Attribute("control")?.Value),
-                                    Scenario = f.Attribute("scenario")?.Value,
                                     Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
                                 }).ToList(),
+                            Scenarios = e.Element("Scenarios").Elements("Scenario")
+                                .Select(s => new Scenario
+                                {
+                                    Address = Convert.ToUInt16(s.Element("Address").Value, 16),
+                                    Name = s.Element("Name").Value,
+                                    OpenPayloads = s.Element("OpenPayloads").Elements("Payload").Select(x => x.Value).ToList(),
+                                    ClosePayloads = s.Element("ClosePayloads").Elements("Payload").Select(x => x.Value).ToList(),
+                                }).ToList(),
                         }).ToList(),
-                    SensitiveControls = t.Element("SensitiveControls").Elements("Function")
-                        .Select(f => new Function
-                        {
-                            Control = f.Attribute("control")?.Value,
-                            Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
-                        }).ToList(),
-                    Scenarios = t.Element("Scenarios").Elements("Scenario").Select(s => new Scenario
-                    {
-                        Address = Convert.ToUInt16(s.Element("Address").Value, 16),
-                        Name = s.Element("Name").Value,
-                        OpenPayloads = s.Element("OpenPayloads").Elements("Payload").Select(x => x.Value).ToList(),
-                        ClosePayloads = s.Element("ClosePayloads").Elements("Payload").Select(x => x.Value).ToList(),
-                    }).ToList(),
                 }).First();
 
             #endregion
@@ -476,16 +524,33 @@ namespace AutosarBCM.Core
                 Configuration = ConfigurationInfo.Parse(configFile);
         }
     }
-
     public class EnvironmentalTest
     {
-        public EnvironmentalConfig EnvironmentalConfig { get; set; }
+        /// <summary>
+        /// Name of current selected environment
+        /// </summary>
+        public static string CurrentEnvironment { get; set; }
+        
         /// <summary>
         /// Gets or sets a list of connection mappings.
         /// </summary>
         public List<Mapping> ConnectionMappings { get; set; }
-
         /// <summary>
+        /// Gets or sets the environments
+        /// </summary>
+        public List<Environment> Environments { get; set; }
+    }
+
+    public class Environment
+    {
+        /// <summary>
+        /// Name of environment
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the environment configs
+        /// </summary>
+        public EnvironmentalConfig EnvironmentalConfig { get; set; }
         /// Gets or sets a list of continuous read functions.
         /// </summary>
         public List<Function> ContinousReadList { get; set; }
@@ -548,11 +613,11 @@ namespace AutosarBCM.Core
         ///
         /// Gets or sets the message of PWM Open Duty value
         /// </summary>
-        public byte PWMDutyOpenValue { get; set; }
+        public short PWMDutyOpenValue { get; set; }
         /// <summary>
         /// Gets or sets the message of PWM Close Duty value
         /// </summary>
-        public byte PWMDutyCloseValue { get; set; }
+        public short PWMDutyCloseValue { get; set; }
         /// <summary>
         /// Gets or sets the message of PWM Open Frequency value
         /// </summary>
@@ -565,6 +630,11 @@ namespace AutosarBCM.Core
         /// Gets or sets the duration of sensitive control
         /// </summary>
         public int SensitiveCtrlDuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the frequency of loop
+        /// </summary>
+        public int CycleRange { get; set; }
 
         #endregion
     }
