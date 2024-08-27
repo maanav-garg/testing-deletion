@@ -8,7 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AutosarBCM{
+namespace AutosarBCM
+{
     /// <summary>
     /// Transmit Form class
     /// </summary>
@@ -387,6 +388,5 @@ namespace AutosarBCM{
                 tsbStopPeriodicMessage.Enabled = false;
             }
         }
-
     }
 }
