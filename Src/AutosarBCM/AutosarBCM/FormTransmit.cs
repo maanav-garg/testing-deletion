@@ -37,6 +37,13 @@ namespace AutosarBCM{
         /// </summary>
         public List<CanMessage> Messages { get => bindingList.ToList(); }
 
+        /// <summary>
+        /// Check whether the Stop Periodics Message button has been clicked or not.
+        /// </summary>
+        private bool isStopButtonClicked = false;
+
+
+
         #endregion
 
         #region Constructor
@@ -77,6 +84,8 @@ namespace AutosarBCM{
         {
             FormMain formMain = new FormMain();
             this.Height = formMain.Height / 2;
+            UpdateStopPeriodicMessageButton();
+
         }
 
         /// <summary>
@@ -97,11 +106,14 @@ namespace AutosarBCM{
 
             if (baseMessage.CheckForTransmit())
             {
+                isStopButtonClicked |= true;
                 tsbTransmit.Enabled = false;
                 await Task.Run(() => baseMessage.Transmit());
                 tsbTransmit.Enabled = true;
+                isStopButtonClicked = false;
                 bindingList.ResetBindings();
-                Helper.ApplyFilterAndRestoreSelection(dgvMessages,currentFilter);
+                Helper.ApplyFilterAndRestoreSelection(dgvMessages, currentFilter);
+                UpdateStopPeriodicMessageButton();
             }
             else
             {
@@ -140,6 +152,7 @@ namespace AutosarBCM{
         private void tsbTransmit_Click(object sender, EventArgs e)
         {
             TransmitMessage();
+            isStopButtonClicked = true;
         }
 
 
@@ -158,6 +171,7 @@ namespace AutosarBCM{
             {
                 bindingList.Add(message);
                 Helper.ApplyFilterAndRestoreSelection(this.dgvMessages, currentFilter);
+                UpdateStopPeriodicMessageButton();
             }
         }
 
@@ -184,6 +198,7 @@ namespace AutosarBCM{
         {
             currentFilter = txtFilter.Text.ToLower();
             Helper.ApplyFilter(dgvMessages, currentFilter);
+            UpdateStopPeriodicMessageButton();
         }
 
         /// <summary>
@@ -238,8 +253,8 @@ namespace AutosarBCM{
         {
             if (dgvMessages.CurrentRow == null)
                 return;
-
             dgvMessages.Rows.Remove(dgvMessages.CurrentRow);
+            UpdateStopPeriodicMessageButton();
         }
 
         /// <summary>
@@ -267,6 +282,7 @@ namespace AutosarBCM{
             }
             bindingList.ResetBindings();
             Helper.ApplyFilterAndRestoreSelection(dgvMessages, currentFilter);
+            UpdateStopPeriodicMessageButton();
         }
 
         /// <summary>
@@ -334,17 +350,65 @@ namespace AutosarBCM{
 
             dgvMessages.ClearSelection();
             dgvMessages.CurrentCell = dgvMessages.Rows[newIndex].Cells[0];
-
             Helper.ApplyFilterAndRestoreSelection(dgvMessages, currentFilter);
+            UpdateStopPeriodicMessageButton();
         }
         #endregion
 
+        /// <summary>
+        /// Handles click event of the Stop Periodic Messages button.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Provides data for the EventArgs.</param>
         private void stopPeriodicMessageBtn_Click(object sender, EventArgs e)
         {
+            var baseMessage = dgvMessages.CurrentRow?.DataBoundItem as BaseMessage;
+            if (baseMessage != null)
+            {
+                baseMessage.StopPeriodicMessage();
+            }
 
-            var baseMessage = ((BaseMessage)dgvMessages.CurrentRow.DataBoundItem);
-            baseMessage.StopPeriodicMessage();
-
+            UpdateStopPeriodicMessageButton();
         }
+        /// <summary>
+        /// Manages the enabled/disabled states of the Stop Periodic Messages button.
+        /// </summary>
+        private void UpdateStopPeriodicMessageButton()
+        {
+            if (dgvMessages.Rows.Count == 0)
+            {
+                tsbStopPeriodicMessage.Enabled = false;
+                return;
+            }
+
+            var baseMessage = dgvMessages.CurrentRow?.DataBoundItem as BaseMessage;
+
+            if (baseMessage != null && baseMessage.Trigger == "Periodic" && baseMessage.CycleCount > 0)
+            {
+                if (isStopButtonClicked)
+                {
+                    tsbStopPeriodicMessage.Enabled = false;
+                }
+                else
+                {
+
+                    if (baseMessage.Count != 0 && (baseMessage.Count % baseMessage.CycleCount == 0))
+                    {
+                        tsbStopPeriodicMessage.Enabled = false;
+                    }
+                    else
+                    {
+                        tsbStopPeriodicMessage.Enabled = true;
+                    }
+                }
+            }
+            else
+            {
+                tsbStopPeriodicMessage.Enabled = false;
+            }
+        }
+
     }
+
+
 }

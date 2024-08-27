@@ -41,6 +41,7 @@
             this.txtFilter = new System.Windows.Forms.ToolStripTextBox();
             this.tsbImportData = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveData = new System.Windows.Forms.ToolStripButton();
+            this.tsbStopPeriodicMessage = new System.Windows.Forms.ToolStripButton();
             this.dgvMessages = new System.Windows.Forms.DataGridView();
             this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.messageID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,7 +60,6 @@
             this.pnlMovementBtn = new System.Windows.Forms.Panel();
             this.btnUp = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
-            this.tsbStopPeriodicMessage = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMessages)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -145,7 +145,6 @@
             // txtFilter
             // 
             this.txtFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.txtFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(232, 27);
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
@@ -167,6 +166,15 @@
             this.tsbSaveData.Size = new System.Drawing.Size(100, 24);
             this.tsbSaveData.Text = "Save Data";
             this.tsbSaveData.Click += new System.EventHandler(this.tsbCsvTemplate_Click);
+            // 
+            // tsbStopPeriodicMessage
+            // 
+            this.tsbStopPeriodicMessage.Image = global::AutosarBCM.Properties.Resources.delete_icon_12_795858790;
+            this.tsbStopPeriodicMessage.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbStopPeriodicMessage.Name = "tsbStopPeriodicMessage";
+            this.tsbStopPeriodicMessage.Size = new System.Drawing.Size(189, 24);
+            this.tsbStopPeriodicMessage.Text = "Stop Periodic Messages";
+            this.tsbStopPeriodicMessage.Click += new System.EventHandler(this.stopPeriodicMessageBtn_Click);
             // 
             // dgvMessages
             // 
@@ -347,15 +355,6 @@
             this.btnDown.UseVisualStyleBackColor = false;
             this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
             // 
-            // tsbStopPeriodicMessage
-            // 
-            this.tsbStopPeriodicMessage.Image = global::AutosarBCM.Properties.Resources.delete_icon_12_795858790;
-            this.tsbStopPeriodicMessage.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbStopPeriodicMessage.Name = "tsbStopPeriodicMessage";
-            this.tsbStopPeriodicMessage.Size = new System.Drawing.Size(183, 24);
-            this.tsbStopPeriodicMessage.Text = "Stop Periodic Message";
-            this.tsbStopPeriodicMessage.Click += new System.EventHandler(this.stopPeriodicMessageBtn_Click);
-            // 
             // FormTransmit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -413,6 +412,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cycleCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn count;
         private System.Windows.Forms.DataGridViewTextBoxColumn trigger;
-        private System.Windows.Forms.ToolStripButton tsbStopPeriodicMessage;
+        public System.Windows.Forms.ToolStripButton tsbStopPeriodicMessage;
     }
 }
