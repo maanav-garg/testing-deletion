@@ -51,6 +51,14 @@ namespace AutosarBCM.UserControls.Monitor
 
         #region Public Methods
 
+        public void SetDefaultValue()
+        {
+            chkSelected.Checked = false;
+            cmbValue.SelectedIndex = cmbValue.SelectedIndex != -1 ? 0 : -1;
+            txtPwm.Text = "00000";
+            txtDataByte1.Text = txtDataByte2.Text = txtDataByte3.Text = txtDataByte4.Text = "00";
+        }
+
         #endregion
 
         #region Private Methods

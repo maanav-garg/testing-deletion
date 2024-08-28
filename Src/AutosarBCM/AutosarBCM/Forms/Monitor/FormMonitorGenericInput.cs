@@ -192,6 +192,8 @@ namespace AutosarBCM.Forms.Monitor
         /// </summary>
         public void ClearPreviousConfiguration()
         {
+            FlowLayoutPanel flowPanel = ucControlByIdentifierItem.Controls?.OfType<FlowLayoutPanel>().FirstOrDefault();
+            flowPanel?.Controls.Cast<UCControlPayload>().ToList().ForEach(item => item.SetDefaultValue());
             pnlMonitorInput.Controls.Clear();
             groups.Clear();
             uCItems.Clear();
