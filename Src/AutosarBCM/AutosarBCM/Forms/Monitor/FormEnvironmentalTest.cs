@@ -297,6 +297,9 @@ namespace AutosarBCM.Forms.Monitor
 
         public bool Receive(Service baseService)
         {
+            if (!FormMain.IsTestRunning)
+                return false;
+
             if (baseService is IOControlByIdentifierService ioService)
             {
                 return HandleIOControlByIdentifierReceive(ioService);
