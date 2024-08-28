@@ -2595,6 +2595,7 @@
 					<PWMFreqCloseValue>200</PWMFreqCloseValue>
 					<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
 					<CycleRange>2</CycleRange>
+					<HexDump1ByteOpenValue>01</HexDump1ByteOpenValue>
 				</EnvironmentalConfig>
 				<ContinousReadList>
 					<!-- Continous read list contents -->
@@ -6156,6 +6157,7 @@
 					<PWMFreqCloseValue>200</PWMFreqCloseValue>
 					<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
 					<CycleRange>2</CycleRange>
+					<HexDump1ByteOpenValue>01</HexDump1ByteOpenValue>
 				</EnvironmentalConfig>
 				<ContinousReadList>
 					<!-- Continous read list contents -->
