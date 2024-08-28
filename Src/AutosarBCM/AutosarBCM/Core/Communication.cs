@@ -18,7 +18,6 @@ namespace AutosarBCM.Core
     internal interface IIOControlByIdenReceiver : IReceiver { }
     internal interface IReadDataByIdenReceiver : IReceiver { }
     internal interface IDTCReceiver : IReceiver { }
-
     internal interface IWriteByIdenReceiver : IReceiver { }
 
     public class ASRequest

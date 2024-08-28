@@ -11,6 +11,7 @@ using AutosarBCM.Config;
 using System.ComponentModel;
 using AutosarBCM.Core;
 using static System.Windows.Forms.LinkLabel;
+using AutosarBCM.Forms.Monitor;
 
 namespace AutosarBCM
 {
@@ -35,6 +36,11 @@ namespace AutosarBCM
         {
             get { return log; }
         }
+
+        /// <summary>
+        /// The name of a unopened payload log file by instant time.
+        /// </summary>
+        private static string unopenedPayloadLogFile = DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss_");
 
         #endregion
 
@@ -389,44 +395,38 @@ namespace AutosarBCM
                 dgvMessages.ClearSelection();
             }
         }
+
+        /// <summary>
+        /// Initializes the unopened payload log file with a name that includes the current date and time.
+        /// </summary>
+        public static void InitializeUnopenedPayloadLogFile()
+        {
+            unopenedPayloadLogFile = $"{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}_Unopened_Payloads_log.txt";
+        }
+
         /// <summary>
         /// Create a txt file to the unopened DIDS during an environmental test.
         /// </summary>
         /// <param name="count">The name of the item.</param>
         /// <param name="payloadName">The type of the item.</param>
-        public static void WriteUnopenedPayloadsToLogFile(string payloadName, string controlName, int count, int rangeCount)
+        public static void WriteUnopenedPayloadsToLogFile(List<Config.SentMessage> unOpenedControlList, int groupStartCount, int groupEndCount, int cycleRange, string groupStartTime, string groupEndTime, bool isTestFinished = false)
         {
-            string logFilePath = $"{DateTime.Now.ToString("dd-MM-yyyy")}_Unopened_Payloads_log.txt";
-            string groupName = $"{count}. Group";
-            string rangeHeader = $"{groupName} (Range: {rangeCount}) Started -- ({DateTime.Now.ToString("dd/MM_HH:mm:ss")}) {System.Environment.NewLine}";
-            string logMessage = $"Control: {controlName} - Payload: {payloadName}";
-
             List<string> lines = new List<string>();
+            if (File.Exists(unopenedPayloadLogFile))
+                lines = File.ReadAllLines(unopenedPayloadLogFile).ToList();
+            var distinctUnopenedControls = unOpenedControlList.GroupBy(item => item.itemType).Select(group => group.First());
 
-            if (File.Exists(logFilePath))
+            lines.Add($"{System.Environment.NewLine}Group {groupStartCount}&{groupEndCount} Started at ({groupStartTime}) -  (Range: {cycleRange}){System.Environment.NewLine}");
+            
+            foreach(var unOpenControl in distinctUnopenedControls)
             {
-                lines = File.ReadAllLines(logFilePath).ToList();
+                lines.Add($"Control: {unOpenControl.itemName} -- Payload: {unOpenControl.itemType}");
             }
 
-            bool rangeHeaderExists = lines.Any(line => line.Contains(groupName));
-            if (!rangeHeaderExists)
-            {
-                if(count != 1)
-                    lines.Add($"{count-1}. Group Finished -- ({DateTime.Now.ToString("dd/MM_HH:mm:ss")}) {System.Environment.NewLine}");
-                lines.Add(rangeHeader);
-            }
-            int rangeHeaderIndex = lines.FindIndex(line => line.StartsWith(rangeHeader.Trim()));
-            if (rangeHeaderIndex != -1)
-            {
-                bool logMessageExists = lines.Skip(rangeHeaderIndex + 1).TakeWhile(line => !line.Contains("Range")).Any(line => line.Contains(logMessage.Trim()));
-                if (!logMessageExists)
-                    lines.Add(logMessage);
-                File.WriteAllLines(logFilePath, lines);
-            }
+            lines.Add($"{System.Environment.NewLine}Group {groupStartCount}&{groupEndCount} Finished at ({groupEndTime}) -  (Range: {cycleRange}){System.Environment.NewLine}");
 
+            File.WriteAllLines(unopenedPayloadLogFile, lines);
         }
-
-
 
         /// <summary>
         /// Writes a cycle message to the log file during an environmental test.
@@ -465,6 +465,37 @@ namespace AutosarBCM
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")} [{cycleId}-{loopId}];{itemName};{itemType};{operation};{data};{escapeChars}");
                 else
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}#{comment}#{escapeChars}");
+            }
+        }
+
+        /// <summary>
+        /// Adds a message to the sentMessagesQueue during an environmental test.
+        /// </summary>
+        /// <param name="itemName">The name of the item.</param>
+        /// <param name="itemType">The type of the item.</param>
+        /// <param name="operation">The operation performed.</param>
+        public static void AddMessageMappingDict(string itemName, string itemType, string operation)
+        {
+            var formEnv = (FormEnvironmentalTest)Application.OpenForms[Constants.Form_Environmental_Test];
+            if (FormMain.IsTestRunning)
+            {
+                if (!formEnv.chkDisableUi.Checked)
+                    formEnv.totalMessagesTransmitted++;
+
+                var uc = formEnv.ucItems.FirstOrDefault(x => x.ControlInfo.Name == itemName && x.PayloadInfo.Name == itemType);
+                if (uc != null)
+                    uc.HandleMetrics();
+
+                var messageId = Guid.NewGuid().ToString();
+                var sentMessage = new SentMessage
+                {
+                    Id = messageId,
+                    itemName = itemName,
+                    itemType = itemType,
+                    timestamp = DateTime.Now,
+                    operation = operation
+                };
+                formEnv.sentMessagesList.Add(sentMessage);
             }
         }
 

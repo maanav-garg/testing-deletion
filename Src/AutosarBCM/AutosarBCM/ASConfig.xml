@@ -2321,7 +2321,7 @@
 			<Input parent="All_Doors_Lock_and_Ajar_Input_Signal">C5.36_3 FrontResetLeftSwitch</Input>
 			</Mapping>
 			<Mapping>
-			<Output parent="Passenger_Power_Window_Motor">C1.3_Passenger Power Window Motor Down</Output>
+			<Output parent="Passenger_Power_Window_Motor">C1.3_Passenger Power Window Motor Down</Output>c
 			<Input parent="Spare_Switch">C5.46_Spare Switch 30</Input>
 			</Mapping>
 			<Mapping>
@@ -2595,6 +2595,7 @@
 					<PWMFreqCloseValue>200</PWMFreqCloseValue>
 					<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
 					<CycleRange>2</CycleRange>
+					<HexDump1ByteOpenValue>01</HexDump1ByteOpenValue>
 				</EnvironmentalConfig>
 				<ContinousReadList>
 					<!-- Continous read list contents -->
@@ -3773,6 +3774,7 @@
 					<PWMFreqCloseValue>200</PWMFreqCloseValue>
 					<SensitiveCtrlDuration>50</SensitiveCtrlDuration>
 					<CycleRange>2</CycleRange>
+					<HexDump1ByteOpenValue>01</HexDump1ByteOpenValue>
 				</EnvironmentalConfig>
 				<ContinousReadList>
 					<!-- Continous read list contents -->
