@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using AutosarBCM.Forms.Monitor;
 using LicenseHelper;
@@ -40,7 +41,7 @@ namespace AutosarBCM
                 return;
             }
             Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
-
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             #region Init log4net
             XmlConfigurator.Configure();
             var logger = LogManager.GetLogger("");
@@ -71,6 +72,11 @@ namespace AutosarBCM
             Application.Run(formMain);
 
             _mutex.ReleaseMutex();
+        }
+
+        private static void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            MainForm.AppendTrace($"Scheduler Exception: {e.Exception.Message}");   
         }
 
         /// <summary>

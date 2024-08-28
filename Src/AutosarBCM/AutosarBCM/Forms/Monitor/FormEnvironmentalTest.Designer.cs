@@ -223,10 +223,10 @@
             // 
             this.lblLoopVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblLoopVal.ForeColor = System.Drawing.Color.Orange;
-            this.lblLoopVal.Location = new System.Drawing.Point(700, 9);
+            this.lblLoopVal.Location = new System.Drawing.Point(700, 6);
             this.lblLoopVal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblLoopVal.Name = "lblLoopVal";
-            this.lblLoopVal.Size = new System.Drawing.Size(21, 15);
+            this.lblLoopVal.Size = new System.Drawing.Size(31, 15);
             this.lblLoopVal.TabIndex = 10;
             this.lblLoopVal.Text = "00";
             // 
@@ -234,7 +234,7 @@
             // 
             this.lblCycleVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCycleVal.ForeColor = System.Drawing.Color.Orange;
-            this.lblCycleVal.Location = new System.Drawing.Point(778, 9);
+            this.lblCycleVal.Location = new System.Drawing.Point(778, 6);
             this.lblCycleVal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCycleVal.Name = "lblCycleVal";
             this.lblCycleVal.Size = new System.Drawing.Size(39, 15);

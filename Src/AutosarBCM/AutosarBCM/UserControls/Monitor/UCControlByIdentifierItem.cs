@@ -95,10 +95,10 @@ namespace AutosarBCM.UserControls.Monitor
             if (!ConnectionUtil.CheckConnection())
                 return;
             var hasDIDBitsOnOff = ucItem.ControlInfo.Responses.SelectMany(r => r.Payloads).Any(p => p.TypeName == "DID_Bits_On_Off");
-            
+            var isDoorLock = ucItem.ControlInfo.Address.Equals(0xC151);
             if (selectedService == SelectedService.IoControlByIdentifier)
             {
-                if (hasDIDBitsOnOff)
+                if (hasDIDBitsOnOff || isDoorLock)
                     ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareControlDataForBits());
                 else
                     ucItem.ControlInfo.Transmit(ServiceInfo.InputOutputControlByIdentifier, PrepareIoControlData());
@@ -137,7 +137,7 @@ namespace AutosarBCM.UserControls.Monitor
 
                         if (isControlMaskActive && ucPayload.IsSelected)
                         {
-                            controlByte |= (byte)(1 << (7- bitIndex));
+                            controlByte |= (byte)(1 << (7 - bitIndex));
                         }
                     }
                     else if (isControlMaskActive)
@@ -158,7 +158,6 @@ namespace AutosarBCM.UserControls.Monitor
 
             return bytes.ToArray();
         }
-
         private byte[] PrepareControlDataForBits()
         {
             byte bits = 0x0;
@@ -182,11 +181,18 @@ namespace AutosarBCM.UserControls.Monitor
                     bitIndex++;
                 }
             }
-            //Set the values to high, control mask to low bits
-            var resultByte = (byte)((bits) & 0xFF | ((controlByte) & 0xFF) >> 4);
-            bytes.Add(resultByte);
+            if (ucItem.ControlInfo.Address == 0xC151)
+            {
+                bytes.Add((byte)(bits | controlByte >> 4));
+            }
+            else
+            {
+                bytes.Add(bits);
+                bytes.Add(controlByte);
+            }
             return bytes.ToArray();
         }
+       
 
 
         #endregion

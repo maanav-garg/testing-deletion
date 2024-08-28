@@ -76,6 +76,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// Gets or sets the previous (old) value of the input item for Write service.
         /// </summary>
         private WriteDataByIdentifierService oldValueForWriteService;
+        
         #endregion
 
         #region Constructor
@@ -146,14 +147,98 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         /// <param name="monitorItem">Monitor item to be updated</param>
         /// <param name="inputResponse">Data comes from device</param>
-        public void ChangeStatus(IOControlByIdentifierService service)
+        public void ChangeStatusForWriteService(WriteDataByIdentifierService service)
         {
             if (Program.MappingStateDict.TryGetValue(ControlInfo.Name, out var errorLogDetect))
                 Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, GetMappingLogState(errorLogDetect.Operation)));
 
             if (Program.FormEnvironmentalTest.chkDisableUi.Checked)
                 return;
-            
+
+            if (lblReceived.InvokeRequired)
+            {
+                lblReceived.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    MessagesReceived++;
+                    lblReceived.Text = MessagesReceived.ToString();
+                    Calculate();
+                });
+            }
+            else
+            {
+                MessagesReceived++;
+                lblReceived.Text = MessagesReceived.ToString();
+                Calculate();
+            }
+
+            if (oldValueForWriteService != null)
+            {
+                var areEqual = service.Payloads.Count == oldValueForWriteService.Payloads.Count;
+
+                if (areEqual)
+                {
+                    for (int i = 0; i < service.Payloads.Count; i++)
+                    {
+                        if (service.Payloads[i].FormattedValue != oldValueForWriteService.Payloads[i].FormattedValue ||
+                            service.Payloads[i].PayloadInfo.Name != oldValueForWriteService.Payloads[i].PayloadInfo.Name)
+                        {
+                            areEqual = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (areEqual)
+                    return;
+            }
+
+            oldValueForWriteService = service;
+
+            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
+            {
+                if (service.Payloads[0].PayloadInfo.TypeName == "DID_PWM")
+                {
+                    var payload = (service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name)).FormattedValue;
+                    if (payload != "")
+                    {
+                        string hexValue = payload.Replace("-", "");
+                        string decimalValue = (Convert.ToInt32(hexValue, 16)).ToString();
+                        lblWriteStatus.Text = decimalValue;
+                    }
+                }
+
+                else
+                {
+                    var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+                    lblWriteStatus.Text = payload?.FormattedValue.ToString();
+                }
+            });
+
+
+
+            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
+            {
+                var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+                lblWriteStatus.Text = payload?.FormattedValue.ToString();
+            });
+
+        }
+
+
+
+        /// <summary>
+        /// Change status of the input window regarding to read data from the device.
+        /// </summary>
+        /// <param name="monitorItem">Monitor item to be updated</param>
+        /// <param name="inputResponse">Data comes from device</param>
+        public void ChangeStatus(IOControlByIdentifierService service)
+        {
+
+            HandleMapping(service);
+
+            if (Program.FormEnvironmentalTest.chkDisableUi.Checked)
+                return;
+
             if (lblReceived.InvokeRequired)
             {
                 lblReceived.BeginInvoke((MethodInvoker)delegate ()
@@ -289,11 +374,34 @@ namespace AutosarBCM.UserControls.Monitor
                 }
             });
 
-            lblWriteStatus.BeginInvoke((MethodInvoker)delegate ()
+        }
+
+        private void HandleMapping(IOControlByIdentifierService service)
+        {
+            var mappingResponse = MappingResponse.OutputError;
+            var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+
+            if (payload.PayloadInfo.TypeName == "DID_PWM")
             {
-                var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
-                lblWriteStatus.Text = payload?.FormattedValue.ToString();
-            });
+                int value = Convert.ToInt32(payload.FormattedValue.Replace("-", ""), 16);
+
+                if (value == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue)
+                    mappingResponse = MappingResponse.OutputOpen;
+                else if (value == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyCloseValue)
+                    mappingResponse = MappingResponse.OutputClose;
+            }
+            else
+            {
+                var value = ASContext.Configuration.GetPayloadInfoByType(payload.PayloadInfo.TypeName).GetPayloadValue(payload.Value);
+                if (value != null)
+                {
+                    if (value.IsOpen) mappingResponse = MappingResponse.OutputOpen;
+                    else if (value.IsClose) mappingResponse = MappingResponse.OutputClose;
+                }
+            }
+
+            if (Program.MappingStateDict.TryGetValue(payload.PayloadInfo.Name, out var errorLogDetect))
+                Program.MappingStateDict.UpdateValue(ControlInfo.Name, errorLogDetect.UpdateOutputResponse(errorLogDetect.Operation, MappingState.OutputReceived, mappingResponse));
         }
 
 

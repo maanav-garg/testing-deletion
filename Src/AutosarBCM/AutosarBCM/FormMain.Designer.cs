@@ -145,7 +145,6 @@ namespace AutosarBCM
             this.testLogToolStripMenuItem.Name = "testLogToolStripMenuItem";
             this.testLogToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
             this.testLogToolStripMenuItem.Text = "Test Log Viewer";
-            this.testLogToolStripMenuItem.Visible = false;
             this.testLogToolStripMenuItem.Click += new System.EventHandler(this.testLogToolStripMenuItem_Click);
             // 
             // tsmiCheck
@@ -379,7 +378,7 @@ namespace AutosarBCM
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage2.Size = new System.Drawing.Size(1881, 893);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Trace";
@@ -388,11 +387,11 @@ namespace AutosarBCM
             // txtTrace
             // 
             this.txtTrace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtTrace.Location = new System.Drawing.Point(3, 29);
-            this.txtTrace.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtTrace.Location = new System.Drawing.Point(2, 29);
+            this.txtTrace.Margin = new System.Windows.Forms.Padding(2);
             this.txtTrace.Name = "txtTrace";
             this.txtTrace.ReadOnly = true;
-            this.txtTrace.Size = new System.Drawing.Size(1875, 862);
+            this.txtTrace.Size = new System.Drawing.Size(1877, 862);
             this.txtTrace.TabIndex = 10;
             this.txtTrace.Text = "";
             // 
@@ -401,9 +400,9 @@ namespace AutosarBCM
             this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbClearLog});
-            this.toolStrip2.Location = new System.Drawing.Point(3, 2);
+            this.toolStrip2.Location = new System.Drawing.Point(2, 2);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(1875, 27);
+            this.toolStrip2.Size = new System.Drawing.Size(1877, 27);
             this.toolStrip2.TabIndex = 11;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -697,8 +696,8 @@ namespace AutosarBCM
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MinimumSize = new System.Drawing.Size(1021, 751);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MinimumSize = new System.Drawing.Size(770, 619);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TransparencyKey = System.Drawing.Color.White;

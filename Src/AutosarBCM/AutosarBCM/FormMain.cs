@@ -118,7 +118,7 @@ namespace AutosarBCM
         /// <summary>
         /// An instance of the 'FormEMCView' control.
         /// </summary>
-        private FormEMCView formEMCView;
+        public FormEMCView formEMCView;
         /// <summary>
         /// An instance of the 'FormLogReader' control for displaying trace messages.
         /// </summary>
@@ -179,6 +179,7 @@ namespace AutosarBCM
         private ECUReset ECUReset;
         private System.Timers.Timer TesterPresentTimer;
         private System.Timers.Timer ExtDiagSesTimer;
+        public static string fileName;
 
         /// <summary>
         /// Gets the selected test type
@@ -865,6 +866,8 @@ namespace AutosarBCM
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
             LoadXMLDoc();
+
+            ConnectionUtil.LoadControlDictionary();
         }
 
         /// <summary>
@@ -977,6 +980,7 @@ namespace AutosarBCM
                 if (tsbSession.Text != "Session: N/A")
                 {
                     genericInput.SessionFiltering();
+                    tspFilterTxb.Text = "";
                 }
                 //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
             }
@@ -1128,6 +1132,7 @@ namespace AutosarBCM
             //// add to recent file list
             //recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
             LoadXMLDoc();
+            ConnectionUtil.LoadControlDictionary();
         }
 
         /// <summary>
@@ -1138,7 +1143,7 @@ namespace AutosarBCM
         {
             ImportMessages(filePath);
 
-            string fileName = Path.GetFileName(filePath);
+            fileName = Path.GetFileName(filePath);
             LoadFile(fileName);
         }
 
@@ -1324,6 +1329,7 @@ namespace AutosarBCM
 
         private void tsmiEMCView_Click(object sender, EventArgs e)
         {
+            formEMCView = null;
             if (CheckConfigurationFile())
             {
                 if (formEMCView == null || formEMCView.IsDisposed)

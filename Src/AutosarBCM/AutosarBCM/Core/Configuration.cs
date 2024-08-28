@@ -99,11 +99,19 @@ namespace AutosarBCM.Core
                     bitIndex++;
                 }
             }
-            //Set the values to high, control mask to low bits
-            var resultByte = (byte)((bits) & 0xFF | ((controlByte) & 0xFF) >> 4);
-            bytes.Add(resultByte);
+            if (Address == 0xC151)
+            {
+                bytes.Add((byte)(bits | controlByte >> 4));
+            }
+            else
+            {
+                bytes.Add(bits);
+                bytes.Add(controlByte);
+            }
             Transmit(ServiceInfo.InputOutputControlByIdentifier, bytes.ToArray());
+            
         }
+
 
         public void Switch(List<string> payloads, bool isOpen)
         {

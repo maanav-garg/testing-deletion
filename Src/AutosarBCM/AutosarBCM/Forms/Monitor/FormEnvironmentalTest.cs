@@ -73,8 +73,7 @@ namespace AutosarBCM.Forms.Monitor
             continuousReadData = (ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
             endCycleIndex = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
 
-
-            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.OpenItems.SelectMany(o => o.Payloads).Concat(x.CloseItems.SelectMany(c => c.Payloads))).Distinct();
+            var payloadNamesInCycle = cycles.Values.SelectMany(x => x.OpenItems.SelectMany(a => a.Payloads).Concat(x.CloseItems.SelectMany(a => a.Payloads))).Distinct();
 
             var controlNamesInCycle = cycles.Values
                 .SelectMany(x => x.Functions)
@@ -84,13 +83,13 @@ namespace AutosarBCM.Forms.Monitor
                 .SelectMany(x => x.Functions)
                     .Select(b => b.Scenario).Where(s => s != null).Distinct();
 
-            openPayloadsOfScenario = from scenario in scenarios
-                                       join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
-                                       select scenario.OpenPayloads;
+            var openPayloadsOfScenario = from scenario in scenarios
+                                         join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                         select scenario.OpenPayloads;
 
-            closePayloadsOfScenario = from scenario in scenarios
-                                        join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
-                                        select scenario.ClosePayloads;
+            var closePayloadsOfScenario = from scenario in scenarios
+                                          join scenarioName in scenarioNamesInCycle on scenario.Name equals scenarioName
+                                          select scenario.ClosePayloads;
 
             groups.Add("DID", new List<UCReadOnlyItem>());
 
@@ -98,7 +97,7 @@ namespace AutosarBCM.Forms.Monitor
             {
                 foreach (var payload in ctrl.Responses[0].Payloads)
                 {
-                    if ((payloadNamesInCycle.Contains(payload.Name) && controlNamesInCycle.Contains(ctrl.Name))|| 
+                    if ((payloadNamesInCycle.Contains(payload.Name) && controlNamesInCycle.Contains(ctrl.Name))||
                         openPayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)) ||
                         closePayloadsOfScenario.Any(innerList => innerList.Contains(payload.Name)))
                     {
@@ -332,7 +331,6 @@ namespace AutosarBCM.Forms.Monitor
 
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
-                var payloadName = ioService.Payloads[i].PayloadInfo.Name;
 
                 if (cancellationTokenSource != null && cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
                     timeout = TimeSpan.FromSeconds(2);
@@ -371,7 +369,6 @@ namespace AutosarBCM.Forms.Monitor
 
             for (var i = 0; i < ioService.Payloads.Count; i++)
             {
-                var payloadName = ioService.Payloads[i].PayloadInfo.Name;
 
                 if (cancellationTokenSource != null && cancellationTokenSource.IsCancellationRequested && FormMain.IsTestRunning)
                     timeout = TimeSpan.FromSeconds(2);
@@ -478,7 +475,6 @@ namespace AutosarBCM.Forms.Monitor
             {
                 if (currentTime - message.timestamp > timeout)
                 {
-                    Console.WriteLine("Queue'dan Silindi: " + message.itemType);
                     messagesToRemove.Add(message);
                 }
             }
@@ -549,7 +545,7 @@ namespace AutosarBCM.Forms.Monitor
                                 {
                                     Program.MappingStateDict.UpdateValue(readByIdenService.Payloads[i].PayloadInfo.Name, errorLogDetect.UpdateInputResponse(MappingState.InputReceived, GetMappingResponse(readByIdenService.Payloads[i].Value)));
 
-                                    if (errorLogDetect.ChcekIsError())
+                                    if (errorLogDetect.CheckIsError())
                                         Helper.WriteErrorMessageToLogFile(readByIdenService.ControlInfo.Name, $"O: {mappingItem.Output.Control} ({mappingItem.Output.Name}) - I: {mappingItem.Input.Control} ({mappingItem.Input.Name})", Constants.MappingMismatch, "", "", $"Mapping Output: {string.Format("{0} = {1}", mappingItem.Output.Name, errorLogDetect.OutputResponse)} mismatched with Input: {string.Format("{0} = {1}", mappingItem.Input.Name, errorLogDetect.InputResponse)}");
 
                                     Program.MappingStateDict.Remove(readByIdenService.Payloads[i].PayloadInfo.Name);

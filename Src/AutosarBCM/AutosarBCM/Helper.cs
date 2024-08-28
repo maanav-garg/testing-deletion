@@ -185,7 +185,7 @@ namespace AutosarBCM
                         productName = ((AssemblyTitleAttribute)attributes[0]).Title;
 
                     var version = Assembly.GetExecutingAssembly().GetName().Version;
-                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, "Beta-3");
+                    return string.Format("{0} {1}.{2}.{3} {4}", productName, version.Major, version.Minor, version.Build, "Beta-9");
                 }
                 catch { }
                 return "";
@@ -581,6 +581,14 @@ namespace AutosarBCM
             {
                 return;
             }
+        }
+        public static void SendDefaultSession()
+        {
+            if (!ConnectionUtil.CheckConnection())
+                return;
+            var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.ID == 0x01);
+            ASContext.CurrentSession = sessionInfo;
+            new DiagnosticSessionControl().Transmit(sessionInfo);
         }
 
         #endregion
@@ -1155,6 +1163,7 @@ namespace AutosarBCM
             {
                 using (openFileDialog)
                 {
+                    openFileDialog.Filter = "Csv|*.csv";
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         switch (protocol)
@@ -1485,7 +1494,7 @@ namespace AutosarBCM
         /// <summary> 
         /// Returns the status of the Error statement
         /// </summary> 
-        public bool ChcekIsError()
+        public bool CheckIsError()
         {
             if (OutputState == MappingState.OutputSent || InputState == MappingState.InputSent)
                 return true;

@@ -52,7 +52,7 @@ namespace AutosarBCM.Core
             ConnectionUtil.TransmitData(Data);
         }
     }
-    
+
     public class ASResponse
     {
         public byte[] Data { get; private set; }
@@ -66,38 +66,38 @@ namespace AutosarBCM.Core
 
         public Service Parse()
         {
-            if (Data[0] == ServiceInfo.TesterPresent.ResponseID)
+            if (Data[0] == (byte)SIDDescription.SID_TESTER_PRESENT + 0x40)
             {
                 IsPositiveRx = true;
                 return TesterPresent.Receive(this);
             }
-            else if (Data[0] == ServiceInfo.InputOutputControlByIdentifier.ResponseID)
+            else if (Data[0] == (byte)SIDDescription.SID_INPUT_OUTPUT_CONTROL_BY_IDENTIFIER + 0x40)
             {
                 IsPositiveRx = true;
                 return IOControlByIdentifierService.Receive(this);
             }
-            else if (Data[0] == ServiceInfo.WriteDataByIdentifier.ResponseID)
+            else if (Data[0] == (byte)SIDDescription.SID_WRITE_DATA_BY_IDENTIFIER + 0x40)
             {
                 IsPositiveRx = true;
                 return WriteDataByIdentifierService.Receive(this);
             }
-            else if (Data[0] == ServiceInfo.ReadDTCInformation.ResponseID)
+            else if (Data[0] == (byte)SIDDescription.SID_READ_DTC_INFORMATION + 0x40)
             {
                 IsPositiveRx = true;
                 return ReadDTCInformationService.Receive(this);
             }
-            
-            else if (Data[0] == ServiceInfo.ReadDataByIdentifier.ResponseID)
+
+            else if (Data[0] == (byte)SIDDescription.SID_READ_DATA_BY_IDENTIFIER + 0x40)
             {
                 IsPositiveRx = true;
                 return ReadDataByIdenService.Receive(this);
             }
-            else if (Data[0] == ServiceInfo.DiagnosticSessionControl.ResponseID)
+            else if (Data[0] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL + 0x40)
             {
                 IsPositiveRx = true;
                 return DiagnosticSessionControl.Receive(this);
             }
-            else if (Data[0] == ServiceInfo.NegativeResponse.ResponseID)
+            else if (Data[0] == (byte)SIDDescription.SID_NEGATIVE_RESPONSE)
             {
                 if (Enum.IsDefined(typeof(NRCDescription), Data[2]))
                     NegativeResponseCode = ((NRCDescription)Data[2]).ToString();
