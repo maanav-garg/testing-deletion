@@ -72,7 +72,7 @@ namespace AutosarBCM
             InitializeComponent();
             rdoOrder_CheckedChanged(null, null);
             rdoControl_CheckedChanged(null, null);
-
+            EnvironmentalTest.CurrentEnvironment = ASContext.Configuration.EnvironmentalTest.Environments.First().Name;
         }
 
         #endregion
@@ -254,6 +254,8 @@ namespace AutosarBCM
                         }
                         else
                         {
+                            if(ciDict[item].Item1.Any(x => x == "C4.42_Ambient Light LED Power Supply"))
+                                Console.WriteLine(ciDict[item].Item1.ToString());
                             item.Switch(ciDict[item].Item1, true);
                             await Task.Delay(txIntervalCC);
                             Thread.Sleep(100);
