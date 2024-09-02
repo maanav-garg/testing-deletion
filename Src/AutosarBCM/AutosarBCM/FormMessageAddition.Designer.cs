@@ -232,7 +232,6 @@ namespace AutosarBCM
             this.lblMessageLength.Size = new System.Drawing.Size(40, 13);
             this.lblMessageLength.TabIndex = 0;
             this.lblMessageLength.Text = "Length";
-
             // 
             // cbTrigger
             // 
