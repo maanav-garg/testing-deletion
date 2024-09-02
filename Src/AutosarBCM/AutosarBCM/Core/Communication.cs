@@ -44,6 +44,9 @@ namespace AutosarBCM.Core
 
         internal void Execute()
         {
+            if (ASContext.CurrentSession == null)
+                return;
+
             if (!ServiceInfo.Sessions.Contains(ASContext.CurrentSession.ID))
                 return;
 
