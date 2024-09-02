@@ -258,7 +258,7 @@ namespace AutosarBCM.Core
         }
         private static Payload InitializeType(PayloadInfo payloadInfo, byte[] value, int? index = null)
         {
-            var typeName = FormMain.isMdxFile ? ((payloadInfo.TypeName == "DID_PWM") ? payloadInfo.TypeName : "MDX_Payload") : "";
+            var typeName = FormMain.IsMdxFile ? ((payloadInfo.TypeName == "DID_PWM") ? payloadInfo.TypeName : "MDX_Payload") : "";
             if (typeName != "")
             {
                 return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.{typeName}"))).Parse(payloadInfo, value, index);
@@ -325,11 +325,11 @@ namespace AutosarBCM.Core
             public List<DTCFailure> DTCFailureTypes { get; set; }
             public EnvironmentalTest EnvironmentalTest { get; set; }
 
-            internal static ConfigurationInfo Parse(string filePath)
+            internal static ConfigurationInfo Parse(string filePath, bool isMdxFile)
             {
                 XDocument doc = XDocument.Load(filePath);
 
-                if (FormMain.isMdxFile)
+                if (isMdxFile)
                 {
                     var sessions = doc.Descendants("PROTOCOL").Descendants("APPLICATION_LAYER").Descendants("SESSIONS_SUPPORTED").Descendants("SESSION")
                     .Select(s => new SessionInfo
@@ -735,10 +735,10 @@ namespace AutosarBCM.Core
             public static SessionInfo CurrentSession { get; set; }
             public static ConfigurationInfo Configuration { get; set; }
 
-            public ASContext(string configFile)
+            public ASContext(string configFile, bool isMdxFile)
             {
                 if (configFile != null)
-                    Configuration = ConfigurationInfo.Parse(configFile);
+                    Configuration = ConfigurationInfo.Parse(configFile, isMdxFile);
             }
         }
         public class EnvironmentalTest

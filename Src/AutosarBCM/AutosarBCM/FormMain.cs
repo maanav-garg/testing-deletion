@@ -181,7 +181,7 @@ namespace AutosarBCM
         private System.Timers.Timer ExtDiagSesTimer;
         public static string fileName;
 
-        internal static bool isMdxFile;
+        internal static bool IsMdxFile;
 
         /// <summary>
         /// Gets the selected test type
@@ -382,10 +382,10 @@ namespace AutosarBCM
             errorLogMessageTimer.Start();
         }
 
-        private void LoadXMLDoc(bool isMdxFile)
+        private void LoadXMLDoc()
         {
             var openFileDialog = new OpenFileDialog();
-            if (isMdxFile)
+            if (IsMdxFile)
                 openFileDialog.Filter = "Mdx|*.mdx";
             else
                 openFileDialog.Filter = "Xml|*.xml";
@@ -394,7 +394,7 @@ namespace AutosarBCM
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var filePath = openFileDialog.FileName;
-                if (isMdxFile)
+                if (IsMdxFile)
                 {
                     tsmiEMCView.Enabled = false;
                     environmentalTestTsmi.Enabled = false;
@@ -407,7 +407,7 @@ namespace AutosarBCM
                     tsmiCheck.Enabled = true;
                 }
                 ParseMessages(filePath);
-                ASContext = new ASContext(filePath);
+                ASContext = new ASContext(filePath, IsMdxFile);
                 LoadSessions();
 
                 if (ASContext.Configuration == null)
@@ -419,7 +419,7 @@ namespace AutosarBCM
                 {
                     genericInput.ClearPreviousConfiguration();
                     genericInput.LoadConfiguration(ASContext.Configuration);
-                    formDTCPanel.LoadConfiguration();
+                    formDTCPanel.LoadConfiguration(IsMdxFile);
                     if (tsbSession.Text != "Session: N/A")
                     {
                         genericInput.SessionFiltering();
@@ -626,8 +626,6 @@ namespace AutosarBCM
                 case MonitorTestType.Generic:
                     formMonitorGenericInput.Show(dockMonitor, DockState.Document);
                     formDTCPanel.Show(dockMonitor, DockState.Document);
-                    // visibility settings for generic output tab
-                    //formMonitorGenericOutput.Show(dockMonitor, DockState.Document);
                     break;
                 case MonitorTestType.Environmental:
                     formMonitorEnvInput.Show(dockMonitor, DockState.Document);
@@ -883,8 +881,8 @@ namespace AutosarBCM
         /// <param name="e">The event arguments.</param>
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
-            isMdxFile = false;
-            LoadXMLDoc(isMdxFile);
+            IsMdxFile = false;
+            LoadXMLDoc();
 
             ConnectionUtil.LoadControlDictionary();
         }
@@ -1150,7 +1148,8 @@ namespace AutosarBCM
 
             //// add to recent file list
             //recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
-            LoadXMLDoc(false);
+            IsMdxFile = false;
+            LoadXMLDoc();
             ConnectionUtil.LoadControlDictionary();
         }
 
@@ -1368,8 +1367,8 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void tsmiImpMDX_Click(object sender, EventArgs e)
         {
-            isMdxFile = true;
-            LoadXMLDoc(isMdxFile);
+            IsMdxFile = true;
+            LoadXMLDoc();
         }
 
 

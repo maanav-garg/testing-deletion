@@ -26,12 +26,16 @@ namespace AutosarBCM.Forms.Monitor
             InitializeComponent();
         }
 
-        public void LoadConfiguration()
+        public void LoadConfiguration(bool isMdxFile = false)
         {
             pnlMonitor.SuspendLayout();
             pnlMonitor.Controls.Clear();
+            if (isMdxFile )
+            {
+                pnlMonitor.ResumeLayout();
+                return;
+            }
             ucItems = new List<UCDTCCard>();
-            var counter = 0;
             foreach (var cInfo in ASContext.Configuration.Controls.Where(c=> c.Group == "DID"))
             { 
                 foreach (var pInfo in cInfo.Responses.Where(r => r.ServiceID == 0x62).FirstOrDefault()?.Payloads)
@@ -40,8 +44,6 @@ namespace AutosarBCM.Forms.Monitor
                     ucItems.Add(ucItem);
                     pnlMonitor.Controls.Add(ucItem);
                 }
-                counter++;
-                if (counter == 20) { break; }
             }
             pnlMonitor.ResumeLayout();
         }
