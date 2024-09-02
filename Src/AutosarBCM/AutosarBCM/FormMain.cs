@@ -1343,6 +1343,8 @@ namespace AutosarBCM
         }
         internal void UpdateSessionLabel()
         {
+            if (ASContext.CurrentSession == null)
+                return;
 
             if (tsbSession.GetCurrentParent().InvokeRequired)
                 tsbSession.GetCurrentParent().Invoke(new Action(() => tsbSession.Text = $"Session: {ASContext.CurrentSession.Name}"));

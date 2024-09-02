@@ -677,7 +677,6 @@ namespace AutosarBCM
             this.tsbToggle.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToggle.Name = "tsbToggle";
             this.tsbToggle.Size = new System.Drawing.Size(29, 24);
-            this.tsbToggle.Text = "toolStripButton1";
             this.tsbToggle.Click += new System.EventHandler(this.tsbToggle_Click);
             // 
             // FormMain
