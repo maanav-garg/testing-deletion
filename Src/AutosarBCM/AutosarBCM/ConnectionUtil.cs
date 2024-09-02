@@ -402,7 +402,7 @@ namespace AutosarBCM
                     else
                         transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
                     formMain.AppendTrace($"Message Sent: {BitConverter.ToString(dataBytes)}");
-                    transportProtocol.SendBytes(dataBytes);
+                    transportProtocol.SendBytes(dataBytes, 0);
                 }
                 catch (Exception ex)
                 {
@@ -756,7 +756,7 @@ namespace AutosarBCM
         /// <param name="hardware">The device to which a connection is being established.</param>
         private void InitHardware(IHardware hardware)
         {
-            hardware.Connect();
+            hardware.Connect(false);
         }
 
         /// <summary>
