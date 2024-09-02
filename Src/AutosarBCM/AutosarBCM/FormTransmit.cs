@@ -16,25 +16,14 @@ namespace AutosarBCM{
         #region Variables
 
         /// <summary>
-        /// The identifier for the CAN message.
-        /// </summary>
-        public uint CanId = 0;
-
-        /// <summary>
         /// Binding list for storing and managing CanMessage objects.
         /// </summary>
         private BindingList<CanMessage> bindingList = new BindingList<CanMessage>();
-
 
         /// <summary>
         /// The current filter text used to filter the data in the DataGridView. 
         /// </summary>
         private string currentFilter = "";
-
-        /// <summary>
-        /// Gets a list of CAN messages from the binding list.
-        /// </summary>
-        public List<CanMessage> Messages { get => bindingList.ToList(); }
 
         #endregion
 
@@ -51,16 +40,6 @@ namespace AutosarBCM{
         #endregion
 
         #region Public Methods
-
-        /// <summary>
-        /// Import selected messages to grid
-        /// </summary>
-        /// <param name="messages">List of can messages</param>
-        internal void ImportMessages(List<CanMessage> messages)
-        {
-            bindingList.Clear();
-            messages.ForEach(x => bindingList.Add(x));
-        }
 
         #endregion
 
@@ -140,8 +119,6 @@ namespace AutosarBCM{
         {
             TransmitMessage();
         }
-
-
 
         /// <summary>
         /// Opens New message window
@@ -288,7 +265,6 @@ namespace AutosarBCM{
         /// <param name="e">Provides data for the EventArgs.</param>
         private void tsbCsvTemplate_Click(object sender, EventArgs e)
         {
-            //Helper.ExportToCSV(dgvMessages);
             CsvHelper.DownloadCsvFile(TransmitProtocol.Can, bindingList);
         }
 

@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AutosarBCM.Core.Config;
-using AutosarBCM.UserControls.Monitor;
-using AutosarBCM;
 using AutosarBCM.Core;
 using System.Threading;
-using System.Web.UI;
 using AutosarBCM.Properties;
 
 namespace AutosarBCM

@@ -13,6 +13,7 @@ namespace AutosarBCM.Forms.Monitor
     public partial class FormEnvironmentalTest : Form, IPeriodicTest, IWriteByIdenReceiver, IIOControlByIdenReceiver, IDTCReceiver, IReadDataByIdenReceiver
     {
         #region Variables
+
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
         internal List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
         private Dictionary<string, ControlInfo> dtcList = new Dictionary<string, ControlInfo>();
@@ -37,6 +38,7 @@ namespace AutosarBCM.Forms.Monitor
 
         int timeSec, timeMin, timeHour;
         bool isActive;
+
         #endregion
 
         #region Constructor
@@ -204,7 +206,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else //Start Test
             {
-                FormMain.MonitorTestTypeClone = MonitorTestType.Environmental;
+                FormMain.MonitorTestType = MonitorTestType.Environmental;
                 cancellationTokenSource = new CancellationTokenSource();
                 Task.Run(async () =>
                 {
@@ -469,7 +471,7 @@ namespace AutosarBCM.Forms.Monitor
             var currentTime = DateTime.Now;
             var timeout = TimeSpan.FromSeconds(2);
 
-            var messagesToRemove = new List<Config.SentMessage>(); // Collect keys to remove
+            var messagesToRemove = new List<Config.SentMessage>();
 
             foreach (var message in sentMessagesList.ToList())
             {
@@ -710,7 +712,5 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

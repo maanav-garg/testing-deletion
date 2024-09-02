@@ -2,12 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.Serialization;
-using AutosarBCM.UserControls.Monitor;
-using System.Threading.Tasks;
 using AutosarBCM.Core.Config;
-using System.Collections;
-using AutosarBCM.Config;
 
 namespace AutosarBCM.Core
 {
@@ -112,7 +107,6 @@ namespace AutosarBCM.Core
             
         }
 
-
         public void Switch(List<string> payloads, bool isOpen)
         {
             Switch(payloads.ToDictionary(x => x, x => isOpen));
@@ -148,14 +142,13 @@ namespace AutosarBCM.Core
                         bytes.Add(0x0);
                     }
                 }
-                else //Payload match
+                else
                 {
                     controlByte |= (byte)(1 << (7 - bitIndex));
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;
 
-                    //Check if control has enum
                     if (resultPayload.Values?.Count > 0)
                     {
                         var data = new List<byte>();
@@ -178,7 +171,6 @@ namespace AutosarBCM.Core
                             else
                                 pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyCloseValue).Reverse().ToArray();
 
-                            //Array.Reverse(pwmBytes);
                             bytes.AddRange(pwmBytes);
                         }
                         else
@@ -400,7 +392,6 @@ namespace AutosarBCM.Core
                     Description = t.Value,
                 })
                 .ToList();
-
 
             #region Environmental Test
 
