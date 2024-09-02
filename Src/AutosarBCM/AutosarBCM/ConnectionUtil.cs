@@ -55,6 +55,7 @@ namespace AutosarBCM
         private ushort address;
         private byte session;
         private Dictionary<ushort, string> controlDict = new Dictionary<ushort, string>();
+        private int channelId = 0;
 
         #endregion
 
@@ -80,7 +81,7 @@ namespace AutosarBCM
             try
             {
                 InitHardware(hardware);
-
+                channelId = 0;
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
 
                 formMain.txtTrace.ForeColor = Color.Blue;
@@ -103,6 +104,7 @@ namespace AutosarBCM
                     else if (canHardware is IntrepidCsCan && canHardware.NetworkID != null)
                     {
                         canHardware.NetworkID = canHardware.NetworkID;
+                        channelId = (int)canHardware.NetworkID;
                     }
                     else if (canHardware is KvaserCan && canHardware.BitRate > 0)
                     {
@@ -403,7 +405,7 @@ namespace AutosarBCM
                         transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
                     if (Settings.Default.DebugLogging)
                         formMain.AppendTrace($"Message Sent: {BitConverter.ToString(dataBytes)}");
-                    transportProtocol.SendBytes(dataBytes);
+                    transportProtocol.SendBytes(dataBytes, 0);
                 }
                 catch (Exception ex)
                 {
