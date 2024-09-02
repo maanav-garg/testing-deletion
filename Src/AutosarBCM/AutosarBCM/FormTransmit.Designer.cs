@@ -41,6 +41,7 @@
             this.txtFilter = new System.Windows.Forms.ToolStripTextBox();
             this.tsbImportData = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveData = new System.Windows.Forms.ToolStripButton();
+            this.tsbStopPeriodicMessage = new System.Windows.Forms.ToolStripButton();
             this.dgvMessages = new System.Windows.Forms.DataGridView();
             this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.messageID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -78,10 +79,11 @@
             this.toolStripLabel1,
             this.txtFilter,
             this.tsbImportData,
-            this.tsbSaveData});
+            this.tsbSaveData,
+            this.tsbStopPeriodicMessage});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1408, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(1408, 27);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -89,7 +91,7 @@
             // 
             this.tsbNewMsg.Image = global::AutosarBCM.Properties.Resources.add_icon_2688193755;
             this.tsbNewMsg.Name = "tsbNewMsg";
-            this.tsbNewMsg.Size = new System.Drawing.Size(125, 28);
+            this.tsbNewMsg.Size = new System.Drawing.Size(125, 24);
             this.tsbNewMsg.Text = "New Message";
             this.tsbNewMsg.Click += new System.EventHandler(this.tsbNewMsg_Click);
             // 
@@ -98,7 +100,7 @@
             this.tsbTransmit.Image = ((System.Drawing.Image)(resources.GetObject("tsbTransmit.Image")));
             this.tsbTransmit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbTransmit.Name = "tsbTransmit";
-            this.tsbTransmit.Size = new System.Drawing.Size(89, 28);
+            this.tsbTransmit.Size = new System.Drawing.Size(89, 24);
             this.tsbTransmit.Text = "Transmit";
             this.tsbTransmit.Click += new System.EventHandler(this.tsbTransmit_Click);
             // 
@@ -107,7 +109,7 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(125, 28);
+            this.toolStripButton1.Size = new System.Drawing.Size(125, 24);
             this.toolStripButton1.Text = "Reset Counter";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
@@ -130,21 +132,21 @@
             this.tsbMultiTransmit.Image = global::AutosarBCM.Properties.Resources.msg_28364812;
             this.tsbMultiTransmit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbMultiTransmit.Name = "tsbMultiTransmit";
-            this.tsbMultiTransmit.Size = new System.Drawing.Size(135, 28);
+            this.tsbMultiTransmit.Size = new System.Drawing.Size(135, 24);
             this.tsbMultiTransmit.Text = "Multi Messages";
             this.tsbMultiTransmit.Click += new System.EventHandler(this.tsbMultiTransmit_Click);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(69, 28);
+            this.toolStripLabel1.Size = new System.Drawing.Size(69, 24);
             this.toolStripLabel1.Text = "Filter by: ";
             // 
             // txtFilter
             // 
             this.txtFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(232, 31);
+            this.txtFilter.Size = new System.Drawing.Size(232, 27);
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
             // 
             // tsbImportData
@@ -152,7 +154,7 @@
             this.tsbImportData.Image = global::AutosarBCM.Properties.Resources.ImportOrLoad_8600_24;
             this.tsbImportData.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImportData.Name = "tsbImportData";
-            this.tsbImportData.Size = new System.Drawing.Size(114, 28);
+            this.tsbImportData.Size = new System.Drawing.Size(114, 24);
             this.tsbImportData.Text = "Import Data";
             this.tsbImportData.Click += new System.EventHandler(this.tsbImportData_Click);
             // 
@@ -161,9 +163,18 @@
             this.tsbSaveData.Image = global::AutosarBCM.Properties.Resources.save_16xLG;
             this.tsbSaveData.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSaveData.Name = "tsbSaveData";
-            this.tsbSaveData.Size = new System.Drawing.Size(100, 28);
+            this.tsbSaveData.Size = new System.Drawing.Size(100, 24);
             this.tsbSaveData.Text = "Save Data";
             this.tsbSaveData.Click += new System.EventHandler(this.tsbCsvTemplate_Click);
+            // 
+            // tsbStopPeriodicMessage
+            // 
+            this.tsbStopPeriodicMessage.Image = global::AutosarBCM.Properties.Resources.delete_icon_12_795858790;
+            this.tsbStopPeriodicMessage.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbStopPeriodicMessage.Name = "tsbStopPeriodicMessage";
+            this.tsbStopPeriodicMessage.Size = new System.Drawing.Size(189, 24);
+            this.tsbStopPeriodicMessage.Text = "Stop Periodic Messages";
+            this.tsbStopPeriodicMessage.Click += new System.EventHandler(this.stopPeriodicMessageBtn_Click);
             // 
             // dgvMessages
             // 
@@ -186,14 +197,14 @@
             this.trigger});
             this.dgvMessages.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMessages.Location = new System.Drawing.Point(39, 31);
+            this.dgvMessages.Location = new System.Drawing.Point(39, 27);
             this.dgvMessages.Margin = new System.Windows.Forms.Padding(9, 7, 9, 7);
             this.dgvMessages.MultiSelect = false;
             this.dgvMessages.Name = "dgvMessages";
             this.dgvMessages.RowHeadersVisible = false;
             this.dgvMessages.RowHeadersWidth = 51;
             this.dgvMessages.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMessages.Size = new System.Drawing.Size(1369, 328);
+            this.dgvMessages.Size = new System.Drawing.Size(1369, 332);
             this.dgvMessages.TabIndex = 54;
             this.dgvMessages.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMessages_CellDoubleClick);
             this.dgvMessages.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvMessages_CellMouseDown);
@@ -314,10 +325,10 @@
             this.pnlMovementBtn.Controls.Add(this.btnUp);
             this.pnlMovementBtn.Controls.Add(this.btnDown);
             this.pnlMovementBtn.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlMovementBtn.Location = new System.Drawing.Point(0, 31);
+            this.pnlMovementBtn.Location = new System.Drawing.Point(0, 27);
             this.pnlMovementBtn.Margin = new System.Windows.Forms.Padding(4);
             this.pnlMovementBtn.Name = "pnlMovementBtn";
-            this.pnlMovementBtn.Size = new System.Drawing.Size(39, 328);
+            this.pnlMovementBtn.Size = new System.Drawing.Size(39, 332);
             this.pnlMovementBtn.TabIndex = 59;
             // 
             // btnUp
@@ -401,5 +412,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cycleCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn count;
         private System.Windows.Forms.DataGridViewTextBoxColumn trigger;
+        public System.Windows.Forms.ToolStripButton tsbStopPeriodicMessage;
     }
 }
