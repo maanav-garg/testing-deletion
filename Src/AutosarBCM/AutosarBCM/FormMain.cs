@@ -749,7 +749,6 @@ namespace AutosarBCM
                         Helper.ShowWarningMessageBox("Please, load the configuration file first.");
                         return;
                     }
-                    MonitorTestTypeClone = MonitorTestType;
                     if (MonitorTestType == MonitorTestType.Environmental)
                         logFileName = DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss_");
                     cancellationTokenSource = new CancellationTokenSource();

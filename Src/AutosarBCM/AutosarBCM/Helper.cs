@@ -458,7 +458,7 @@ namespace AutosarBCM
         /// <param name="data">Additional data related to the error.</param>
         public static void WriteErrorMessageToLogFile(string itemName, string itemType, string operation, string comment = "", string escapeChars = "", string data = "", string cycleId = "", string loopId = "")
         {
-            if (FormMain.IsTestRunning && FormMain.MonitorTestTypeClone == MonitorTestType.Environmental)
+            if (FormMain.IsTestRunning && FormMain.MonitorTestType == MonitorTestType.Environmental)
             {
                 if (String.IsNullOrEmpty(comment))
                     ((FormMain)Application.OpenForms[Constants.Form_Main]).LogErrorMessageQueue.Enqueue($"{escapeChars}{DateTime.Now.ToString("HH:mm:ss.fff\t")} [{cycleId}-{loopId}];{itemName};{itemType};{operation};{data};{escapeChars}");
