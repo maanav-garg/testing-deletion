@@ -81,7 +81,6 @@ namespace AutosarBCM
             try
             {
                 InitHardware(hardware);
-                channelId = 0;
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
 
                 formMain.txtTrace.ForeColor = Color.Blue;
@@ -100,10 +99,6 @@ namespace AutosarBCM
                     if (canHardware is IntrepidCsCan && (canHardware.BitRate > 0))
                     {
                         canHardware.SetBitRate((int)canHardware.BitRate, (int)canHardware.NetworkID);
-                    }
-                    else if (canHardware is IntrepidCsCan && canHardware.NetworkID != null)
-                    {
-                        canHardware.NetworkID = canHardware.NetworkID;
                         channelId = (byte)canHardware.NetworkID;
                     }
                     else if (canHardware is KvaserCan && canHardware.BitRate > 0)
