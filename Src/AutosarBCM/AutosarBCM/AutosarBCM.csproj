@@ -59,7 +59,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Connection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Connection, Version=1.0.1.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dlls\Connection.dll</HintPath>
     </Reference>
