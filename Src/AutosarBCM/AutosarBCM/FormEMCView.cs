@@ -39,6 +39,8 @@ namespace AutosarBCM
         private Dictionary<string, string> payloadValueList = new Dictionary<string, string>();
 
         List<DataGridViewRow> excelData = new List<DataGridViewRow>();
+        private List<UCEmcReadOnlyItem> ucItems = new List<UCEmcReadOnlyItem>();
+        private SortedDictionary<string, List<UCEmcReadOnlyItem>> groups = new SortedDictionary<string, List<UCEmcReadOnlyItem>>();
 
         private int emcDataLimit;
 
@@ -59,11 +61,59 @@ namespace AutosarBCM
                 return;
             }
             InitializeLists();
+            InitializeCards();
         }
+
+
 
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// Create cards
+        /// </summary>
+        private void InitializeCards()
+        {
+            //TODO XML EMC layouttan çekilecek
+            foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
+            {
+                foreach (var payload in ctrl.Responses[0].Payloads)
+                {
+                    var ucItem = new UCEmcReadOnlyItem(ctrl, payload);
+                    ucItems.Add(ucItem);
+
+                    if (string.IsNullOrEmpty(payload.DTCCode))
+                        continue;
+                    dtcList[payload.DTCCode] = ctrl;
+                }
+                groups["DID"] = ucItems;
+            }
+
+            foreach (var group in groups)
+            {
+                var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
+
+                flowPanelGroup.Paint += pnlMonitorInput_Paint;
+
+                foreach (var ucItem in group.Value)
+                {
+                    flowPanelGroup.Controls.Add(ucItem);
+                }
+
+                pnlCardLayout.Controls.Add(flowPanelGroup);
+            }
+        }
+
+        /// <summary>
+        /// Changing border color of the flowpanel groups
+        /// </summary>
+        /// <param name="sender">Flowlayoutpanel to be painted.</param>
+        /// <param name="e">PaintEventArgs of the sender.</param>
+        private void pnlMonitorInput_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, ((FlowLayoutPanel)sender).ClientRectangle, Color.LightGray, ButtonBorderStyle.Solid);
+        }
 
         /// <summary>
         /// Initializes the data structures
