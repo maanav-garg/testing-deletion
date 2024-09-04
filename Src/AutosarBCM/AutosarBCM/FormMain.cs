@@ -589,6 +589,8 @@ namespace AutosarBCM
             };
             recentToolFileHelper.Init(Properties.Settings.Default.RecentToolFiles);
             this.WindowState = FormWindowState.Maximized;
+
+            ShowMonitorPanel(MonitorTestType.Generic);
             #endregion
         }
 
@@ -749,6 +751,7 @@ namespace AutosarBCM
                         Helper.ShowWarningMessageBox("Please, load the configuration file first.");
                         return;
                     }
+                    MonitorTestType = MonitorTestType;
                     if (MonitorTestType == MonitorTestType.Environmental)
                         logFileName = DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss_");
                     cancellationTokenSource = new CancellationTokenSource();

@@ -86,10 +86,10 @@ namespace AutosarBCM.Common
                     serialHardware.ReadTimeout = (int)numReadTimeout.Value;
                     serialHardware.WriteTimeout = (int)numWriteTimeout.Value;
                 }
-                else if(cmbDevices.SelectedItem is IntrepidCsCan intrepidCsCan)
+                else if (cmbDevices.SelectedItem is IntrepidCsCan intrepidCsCan)
                 {
                     intrepidCsCan.BitRate = Convert.ToUInt32(string.IsNullOrWhiteSpace(grpIntrepidCanProperties_cmbBitRate.Text) ? "0" : grpIntrepidCanProperties_cmbBitRate.Text);
-                    intrepidCsCan.NetworkID = string.IsNullOrWhiteSpace(grpIntrepidCanProperties_cmbNetworkId.Text) ? (uint)CSnet.eNETWORK_ID.NETID_DEVICE : Convert.ToUInt32(Enum.Parse(typeof(CSnet.eNETWORK_ID), grpIntrepidCanProperties_cmbNetworkId.Text));
+                    intrepidCsCan.NetworkID = string.IsNullOrWhiteSpace(grpIntrepidCanProperties_cmbNetworkId.Text) ? (uint)CSnet.eNETWORK_ID.NETID_DEVICE : Convert.ToByte(Enum.Parse(typeof(CSnet.eNETWORK_ID), grpIntrepidCanProperties_cmbNetworkId.Text));
                 }
                 else if (cmbDevices.SelectedItem is KvaserCan kvaserCan)
                 {

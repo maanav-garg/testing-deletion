@@ -15,7 +15,7 @@ namespace AutosarBCM.Forms.Monitor
     /// <summary>
     /// Implements the FormMonitorGenericInput form.
     /// </summary>
-    public partial class FormMonitorGenericInput : DockContent, IReadDataByIdenReceiver
+    public partial class FormMonitorGenericInput : DockContent, IPeriodicTest, IReadDataByIdenReceiver
     {
         #region Variables
 
@@ -335,6 +335,11 @@ namespace AutosarBCM.Forms.Monitor
         internal void ToggleSidebar()
         {
             splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+        }
+
+        public bool ChangeStatus(byte[] receivedData, MessageDirection messageDirection)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
