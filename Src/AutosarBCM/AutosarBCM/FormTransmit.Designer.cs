@@ -41,6 +41,7 @@
             this.txtFilter = new System.Windows.Forms.ToolStripTextBox();
             this.tsbImportData = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveData = new System.Windows.Forms.ToolStripButton();
+            this.tsbStopPeriodicMessage = new System.Windows.Forms.ToolStripButton();
             this.dgvMessages = new System.Windows.Forms.DataGridView();
             this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.messageID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -78,7 +79,8 @@
             this.toolStripLabel1,
             this.txtFilter,
             this.tsbImportData,
-            this.tsbSaveData});
+            this.tsbSaveData,
+            this.tsbStopPeriodicMessage});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1056, 27);
@@ -165,6 +167,15 @@
             this.tsbSaveData.Size = new System.Drawing.Size(82, 24);
             this.tsbSaveData.Text = "Save Data";
             this.tsbSaveData.Click += new System.EventHandler(this.tsbCsvTemplate_Click);
+            // 
+            // tsbStopPeriodicMessage
+            // 
+            this.tsbStopPeriodicMessage.Image = global::AutosarBCM.Properties.Resources.delete_icon_12_795858790;
+            this.tsbStopPeriodicMessage.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbStopPeriodicMessage.Name = "tsbStopPeriodicMessage";
+            this.tsbStopPeriodicMessage.Size = new System.Drawing.Size(189, 24);
+            this.tsbStopPeriodicMessage.Text = "Stop Periodic Messages";
+            this.tsbStopPeriodicMessage.Click += new System.EventHandler(this.stopPeriodicMessageBtn_Click);
             // 
             // dgvMessages
             // 
@@ -398,5 +409,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cycleCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn count;
         private System.Windows.Forms.DataGridViewTextBoxColumn trigger;
+        public System.Windows.Forms.ToolStripButton tsbStopPeriodicMessage;
     }
 }

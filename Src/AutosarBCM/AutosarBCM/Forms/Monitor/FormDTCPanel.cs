@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WeifenLuo.WinFormsUI.Docking;
+using System.Diagnostics;
 
 namespace AutosarBCM.Forms.Monitor
 {
@@ -16,20 +17,25 @@ namespace AutosarBCM.Forms.Monitor
             InitializeComponent();
         }
 
-        public void LoadConfiguration()
+        public void LoadConfiguration(bool isMdxFile = false)
         {
             pnlMonitor.SuspendLayout();
             pnlMonitor.Controls.Clear();
+            if (isMdxFile )
+            {
+                pnlMonitor.ResumeLayout();
+                return;
+            }
             ucItems = new List<UCDTCCard>();
-
             foreach (var cInfo in ASContext.Configuration.Controls.Where(c=> c.Group == "DID"))
+            { 
                 foreach (var pInfo in cInfo.Responses.Where(r => r.ServiceID == 0x62).FirstOrDefault()?.Payloads)
                 {
                     var ucItem = new UCDTCCard(cInfo, pInfo);
                     ucItems.Add(ucItem);
                     pnlMonitor.Controls.Add(ucItem);
                 }
-
+            }
             pnlMonitor.ResumeLayout();
         }
 

@@ -152,6 +152,8 @@ namespace AutosarBCM
         private System.Timers.Timer ExtDiagSesTimer;
         public static string fileName;
 
+        internal static bool IsMdxFile;
+
         /// <summary>
         /// Overrides the creation parameters of the control to improve rendering performance.
         /// </summary>
@@ -284,17 +286,33 @@ namespace AutosarBCM
 
             errorLogMessageTimer.Start();
         }
+
         private void LoadXMLDoc()
         {
             var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Xml|*.xml";
+            if (IsMdxFile)
+                openFileDialog.Filter = "Mdx|*.mdx";
+            else
+                openFileDialog.Filter = "Xml|*.xml";
             openFileDialog.Multiselect = false;
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var filePath = openFileDialog.FileName;
+                if (IsMdxFile)
+                {
+                    tsmiEMCView.Enabled = false;
+                    environmentalTestTsmi.Enabled = false;
+                    tsmiCheck.Enabled = false;
+                }
+                else
+                {
+                    tsmiEMCView.Enabled = true;
+                    environmentalTestTsmi.Enabled = true;
+                    tsmiCheck.Enabled = true;
+                }
                 ParseMessages(filePath);
-                ASContext = new ASContext(filePath);
+                ASContext = new ASContext(filePath, IsMdxFile);
                 LoadSessions();
 
                 if (ASContext.Configuration == null)
@@ -306,7 +324,7 @@ namespace AutosarBCM
                 {
                     genericInput.ClearPreviousConfiguration();
                     genericInput.LoadConfiguration(ASContext.Configuration);
-                    formDTCPanel.LoadConfiguration();
+                    formDTCPanel.LoadConfiguration(IsMdxFile);
                     if (tsbSession.Text != "Session: N/A")
                     {
                         genericInput.SessionFiltering();
@@ -722,6 +740,7 @@ namespace AutosarBCM
         /// <param name="e">The event arguments.</param>
         private void tsbMonitorLoad_Click(object sender, EventArgs e)
         {
+            IsMdxFile = false;
             LoadXMLDoc();
 
             ConnectionUtil.LoadControlDictionary();
@@ -915,6 +934,7 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void openTsmi_Click(object sender, EventArgs e)
         {
+            IsMdxFile = false;
             LoadXMLDoc();
             ConnectionUtil.LoadControlDictionary();
         }
@@ -1045,8 +1065,23 @@ namespace AutosarBCM
                     formEMCView.BringToFront();
             }
         }
+
+        /// <summary>
+        /// Imports MDX file as config file.
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">argument</param>
+        private void tsmiImpMDX_Click(object sender, EventArgs e)
+        {
+            IsMdxFile = true;
+            LoadXMLDoc();
+        }
+
+
         internal void UpdateSessionLabel()
         {
+            if (ASContext.CurrentSession == null)
+                return;
 
             if (tsbSession.GetCurrentParent().InvokeRequired)
                 tsbSession.GetCurrentParent().Invoke(new Action(() => tsbSession.Text = $"Session: {ASContext.CurrentSession.Name}"));

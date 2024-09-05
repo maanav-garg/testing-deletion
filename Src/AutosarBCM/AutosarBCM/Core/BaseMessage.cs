@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Xml.Serialization;
 
 namespace AutosarBCM.Core
@@ -128,6 +129,11 @@ namespace AutosarBCM.Core
         /// Gets or sets the list of sub-messages when the message is a multi-messages type.
         /// </summary>
         public List<BaseMessage> SubMessages { get; set; }
+
+        /// <summary>
+        /// Used to stop the process when a cancellation request is sent during the transmission.
+        /// </summary>
+        private CancellationTokenSource _cancellationTokenSource;
 
         #endregion
 
@@ -288,10 +294,28 @@ namespace AutosarBCM.Core
             int millisecondsDelay = DelayTime != 0 ? DelayTime : 10;
 
             if (Trigger == periodic)
+            {
+                _cancellationTokenSource = new CancellationTokenSource();
                 for (var i = 0; i < CycleCount; i++)
+                {
+                    if (_cancellationTokenSource.Token.IsCancellationRequested)
+                        break;
+
                     TransmitInternal(CycleTime);
+                }
+            }
             else
                 TransmitInternal(millisecondsDelay);
+        }
+        /// <summary>
+        /// Allows to transmitted messages if trigger is periodic.
+        /// </summary>
+        public void StopPeriodicMessage()
+        {
+            if (Trigger == periodic && _cancellationTokenSource != null)
+            {
+                _cancellationTokenSource.Cancel();
+            }
         }
 
         /// <summary>

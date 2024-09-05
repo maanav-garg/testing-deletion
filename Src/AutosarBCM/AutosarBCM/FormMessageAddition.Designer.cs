@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Windows.Forms;
 
 namespace AutosarBCM
 {
@@ -242,6 +243,7 @@ namespace AutosarBCM
             this.cbTrigger.Name = "cbTrigger";
             this.cbTrigger.Size = new System.Drawing.Size(63, 21);
             this.cbTrigger.TabIndex = 80;
+            this.cbTrigger.DropDownStyle = ComboBoxStyle.DropDownList;
             this.cbTrigger.Text = "Manual";
             this.cbTrigger.SelectedIndexChanged += new System.EventHandler(this.cbTrigger_SelectedIndexChanged);
             // 

@@ -60,6 +60,7 @@ namespace AutosarBCM
             this.openTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.recentFilesTsmi = new System.Windows.Forms.ToolStripMenuItem();
+            this.importMDXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -107,6 +108,7 @@ namespace AutosarBCM
             this.environmentalTestTsmi});
             this.toolsTsmi.Name = "toolsTsmi";
             this.toolsTsmi.Size = new System.Drawing.Size(46, 20);
+            this.toolsTsmi.Size = new System.Drawing.Size(46, 20);
             this.toolsTsmi.Text = "Tools";
             // 
             // optionsTsmi
@@ -119,6 +121,7 @@ namespace AutosarBCM
             // 
             // transmitTsmi
             // 
+            this.transmitTsmi.Image = global::AutosarBCM.Properties.Resources.ArrowUp;
             this.transmitTsmi.Name = "transmitTsmi";
             this.transmitTsmi.Size = new System.Drawing.Size(174, 22);
             this.transmitTsmi.Text = "Transmit";
@@ -170,11 +173,13 @@ namespace AutosarBCM
             this.aboutTsmi});
             this.helpTsmi.Name = "helpTsmi";
             this.helpTsmi.Size = new System.Drawing.Size(44, 20);
+            this.helpTsmi.Size = new System.Drawing.Size(44, 20);
             this.helpTsmi.Text = "Help";
             // 
             // userGuideTsmi
             // 
             this.userGuideTsmi.Name = "userGuideTsmi";
+            this.userGuideTsmi.Size = new System.Drawing.Size(131, 22);
             this.userGuideTsmi.Size = new System.Drawing.Size(131, 22);
             this.userGuideTsmi.Text = "User Guide";
             this.userGuideTsmi.Click += new System.EventHandler(this.userGuideTsmi_Click);
@@ -182,6 +187,7 @@ namespace AutosarBCM
             // aboutTsmi
             // 
             this.aboutTsmi.Name = "aboutTsmi";
+            this.aboutTsmi.Size = new System.Drawing.Size(131, 22);
             this.aboutTsmi.Size = new System.Drawing.Size(131, 22);
             this.aboutTsmi.Text = "About";
             this.aboutTsmi.Click += new System.EventHandler(this.aboutTsmi_Click);
@@ -201,8 +207,10 @@ namespace AutosarBCM
             this.tslTransmitted,
             this.tslDiff});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip1.Size = new System.Drawing.Size(1417, 27);
             this.toolStrip1.Size = new System.Drawing.Size(1417, 27);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
@@ -212,6 +220,7 @@ namespace AutosarBCM
             this.openConnection.Image = ((System.Drawing.Image)(resources.GetObject("openConnection.Image")));
             this.openConnection.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openConnection.Name = "openConnection";
+            this.openConnection.Size = new System.Drawing.Size(120, 24);
             this.openConnection.Size = new System.Drawing.Size(120, 24);
             this.openConnection.Text = "Start Connection";
             this.openConnection.ToolTipText = "Start Connection (CTRL+C)";
@@ -229,6 +238,7 @@ namespace AutosarBCM
             this.lblConnection.ForeColor = System.Drawing.Color.Red;
             this.lblConnection.Name = "lblConnection";
             this.lblConnection.Size = new System.Drawing.Size(46, 24);
+            this.lblConnection.Size = new System.Drawing.Size(46, 24);
             this.lblConnection.Text = "Offline";
             // 
             // toolStripSeparator8
@@ -242,6 +252,7 @@ namespace AutosarBCM
             this.tsbOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpen.Image")));
             this.tsbOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOpen.Name = "tsbOpen";
+            this.tsbOpen.Size = new System.Drawing.Size(24, 24);
             this.tsbOpen.Size = new System.Drawing.Size(24, 24);
             this.tsbOpen.Text = "Open... (Ctrl+O)";
             this.tsbOpen.Click += new System.EventHandler(this.openTsmi_Click);
@@ -258,6 +269,7 @@ namespace AutosarBCM
             this.tsbOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOptions.Name = "tsbOptions";
             this.tsbOptions.Size = new System.Drawing.Size(24, 24);
+            this.tsbOptions.Size = new System.Drawing.Size(24, 24);
             this.tsbOptions.Text = "Options";
             this.tsbOptions.Click += new System.EventHandler(this.optionsTsmi_Click);
             // 
@@ -271,6 +283,7 @@ namespace AutosarBCM
             this.tslReceived.Name = "tslReceived";
             this.tslReceived.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.tslReceived.Size = new System.Drawing.Size(31, 24);
+            this.tslReceived.Size = new System.Drawing.Size(31, 24);
             this.tslReceived.Text = "0";
             // 
             // tslTransmitted
@@ -281,6 +294,7 @@ namespace AutosarBCM
             this.tslTransmitted.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tslTransmitted.Margin = new System.Windows.Forms.Padding(0, 1, 5, 2);
             this.tslTransmitted.Name = "tslTransmitted";
+            this.tslTransmitted.Size = new System.Drawing.Size(31, 24);
             this.tslTransmitted.Size = new System.Drawing.Size(31, 24);
             this.tslTransmitted.Text = "0";
             this.tslTransmitted.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
@@ -294,6 +308,7 @@ namespace AutosarBCM
             this.tslDiff.ForeColor = System.Drawing.Color.White;
             this.tslDiff.Margin = new System.Windows.Forms.Padding(0, 1, 5, 2);
             this.tslDiff.Name = "tslDiff";
+            this.tslDiff.Size = new System.Drawing.Size(17, 24);
             this.tslDiff.Size = new System.Drawing.Size(17, 24);
             this.tslDiff.Text = "0";
             // 
@@ -326,7 +341,8 @@ namespace AutosarBCM
             this.fileTsmi.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openTsmi,
             this.toolStripSeparator4,
-            this.recentFilesTsmi});
+            this.recentFilesTsmi,
+            this.importMDXToolStripMenuItem});
             this.fileTsmi.Name = "fileTsmi";
             this.fileTsmi.Size = new System.Drawing.Size(37, 20);
             this.fileTsmi.Text = "File";
@@ -350,6 +366,14 @@ namespace AutosarBCM
             this.recentFilesTsmi.Name = "recentFilesTsmi";
             this.recentFilesTsmi.Size = new System.Drawing.Size(155, 22);
             this.recentFilesTsmi.Text = "Recent Files";
+            // 
+            // importMDXToolStripMenuItem
+            // 
+            this.importMDXToolStripMenuItem.Image = global::AutosarBCM.Properties.Resources.gear_load;
+            this.importMDXToolStripMenuItem.Name = "importMDXToolStripMenuItem";
+            this.importMDXToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.importMDXToolStripMenuItem.Text = "Import MDX ";
+            this.importMDXToolStripMenuItem.Click += new System.EventHandler(this.tsmiImpMDX_Click);
             // 
             // imageList1
             // 
@@ -510,6 +534,7 @@ namespace AutosarBCM
             this.btnStart.Margin = new System.Windows.Forms.Padding(5, 1, 10, 2);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(55, 24);
+            this.btnStart.Size = new System.Drawing.Size(55, 24);
             this.btnStart.Text = "Start";
             this.btnStart.Visible = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -560,6 +585,7 @@ namespace AutosarBCM
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(39, 24);
             this.toolStripLabel2.Size = new System.Drawing.Size(39, 24);
             this.toolStripLabel2.Text = "Filter: ";
             // 
@@ -704,6 +730,7 @@ namespace AutosarBCM
         private ToolStripMenuItem tsmiEMCView;
         public ToolStripDropDownButton tsbSession;
         private ToolStripMenuItem transmitTsmi;
+        private ToolStripMenuItem importMDXToolStripMenuItem;
     }
 }
 

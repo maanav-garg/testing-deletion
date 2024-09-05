@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AutosarBCM{
+namespace AutosarBCM
+{
     /// <summary>
     /// Transmit Form class
     /// </summary>
@@ -24,6 +26,17 @@ namespace AutosarBCM{
         /// The current filter text used to filter the data in the DataGridView. 
         /// </summary>
         private string currentFilter = "";
+
+        /// <summary>
+        /// Gets a list of CAN messages from the binding list.
+        /// </summary>
+        public List<CanMessage> Messages { get => bindingList.ToList(); }
+
+
+        /// <summary>
+        /// Determinates whether the transmit operation is currently being performed.
+        /// </summary>
+        private bool isTransmitting = false;
 
         #endregion
 
@@ -55,6 +68,7 @@ namespace AutosarBCM{
         {
             FormMain formMain = new FormMain();
             this.Height = formMain.Height / 2;
+            UpdateStopPeriodicMessageButton();
         }
 
         /// <summary>
@@ -75,11 +89,15 @@ namespace AutosarBCM{
 
             if (baseMessage.CheckForTransmit())
             {
+                isTransmitting = true;
                 tsbTransmit.Enabled = false;
+                UpdateStopPeriodicMessageButton();
                 await Task.Run(() => baseMessage.Transmit());
                 tsbTransmit.Enabled = true;
+                isTransmitting = false;
                 bindingList.ResetBindings();
-                Helper.ApplyFilterAndRestoreSelection(dgvMessages,currentFilter);
+                Helper.ApplyFilterAndRestoreSelection(dgvMessages, currentFilter);
+                UpdateStopPeriodicMessageButton();
             }
             else
             {
@@ -214,7 +232,6 @@ namespace AutosarBCM{
         {
             if (dgvMessages.CurrentRow == null)
                 return;
-
             dgvMessages.Rows.Remove(dgvMessages.CurrentRow);
         }
 
@@ -309,9 +326,48 @@ namespace AutosarBCM{
 
             dgvMessages.ClearSelection();
             dgvMessages.CurrentCell = dgvMessages.Rows[newIndex].Cells[0];
-
             Helper.ApplyFilterAndRestoreSelection(dgvMessages, currentFilter);
         }
         #endregion
+
+        /// <summary>
+        /// Handles click event of the Stop Periodic Messages button.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Provides data for the EventArgs.</param>
+        private void stopPeriodicMessageBtn_Click(object sender, EventArgs e)
+        {
+            var baseMessage = dgvMessages.CurrentRow?.DataBoundItem as BaseMessage;
+            if (baseMessage != null)
+            {
+                baseMessage.StopPeriodicMessage();
+            }
+
+            UpdateStopPeriodicMessageButton();
+        }
+        /// <summary>
+        /// Manages the enabled/disabled states of the Stop Periodic Messages button.
+        /// </summary>
+        private void UpdateStopPeriodicMessageButton()
+        {
+            if (dgvMessages.Rows.Count == 0)
+            {
+                tsbStopPeriodicMessage.Enabled = false;
+                return;
+            }
+
+            var baseMessage = dgvMessages.CurrentRow?.DataBoundItem as BaseMessage;
+
+            if (baseMessage != null && baseMessage.Trigger == "Periodic" && baseMessage.CycleCount > 0)
+            {
+
+                tsbStopPeriodicMessage.Enabled = isTransmitting;
+
+            }
+            else
+            {
+                tsbStopPeriodicMessage.Enabled = false;
+            }
+        }
     }
 }

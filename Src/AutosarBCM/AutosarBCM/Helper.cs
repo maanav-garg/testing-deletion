@@ -572,7 +572,7 @@ namespace AutosarBCM
                 return;
             if (ASContext.Configuration != null)
             {
-                var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session");
+                var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session" || x.Name == "extendedDiagnosticSession");
                 ASContext.CurrentSession = sessionInfo;
                 new DiagnosticSessionControl().Transmit(sessionInfo);
             }
