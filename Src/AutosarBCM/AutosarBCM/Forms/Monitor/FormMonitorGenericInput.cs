@@ -8,11 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Config;
-using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
-using System.Net;
-using AutosarBCM.Properties;
-using System.IO;
 
 namespace AutosarBCM.Forms.Monitor
 {
@@ -22,25 +18,6 @@ namespace AutosarBCM.Forms.Monitor
     public partial class FormMonitorGenericInput : DockContent, IPeriodicTest, IReadDataByIdenReceiver
     {
         #region Variables
-        /// <summary>
-        /// Configuration settings for the monitor.
-        /// </summary>
-        private AutosarBcmConfiguration monitorConfig;
-
-        /// <summary>
-        /// Maps SID codes to response messages.
-        /// </summary>
-        private Dictionary<byte, string> sidResponseMessageDict = Enum.GetValues(typeof(SIDDescription)).Cast<SIDDescription>().ToDictionary(t => (byte)t, t => t.ToString());
-
-        /// <summary>
-        /// Maps NRC codes to response messages.
-        /// </summary>
-        private Dictionary<byte, string> nrcResponseMessageDict = Enum.GetValues(typeof(NRCDescription)).Cast<NRCDescription>().ToDictionary(t => (byte)t, t => t.ToString());
-
-        /// <summary>
-        /// List of read-only input items.
-        /// </summary>
-        private List<InputMonitorItem> inputMonitorItems = new List<InputMonitorItem>();
 
         private List<UCItem> uCItems = new List<UCItem>();
 
@@ -55,23 +32,6 @@ namespace AutosarBCM.Forms.Monitor
         /// Determines whether a test is running or not.
         /// </summary>
         internal static bool IsTestRunning = false;
-
-        /// <summary>
-        /// Maps item types to visibility states for upper, lower, and coefficient labels.
-        /// </summary>
-        private readonly Dictionary<string, (bool Upper, bool Lower, bool Coefficient)> visibilitySettings = new Dictionary<string, (bool, bool, bool)>
-        {
-            { "Digital", (false, false, false) },
-            { "Analog", (true, true, true) },
-            { "Resistive", (true, true, true) },
-            { "Frequency", (true, true, false) }
-        };
-
-        /// <summary>
-        /// Determines how many output test clicked.
-        /// </summary>
-        public static int TestClickCounter { get { return testClickCounter; } set { testClickCounter = value < 0 ? 0 : value; } }
-        public static int testClickCounter = 0;
 
         #endregion
 
@@ -113,7 +73,7 @@ namespace AutosarBCM.Forms.Monitor
                 var ucItem = new UCItem(ctrl);
                 uCItems.Add(ucItem);
                 ucItem.Click += UcItem_Click;
-                //ucItem.Enabled = false;
+                ucItem.Enabled = false;
                 string groupName = ctrl?.Group;
                 if (!string.IsNullOrEmpty(groupName))
                 {
@@ -145,38 +105,6 @@ namespace AutosarBCM.Forms.Monitor
             }
 
             splitContainer1.Panel2Collapsed = false;
-        }
-
-        /// <summary>
-        /// Change the item status
-        /// </summary>
-        /// <param name="receivedData">Data comes from device</param>
-        public bool ChangeStatus(byte[] receivedData, MessageDirection messageDirection)
-        {
-            var response = new GenericResponse(receivedData, monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.InputRegisterGroupOffset, monitorConfig.GenericMonitorConfiguration.InputSection.CommonConfig.InputRegisterGroupLength);
-
-            if (messageDirection == MessageDirection.RX && !CheckResponse(response.SID, receivedData[6]))
-                return true;
-
-            InputMonitorItem item = null;
-
-            if (response.RegisterGroup == (short)Output_ReadGroup.FS26)
-                item = inputMonitorItems.FirstOrDefault(i => i.RegisterGroup == response.RegisterGroup.ToString("x4"));
-            else if (response.RegisterGroup == (short)Set_Group.SET_STATUS)
-                item = inputMonitorItems.FirstOrDefault(i => i.RegisterAddress == response.RegisterAddress.ToString("X2"));
-            else
-                item = inputMonitorItems.FirstOrDefault(i => i.RegisterGroup == response.RegisterGroup.ToString("x4")
-                                                    && i.RegisterAddress == response.RegisterAddress.ToString("X2"));
-
-            if (item == null)
-                return false;
-
-            var uc = FindUIControl(item.Name, item.RegisterAddress);
-            if (uc == null)
-                return false;
-
-            //((UCItem)uc).ChangeStatus(item, response, messageDirection);
-            return true;
         }
 
         /// <summary>
@@ -319,7 +247,6 @@ namespace AutosarBCM.Forms.Monitor
             if (IsTestRunning)
             {
                 cancellationTokenSource.Cancel();
-                TestClickCounter = 0;
             }
             else
             {
@@ -345,32 +272,6 @@ namespace AutosarBCM.Forms.Monitor
             }
         }
 
-
-        /// <summary>
-        /// Checks and formats a response based on SID and NRC values.
-        /// </summary>
-        /// <param name="SID">The Service Identifier.</param>
-        /// <param name="NRC">The Negative Response Code.</param>
-        /// <returns>Returns true if the response is valid, otherwise false.</returns>
-        private bool CheckResponse(byte SID, byte NRC)
-        {
-            var response = string.Empty;
-            if (sidResponseMessageDict.TryGetValue(SID, out string sidResponse))
-            {
-                response += sidResponse + " ";
-
-                if (nrcResponseMessageDict.TryGetValue(NRC, out string nrcResponse))
-                    response += nrcResponse;
-            }
-
-            if (!string.IsNullOrWhiteSpace(response))
-            {
-                Program.MainForm.AppendTrace($"{response}");
-                return false;
-            }
-            return true;
-        }
-
         /// <summary>
         /// Updates the status strip data
         /// </summary>
@@ -380,35 +281,7 @@ namespace AutosarBCM.Forms.Monitor
         {
             var uc = (UCItem)sender;
             uc.Focus();
-            //UpdateLabelVisibility(uc.Item.ItemType);
-
             ucControlByIdentifierItem.UpdateSidebar(uc);
-        }
-
-        /// <summary>
-        /// Sets label visibility based on the item type, defaulting to visible if not specified.
-        /// </summary>
-        /// <param name="itemType">Item type to determine label visibility.</param>
-        private void UpdateLabelVisibility(string itemType)
-        {
-            if (visibilitySettings.TryGetValue(itemType, out var settings))
-            {
-                tsUpperLimitLbl.Visible = settings.Upper;
-                lblUpperLimit.Visible = settings.Upper;
-                tsLowerLimitLbl.Visible = settings.Lower;
-                lblLowerLimit.Visible = settings.Lower;
-                tsCoefficientLbl.Visible = settings.Coefficient;
-                lblCoefficient.Visible = settings.Coefficient;
-            }
-            else
-            {
-                tsUpperLimitLbl.Visible = true;
-                lblUpperLimit.Visible = true;
-                tsLowerLimitLbl.Visible = true;
-                lblLowerLimit.Visible = true;
-                tsCoefficientLbl.Visible = true;
-                lblCoefficient.Visible = true;
-            }
         }
 
         /// <summary>
@@ -447,7 +320,6 @@ namespace AutosarBCM.Forms.Monitor
             return false;
         }
 
-
         /// <summary>
         /// Handle transmitted data.
         /// </summary>
@@ -465,6 +337,11 @@ namespace AutosarBCM.Forms.Monitor
         internal void ToggleSidebar()
         {
             splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+        }
+
+        public bool ChangeStatus(byte[] receivedData, MessageDirection messageDirection)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

@@ -80,15 +80,6 @@ namespace AutosarBCM
                 }
                     
             }
-/*            else if (TransmitProtocol == TransmitProtocol.Uds)
-            {
-                UdsMessage message = new UdsMessage();
-                if (new FormUdsAdd(message).ShowDialog() == DialogResult.Yes)
-                {
-                    BindingList.Add(message);
-                    isDataModified = true;
-                }
-            }*/
         }
 
         /// <summary>
@@ -190,15 +181,6 @@ namespace AutosarBCM
                 }
                     
             }
-          /*  else if (TransmitProtocol == TransmitProtocol.Uds)
-            {
-                if (new FormUdsAdd(dgvMessages.CurrentRow.DataBoundItem as UdsMessage).ShowDialog() == DialogResult.Yes)
-                {
-                    BindingList.ResetBindings();
-                    isDataModified = true;
-                }
-                    
-            }*/
         }
 
         /// <summary>

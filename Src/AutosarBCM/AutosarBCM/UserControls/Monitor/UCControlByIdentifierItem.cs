@@ -1,13 +1,7 @@
 ﻿using AutosarBCM.Core;
-using AutosarBCM.Core.Config;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AutosarBCM.UserControls.Monitor
@@ -37,6 +31,7 @@ namespace AutosarBCM.UserControls.Monitor
         #endregion
 
         #region Public Methods
+
         public void UpdateSidebar(UCItem ucItem)
         {
             pnlControls.Controls.Clear();
