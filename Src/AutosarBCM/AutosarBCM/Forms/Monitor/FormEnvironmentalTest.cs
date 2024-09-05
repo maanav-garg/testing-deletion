@@ -37,6 +37,7 @@ namespace AutosarBCM.Forms.Monitor
 
         int timeSec, timeMin, timeHour;
         bool isActive;
+        public static string configName;
         #endregion
 
         #region Constructor
@@ -185,7 +186,7 @@ namespace AutosarBCM.Forms.Monitor
         private void btnStart_Click(object sender, EventArgs e)
         {
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
-
+            configName = tsbConfigurationSelection.Text;
             if (mainForm.tsbSession.Text != "Session: Extended Diagnostic Session")
             {
                 Helper.ShowWarningMessageBox("Must be in Extended Diagnostic Session.");
