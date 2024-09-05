@@ -11,6 +11,7 @@ using AutosarBCM.Config;
 using System.ComponentModel;
 using AutosarBCM.Core;
 using AutosarBCM.Forms.Monitor;
+using System.Threading;
 
 namespace AutosarBCM
 {
@@ -568,6 +569,8 @@ namespace AutosarBCM
 
         public static void SendExtendedDiagSession()
         {
+
+            FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
             if (!ConnectionUtil.CheckConnection())
                 return;
             if (ASContext.Configuration != null)
@@ -575,12 +578,15 @@ namespace AutosarBCM
                 var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session" || x.Name == "extendedDiagnosticSession");
                 ASContext.CurrentSession = sessionInfo;
                 new DiagnosticSessionControl().Transmit(sessionInfo);
+                mainForm.UpdateSessionLabel();
             }
+
             else
             {
                 return;
             }
-        }
+            }
+        
         public static void SendDefaultSession()
         {
             if (!ConnectionUtil.CheckConnection())
