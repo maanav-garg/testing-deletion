@@ -1,17 +1,8 @@
-﻿using AutosarBCM.Core.Config;
-using AutosarBCM.Core;
+﻿using AutosarBCM.Core;
 using AutosarBCM.UserControls.Monitor;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using System.Diagnostics;
 
@@ -110,7 +101,6 @@ namespace AutosarBCM.Forms.Monitor
         public bool Sent(ushort address)
         {
             return true;
-            //throw new NotImplementedException();
         }
     }
 }

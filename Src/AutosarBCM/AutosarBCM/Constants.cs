@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutosarBCM
+﻿namespace AutosarBCM
 {
     internal class Constants
     {
@@ -58,18 +51,6 @@ namespace AutosarBCM
 
         #endregion
 
-        #region Peps
-
-        internal const string PEPS_Get_RSSI_Measurement = "GET_RSSI_Measurement";
-        internal const string PEPS_Get_Key_List = "Get_Key_List";
-        internal const string PEPS_Immobilizer = "Immobilizer";
-        internal const string PEPS_Temperature_Measurement = "Temperature_Measurement";
-        internal const string PEPS_Read_Keyfob = "Read_Keyfob";
-        internal const string PEPS_Door_Cap_Sensor = "Door_Cap_Sensor";
-        internal const string PEPS = "PEPS";
-
-        #endregion
-
         #region Form Names
 
         internal const string Form_Main = "FormMain";
@@ -83,10 +64,7 @@ namespace AutosarBCM
         internal const string Form_Options = "FormOptions";
         internal const string Form_Message_Addition = "FormMessageAddition";
         internal const string Form_About = "FormAbout";
-        internal const string Form_Monitor_Env_Input = "FormMonitorEnvInput";
-        internal const string Form_Monitor_Env_Output = "FormMonitorEnvOutput";
         internal const string Form_Monitor_Generic_Input = "FormMonitorGenericInput";
-        internal const string Form_Monitor_Generic_Output = "FormMonitorGenericOutput";
         internal const string Form_Environmental_Test = "FormEnvironmentalTest";
         internal const string Form_Control_Checker = "FormControlChecker";
 

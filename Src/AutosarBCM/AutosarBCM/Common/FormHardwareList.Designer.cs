@@ -64,8 +64,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.grpKvaserCanProperties = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.pnlButtonGroup = new System.Windows.Forms.Panel();
             this.grpKvaserCanProperties_cmbBitRate = new System.Windows.Forms.ComboBox();
+            this.pnlButtonGroup = new System.Windows.Forms.Panel();
             this.gbHardware.SuspendLayout();
             this.grpIntrepidCanProperties.SuspendLayout();
             this.grpSerialProperties.SuspendLayout();
@@ -187,6 +187,7 @@
             "NETID_SWCAN",
             "NETID_HSCAN2",
             "NETID_HSCAN3",
+            "NETID_HSCAN4",
             "NETID_LSFTCAN",
             "NETID_LIN",
             "NETID_ISO2",
@@ -195,7 +196,7 @@
             "NETID_FIRE_LIN4",
             "NETID_FIRE_CGI"});
             this.grpIntrepidCanProperties_cmbNetworkId.Location = new System.Drawing.Point(69, 46);
-            this.grpIntrepidCanProperties_cmbNetworkId.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.grpIntrepidCanProperties_cmbNetworkId.Margin = new System.Windows.Forms.Padding(2);
             this.grpIntrepidCanProperties_cmbNetworkId.Name = "grpIntrepidCanProperties_cmbNetworkId";
             this.grpIntrepidCanProperties_cmbNetworkId.Size = new System.Drawing.Size(153, 21);
             this.grpIntrepidCanProperties_cmbNetworkId.TabIndex = 7;
@@ -227,7 +228,7 @@
             "800000",
             "1000000"});
             this.grpIntrepidCanProperties_cmbBitRate.Location = new System.Drawing.Point(69, 20);
-            this.grpIntrepidCanProperties_cmbBitRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.grpIntrepidCanProperties_cmbBitRate.Margin = new System.Windows.Forms.Padding(2);
             this.grpIntrepidCanProperties_cmbBitRate.Name = "grpIntrepidCanProperties_cmbBitRate";
             this.grpIntrepidCanProperties_cmbBitRate.Size = new System.Drawing.Size(153, 21);
             this.grpIntrepidCanProperties_cmbBitRate.TabIndex = 3;
@@ -499,14 +500,6 @@
             this.label6.TabIndex = 2;
             this.label6.Text = "Bit Rate";
             // 
-            // pnlButtonGroup
-            // 
-            this.pnlButtonGroup.Controls.Add(this.btnConnect);
-            this.pnlButtonGroup.Location = new System.Drawing.Point(3, 445);
-            this.pnlButtonGroup.Name = "pnlButtonGroup";
-            this.pnlButtonGroup.Size = new System.Drawing.Size(291, 30);
-            this.pnlButtonGroup.TabIndex = 7;
-            // 
             // grpKvaserCanProperties_cmbBitRate
             // 
             this.grpKvaserCanProperties_cmbBitRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -524,6 +517,14 @@
             this.grpKvaserCanProperties_cmbBitRate.Name = "grpKvaserCanProperties_cmbBitRate";
             this.grpKvaserCanProperties_cmbBitRate.Size = new System.Drawing.Size(153, 21);
             this.grpKvaserCanProperties_cmbBitRate.TabIndex = 3;
+            // 
+            // pnlButtonGroup
+            // 
+            this.pnlButtonGroup.Controls.Add(this.btnConnect);
+            this.pnlButtonGroup.Location = new System.Drawing.Point(3, 445);
+            this.pnlButtonGroup.Name = "pnlButtonGroup";
+            this.pnlButtonGroup.Size = new System.Drawing.Size(291, 30);
+            this.pnlButtonGroup.TabIndex = 7;
             // 
             // FormHardwareList
             // 

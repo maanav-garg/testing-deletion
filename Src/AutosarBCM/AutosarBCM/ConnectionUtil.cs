@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,14 +12,8 @@ using Connection.Hardware.Can;
 using Connection.Hardware.SP;
 using AutosarBCM.Common;
 using AutosarBCM.Properties;
-using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 using Connection.Protocol.Uds;
-using AutosarBCM.Config;
-using System.Collections.Specialized;
-using System.Runtime.InteropServices;
-using System.Net;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace AutosarBCM
 {
@@ -81,7 +74,6 @@ namespace AutosarBCM
             try
             {
                 InitHardware(hardware);
-                channelId = 0;
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
 
                 formMain.txtTrace.ForeColor = Color.Blue;
@@ -93,17 +85,10 @@ namespace AutosarBCM
                 formMain.lblConnection.ForeColor = Color.Green;
                 if (hardware is CanHardware canHardware)
                 {
-                    //canHardware.FrameRead += Hardware_FrameRead;
-                    //canHardware.FrameWritten += Hardware_FrameWritten;
-                    //canHardware.CanError += Hardware_CanError;
 
                     if (canHardware is IntrepidCsCan && (canHardware.BitRate > 0))
                     {
                         canHardware.SetBitRate((int)canHardware.BitRate, (int)canHardware.NetworkID);
-                    }
-                    else if (canHardware is IntrepidCsCan && canHardware.NetworkID != null)
-                    {
-                        canHardware.NetworkID = canHardware.NetworkID;
                         channelId = (byte)canHardware.NetworkID;
                     }
                     else if (canHardware is KvaserCan && canHardware.BitRate > 0)
@@ -128,9 +113,15 @@ namespace AutosarBCM
                 }
                 else if (hardware is SerialPortHardware serialHardware)
                 {
-                    serialHardware.FrameRead += SerialHardware_FrameRead;
-                    serialHardware.FrameWritten += SerialHardware_FrameWritten;
-                    serialHardware.ErrorAccured += SerialHardware_ErrorAccured;
+                    transportProtocol = new Iso15765();
+                    transportProtocol.MessageReceived += TransportProtocol_MessageReceived;
+                    transportProtocol.MessageSent += TransportProtocol_MessageSent;
+                    transportProtocol.ReceiveError += TransportProtocol_ReceiveError;
+                    transportProtocol.Hardware = hardware;
+
+                    //serialHardware.FrameRead += SerialHardware_FrameRead;
+                    //serialHardware.FrameWritten += SerialHardware_FrameWritten;
+                    //serialHardware.ErrorAccured += SerialHardware_ErrorAccured;
                     if (serialHardware.SerialPortType == SerialPortType.UT146)
                     {
                         serialHardware.Transmit("FFFFFFFFFE06");
@@ -165,11 +156,8 @@ namespace AutosarBCM
             {
                 Helper.SendExtendedDiagSession();
             }
-            
+
             AppendTrace(e.Message, DateTime.Now, Color.Red);
-            //Helper.ShowErrorMessageBox(e.Message);
-            //if (e. == CanHardware_ErrorStatus.Disconnect)
-            //    Disconnect();
         }
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
         {
@@ -178,7 +166,7 @@ namespace AutosarBCM
                 //ServiceInfo.TesterPresent.RequestID)
                 return;
 
-            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X") == "0" ? "72E" : transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
 
@@ -203,7 +191,8 @@ namespace AutosarBCM
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
         {
             var service = new ASResponse(e.Data).Parse();
-            var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X") == "0" ? "72E" : transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            //var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             if (e.Data[0] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL + 0x40)
             {
                 session = (byte)e.Data[1];
@@ -251,7 +240,7 @@ namespace AutosarBCM
                 {
                     AppendTrace(rxRead, time);
                     if (address == 0xC151)
-                        SendByteDataToControlChecker(e.Data,address);
+                        SendByteDataToControlChecker(e.Data, address);
                     else
                         SendServiceDataToControlChecker(service);
                     return;
@@ -295,8 +284,6 @@ namespace AutosarBCM
                     }
                 }
 
-
-
                 //var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 
                 ////HandleSWVersion(bytes);
@@ -333,7 +320,6 @@ namespace AutosarBCM
                 formChecker.LogDataToDGVFromBytes(data, address);
             }
         }
-
 
         /// <summary>
         /// Checks whether the connection has been established or not.
@@ -483,30 +469,6 @@ namespace AutosarBCM
 
                     var data = Enumerable.Range(0, byteHexText.Length / 2).Select(x => Convert.ToByte(byteHexText.Substring(x * 2, 2), 16)).ToArray();
 
-                    //if (FormMain.EMCMonitoring)
-                    //{
-                    //    AppendTrace(rxRead, time);
-                    //    Program.FormEMCView?.HandleResponse(data);
-                    //    return;
-                    //}
-
-                    //if (FormMain.ControlChecker)
-                    //{
-                    //    AppendTrace(rxRead, time);
-                    //    Program.FormControlChecker.HandleResponse(data);
-                    //    continue;
-                    //}
-                    //if (formMain.UpdateOutputMonitorControls(data, MessageDirection.RX))
-                    //{
-                    //    AppendTrace(rxRead, time);
-                    //    continue;
-                    //}
-                    //if (formMain.UpdateInputMonitorControls(data, MessageDirection.RX))
-                    //{
-                    //    if (!FormMain.IsTestRunning) AppendTrace(rxRead, time);
-                    //    return;
-                    //}
-
                     //HandleSWVersion(data);
 
                     AppendTrace(rxRead, time);
@@ -529,7 +491,6 @@ namespace AutosarBCM
             }
             var time = new DateTime((long)e.Timestamp);
             AppendTrace(e.Message, time, Color.Red);
-            //Helper.ShowErrorMessageBox(e.Message);
             if (e.ErrorType == SerialHardware_ErrorType.Disposed)
                 Disconnect();
         }
@@ -556,41 +517,6 @@ namespace AutosarBCM
         private void AppendTraceRx(string text, DateTime time, Color? color = null)
         {
             FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-
-            //if (formReceive.dgvReceives.InvokeRequired)
-            //{
-            //    formReceive.dgvReceives.Invoke(new Action(delegate ()
-            //    {
-            //        var receivePattern = @"(?:Tx|Rx)\s?(\w+)\s?(.*)";
-            //        RegexOptions options = RegexOptions.Singleline;
-            //        var matchedItem = Regex.Matches(text, receivePattern, options)[0];
-            //        var messageID = matchedItem.Groups[1].Value.ToString();
-            //        var dataBytes = matchedItem.Groups[2].Value.ToString().Replace("-", " ");
-            //        if (!dataBytes.Contains(" "))
-            //        {
-            //            dataBytes = String.Join(" ", Enumerable.Range(0, dataBytes.Length / 2).Select(x => dataBytes.Substring(x * 2, 2)));
-            //        }
-
-            //        var messageCheck = formReceive.dgvReceives.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.Cells[0].Value.ToString() == messageID && r.Cells[3].Value.ToString() == dataBytes);
-
-            //        if (messageCheck != null && messageID != "0")
-            //        {
-            //            var rowIndex = messageCheck.Index;
-            //            ((CanMessage)messageCheck.DataBoundItem).SetData(dataBytes);
-            //            ((CanMessage)messageCheck.DataBoundItem).IncreaseCounter();
-            //            ((CanMessage)messageCheck.DataBoundItem).SetResponse();
-            //            formReceive.ResetAndApplyFilterWithSelectionRestore();
-            //            formReceive.dgvReceives.Rows[rowIndex].DefaultCellStyle.ForeColor = formReceive.dgvReceives.Rows[rowIndex].DefaultCellStyle.SelectionForeColor = dataBytes.Contains("7F") ? Color.Red : Color.Green;
-            //        }
-            //        else if (!messageID.Equals("0"))
-            //        {
-            //            formReceive.AddMessage(new CanMessage(messageID, dataBytes) { Count = 1, Timestamp = time });
-            //            var rowIndex = formReceive.dgvReceives.Rows.Count - 1;
-            //            ((CanMessage)formReceive.dgvReceives.Rows[rowIndex].DataBoundItem).SetResponse();
-            //            formReceive.dgvReceives.Rows[rowIndex].DefaultCellStyle.ForeColor = formReceive.dgvReceives.Rows[rowIndex].DefaultCellStyle.SelectionForeColor = dataBytes.Contains("7F") ? Color.Red : Color.Green;
-            //        }
-            //    }));
-            //}
         }
 
         /// <summary>
@@ -603,105 +529,6 @@ namespace AutosarBCM
         {
             ((FormMain)Application.OpenForms[Constants.Form_Main]).AppendTrace(text,
                 text.Contains("7F") ? Color.Red : color ?? Color.Green);
-        }
-
-        /// <summary>
-        /// An event handler to the Hardware's FrameWritten event.
-        /// Writes the message id and data to the console.
-        /// </summary>
-        /// <param name="sender">A reference to the Hardware instance.</param>
-        /// <param name="e">A reference to the FrameWritten event's arguments.</param>
-        private void Hardware_FrameWritten(object sender, CanFrameEventArgs e)
-        {
-            ((FormMain)Application.OpenForms[Constants.Form_Main]).SetCounter(1, 0);
-            ((FormMain)Application.OpenForms[Constants.Form_Main]).UpdateInputMonitorControls(e.Data, MessageDirection.TX);
-            ((FormMain)Application.OpenForms[Constants.Form_Main]).UpdateOutputMonitorControls(e.Data, MessageDirection.TX);
-
-            //if (FormMain.IsTestRunning && FormMain.TestClickCounter == 0)
-            //    return;
-
-            string txWritten = "Tx " + e.CanId.ToString("X") + " " + BitConverter.ToString(e.Data);
-            var time = new DateTime(e.Timestamp);
-            AppendTrace(txWritten, time, Color.Black);
-        }
-
-        /// <summary>
-        /// Event handler for handling CAN bus errors.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The event arguments containing error information.</param>
-        private void Hardware_CanError(object sender, CanErrorEventArgs e)
-        {
-            if (FormMain.IsTestRunning)
-            {
-                Helper.SendExtendedDiagSession();
-            }
-            var time = new DateTime((long)e.Timestamp);
-            AppendTrace(e.ErrorMessage, time, Color.Red);
-            //Helper.ShowErrorMessageBox(e.ErrorMessage);
-            if (e.Status == CanHardware_ErrorStatus.Disconnect)
-                Disconnect();
-        }
-
-        /// <summary>
-        /// An event handler to the Hardware's FrameRead event.
-        /// Writes the message id and data to the console.
-        /// </summary>
-        /// <param name="sender">A reference to the Hardware instance.</param>
-        /// <param name="e">A reference to the FrameRead event's arguments.</param>
-        internal void Hardware_FrameRead(object sender, CanFrameEventArgs e)
-        {
-            ////if (e.Data.Length % 8 != 0)
-            ////    return;
-
-            //// TODO: Refactor Data Check
-            //// When connecting to the NeoVI Fire3 Device, it causes an error because we get long responses.
-            //if (e.Data.Length > 8)
-            //    return;
-
-            //FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
-
-            //// TODO: Refactor Data Check
-            //// Replace hardcoded byte value checks with a more flexible method, such as a configuration object or dictionary.
-            //// DoorCap signals that we only receive Rx are not included in the success average.
-            //if (e.Data[0] != 0x03 || e.Data[1] != 0xef || e.Data[2] != 0x05)
-            //    formMain.SetCounter(0, 1);
-            //var bytes = new byte[10];
-            //var messageId = Helper.StringToByteArray(e.CanId.ToString("X4"));
-
-            ////If the read data isn't structured
-            //if (e.Data.Length < 8)
-            //    Array.Copy(new byte[2] {0 , 0}, bytes, 2);
-            //else
-            //    Array.Copy(messageId, bytes, messageId.Length);
-
-            //Array.Copy(e.Data, 0, bytes, 2, e.Data.Length);
-
-            var rxRead = "Rx " + e.CanId.ToString("X") + " " + BitConverter.ToString(e.Data);
-            var time = new DateTime(e.Timestamp);
-
-            ////if (FormMain.ControlChecker)
-            ////{
-            ////    AppendTrace(rxRead, time);
-            ////    Program.FormControlChecker?.HandleResponse(bytes);
-            ////    return;
-            ////}
-
-            ////if (formMain.UpdateOutputMonitorControls(bytes, MessageDirection.RX))
-            ////{
-            ////    AppendTrace(rxRead, time);
-            ////    return;
-            ////}
-            ////if (formMain.UpdateInputMonitorControls(bytes, MessageDirection.RX))
-            ////{
-            ////    if (!FormMain.IsTestRunning) AppendTrace(rxRead, time);
-            ////    return;
-            ////}
-
-            ////HandleSWVersion(bytes);
-
-            AppendTrace(rxRead, time);
-            AppendTraceRx(rxRead, time);
         }
 
         /// <summary>
