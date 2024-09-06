@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
@@ -21,79 +20,6 @@ namespace AutosarBCM.Core
         /// Specifies that the transmission protocol is UDS.
         /// </summary>
         Uds
-    }
-
-    /// <summary>
-    /// Provides a mechanism for saving data from an embedded form.
-    /// </summary>
-    public interface IMessageHandler
-    {
-        /// <summary>
-        /// Requests to save data from the embedded form.
-        /// </summary>
-        /// <returns>true if there is no error; otherwise, false.</returns>
-        bool Save();
-    }
-
-    /// <summary>
-    /// Implements serialization and deserialization from/to XML file.
-    /// </summary>
-    public class SerializationService
-    {
-        #region Variables
-
-        /// <summary>
-        /// Gets the deserialized CanMessage objects or sets the CanMessage list to be serialized.
-        /// </summary>
-        public List<CanMessage> CanMessages { get; set; }
-        /// <summary>
-        /// Gets the deserialized UdsMessage objects or sets the UdsMessage list to be serialized.
-        /// </summary>
-        public List<UdsMessage> UdsMessages { get; set; }
-
-
-        #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the SerializationService class.
-        /// </summary>
-        public SerializationService() { }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Converts CanMessage and UdsMessage objects to their XML representation.
-        /// </summary>
-        /// <param name="fileName">The path of the file to be serialized.</param>
-        public void Serialize(string fileName)
-        {
-            var serializer = new XmlSerializer(typeof(SerializationService));
-            using (var sw = new StreamWriter(fileName))
-                serializer.Serialize(sw, this);
-        }
-
-        /// <summary>
-        /// Generates CanMessage and UdsMessage objects from its XML representation.
-        /// </summary>
-        /// <param name="fileName">The path of the file to be deserialized.</param>
-        /// <returns>The deserialized object.</returns>
-        public static SerializationService Deserialize(string fileName)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(SerializationService));
-            using (var sr = new StreamReader(fileName))
-            {
-                var obj = (SerializationService)serializer.Deserialize(sr);
-                obj.CanMessages.ForEach(x => x.Count = 0);
-                obj.UdsMessages.ForEach(x => x.Count = 0);
-                return obj;
-            }
-        }
-
-        #endregion
     }
 
     /// <summary>
@@ -189,11 +115,6 @@ namespace AutosarBCM.Core
         /// </summary>
         public int Length { get; set; }
 
-        /// <summary>
-        /// Gets or sets the type of the message (Single-Message, Multi-Messages)
-        /// </summary>
-        public string Type { get => this is UdsMessage ? ((UdsMessage)this).ServiceName : Multi ? multiMessages : singleMessage; }
-        
         /// <summary>
         /// Gets the data of the message represented in a hexadecimal format.
         /// </summary>

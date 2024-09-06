@@ -2,16 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.Serialization;
-using AutosarBCM.UserControls.Monitor;
-using System.Threading.Tasks;
 using AutosarBCM.Core.Config;
-using System.Collections;
-using AutosarBCM.Config;
-using AutosarBCM.Properties;
-using System.Diagnostics;
-using System.IO;
-using System.Xml;
 
 namespace AutosarBCM.Core
 {
@@ -116,7 +107,6 @@ namespace AutosarBCM.Core
 
         }
 
-
         public void Switch(List<string> payloads, bool isOpen)
         {
             Switch(payloads.ToDictionary(x => x, x => isOpen));
@@ -152,14 +142,13 @@ namespace AutosarBCM.Core
                         bytes.Add(0x0);
                     }
                 }
-                else //Payload match
+                else
                 {
                     controlByte |= (byte)(1 << (7 - bitIndex));
 
                     var resultPayload = ASContext.Configuration.GetPayloadInfoByType(payload.TypeName);
                     if (resultPayload == null) break;
 
-                    //Check if control has enum
                     if (resultPayload.Values?.Count > 0)
                     {
                         var data = new List<byte>();
@@ -182,7 +171,6 @@ namespace AutosarBCM.Core
                             else
                                 pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyCloseValue).Reverse().ToArray();
 
-                            //Array.Reverse(pwmBytes);
                             bytes.AddRange(pwmBytes);
                         }
                         else
@@ -464,7 +452,7 @@ namespace AutosarBCM.Core
 
                                     var valueExists = payloads.Any(p =>
                                         p.Length == length &&
-                                        p.Values.Count == values.Count && // Önce sayýlarý karþýlaþtýrarak hýzlýca ele
+                                        p.Values.Count == values.Count && // ï¿½nce sayï¿½larï¿½ karï¿½ï¿½laï¿½tï¿½rarak hï¿½zlï¿½ca ele
                                         !p.Values.Where((v, i) =>
                                             v.ValueString != values[i].ValueString ||
                                             v.FormattedValue != values[i].FormattedValue
@@ -616,8 +604,7 @@ namespace AutosarBCM.Core
                         })
                         .ToList();
 
-
-                    #region Environmental Test
+            #region Environmental Test
 
             var environmentalTest = doc.Descendants("EnvironmentalTest")
                 .Select(t => new EnvironmentalTest

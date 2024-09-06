@@ -3,9 +3,7 @@ using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace AutosarBCM.UserControls.Monitor
@@ -17,29 +15,7 @@ namespace AutosarBCM.UserControls.Monitor
     {
         #region Variables
 
-        public ASResponse Response { get; }
-
-        /// <summary>
-        /// Gets or sets the associated InputMonitorItem for this control.
-        /// </summary>
-        public InputMonitorItem Item;
-
-        /// <summary>
-        /// Gets or sets the group name associated with the control.
-        /// </summary>
-        public string MessageID { get; set; }
-
         public ControlInfo ControlInfo { get; set; }
-
-        /// <summary>
-        /// Gets or sets the group name associated with the control.
-        /// </summary>
-        public string GroupName { get; set; }
-
-        /// <summary>
-        /// Gets or sets a boolean indicating whether the input is being logged.
-        /// </summary>
-        public bool IsLogged = false;
 
         /// <summary>
         /// Gets or sets a number of transmitted message and received message.
@@ -52,8 +28,6 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         private ReadDataByIdenService oldValue;
 
-        private InputMonitorItem item;
-        private CommonConfig commonConfig;
         private const int ResizeHandleSize = 10;
         private Point lastMousePosition;
         private bool isResizing = false;
@@ -79,13 +53,6 @@ namespace AutosarBCM.UserControls.Monitor
             lbResponse.Items.AddRange(controlInfo.GetPayloads(ServiceInfo.ReadDataByIdentifier, null).ToArray());
 
             InitResizeFeat();
-        }
-
-
-        public UCItem(InputMonitorItem item, CommonConfig commonConfig)
-        {
-            //this.item = item;
-            //this.commonConfig = commonConfig;
         }
 
         private void InitResizeFeat()
@@ -306,11 +273,6 @@ namespace AutosarBCM.UserControls.Monitor
         private void lblName_Click(object sender, EventArgs e)
         {
             this.InvokeOnClick(this, new EventArgs());
-        }
-
-        internal void ChangeStatus(InputMonitorItem item, GenericResponse response, MessageDirection messageDirection)
-        {
-            throw new NotImplementedException();
         }
 
         private void btnRead_Click(object sender, EventArgs e)

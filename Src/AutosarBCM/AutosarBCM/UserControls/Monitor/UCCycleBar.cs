@@ -50,15 +50,6 @@ namespace AutosarBCM.UserControls.Monitor
 
         #region Public Methods
 
-        /// <summary>
-        /// Clears the displayed cycling information.
-        /// </summary>
-        public void Clear()
-        {
-            lblTimeSpent.Text = "00:00:00";
-            lblReboots.Text = lblLoop.Text = "0";
-        }
-
         #endregion
 
         #region Private Methods

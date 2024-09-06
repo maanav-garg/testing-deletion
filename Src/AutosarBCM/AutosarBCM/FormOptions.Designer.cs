@@ -30,20 +30,20 @@ namespace AutosarBCM
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("General");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Tool", new System.Windows.Forms.TreeNode[] {
-            treeNode9});
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("General");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Serial Port");
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Can Hardware");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("TX/RX Filter");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("EMC Data Limitation");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Communication", new System.Windows.Forms.TreeNode[] {
-            treeNode11,
-            treeNode12,
-            treeNode13,
-            treeNode14,
-            treeNode15});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Tool", new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Serial Port");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Can Hardware");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("TX/RX Filter");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("EMC Data Limitation");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Communication", new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode4,
+            treeNode5,
+            treeNode6,
+            treeNode7});
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileTsmi = new System.Windows.Forms.ToolStripMenuItem();
             this.loadTsmi = new System.Windows.Forms.ToolStripMenuItem();
@@ -211,25 +211,25 @@ namespace AutosarBCM
             this.treeView.HideSelection = false;
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
-            treeNode9.Name = "NodeToolGeneral";
-            treeNode9.Text = "General";
-            treeNode10.Name = "NodeTool";
-            treeNode10.Text = "Tool";
-            treeNode11.Name = "NodeCommGeneral";
-            treeNode11.Text = "General";
-            treeNode12.Name = "NodeCommSerial";
-            treeNode12.Text = "Serial Port";
-            treeNode13.Name = "nodeCommCanHardware";
-            treeNode13.Text = "Can Hardware";
-            treeNode14.Name = "nodeFilter";
-            treeNode14.Text = "TX/RX Filter";
-            treeNode15.Name = "nodeEMCDataLimitation";
-            treeNode15.Text = "EMC Data Limitation";
-            treeNode16.Name = "NodeComm";
-            treeNode16.Text = "Communication";
+            treeNode1.Name = "NodeToolGeneral";
+            treeNode1.Text = "General";
+            treeNode2.Name = "NodeTool";
+            treeNode2.Text = "Tool";
+            treeNode3.Name = "NodeCommGeneral";
+            treeNode3.Text = "General";
+            treeNode4.Name = "NodeCommSerial";
+            treeNode4.Text = "Serial Port";
+            treeNode5.Name = "nodeCommCanHardware";
+            treeNode5.Text = "Can Hardware";
+            treeNode6.Name = "nodeFilter";
+            treeNode6.Text = "TX/RX Filter";
+            treeNode7.Name = "nodeEMCDataLimitation";
+            treeNode7.Text = "EMC Data Limitation";
+            treeNode8.Name = "NodeComm";
+            treeNode8.Text = "Communication";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode10,
-            treeNode16});
+            treeNode2,
+            treeNode8});
             this.treeView.ShowLines = false;
             this.treeView.Size = new System.Drawing.Size(154, 344);
             this.treeView.TabIndex = 0;
@@ -884,6 +884,7 @@ namespace AutosarBCM
             "NETID_SWCAN",
             "NETID_HSCAN2",
             "NETID_HSCAN3",
+            "NETID_HSCAN4",
             "NETID_LSFTCAN",
             "NETID_LIN",
             "NETID_ISO2",
