@@ -113,9 +113,15 @@ namespace AutosarBCM
                 }
                 else if (hardware is SerialPortHardware serialHardware)
                 {
-                    serialHardware.FrameRead += SerialHardware_FrameRead;
-                    serialHardware.FrameWritten += SerialHardware_FrameWritten;
-                    serialHardware.ErrorAccured += SerialHardware_ErrorAccured;
+                    transportProtocol = new Iso15765();
+                    transportProtocol.MessageReceived += TransportProtocol_MessageReceived;
+                    transportProtocol.MessageSent += TransportProtocol_MessageSent;
+                    transportProtocol.ReceiveError += TransportProtocol_ReceiveError;
+                    transportProtocol.Hardware = hardware;
+
+                    //serialHardware.FrameRead += SerialHardware_FrameRead;
+                    //serialHardware.FrameWritten += SerialHardware_FrameWritten;
+                    //serialHardware.ErrorAccured += SerialHardware_ErrorAccured;
                     if (serialHardware.SerialPortType == SerialPortType.UT146)
                     {
                         serialHardware.Transmit("FFFFFFFFFE06");
@@ -150,7 +156,7 @@ namespace AutosarBCM
             {
                 Helper.SendExtendedDiagSession();
             }
-            
+
             AppendTrace(e.Message, DateTime.Now, Color.Red);
         }
         private void TransportProtocol_MessageSent(object sender, Connection.Protocol.TransportEventArgs e)
@@ -160,7 +166,7 @@ namespace AutosarBCM
                 //ServiceInfo.TesterPresent.RequestID)
                 return;
 
-            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var txId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X") == "0" ? "72E" : transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             var txRead = $"Tx {txId} {BitConverter.ToString(e.Data)}";
             var time = new DateTime((long)e.Timestamp);
 
@@ -185,7 +191,8 @@ namespace AutosarBCM
         private void TransportProtocol_MessageReceived(object sender, Connection.Protocol.TransportEventArgs e)
         {
             var service = new ASResponse(e.Data).Parse();
-            var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X") == "0" ? "72E" : transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
+            //var rxId = transportProtocol.Config.PhysicalAddr.RxId.ToString("X");
             if (e.Data[0] == (byte)SIDDescription.SID_DIAGNOSTIC_SESSION_CONTROL + 0x40)
             {
                 session = (byte)e.Data[1];
@@ -233,7 +240,7 @@ namespace AutosarBCM
                 {
                     AppendTrace(rxRead, time);
                     if (address == 0xC151)
-                        SendByteDataToControlChecker(e.Data,address);
+                        SendByteDataToControlChecker(e.Data, address);
                     else
                         SendServiceDataToControlChecker(service);
                     return;
