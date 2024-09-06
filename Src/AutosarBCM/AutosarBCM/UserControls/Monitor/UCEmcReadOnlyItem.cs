@@ -102,6 +102,12 @@ namespace AutosarBCM.UserControls.Monitor
 
         #region Public Methods
 
+        internal void ChangeStatus(string value, string dTCValue)
+        {
+            lblWriteStatus.Text = value;
+            lblDtcStatus.Text = dTCValue;
+        }
+
         /// <summary>
         /// Change status of the input window regarding to read data from the device.
         /// </summary>

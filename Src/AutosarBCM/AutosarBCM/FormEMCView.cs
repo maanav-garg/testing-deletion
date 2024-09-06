@@ -311,6 +311,11 @@ namespace AutosarBCM
             return true;
         }
 
+        private void AddDataCardView(string name, string value, string dTCValue)
+        {
+            ucItems.Where(a => a.PayloadInfo.Name == name).FirstOrDefault()?.ChangeStatus(value, dTCValue);
+        }
+
         /// <summary>
         /// Handles the FormClosing event of the FormEMCView control.
         /// </summary>
@@ -339,7 +344,17 @@ namespace AutosarBCM
                     //Check for changed data
                     if (payloadValueList[payload.PayloadInfo.Name] != payload.FormattedValue)
                     {
-                        AddDataRow(readService.ControlInfo, payload.PayloadInfo, payload.FormattedValue, "");
+                        tabControl1.Invoke(new Action(() => {
+                            if (tabControl1.SelectedIndex == 0)
+                            {
+                                AddDataCardView(payload.PayloadInfo.Name, payload.FormattedValue, null);
+                            }
+                            else
+                            {
+                                AddDataRow(readService.ControlInfo, payload.PayloadInfo, payload.FormattedValue, "");
+                            }
+                        }));
+                        
                         payloadValueList[payload.PayloadInfo.Name] = payload.FormattedValue;
                     }
                 }
@@ -367,7 +382,15 @@ namespace AutosarBCM
                     {
                         if (dtcValue.Mask == 0x0B)
                         {
-                            AddDataRow(control, payload, "", dtcValue.Description);
+                            if (tabControl1.SelectedIndex == 0)
+                            {
+                                AddDataCardView(payload.Name, "", dtcValue.Description);
+                            }
+                            else
+                            {
+                                AddDataRow(control, payload, "", dtcValue.Description);
+
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -503,11 +526,23 @@ namespace AutosarBCM
             if (!(service is ReadDataByIdenService || service is ReadDTCInformationService))
                 return;
 
-            HandleDidReadResponse(service);
-            HandleDtcResponse(service);
+            
+                HandleDidReadResponse(service);
+                HandleDtcResponse(service);
+
+
         }
 
         #endregion
 
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            tabControl1.SelectedIndex = e.TabPageIndex;
+        }
+
+        private void FormEMCView_Load(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
     }
 }

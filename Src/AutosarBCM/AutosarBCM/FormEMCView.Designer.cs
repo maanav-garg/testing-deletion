@@ -322,6 +322,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1331, 661);
             this.tabControl1.TabIndex = 14;
+            this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
             // tabPage2
             // 
@@ -357,6 +358,17 @@
             this.tabPage1.Text = "Table View";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.dgvData);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1298, 546);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // FormEMCView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -375,6 +387,7 @@
             this.Name = "FormEMCView";
             this.Text = "EMC Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormEMCView_FormClosing);
+            this.Load += new System.EventHandler(this.FormEMCView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).EndInit();
             this.emcControlToolStrip.ResumeLayout(false);
             this.emcControlToolStrip.PerformLayout();
