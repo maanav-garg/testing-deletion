@@ -44,7 +44,11 @@ namespace AutosarBCM.Core
         public static ServiceInfo NegativeResponse { get => ASContext.Configuration?.GetServiceByResponseID(0x7F); }
         public static ServiceInfo ClearDTCInformation { get => ASContext.Configuration?.GetServiceByRequestID(0x14); }
     }
-
+    public class EMCLayout
+    {
+        public string Name { get; set; }
+        public List<Layout> Layouts { get; set; }
+    }
     public class ControlInfo
     {
         public ushort Address { get; set; }
@@ -66,6 +70,7 @@ namespace AutosarBCM.Core
                 new WriteDataByIdentifierService().Transmit(this, data);
 
         }
+
 
         public void SwitchForBits(List<string> payloads, bool isOpen)
         {
@@ -272,122 +277,123 @@ namespace AutosarBCM.Core
         }
     }
 
-        public class PayloadInfo
-        {
-            public string Name { get; set; }
-            public string NamePadded { get => IsBit ? $"    {Name}" : Name; }
-            public string TypeName { get; set; }
-            public int Length { get; set; }
-            public bool IsBit { get; internal set; }
-            public string DTCCode { get; set; }
-            public List<PayloadValue> Values { get; set; }
-            public List<PayloadInfo> Bits { get; set; }
+    public class PayloadInfo
+    {
+        public string Name { get; set; }
+        public string NamePadded { get => IsBit ? $"    {Name}" : Name; }
+        public string TypeName { get; set; }
+        public int Length { get; set; }
+        public bool IsBit { get; internal set; }
+        public string DTCCode { get; set; }
+        public List<PayloadValue> Values { get; set; }
+        public List<PayloadInfo> Bits { get; set; }
 
-            internal PayloadValue GetPayloadValue(byte[] value)
+        internal PayloadValue GetPayloadValue(byte[] value)
+        {
+            return Values?.FirstOrDefault(v => v.Value.SequenceEqual(value)) ?? new PayloadValue { FormattedValue = $"U/I {BitConverter.ToString(value)}" };
+        }
+    }
+
+    public class PayloadValue
+    {
+        public string ValueString { get; internal set; }
+        public string Color { get; set; }
+        public string FormattedValue { get; set; }
+        public bool IsClose { get; set; }
+        public bool IsOpen { get; set; }
+        public byte[] Value { get => Enumerable.Range(0, ValueString.Length).Where(x => x % 2 == 0).Select(y => Convert.ToByte(ValueString.Substring(y, 2), 16)).ToArray(); }
+
+    }
+
+    public class ResponseInfo
+    {
+        public byte ServiceID { get; set; }
+        public List<PayloadInfo> Payloads { get; set; }
+    }
+
+    public class DTCFailure
+    {
+        public byte Value { get; set; }
+        public string Description { get; set; }
+
+        public static DTCFailure GetByValue(byte value)
+        {
+            return ASContext.Configuration.DTCFailureTypes.Where(a => a.Value == value).FirstOrDefault();
+        }
+    }
+
+    public class ConfigurationInfo
+    {
+        public Dictionary<string, string> Settings { get; set; }
+        public List<ServiceInfo> Services { get; set; }
+        public List<SessionInfo> Sessions { get; set; }
+        public List<EMCLayout> Layouts { get; set; }
+        public List<ControlInfo> Controls { get; set; }
+        public List<PayloadInfo> Payloads { get; set; }
+        public List<DTCFailure> DTCFailureTypes { get; set; }
+        public EnvironmentalTest EnvironmentalTest { get; set; }
+
+        internal static ConfigurationInfo Parse(string filePath, bool isMdxFile)
+        {
+            XDocument doc = XDocument.Load(filePath);
+
+            if (isMdxFile)
             {
-                return Values?.FirstOrDefault(v => v.Value.SequenceEqual(value)) ?? new PayloadValue { FormattedValue = $"U/I {BitConverter.ToString(value)}" };
-            }
-        }
-
-        public class PayloadValue
-        {
-            public string ValueString { get; internal set; }
-            public string Color { get; set; }
-            public string FormattedValue { get; set; }
-            public bool IsClose { get; set; }
-            public bool IsOpen { get; set; }
-            public byte[] Value { get => Enumerable.Range(0, ValueString.Length).Where(x => x % 2 == 0).Select(y => Convert.ToByte(ValueString.Substring(y, 2), 16)).ToArray(); }
-
-        }
-
-        public class ResponseInfo
-        {
-            public byte ServiceID { get; set; }
-            public List<PayloadInfo> Payloads { get; set; }
-        }
-
-        public class DTCFailure
-        {
-            public byte Value { get; set; }
-            public string Description { get; set; }
-
-            public static DTCFailure GetByValue(byte value)
-            {
-                return ASContext.Configuration.DTCFailureTypes.Where(a => a.Value == value).FirstOrDefault();
-            }
-        }
-
-        public class ConfigurationInfo
-        {
-            public Dictionary<string, string> Settings { get; set; }
-            public List<ServiceInfo> Services { get; set; }
-            public List<SessionInfo> Sessions { get; set; }
-            public List<ControlInfo> Controls { get; set; }
-            public List<PayloadInfo> Payloads { get; set; }
-            public List<DTCFailure> DTCFailureTypes { get; set; }
-            public EnvironmentalTest EnvironmentalTest { get; set; }
-
-            internal static ConfigurationInfo Parse(string filePath, bool isMdxFile)
-            {
-                XDocument doc = XDocument.Load(filePath);
-
-                if (isMdxFile)
+                var sessions = doc.Descendants("PROTOCOL").Descendants("APPLICATION_LAYER").Descendants("SESSIONS_SUPPORTED").Descendants("SESSION")
+                .Select(s => new SessionInfo
                 {
-                    var sessions = doc.Descendants("PROTOCOL").Descendants("APPLICATION_LAYER").Descendants("SESSIONS_SUPPORTED").Descendants("SESSION")
-                    .Select(s => new SessionInfo
+                    ID = Convert.ToByte(s.Element("NUMBER").Value, 16),
+                    Name = s.Element("NAME").Value,
+                    AvailableServices = new List<byte> { 0x22 },
+                })
+                .ToList();
+
+                var services = doc.Descendants("PROTOCOL").Descendants("APPLICATION_LAYER").Descendants("SERVICES_SUPPORTED").Descendants("SERVICE")
+                    .Select(s => new ServiceInfo
                     {
-                        ID = Convert.ToByte(s.Element("NUMBER").Value, 16),
+                        RequestID = s.Element("NUMBER") != null ? Convert.ToByte(s.Element("NUMBER").Value, 16) : (byte)0,
+                        ResponseID = s.Element("NUMBER") != null ? (byte)(Convert.ToByte(s.Element("NUMBER").Value, 16) + 0x40) : (byte)0,
                         Name = s.Element("NAME").Value,
-                        AvailableServices = new List<byte> { 0x22 },
+                        ResponseIndex = s.Element("NUMBER") != null
+                            ? s.Element("NUMBER").Value == "0x22"
+                                ? 3
+                                : s.Element("NUMBER").Value == "0x2f"
+                                    ? 4
+                                    : 0
+                            : 0,
+                        Sessions = s.Attribute("SESSION_REFS") != null
+                                      ? s.Attribute("SESSION_REFS").Value
+                                            .Split(' ')
+                                            .Select(refValue => byte.Parse(refValue.Substring(refValue.LastIndexOf('_') + 1)))
+                                            .ToList()
+                                      : new List<byte>()
                     })
                     .ToList();
 
-                    var services = doc.Descendants("PROTOCOL").Descendants("APPLICATION_LAYER").Descendants("SERVICES_SUPPORTED").Descendants("SERVICE")
-                        .Select(s => new ServiceInfo
+                var payloads = new List<PayloadInfo> { };
+                var counter = 0;
+
+
+                var controls = doc.Descendants("ECU_DATA").Descendants("DATA_IDENTIFIERS").Descendants("DID")
+                    .Select(c => new ControlInfo
+                    {
+                        Address = Convert.ToUInt16(c.Element("NUMBER").Value, 16),
+                        Name = c.Element("NAME").Value,
+                        //Type = c.Element("Type").Value,
+                        Group = c.Attribute("ID").Value.Contains("did_DE") ? "ECU_DID" : "DID",
+
+                        Services = c.Descendants("ACCESS_PARAMETERS")
+                                    .Descendants()
+                                    .Where(x => x.Attribute("SERVICE_REFS") != null)
+                                    .SelectMany(x => x.Attribute("SERVICE_REFS").Value.Split(' ')
+                                                    .Select(refValue => byte.Parse(refValue.Substring(refValue.Length - 2), System.Globalization.NumberStyles.HexNumber)))
+                                    .ToList(),
+
+                        SessionActiveException = new List<byte>(),
+                        SessionInactiveException = new List<byte>(),
+
+                        Responses = new List<ResponseInfo>
                         {
-                            RequestID = s.Element("NUMBER") != null ? Convert.ToByte(s.Element("NUMBER").Value, 16) : (byte)0,
-                            ResponseID = s.Element("NUMBER") != null ? (byte)(Convert.ToByte(s.Element("NUMBER").Value, 16) + 0x40) : (byte)0,
-                            Name = s.Element("NAME").Value,
-                            ResponseIndex = s.Element("NUMBER") != null
-                                ? s.Element("NUMBER").Value == "0x22"
-                                    ? 3
-                                    : s.Element("NUMBER").Value == "0x2f"
-                                        ? 4
-                                        : 0
-                                : 0,
-                            Sessions = s.Attribute("SESSION_REFS") != null
-                                          ? s.Attribute("SESSION_REFS").Value
-                                                .Split(' ')
-                                                .Select(refValue => byte.Parse(refValue.Substring(refValue.LastIndexOf('_') + 1)))
-                                                .ToList()
-                                          : new List<byte>()
-                        })
-                        .ToList();
-
-                    var payloads = new List<PayloadInfo> { };
-                    var counter = 0;
-
-
-                    var controls = doc.Descendants("ECU_DATA").Descendants("DATA_IDENTIFIERS").Descendants("DID")
-                        .Select(c => new ControlInfo
-                        {
-                            Address = Convert.ToUInt16(c.Element("NUMBER").Value, 16),
-                            Name = c.Element("NAME").Value,
-                            //Type = c.Element("Type").Value,
-                            Group = c.Attribute("ID").Value.Contains("did_DE") ? "ECU_DID" : "DID",
-
-                            Services = c.Descendants("ACCESS_PARAMETERS")
-                                        .Descendants()
-                                        .Where(x => x.Attribute("SERVICE_REFS") != null)
-                                        .SelectMany(x => x.Attribute("SERVICE_REFS").Value.Split(' ')
-                                                        .Select(refValue => byte.Parse(refValue.Substring(refValue.Length - 2), System.Globalization.NumberStyles.HexNumber)))
-                                        .ToList(),
-
-                            SessionActiveException = new List<byte>(),
-                            SessionInactiveException = new List<byte>(),
-
-                            Responses = new List<ResponseInfo>
-                            {
                         new ResponseInfo
                         {
                               ServiceID = 0x62,
@@ -509,347 +515,361 @@ namespace AutosarBCM.Core
 
                                 }).ToList() ?? new List<PayloadInfo>()
                         }
-                            }
+                        }
 
-                        }).ToList();
+                    }).ToList();
 
-                    //Console.Write("test");
+                //Console.Write("test");
 
-                    var dtcFailureTypes = doc.Descendants("ECU_DATA").Descendants("DIAGNOSTIC_TROUBLE_CODES").Descendants("DTC_FAILURE_TYPES_SUPPORTED").Descendants("DTC_FAILURE_TYPE")
-                        .Select(t => new DTCFailure
-                        {
-                            Value = Convert.ToByte(t.Element("NUMBER").Value, 16),
-                            Description = t.Element("DESCRIPTION")?.Value,
-                        })
-                        .ToList();
-
-                    return new ConfigurationInfo
+                var dtcFailureTypes = doc.Descendants("ECU_DATA").Descendants("DIAGNOSTIC_TROUBLE_CODES").Descendants("DTC_FAILURE_TYPES_SUPPORTED").Descendants("DTC_FAILURE_TYPE")
+                    .Select(t => new DTCFailure
                     {
-                        Sessions = sessions,
-                        Services = services,
-                        Controls = controls,
-                        Payloads = payloads,
-                        DTCFailureTypes = dtcFailureTypes
-                    };
+                        Value = Convert.ToByte(t.Element("NUMBER").Value, 16),
+                        Description = t.Element("DESCRIPTION")?.Value,
+                    })
+                    .ToList();
 
-                }
-                else
+                return new ConfigurationInfo
                 {
-                    var settings = doc.Descendants("Settings").Descendants("Entry")
-                    .ToDictionary(
-                        k => k.Attribute("key").Value,
-                        v => v.Attribute("value").Value);
+                    Sessions = sessions,
+                    Services = services,
+                    Controls = controls,
+                    Payloads = payloads,
+                    DTCFailureTypes = dtcFailureTypes
+                };
 
-                    var services = doc.Descendants("Service")
-                        .Select(s => new ServiceInfo
-                        {
-                            RequestID = s.Attribute("requestID") != null ? Convert.ToByte(s.Attribute("requestID").Value, 16) : (byte)0,
-                            ResponseID = s.Attribute("responseID") != null ? Convert.ToByte(s.Attribute("responseID").Value, 16) : (byte)0,
-                            Name = s.Element("Name").Value,
-                            ResponseIndex = s.Element("ResponseIndex") != null ? int.Parse(s.Element("ResponseIndex").Value) : 0,
-                            Sessions = s.Element("Sessions") != null ? s.Element("Sessions").Value.Split(';').Select(byte.Parse).ToList() : new List<byte>()
-                        })
-                        .ToList();
+            }
+            else
+            {
+                var settings = doc.Descendants("Settings").Descendants("Entry")
+                .ToDictionary(
+                    k => k.Attribute("key").Value,
+                    v => v.Attribute("value").Value);
 
-                    var sessions = doc.Descendants("Sessions").Descendants("Session")
-                        .Select(s => new SessionInfo
-                        {
-                            ID = Convert.ToByte(s.Element("ID").Value, 16),
-                            Name = s.Element("Name").Value,
-                            AvailableServices = s.Element("AvailableServices").Value != "" ? s.Element("AvailableServices").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
-                        })
-                        .ToList();
+                var services = doc.Descendants("Service")
+                    .Select(s => new ServiceInfo
+                    {
+                        RequestID = s.Attribute("requestID") != null ? Convert.ToByte(s.Attribute("requestID").Value, 16) : (byte)0,
+                        ResponseID = s.Attribute("responseID") != null ? Convert.ToByte(s.Attribute("responseID").Value, 16) : (byte)0,
+                        Name = s.Element("Name").Value,
+                        ResponseIndex = s.Element("ResponseIndex") != null ? int.Parse(s.Element("ResponseIndex").Value) : 0,
+                        Sessions = s.Element("Sessions") != null ? s.Element("Sessions").Value.Split(';').Select(byte.Parse).ToList() : new List<byte>()
+                    })
+                    .ToList();
+
+                var sessions = doc.Descendants("Sessions").Descendants("Session")
+                    .Select(s => new SessionInfo
+                    {
+                        ID = Convert.ToByte(s.Element("ID").Value, 16),
+                        Name = s.Element("Name").Value,
+                        AvailableServices = s.Element("AvailableServices").Value != "" ? s.Element("AvailableServices").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+                    })
+                    .ToList();
 
                     var controls = doc.Descendants("Control")
-                        .Select(c => new ControlInfo
-                        {
-                            Address = Convert.ToUInt16(c.Element("Address").Value, 16),
-                            Name = c.Element("Name").Value,
-                            Type = c.Element("Type").Value,
-                            Group = c.Element("Group")?.Value,
-                            Services = c.Element("Services").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList(),
-                            SessionActiveException = c.Element("SessionActiveException") != null && c.Element("SessionActiveException").Value != "" ? c.Element("SessionActiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
-                            SessionInactiveException = c.Element("SessionInactiveException") != null && c.Element("SessionInactiveException").Value != "" ? c.Element("SessionInactiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
-
-                            Responses = c.Element("Responses") != null ?
-                                c.Element("Responses").Elements("Response").Select(x =>
-                                    new ResponseInfo
-                                    {
-                                        ServiceID = Convert.ToByte(x.Attribute("serviceId").Value, 16),
-                                        Payloads = x.Elements("Payload") != null ? x.Elements("Payload").Select((y, i) => new PayloadInfo
-                                        {
-                                            Name = y.Attribute("name").Value,
-                                            TypeName = y.Attribute("typeName").Value,
-                                            DTCCode = y.Attribute("dtcCode")?.Value,
-                                            Bits = y.Elements("Payload").Select(z => new PayloadInfo
-                                            {
-                                                Name = z.Attribute("name").Value,
-                                                TypeName = z.Attribute("typeName").Value,
-                                                IsBit = true,
-                                            }).ToList()
-                                        }).ToList() : new List<PayloadInfo>(),
-                                    }).ToList() : new List<ResponseInfo>(),
-                        }).ToList();
-
-                    var payloads = doc.Descendants("Payloads").Descendants("Payload")
-                        .Select(s => new PayloadInfo
-                        {
-                            Length = int.Parse(s.Attribute("length").Value),
-                            TypeName = s.Attribute("typeName").Value,
-                            Values = s.Elements("Value")
-                                .Select(x => new PayloadValue
-                                {
-                                    ValueString = x.Attribute("value").Value,
-                                    Color = x.Attribute("color")?.Value ?? null,
-                                    FormattedValue = x.Value,
-                                    IsClose = x.Attribute("isClose")?.Value == "true",
-                                    IsOpen = x.Attribute("isOpen")?.Value == "true",
-                                }).ToList(),
-                        })
-                        .ToList();
-
-                    var dtcFailureTypes = doc.Descendants("DTCFailureTypes").Descendants("Type")
-                        .Select(t => new DTCFailure
-                        {
-                            Value = Convert.ToByte(t.Attribute("value").Value, 16),
-                            Description = t.Value,
-                        })
-                        .ToList();
-
-
-                    #region Environmental Test
-
-            var environmentalTest = doc.Descendants("EnvironmentalTest")
-                .Select(t => new EnvironmentalTest
+                .Select(c => new ControlInfo
                 {
-                    ConnectionMappings = t.Element("ConnectionMappings").Elements("Mapping")
-                        .Select(m => new Mapping
-                        {
-                            Input = m.Elements("Input")
-                                .Select(f => new Function
-                                {
-                                    Name = f.Value,
-                                    Control = f.Attribute("parent")?.Value ?? null,
-                                }).First(),
-                            Output = m.Elements("Output")
-                                .Select(f => new Function
-                                {
-                                    Name = f.Value,
-                                    Control = f.Attribute("parent")?.Value ?? null,
-                                }).First(),
-                        }).ToList(),
-                    Environments = t.Element("Environments").Elements("Environment")
-                        .Select(e => new Environment
-                        {
-                            Name = e.Element("Name").Value,
-                            EnvironmentalConfig = e.Descendants("EnvironmentalConfig")
-                                .Select(c => new EnvironmentalConfig
-                                {
-                                    CycleTime = int.Parse(c.Element("CycleTime").Value),
-                                    TxInterval = int.Parse(c.Element("TxInterval").Value),
-                                    StartCycleIndex = int.Parse(c.Element("StartCycleIndex").Value),
-                                    EndCycleIndex = int.Parse(c.Element("EndCycleIndex").Value),
-                                    PWMDutyOpenValue = short.Parse(c.Element("PWMDutyOpenValue").Value),
-                                    PWMDutyCloseValue = short.Parse(c.Element("PWMDutyCloseValue").Value),
-                                    PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
-                                    PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
-                                    SensitiveCtrlDuration = int.Parse(c.Element("SensitiveCtrlDuration").Value),
-                                    CycleRange = int.Parse(c.Element("CycleRange").Value),
-                                    HexDump1ByteOpenValue = c.Element("HexDump1ByteOpenValue").Value.ToString()
-                                }).First(),
-                            Cycles = e.Element("Cycles").Elements("Cycle")
-                                .Select(c => new Cycle
-                                {
-                                    Name = c.Element("Name").Value,
-                                    OpenAt = int.Parse(c.Element("OpenAt").Value),
-                                    CloseAt = int.Parse(c.Element("CloseAt").Value),
-                                    Functions = c.Element("Functions").Elements("Function")
-                                        .Select(f => new Function
-                                        {
-                                            Control = f.Attribute("control")?.Value,
-                                            ControlInfo = controls.FirstOrDefault(x => x.Name == f.Attribute("control")?.Value),
-                                            Scenario = f.Attribute("scenario")?.Value,
-                                            Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
-                                        }).ToList(),
-                                }).ToList(),
-                            ContinousReadList = e.Element("ContinousReadList").Elements("Func")
-                                 .Select(f => new Function
-                                 {
-                                     Name = f.Value,
-                                     Control = f.Attribute("parent")?.Value ?? null,
-                                 }).ToList(),
+                    Address = Convert.ToUInt16(c.Element("Address").Value, 16),
+                    Name = c.Element("Name").Value,
+                    Type = c.Element("Type").Value,
+                    Group = c.Element("Group")?.Value,
+                    Services = c.Element("Services").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList(),
+                    SessionActiveException = c.Element("SessionActiveException") != null && c.Element("SessionActiveException").Value != "" ? c.Element("SessionActiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+                    SessionInactiveException = c.Element("SessionInactiveException") != null && c.Element("SessionInactiveException").Value != "" ? c.Element("SessionInactiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
 
-                                    SensitiveControls = e.Element("SensitiveControls").Elements("Function")
-                                        .Select(f => new Function
-                                        {
-                                            Control = f.Attribute("control")?.Value,
-                                            Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
-                                        }).ToList(),
-                                    Scenarios = e.Element("Scenarios").Elements("Scenario")
-                                        .Select(s => new Scenario
-                                        {
-                                            Address = Convert.ToUInt16(s.Element("Address").Value, 16),
-                                            Name = s.Element("Name").Value,
-                                            OpenPayloads = s.Element("OpenPayloads").Elements("Payload").Select(x => x.Value).ToList(),
-                                            ClosePayloads = s.Element("ClosePayloads").Elements("Payload").Select(x => x.Value).ToList(),
-                                        }).ToList(),
-                                }).ToList(),
-                        }).First();
-
-                    #endregion
-                    return new ConfigurationInfo
+                    Responses = c.Element("Responses") != null ?
+                    c.Element("Responses").Elements("Response").Select(x =>
+                    new ResponseInfo
                     {
-                        Settings = settings,
-                        Services = services,
-                        Sessions = sessions,
-                        Controls = controls,
-                        Payloads = payloads,
-                        DTCFailureTypes = dtcFailureTypes,
-                        EnvironmentalTest = environmentalTest
-                    };
-                }
+                        ServiceID = Convert.ToByte(x.Attribute("serviceId").Value, 16),
+                        Payloads = x.Elements("Payload") != null ? x.Elements("Payload").Select((y, i) => new PayloadInfo
+                        {
+                            Name = y.Attribute("name").Value,
+                            TypeName = y.Attribute("typeName").Value,
+                            DTCCode = y.Attribute("dtcCode")?.Value,
+                            Bits = y.Elements("Payload").Select(z => new PayloadInfo
+                            {
+                                Name = z.Attribute("name").Value,
+                                TypeName = z.Attribute("typeName").Value,
+                                IsBit = true,
+                            }).ToList()
+                        }).ToList() : new List<PayloadInfo>(),
+                    }).ToList() : new List<ResponseInfo>(),
+                }).ToList();
+                var payloads = doc.Descendants("Payloads").Descendants("Payload")
+                    .Select(s => new PayloadInfo
+                    {
+                        Length = int.Parse(s.Attribute("length").Value),
+                        TypeName = s.Attribute("typeName").Value,
+                        Values = s.Elements("Value")
+                            .Select(x => new PayloadValue
+                            {
+                                ValueString = x.Attribute("value").Value,
+                                Color = x.Attribute("color")?.Value ?? null,
+                                FormattedValue = x.Value,
+                                IsClose = x.Attribute("isClose")?.Value == "true",
+                                IsOpen = x.Attribute("isOpen")?.Value == "true",
+                            }).ToList(),
+                    })
+                    .ToList();
+                var EMCLayout = doc.Descendants("EMCLayout").Descendants("Group").Select(e => new EMCLayout
+                {
+                    Name = e.Element("Name").Value,
+                    Layouts = e.Element("Layout") != null ?
+                        e.Element("Layout").Descendants("Item").Select(v =>
+                            new Layout
+                            {
+                                Control = v.Attribute("parent").Value,
+                                Name = v.Value,
+                                FunctionFeature = v.Attribute("functionFeature")?.Value ?? null,
+                                LoadFeature = v.Attribute("loadFeature")?.Value ?? null,
+
+                            }).ToList() : new List<Layout>()
+                }).ToList();
+
+                var dtcFailureTypes = doc.Descendants("DTCFailureTypes").Descendants("Type")
+                    .Select(t => new DTCFailure
+                    {
+                        Value = Convert.ToByte(t.Attribute("value").Value, 16),
+                        Description = t.Value,
+                    })
+                    .ToList();
 
 
+                #region Environmental Test
+
+                var environmentalTest = doc.Descendants("EnvironmentalTest")
+                    .Select(t => new EnvironmentalTest
+                    {
+                        ConnectionMappings = t.Element("ConnectionMappings").Elements("Mapping")
+                            .Select(m => new Mapping
+                            {
+                                Input = m.Elements("Input")
+                                    .Select(f => new Function
+                                    {
+                                        Name = f.Value,
+                                        Control = f.Attribute("parent")?.Value ?? null,
+                                    }).First(),
+                                Output = m.Elements("Output")
+                                    .Select(f => new Function
+                                    {
+                                        Name = f.Value,
+                                        Control = f.Attribute("parent")?.Value ?? null,
+                                    }).First(),
+                            }).ToList(),
+                        Environments = t.Element("Environments").Elements("Environment")
+                            .Select(e => new Environment
+                            {
+                                Name = e.Element("Name").Value,
+                                EnvironmentalConfig = e.Descendants("EnvironmentalConfig")
+                                    .Select(c => new EnvironmentalConfig
+                                    {
+                                        CycleTime = int.Parse(c.Element("CycleTime").Value),
+                                        TxInterval = int.Parse(c.Element("TxInterval").Value),
+                                        StartCycleIndex = int.Parse(c.Element("StartCycleIndex").Value),
+                                        EndCycleIndex = int.Parse(c.Element("EndCycleIndex").Value),
+                                        PWMDutyOpenValue = short.Parse(c.Element("PWMDutyOpenValue").Value),
+                                        PWMDutyCloseValue = short.Parse(c.Element("PWMDutyCloseValue").Value),
+                                        PWMFreqOpenValue = byte.Parse(c.Element("PWMFreqOpenValue").Value),
+                                        PWMFreqCloseValue = byte.Parse(c.Element("PWMFreqCloseValue").Value),
+                                        SensitiveCtrlDuration = int.Parse(c.Element("SensitiveCtrlDuration").Value),
+                                        CycleRange = int.Parse(c.Element("CycleRange").Value),
+                                        HexDump1ByteOpenValue = c.Element("HexDump1ByteOpenValue").Value.ToString()
+                                    }).First(),
+                                Cycles = e.Element("Cycles").Elements("Cycle")
+                                    .Select(c => new Cycle
+                                    {
+                                        Name = c.Element("Name").Value,
+                                        OpenAt = int.Parse(c.Element("OpenAt").Value),
+                                        CloseAt = int.Parse(c.Element("CloseAt").Value),
+                                        Functions = c.Element("Functions").Elements("Function")
+                                            .Select(f => new Function
+                                            {
+                                                Control = f.Attribute("control")?.Value,
+                                                ControlInfo = controls.FirstOrDefault(x => x.Name == f.Attribute("control")?.Value),
+                                                Scenario = f.Attribute("scenario")?.Value,
+                                                Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
+                                            }).ToList(),
+                                    }).ToList(),
+                                ContinousReadList = e.Element("ContinousReadList").Elements("Func")
+                                     .Select(f => new Function
+                                     {
+                                         Name = f.Value,
+                                         Control = f.Attribute("parent")?.Value ?? null,
+                                     }).ToList(),
+
+                                SensitiveControls = e.Element("SensitiveControls").Elements("Function")
+                                            .Select(f => new Function
+                                            {
+                                                Control = f.Attribute("control")?.Value,
+                                                Payloads = f.Elements("Payload").Select(x => x.Value).ToList()
+                                            }).ToList(),
+                                Scenarios = e.Element("Scenarios").Elements("Scenario")
+                                            .Select(s => new Scenario
+                                            {
+                                                Address = Convert.ToUInt16(s.Element("Address").Value, 16),
+                                                Name = s.Element("Name").Value,
+                                                OpenPayloads = s.Element("OpenPayloads").Elements("Payload").Select(x => x.Value).ToList(),
+                                                ClosePayloads = s.Element("ClosePayloads").Elements("Payload").Select(x => x.Value).ToList(),
+                                            }).ToList(),
+                            }).ToList(),
+                    }).First();
+
+                #endregion
+                return new ConfigurationInfo
+                {
+                    Settings = settings,
+                    Services = services,
+                    Sessions = sessions,
+                    Layouts = EMCLayout,
+                    Controls = controls,
+                    Payloads = payloads,
+                    DTCFailureTypes = dtcFailureTypes,
+                    EnvironmentalTest = environmentalTest
+                };
             }
 
-            internal ServiceInfo GetServiceByResponseID(byte serviceID)
-            {
-                return Services.Where(x => x.ResponseID == serviceID).FirstOrDefault();
-            }
 
-            internal ServiceInfo GetServiceByRequestID(byte serviceID)
-            {
-                return Services.Where(x => x.RequestID == serviceID).FirstOrDefault();
-            }
-
-            internal ControlInfo GetControlByAddress(ushort controlAddress)
-            {
-                return Controls.Where(x => x.Address == controlAddress).FirstOrDefault();
-            }
-
-            internal PayloadInfo GetPayloadInfoByType(string typeName)
-            {
-                return Payloads?.FirstOrDefault(x => x.TypeName == typeName);
-            }
         }
 
-        public class ASContext
+        internal ServiceInfo GetServiceByResponseID(byte serviceID)
         {
-            public static SessionInfo CurrentSession { get; set; }
-            public static ConfigurationInfo Configuration { get; set; }
-
-            public ASContext(string configFile, bool isMdxFile)
-            {
-                if (configFile != null)
-                    Configuration = ConfigurationInfo.Parse(configFile, isMdxFile);
-            }
+            return Services.Where(x => x.ResponseID == serviceID).FirstOrDefault();
         }
-        public class EnvironmentalTest
+
+        internal ServiceInfo GetServiceByRequestID(byte serviceID)
         {
-            /// <summary>
-            /// Name of current selected environment
-            /// </summary>
-            public static string CurrentEnvironment { get; set; }
-
-            /// <summary>
-            /// Gets or sets a list of connection mappings.
-            /// </summary>
-            public List<Mapping> ConnectionMappings { get; set; }
-            /// <summary>
-            /// Gets or sets the environments
-            /// </summary>
-            public List<Environment> Environments { get; set; }
+            return Services.Where(x => x.RequestID == serviceID).FirstOrDefault();
         }
 
-        public class Environment
+        internal ControlInfo GetControlByAddress(ushort controlAddress)
         {
-            /// <summary>
-            /// Name of environment
-            /// </summary>
-            public string Name { get; set; }
-            /// <summary>
-            /// Gets or sets the environment configs
-            /// </summary>
-            public EnvironmentalConfig EnvironmentalConfig { get; set; }
-            /// Gets or sets a list of continuous read functions.
-            /// </summary>
-            public List<Function> ContinousReadList { get; set; }
-            /// <summary>
-            /// Gets or sets the test cycles
-            /// </summary>
-            public List<Cycle> Cycles { get; set; }
-            /// <summary>
-            /// Gets or sets a list of sensitive controls
-            /// </summary>
-            public List<Function> SensitiveControls { get; set; }
-            /// <summary>
-            /// Gets or sets a list of scenarios
-            /// </summary>
-            public List<Scenario> Scenarios { get; set; }
+            return Controls.Where(x => x.Address == controlAddress).FirstOrDefault();
         }
+
+        internal PayloadInfo GetPayloadInfoByType(string typeName)
+        {
+            return Payloads?.FirstOrDefault(x => x.TypeName == typeName);
+        }
+    }
+
+    public class ASContext
+    {
+        public static SessionInfo CurrentSession { get; set; }
+        public static ConfigurationInfo Configuration { get; set; }
+
+        public ASContext(string configFile, bool isMdxFile)
+        {
+            if (configFile != null)
+                Configuration = ConfigurationInfo.Parse(configFile, isMdxFile);
+        }
+    }
+    public class EnvironmentalTest
+    {
+        /// <summary>
+        /// Name of current selected environment
+        /// </summary>
+        public static string CurrentEnvironment { get; set; }
 
         /// <summary>
-        /// Mapping output-input class
+        /// Gets or sets a list of connection mappings.
         /// </summary>
-        public class Mapping
-        {
-            #region Properties
+        public List<Mapping> ConnectionMappings { get; set; }
+        /// <summary>
+        /// Gets or sets the environments
+        /// </summary>
+        public List<Environment> Environments { get; set; }
+    }
 
-            /// <summary>
-            /// Output name
-            /// </summary>
-            public Function Output { get; set; }
-            /// <summary>
-            /// Relevant Input Name
-            /// </summary>
-            public Function Input { get; set; }
+    public class Environment
+    {
+        /// <summary>
+        /// Name of environment
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the environment configs
+        /// </summary>
+        public EnvironmentalConfig EnvironmentalConfig { get; set; }
+        /// Gets or sets a list of continuous read functions.
+        /// </summary>
+        public List<Function> ContinousReadList { get; set; }
+        /// <summary>
+        /// Gets or sets the test cycles
+        /// </summary>
+        public List<Cycle> Cycles { get; set; }
+        /// <summary>
+        /// Gets or sets a list of sensitive controls
+        /// </summary>
+        public List<Function> SensitiveControls { get; set; }
+        /// <summary>
+        /// Gets or sets a list of scenarios
+        /// </summary>
+        public List<Scenario> Scenarios { get; set; }
+    }
 
-            #endregion
-        }
+    /// <summary>
+    /// Mapping output-input class
+    /// </summary>
+    public class Mapping
+    {
+        #region Properties
 
         /// <summary>
-        /// Common config class
+        /// Output name
         /// </summary>
-        public class EnvironmentalConfig
-        {
-            #region Properties
+        public Function Output { get; set; }
+        /// <summary>
+        /// Relevant Input Name
+        /// </summary>
+        public Function Input { get; set; }
 
-            /// <summary>
-            /// Gets or sets the time interval for generic test
-            /// </summary>
-            public int CycleTime { get; set; }
-            /// <summary>
-            /// gets or sets cycle time for environmental tests
-            /// </summary>
-            public int TxInterval { get; set; }
-            /// <summary>
-            /// Gets or sets the start index of the cycles
-            /// </summary>
-            public int StartCycleIndex { get; set; }
-            /// <summary>
-            /// Gets or sets the end index of the cycles
-            /// </summary>
-            public int EndCycleIndex { get; set; }
-            ///
-            /// Gets or sets the message of PWM Open Duty value
-            /// </summary>
-            public short PWMDutyOpenValue { get; set; }
-            /// <summary>
-            /// Gets or sets the message of PWM Close Duty value
-            /// </summary>
-            public short PWMDutyCloseValue { get; set; }
-            /// <summary>
-            /// Gets or sets the message of PWM Open Frequency value
-            /// </summary>
-            public short PWMFreqOpenValue { get; set; }
-            /// <summary>
-            /// Gets or sets the message of PWM Close Frequency value
-            /// </summary>
-            public short PWMFreqCloseValue { get; set; }
-            /// <summary>
-            /// Gets or sets the duration of sensitive control
-            /// </summary>
-            public int SensitiveCtrlDuration { get; set; }
+        #endregion
+    }
+
+    /// <summary>
+    /// Common config class
+    /// </summary>
+    public class EnvironmentalConfig
+    {
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the time interval for generic test
+        /// </summary>
+        public int CycleTime { get; set; }
+        /// <summary>
+        /// gets or sets cycle time for environmental tests
+        /// </summary>
+        public int TxInterval { get; set; }
+        /// <summary>
+        /// Gets or sets the start index of the cycles
+        /// </summary>
+        public int StartCycleIndex { get; set; }
+        /// <summary>
+        /// Gets or sets the end index of the cycles
+        /// </summary>
+        public int EndCycleIndex { get; set; }
+        ///
+        /// Gets or sets the message of PWM Open Duty value
+        /// </summary>
+        public short PWMDutyOpenValue { get; set; }
+        /// <summary>
+        /// Gets or sets the message of PWM Close Duty value
+        /// </summary>
+        public short PWMDutyCloseValue { get; set; }
+        /// <summary>
+        /// Gets or sets the message of PWM Open Frequency value
+        /// </summary>
+        public short PWMFreqOpenValue { get; set; }
+        /// <summary>
+        /// Gets or sets the message of PWM Close Frequency value
+        /// </summary>
+        public short PWMFreqCloseValue { get; set; }
+        /// <summary>
+        /// Gets or sets the duration of sensitive control
+        /// </summary>
+        public int SensitiveCtrlDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the frequency of loop
@@ -860,77 +880,86 @@ namespace AutosarBCM.Core
         /// </summary>
         public string HexDump1ByteOpenValue { get; set; }
 
-            #endregion
-        }
+        #endregion
+    }
+
+    /// <summary>
+    /// Test Cycle
+    /// </summary>
+    public class Cycle
+    {
+        #region Properties
 
         /// <summary>
-        /// Test Cycle
+        /// Name of cycle
         /// </summary>
-        public class Cycle
-        {
-            #region Properties
-
-            /// <summary>
-            /// Name of cycle
-            /// </summary>
-            public string Name { get; set; }
-            /// <summary>
-            /// Cycle number of outputs to be opened
-            /// </summary>
-            public int OpenAt { get; set; }
-            /// <summary>
-            /// Cycle number of outputs to be closed
-            /// </summary>
-            public int CloseAt { get; set; }
-            /// <summary>
-            /// List of functions
-            /// </summary>
-            public List<Function> Functions { get; set; }
-
-            public HashSet<Function> CloseItems { get; set; } = new HashSet<Function>();
-            public HashSet<Function> OpenItems { get; set; } = new HashSet<Function>();
-
-            #endregion
-
-            public Cycle() { }
-            public Cycle(Cycle cycle)
-            {
-                Name = cycle.Name;
-                OpenAt = cycle.OpenAt;
-                CloseAt = cycle.CloseAt;
-                Functions = cycle.Functions;
-            }
-        }
-
-        public class Function
-        {
-            public string Name { get; set; }
-            public string Control { get; set; }
-            public string Scenario { get; set; }
-            public ControlInfo ControlInfo { get; set; }
-            public List<string> Payloads { get; set; }
-        }
-
+        public string Name { get; set; }
         /// <summary>
-        /// Represents a test scenario containing a list of open and close payloads
+        /// Cycle number of outputs to be opened
         /// </summary>
-        public class Scenario
+        public int OpenAt { get; set; }
+        /// <summary>
+        /// Cycle number of outputs to be closed
+        /// </summary>
+        public int CloseAt { get; set; }
+        /// <summary>
+        /// List of functions
+        /// </summary>
+        public List<Function> Functions { get; set; }
+
+        public HashSet<Function> CloseItems { get; set; } = new HashSet<Function>();
+        public HashSet<Function> OpenItems { get; set; } = new HashSet<Function>();
+
+        #endregion
+
+        public Cycle() { }
+        public Cycle(Cycle cycle)
         {
-            /// <summary>
-            /// Gets or sets the address of the relevant control
-            /// </summary>
-            public ushort Address { get; set; }
-            /// <summary>
-            /// Gets or sets the name of the payload relevant to the scenario
-            /// </summary>
-            public string Name { get; set; }
-            /// <summary>
-            /// Gets or sets the list of open payloads
-            /// </summary>
-            public List<string> OpenPayloads { get; set; }
-            /// <summary>
-            /// Gets or sets the list of close payloads
-            /// </summary>
-            public List<string> ClosePayloads { get; set; }
+            Name = cycle.Name;
+            OpenAt = cycle.OpenAt;
+            CloseAt = cycle.CloseAt;
+            Functions = cycle.Functions;
         }
     }
+
+    public class Layout
+    {
+        public string Name { get; set; }
+        public string Control { get; set; }
+        public ControlInfo ControlInfo { get; set; }
+        public string FunctionFeature { get; set; }
+        public string LoadFeature { get; set; }
+    }
+
+    public class Function
+    {
+        public string Name { get; set; }
+        public string Control { get; set; }
+        public string Scenario { get; set; }
+        public ControlInfo ControlInfo { get; set; }
+        public List<string> Payloads { get; set; }
+    }
+
+    /// <summary>
+    /// Represents a test scenario containing a list of open and close payloads
+    /// </summary>
+    public class Scenario
+    {
+        /// <summary>
+        /// Gets or sets the address of the relevant control
+        /// </summary>
+        public ushort Address { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the payload relevant to the scenario
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the list of open payloads
+        /// </summary>
+        public List<string> OpenPayloads { get; set; }
+        /// <summary>
+        /// Gets or sets the list of close payloads
+        /// </summary>
+        public List<string> ClosePayloads { get; set; }
+    }
+}

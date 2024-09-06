@@ -40,7 +40,7 @@ namespace AutosarBCM
 
         List<DataGridViewRow> excelData = new List<DataGridViewRow>();
         private List<UCEmcReadOnlyItem> ucItems = new List<UCEmcReadOnlyItem>();
-        private SortedDictionary<string, List<UCEmcReadOnlyItem>> groups = new SortedDictionary<string, List<UCEmcReadOnlyItem>>();
+        private Dictionary<string, List<UCEmcReadOnlyItem>> groups = new Dictionary<string, List<UCEmcReadOnlyItem>>();
 
         private int emcDataLimit;
 
@@ -75,24 +75,48 @@ namespace AutosarBCM
         /// </summary>
         private void InitializeCards()
         {
+            pnlCardLayout.Controls.Clear();
             //TODO XML EMC layouttan çekilecek
-            foreach (var ctrl in ASContext.Configuration.Controls.Where(c => c.Group == "DID"))
+            foreach (var group in ASContext.Configuration.Layouts)
             {
-                foreach (var payload in ctrl.Responses[0].Payloads)
+                foreach (var item in group.Layouts)
                 {
-                    var ucItem = new UCEmcReadOnlyItem(ctrl, payload);
-                    ucItems.Add(ucItem);
-
-                    if (string.IsNullOrEmpty(payload.DTCCode))
+                    var ctrl = ASContext.Configuration.Controls.First(x => x.Name == item.Control);
+                    if (ctrl == null)
                         continue;
-                    dtcList[payload.DTCCode] = ctrl;
-                }
-                groups["DID"] = ucItems;
-            }
+                    var payload = ctrl.Responses[0].Payloads.First(x => x.Name == item.Name);
+                    if (payload == null)
+                        continue;
 
+                    var ucItem = new UCEmcReadOnlyItem(ctrl, payload, item);
+                    ucItems.Add(ucItem);
+                    if (!string.IsNullOrEmpty(payload.DTCCode))
+                        dtcList[payload.DTCCode] = ctrl;
+                        
+                    //if (!groups.ContainsKey("Other"))
+                    //{
+                    //    groups["Other"] = new List<UCEmcReadOnlyItem>();
+                    //}
+                    if (!string.IsNullOrEmpty(group.Name))
+                    {
+                        if (!groups.ContainsKey(group.Name))
+                        {
+                            groups.Add(group.Name, new List<UCEmcReadOnlyItem>());
+                        }
+                        groups[group.Name].Add(ucItem);
+                    }
+                    else
+                    {
+                        groups["Other"].Add(ucItem);
+                    }
+                }
+
+            }
             foreach (var group in groups)
             {
                 var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
+                var label = new Label { Text = group.Key, AutoSize = true, Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold) };
+                pnlCardLayout.Controls.Add(label);
 
                 flowPanelGroup.Paint += pnlMonitorInput_Paint;
 
@@ -103,6 +127,20 @@ namespace AutosarBCM
 
                 pnlCardLayout.Controls.Add(flowPanelGroup);
             }
+
+            //foreach (var group in groups)
+            //{
+            //    var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
+
+            //    flowPanelGroup.Paint += pnlMonitorInput_Paint;
+
+            //    foreach (var ucItem in group.Value)
+            //    {
+            //        flowPanelGroup.Controls.Add(ucItem);
+            //    }
+
+            //    pnlCardLayout.Controls.Add(flowPanelGroup);
+            //}
         }
 
         /// <summary>
@@ -444,11 +482,11 @@ namespace AutosarBCM
             var emcItem = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == controlName);
             if (emcItem == null)
                 return false;
-            else 
-            { 
+            else
+            {
                 emcItem.Transmit(ServiceInfo.WriteDataByIdentifier, new byte[] { isActive ? (byte)1 : (byte)0 });
                 return true;
-            } 
+            }
         }
 
 

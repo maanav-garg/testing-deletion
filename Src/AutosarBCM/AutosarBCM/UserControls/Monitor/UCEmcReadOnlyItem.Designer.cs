@@ -34,6 +34,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.lblWriteStatus = new System.Windows.Forms.Label();
             this.lblParent = new System.Windows.Forms.Label();
+            this.lblLoadFeature = new System.Windows.Forms.Label();
+            this.lblFunctionFeature = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblName
@@ -95,11 +97,33 @@
             this.lblParent.TabIndex = 18;
             this.lblParent.Text = "label1";
             // 
+            // lblLoadFeature
+            // 
+            this.lblLoadFeature.AutoSize = true;
+            this.lblLoadFeature.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblLoadFeature.Location = new System.Drawing.Point(188, 1);
+            this.lblLoadFeature.Name = "lblLoadFeature";
+            this.lblLoadFeature.Size = new System.Drawing.Size(19, 17);
+            this.lblLoadFeature.TabIndex = 19;
+            this.lblLoadFeature.Text = " -";
+            // 
+            // lblFunctionFeature
+            // 
+            this.lblFunctionFeature.AutoSize = true;
+            this.lblFunctionFeature.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblFunctionFeature.Location = new System.Drawing.Point(228, 1);
+            this.lblFunctionFeature.Name = "lblFunctionFeature";
+            this.lblFunctionFeature.Size = new System.Drawing.Size(19, 17);
+            this.lblFunctionFeature.TabIndex = 20;
+            this.lblFunctionFeature.Text = " -";
+            // 
             // UCEmcReadOnlyItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.lblFunctionFeature);
+            this.Controls.Add(this.lblLoadFeature);
             this.Controls.Add(this.lblParent);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.lblWriteStatus);
@@ -121,5 +145,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblWriteStatus;
         private System.Windows.Forms.Label lblParent;
+        private System.Windows.Forms.Label lblLoadFeature;
+        private System.Windows.Forms.Label lblFunctionFeature;
     }
 }

@@ -17,11 +17,6 @@ namespace AutosarBCM.UserControls.Monitor
     public partial class UCEmcReadOnlyItem : UserControl
     {
         #region Variables
-
-        /// <summary>
-        /// Represents an output monitor item associated with this control.
-        /// </summary>
-        public OutputMonitorItem Item;
         /// <summary>
         /// Represents a control item associated with this control.
         /// </summary>
@@ -57,14 +52,6 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         private Tuple<string, Color> currentValue;
 
-        private float MessagesReceived;
-        private float MessagesTransmitted;
-
-        /// <summary>
-        /// An array to store RSSI (Received Signal Strength Indicator) measurement values.
-        /// </summary>
-        private float[] rssiValues = new float[3];
-
         public string CurrentDtcDescription { get; set;}
 
 
@@ -81,35 +68,7 @@ namespace AutosarBCM.UserControls.Monitor
 
         #region Constructor
 
-        /// <summary>
-        /// Initializes a new instance of the UCReadOnlyOutputItem class with the specified OutputMonitorItem and message ID.
-        /// </summary>
-        /// <param name="item">The OutputMonitorItem associated with this control.</param>
-        /// <param name="messageID">The message ID to be used for communication.</param>
-        public UCEmcReadOnlyItem(OutputMonitorItem item, string messageID)
-        {
-            InitializeComponent();
-
-            this.Item = item;
-
-            MessageID = item.MessageID = messageID;
-
-            if (item.Name.Length > 23)
-                lblName.Text = $"{item.Name.Substring(0, 20)}...";
-            else
-                lblName.Text = item.Name;
-
-            if (Item.SendData?.Length > 0)
-                sendDataGroup = (short)(Helper.GetValueOfPrimitive(Item.SendData, 2, 2));
-
-            if (item.ItemType == "PEPS")
-            {
-            }
-
-            currentValue = new Tuple<string, Color>(lblDtcStatus.Text, lblDtcStatus.ForeColor);
-        }
-
-        public UCEmcReadOnlyItem(ControlInfo controlInfo, PayloadInfo payloadInfo)
+        public UCEmcReadOnlyItem(ControlInfo controlInfo, PayloadInfo payloadInfo, Layout layout)
         {
             InitializeComponent();
             ControlInfo = controlInfo;
@@ -133,6 +92,10 @@ namespace AutosarBCM.UserControls.Monitor
                 lblName.Text = $"{payloadInfo.Name.Substring(0, 27)}...";
             else
                 lblName.Text = payloadInfo.Name;
+
+            lblFunctionFeature.Text = layout.FunctionFeature;
+            lblLoadFeature.Text = layout.LoadFeature;
+
         }
 
         #endregion
