@@ -52,7 +52,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         private Tuple<string, Color> currentValue;
 
-        public string CurrentDtcDescription { get; set;}
+        public string CurrentDtcDescription { get; set; }
 
 
         /// <summary>
@@ -63,12 +63,14 @@ namespace AutosarBCM.UserControls.Monitor
         /// Gets or sets the previous (old) value of the input item for Write service.
         /// </summary>
         private WriteDataByIdentifierService oldValueForWriteService;
-        
+
+        private UCEmcReadOnlyItem uCEmcReadOnlyItem;
+
         #endregion
 
         #region Constructor
 
-        public UCEmcReadOnlyItem(ControlInfo controlInfo, PayloadInfo payloadInfo, Layout layout)
+        public UCEmcReadOnlyItem(ControlInfo controlInfo, PayloadInfo payloadInfo, Layout layout, string bgColor, string txColor)
         {
             InitializeComponent();
             ControlInfo = controlInfo;
@@ -85,14 +87,14 @@ namespace AutosarBCM.UserControls.Monitor
             {
                 lblParent.Text = controlInfo.Name;
             }
-    
             toolTip.SetToolTip(this.lblName, payloadInfo.Name);
 
             if (payloadInfo.Name.Length > 30)
                 lblName.Text = $"{payloadInfo.Name.Substring(0, 27)}...";
             else
                 lblName.Text = payloadInfo.Name;
-
+            //uCEmcReadOnlyItem.BackColor = Color.FromName(bgColor);
+            //uCEmcReadOnlyItem.ForeColor = Color.FromName(txColor);
             lblFunctionFeature.Text = layout.FunctionFeature;
             lblLoadFeature.Text = layout.LoadFeature;
 
@@ -144,7 +146,7 @@ namespace AutosarBCM.UserControls.Monitor
             });
 
         }
-     
+
         private ToolTip toolTipDtc = new ToolTip();
 
         /// <summary>
@@ -169,7 +171,7 @@ namespace AutosarBCM.UserControls.Monitor
             }
             CurrentDtcDescription = dtc;
         }
-       
+
 
         #endregion
 

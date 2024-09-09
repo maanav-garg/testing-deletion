@@ -71,6 +71,8 @@
   <EMCLayout>
     <Group>
       <Name>24V High Side - 1</Name>
+      <bgColor color="Red" />
+      <textColor color="Black" />
       <Layout>
         <Item parent="Horn_Output_Control" functionFeature="" loadFeature="∞">C1.11_Horn Output Control</Item>
         <Item parent="Daytime_Running_Light_Output" functionFeature="" loadFeature="¤">C2.9_DDRLSupplyLeft</Item>
@@ -120,6 +122,8 @@
     </Group>
     <Group>
       <Name>24V High Side - 2</Name>
+      <bgColor color="Red"></bgColor>
+      <textColor color="Black"></textColor>
       <Layout>
         <Item parent="Spare_Digital_Outputs" functionFeature="" loadFeature="¤">C4.48_SpareDigitalOutput3</Item>
         <Item parent="LED_Outputs" functionFeature="" loadFeature="¤">C4.49_LDWSFuncIlluminationLED</Item>
@@ -135,6 +139,8 @@
     </Group>
     <Group>
       <Name>12V HIGH SIDE</Name>
+      <bgColor color="Cyan"></bgColor>
+      <textColor color="Black"></textColor>
       <Layout>
         <Item parent="Hall_Sensor_Supply" functionFeature="" loadFeature="●">C4.28_HallSensorLeftSupply</Item>
         <Item parent="Hall_Sensor_Supply" functionFeature="" loadFeature="●">C4.46_HallSensorRightSupply</Item>
@@ -148,7 +154,34 @@
     </Group>
     <Group>
       <Name>LOW SIDE</Name>
+      <bgColor color="Black"></bgColor>
+      <textColor color="White"></textColor>
       <Layout>
+        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>Full Bridge | Half Bridge</Name>
+      <bgColor color="Pink"></bgColor>
+      <textColor color="Black"></textColor>
+      <Layout>
+        <Item parent="Passenger_Power_Window_Motor" functionFeature="" loadFeature="∞">C1.2_Passenger Power Window Motor Up</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
+        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
+        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
+        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
+        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
         <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
         <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
         <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>

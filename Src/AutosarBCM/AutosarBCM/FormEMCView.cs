@@ -82,13 +82,14 @@ namespace AutosarBCM
                 foreach (var item in group.Layouts)
                 {
                     var ctrl = ASContext.Configuration.Controls.First(x => x.Name == item.Control);
+                    
                     if (ctrl == null)
                         continue;
                     var payload = ctrl.Responses[0].Payloads.First(x => x.Name == item.Name);
                     if (payload == null)
                         continue;
 
-                    var ucItem = new UCEmcReadOnlyItem(ctrl, payload, item);
+                    var ucItem = new UCEmcReadOnlyItem(ctrl, payload, item, group.BackgroundColor, group.TextColor);
                     ucItems.Add(ucItem);
                     if (!string.IsNullOrEmpty(payload.DTCCode))
                         dtcList[payload.DTCCode] = ctrl;

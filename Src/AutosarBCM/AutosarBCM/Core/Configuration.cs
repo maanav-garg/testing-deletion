@@ -12,6 +12,7 @@ using AutosarBCM.Properties;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
+using System.Drawing;
 
 namespace AutosarBCM.Core
 {
@@ -47,6 +48,8 @@ namespace AutosarBCM.Core
     public class EMCLayout
     {
         public string Name { get; set; }
+        public string BackgroundColor { get; set; }
+        public string TextColor { get; set; }
         public List<Layout> Layouts { get; set; }
     }
     public class ControlInfo
@@ -566,36 +569,36 @@ namespace AutosarBCM.Core
                     })
                     .ToList();
 
-                    var controls = doc.Descendants("Control")
-                .Select(c => new ControlInfo
-                {
-                    Address = Convert.ToUInt16(c.Element("Address").Value, 16),
-                    Name = c.Element("Name").Value,
-                    Type = c.Element("Type").Value,
-                    Group = c.Element("Group")?.Value,
-                    Services = c.Element("Services").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList(),
-                    SessionActiveException = c.Element("SessionActiveException") != null && c.Element("SessionActiveException").Value != "" ? c.Element("SessionActiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
-                    SessionInactiveException = c.Element("SessionInactiveException") != null && c.Element("SessionInactiveException").Value != "" ? c.Element("SessionInactiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+                var controls = doc.Descendants("Control")
+            .Select(c => new ControlInfo
+            {
+                Address = Convert.ToUInt16(c.Element("Address").Value, 16),
+                Name = c.Element("Name").Value,
+                Type = c.Element("Type").Value,
+                Group = c.Element("Group")?.Value,
+                Services = c.Element("Services").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList(),
+                SessionActiveException = c.Element("SessionActiveException") != null && c.Element("SessionActiveException").Value != "" ? c.Element("SessionActiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+                SessionInactiveException = c.Element("SessionInactiveException") != null && c.Element("SessionInactiveException").Value != "" ? c.Element("SessionInactiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
 
-                    Responses = c.Element("Responses") != null ?
-                    c.Element("Responses").Elements("Response").Select(x =>
-                    new ResponseInfo
+                Responses = c.Element("Responses") != null ?
+                c.Element("Responses").Elements("Response").Select(x =>
+                new ResponseInfo
+                {
+                    ServiceID = Convert.ToByte(x.Attribute("serviceId").Value, 16),
+                    Payloads = x.Elements("Payload") != null ? x.Elements("Payload").Select((y, i) => new PayloadInfo
                     {
-                        ServiceID = Convert.ToByte(x.Attribute("serviceId").Value, 16),
-                        Payloads = x.Elements("Payload") != null ? x.Elements("Payload").Select((y, i) => new PayloadInfo
+                        Name = y.Attribute("name").Value,
+                        TypeName = y.Attribute("typeName").Value,
+                        DTCCode = y.Attribute("dtcCode")?.Value,
+                        Bits = y.Elements("Payload").Select(z => new PayloadInfo
                         {
-                            Name = y.Attribute("name").Value,
-                            TypeName = y.Attribute("typeName").Value,
-                            DTCCode = y.Attribute("dtcCode")?.Value,
-                            Bits = y.Elements("Payload").Select(z => new PayloadInfo
-                            {
-                                Name = z.Attribute("name").Value,
-                                TypeName = z.Attribute("typeName").Value,
-                                IsBit = true,
-                            }).ToList()
-                        }).ToList() : new List<PayloadInfo>(),
-                    }).ToList() : new List<ResponseInfo>(),
-                }).ToList();
+                            Name = z.Attribute("name").Value,
+                            TypeName = z.Attribute("typeName").Value,
+                            IsBit = true,
+                        }).ToList()
+                    }).ToList() : new List<PayloadInfo>(),
+                }).ToList() : new List<ResponseInfo>(),
+            }).ToList();
                 var payloads = doc.Descendants("Payloads").Descendants("Payload")
                     .Select(s => new PayloadInfo
                     {
@@ -615,6 +618,8 @@ namespace AutosarBCM.Core
                 var EMCLayout = doc.Descendants("EMCLayout").Descendants("Group").Select(e => new EMCLayout
                 {
                     Name = e.Element("Name").Value,
+                    BackgroundColor = e.Element("bgColor").Attribute("color").Value ?? null,
+                    TextColor = e.Element("textColor").Attribute("color").Value ?? null,
                     Layouts = e.Element("Layout") != null ?
                         e.Element("Layout").Descendants("Item").Select(v =>
                             new Layout
