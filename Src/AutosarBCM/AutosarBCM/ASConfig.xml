@@ -167,24 +167,64 @@
       <bgColor color="Pink"></bgColor>
       <textColor color="Black"></textColor>
       <Layout>
-        <Item parent="Passenger_Power_Window_Motor" functionFeature="" loadFeature="∞">C1.2_Passenger Power Window Motor Up</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
-        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
-        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
-        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
-        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
-        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
-        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
+        <Item parent="Passenger_Power_Window_Motor" functionFeature="≈" loadFeature="☼">C1.2_Passenger Power Window Motor Up</Item>
+        <Item parent="Windscreen_Wipers_System_Output_Signal" functionFeature="" loadFeature="∞">C1.9_Wiper High Relay</Item>
+        <Item parent="Passenger_Power_Window_Motor" functionFeature="≈" loadFeature="☼">C1.3_Passenger Power Window Motor Down</Item>
+        <Item parent="Windscreen_Wipers_System_Output_Signal" functionFeature="" loadFeature="∞">C1.18_Wiper Low Relay</Item>
+        <Item parent="Driver_Power_Window_Motor" functionFeature="≈" loadFeature="☼">C2.13_Driver Power Window Motor Down</Item>
+        <Item parent="Driver_Power_Window_Motor" functionFeature="≈" loadFeature="☼">C2.14_Driver Power Window Motor Up</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.22_MainLeftMirrorDownLeftCtrl</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Output_Signal" functionFeature="" loadFeature="☼">C1.1_Door Unlock Relay - Passenger's Side</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.23_MainLeftMirrorUpCtrl</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Output_Signal" functionFeature="" loadFeature="☼">C1.4_Passanger Door Lock Relay</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.24_MainRightMirrorUpCtrl</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Output_Signal" functionFeature="" loadFeature="☼">C1.7_Door Unlock Relay - Driver's Side</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.25_MainLeftMirrorRightCtrl</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Output_Signal" functionFeature="" loadFeature="☼">C1.10_Driver Door Lock Relay</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.26_MainRightMirrorRightCtrl</Item>
+        <Item parent="Sunroof_Motor" functionFeature="" loadFeature="¤">C1.6_MOT-B</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.27_MainRightMirrorDownLeftCtrl</Item>
+        <Item parent="Sunroof_Motor" functionFeature="" loadFeature="¤">C1.8_MOT-A</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>24V Switch</Name>
+      <bgColor color="White"></bgColor>
+      <textColor color="Red"></textColor>
+      <Layout>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C5.11_Spare Switch 1</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C5.50_Spare Switch 10</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C6.43_TrailerTagAxleLifting</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C5.15_InteriorLampOffSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C5.51_Spare Switch 11</Item>
+        <Item parent="Key_Switch_System_Input_Signal" functionFeature="▲ ()" loadFeature="">C6.44_IgnitionON</Item>
+        <Item parent="Stowage_Box_Reminder" functionFeature="˅ ()" loadFeature="">C5.16_Left Side Stowage Box</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C5.52_Spare Switch 12</Item>
+        <Item parent="Cruise_Control_Switches" functionFeature="˄" loadFeature="">C6.45_Cruise Set + Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C5.18_Spare Switch 4</Item>
+        <Item parent="Horn_Switch" functionFeature="˅ ()" loadFeature="">C5.53_Horn Switch</Item>
+        <Item parent="Cruise_Control_Switches" functionFeature="˄" loadFeature="">C6.46_Cruise Off Switch</Item>
+        <Item parent="Sunroof_Switch" functionFeature="˅ ()" loadFeature="">C5.27_Sunroof Open Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C6.8_Spare Switch 17</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.47_Spare Switch 28</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C5.34_Spare Switch 7</Item>
+        <Item parent="Cruise_Control_Switches" functionFeature="˄" loadFeature="">C6.9_Cruise Resume Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C6.48_Spare Switch 29</Item>
+        <Item parent="Stowage_Box_Reminder" functionFeature="˅ ()" loadFeature="">C5.35_Right Side Stowage Box</Item>
+        <Item parent="PTO_Switches" functionFeature="˄" loadFeature="">C6.19_MainPTOAckSwitch</Item>
+        <Item parent="Ajar_On_Off_Control" functionFeature="˄ ()" loadFeature="">C6.49_Ajar On Off Control</Item>
+        <Item parent="Key_Switch_System_Input_Signal" functionFeature="▲ ()" loadFeature="">C5.44_IgnitionON2</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C6.23_Spare Switch 22</Item>
+        <Item parent="Ajar_On_Off_Control" functionFeature="˄ ()" loadFeature="">C6.49_Ajar On Off Control</Item>
+        <Item parent="Sunroof_Switch" functionFeature="˅ ()" loadFeature="">C5.45_Sunroof Close Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C6.25_Spare1 Config Switch</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C5.46_SpareSwitch30</Item>
+        <Item parent="Input_Switches" functionFeature="˅" loadFeature="">C6.26_EraglonassGlobalMute</Item>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C5.48_Spare Switch 9</Item>
+        <Item parent="Cruise_Control_Switches" functionFeature="˄" loadFeature="">C6.27_Cruise Time Gap minus Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C5.49_Spare Switch 16</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C6.37_AlternatorChargingStatus</Item>
+        
       </Layout>
     </Group>
   </EMCLayout>

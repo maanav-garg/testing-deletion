@@ -105,7 +105,7 @@
             // 
             this.lblLoadFeature.AutoSize = true;
             this.lblLoadFeature.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblLoadFeature.Location = new System.Drawing.Point(265, 1);
+            this.lblLoadFeature.Location = new System.Drawing.Point(220, 1);
             this.lblLoadFeature.Name = "lblLoadFeature";
             this.lblLoadFeature.Size = new System.Drawing.Size(19, 17);
             this.lblLoadFeature.TabIndex = 19;
@@ -115,7 +115,7 @@
             // 
             this.lblFunctionFeature.AutoSize = true;
             this.lblFunctionFeature.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblFunctionFeature.Location = new System.Drawing.Point(291, 1);
+            this.lblFunctionFeature.Location = new System.Drawing.Point(269, 1);
             this.lblFunctionFeature.Name = "lblFunctionFeature";
             this.lblFunctionFeature.Size = new System.Drawing.Size(19, 17);
             this.lblFunctionFeature.TabIndex = 20;

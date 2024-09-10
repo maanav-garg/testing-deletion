@@ -64,8 +64,6 @@ namespace AutosarBCM.UserControls.Monitor
         /// </summary>
         private WriteDataByIdentifierService oldValueForWriteService;
 
-        private UCEmcReadOnlyItem uCEmcReadOnlyItem;
-
         #endregion
 
         #region Constructor
@@ -93,8 +91,14 @@ namespace AutosarBCM.UserControls.Monitor
                 lblName.Text = $"{payloadInfo.Name.Substring(0, 27)}...";
             else
                 lblName.Text = payloadInfo.Name;
-            //uCEmcReadOnlyItem.BackColor = Color.FromName(bgColor);
-            //uCEmcReadOnlyItem.ForeColor = Color.FromName(txColor);
+            if (payloadInfo.Name.Contains("C1.1_") || payloadInfo.Name.Contains("C1.4_") || payloadInfo.Name.Contains("C1.7_") || payloadInfo.Name.Contains("C1.10_"))
+                this.BackColor = Color.FromName("LightSteelBlue");
+            else
+                this.BackColor = Color.FromName(bgColor);
+
+            lblName.ForeColor = lblDtcStatus.ForeColor = lblWriteStatus.ForeColor = lblFunctionFeature.ForeColor = lblLoadFeature.ForeColor =
+                lblLastDtcTime.ForeColor = lblLastDtcTimeText.ForeColor = lblLastStatusTime.ForeColor = lblLastStatusTimeText.ForeColor =
+                lblParent.ForeColor = label3.ForeColor = label4.ForeColor = Color.FromName(txColor);
             lblFunctionFeature.Text = layout.FunctionFeature;
             lblLoadFeature.Text = layout.LoadFeature;
 
@@ -106,7 +110,7 @@ namespace AutosarBCM.UserControls.Monitor
 
         internal void ChangeStatus(string value, string dTCValue)
         {
-            if(dTCValue == null)
+            if (dTCValue == null)
             {
                 lblLastStatusTime.Text = DateTime.Now.ToString("G");
                 lblWriteStatus.Text = value;
@@ -116,9 +120,9 @@ namespace AutosarBCM.UserControls.Monitor
                 lblDtcStatus.Text = dTCValue;
                 lblLastDtcTime.Text = DateTime.Now.ToString("G");
             }
-            
-                
-            
+
+
+
         }
 
         /// <summary>

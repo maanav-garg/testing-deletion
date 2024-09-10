@@ -115,7 +115,7 @@ namespace AutosarBCM
             }
             foreach (var group in groups)
             {
-                var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3) };
+                var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3,3,3,40) };
                 var label = new Label { Text = group.Key, AutoSize = true, Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold) };
                 pnlCardLayout.Controls.Add(label);
 
