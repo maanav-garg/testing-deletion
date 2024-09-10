@@ -187,7 +187,7 @@ namespace AutosarBCM
             }
             pnlCardLayout.Refresh();
         }
-        public void FilterUCEMCItems(string filter)
+        private void FilterUCEMCItems(string filter)
         {
             pnlCardLayout.SuspendLayout();
             foreach (FlowLayoutPanel flowPanel in pnlCardLayout.Controls.OfType<FlowLayoutPanel>())
