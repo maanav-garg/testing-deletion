@@ -224,7 +224,14 @@
         <Item parent="Cruise_Control_Switches" functionFeature="˄" loadFeature="">C6.27_Cruise Time Gap minus Switch</Item>
         <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C5.49_Spare Switch 16</Item>
         <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C6.37_AlternatorChargingStatus</Item>
-        
+      </Layout>
+    </Group>
+    <Group>
+      <Name>12V Switch</Name>
+      <bgColor color="White"></bgColor>
+      <textColor color="Blue"></textColor>
+      <Layout>
+        <item parent="Input_Switches" functionFeature="▼" loadFeature="">C4.9_CabinTiltSwitch</item>
       </Layout>
     </Group>
   </EMCLayout>
