@@ -63,6 +63,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// Gets or sets the previous (old) value of the input item for Write service.
         /// </summary>
         private WriteDataByIdentifierService oldValueForWriteService;
+        private List<Label> _labels;
 
         #endregion
 
@@ -71,6 +72,7 @@ namespace AutosarBCM.UserControls.Monitor
         public UCEmcReadOnlyItem(ControlInfo controlInfo, PayloadInfo payloadInfo, Layout layout, string bgColor, string txColor)
         {
             InitializeComponent();
+            InitializeLabels();
             ControlInfo = controlInfo;
             PayloadInfo = payloadInfo;
 
@@ -95,10 +97,7 @@ namespace AutosarBCM.UserControls.Monitor
                 this.BackColor = Color.FromName("LightSteelBlue");
             else
                 this.BackColor = Color.FromName(bgColor);
-
-            lblName.ForeColor = lblDtcStatus.ForeColor = lblWriteStatus.ForeColor = lblFunctionFeature.ForeColor = lblLoadFeature.ForeColor =
-                lblLastDtcTime.ForeColor = lblLastDtcTimeText.ForeColor = lblLastStatusTime.ForeColor = lblLastStatusTimeText.ForeColor =
-                lblParent.ForeColor = label3.ForeColor = label4.ForeColor = Color.FromName(txColor);
+            SetLabelsColor(Color.FromName(txColor));
             lblFunctionFeature.Text = layout.FunctionFeature;
             lblLoadFeature.Text = layout.LoadFeature;
 
@@ -108,17 +107,29 @@ namespace AutosarBCM.UserControls.Monitor
 
         #region Public Methods
 
+        
+        public void SetLabelsColor(Color color)
+        {
+            if (_labels != null)
+            {
+                foreach (var label in _labels)
+                {
+                    label.ForeColor = color;
+                }
+            }
+        }
+
         internal void ChangeStatus(string value, string dTCValue)
         {
             if (dTCValue == null)
             {
-                lblLastStatusTime.Text = DateTime.Now.ToString("G");
+                lblLastStatusTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 lblWriteStatus.Text = value;
             }
             else
             {
                 lblDtcStatus.Text = dTCValue;
-                lblLastDtcTime.Text = DateTime.Now.ToString("G");
+                lblLastDtcTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             }
 
 
@@ -200,6 +211,24 @@ namespace AutosarBCM.UserControls.Monitor
         private void lblName_Click(object sender, EventArgs e)
         {
             this.InvokeOnClick(this, new EventArgs());
+        }
+        private void InitializeLabels()
+        {
+            _labels = new List<Label>
+            {
+                lblName,
+                lblDtcStatus,
+                lblWriteStatus,
+                lblFunctionFeature,
+                lblLoadFeature,
+                lblLastDtcTime,
+                lblLastDtcTimeText,
+                lblLastStatusTime,
+                lblLastStatusTimeText,
+                lblParent,
+                label3,
+                label4
+            };
         }
 
         /// <summary>

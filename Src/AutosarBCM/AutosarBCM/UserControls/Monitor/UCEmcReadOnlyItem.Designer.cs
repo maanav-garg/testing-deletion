@@ -57,7 +57,7 @@
             // 
             this.lblDtcStatus.AutoSize = true;
             this.lblDtcStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblDtcStatus.Location = new System.Drawing.Point(68, 50);
+            this.lblDtcStatus.Location = new System.Drawing.Point(65, 77);
             this.lblDtcStatus.Name = "lblDtcStatus";
             this.lblDtcStatus.Size = new System.Drawing.Size(10, 13);
             this.lblDtcStatus.TabIndex = 1;
@@ -66,7 +66,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 50);
+            this.label3.Location = new System.Drawing.Point(3, 77);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 13);
             this.label3.TabIndex = 15;
@@ -75,7 +75,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(151, 51);
+            this.label4.Location = new System.Drawing.Point(3, 53);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(40, 13);
             this.label4.TabIndex = 17;
@@ -85,7 +85,7 @@
             // 
             this.lblWriteStatus.AutoSize = true;
             this.lblWriteStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblWriteStatus.Location = new System.Drawing.Point(196, 49);
+            this.lblWriteStatus.Location = new System.Drawing.Point(40, 51);
             this.lblWriteStatus.Name = "lblWriteStatus";
             this.lblWriteStatus.Size = new System.Drawing.Size(11, 15);
             this.lblWriteStatus.TabIndex = 16;
@@ -124,7 +124,7 @@
             // lblLastDtcTimeText
             // 
             this.lblLastDtcTimeText.AutoSize = true;
-            this.lblLastDtcTimeText.Location = new System.Drawing.Point(3, 75);
+            this.lblLastDtcTimeText.Location = new System.Drawing.Point(104, 77);
             this.lblLastDtcTimeText.Name = "lblLastDtcTimeText";
             this.lblLastDtcTimeText.Size = new System.Drawing.Size(81, 13);
             this.lblLastDtcTimeText.TabIndex = 21;
@@ -134,7 +134,7 @@
             // 
             this.lblLastDtcTime.AutoSize = true;
             this.lblLastDtcTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblLastDtcTime.Location = new System.Drawing.Point(90, 75);
+            this.lblLastDtcTime.Location = new System.Drawing.Point(184, 77);
             this.lblLastDtcTime.Name = "lblLastDtcTime";
             this.lblLastDtcTime.Size = new System.Drawing.Size(10, 13);
             this.lblLastDtcTime.TabIndex = 22;
@@ -143,7 +143,7 @@
             // lblLastStatusTimeText
             // 
             this.lblLastStatusTimeText.AutoSize = true;
-            this.lblLastStatusTimeText.Location = new System.Drawing.Point(150, 75);
+            this.lblLastStatusTimeText.Location = new System.Drawing.Point(104, 53);
             this.lblLastStatusTimeText.Name = "lblLastStatusTimeText";
             this.lblLastStatusTimeText.Size = new System.Drawing.Size(89, 13);
             this.lblLastStatusTimeText.TabIndex = 23;
@@ -153,7 +153,7 @@
             // 
             this.lblLastStatusTime.AutoSize = true;
             this.lblLastStatusTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblLastStatusTime.Location = new System.Drawing.Point(245, 73);
+            this.lblLastStatusTime.Location = new System.Drawing.Point(192, 51);
             this.lblLastStatusTime.Name = "lblLastStatusTime";
             this.lblLastStatusTime.Size = new System.Drawing.Size(11, 15);
             this.lblLastStatusTime.TabIndex = 24;
