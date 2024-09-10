@@ -106,8 +106,19 @@ namespace AutosarBCM.UserControls.Monitor
 
         internal void ChangeStatus(string value, string dTCValue)
         {
-            lblWriteStatus.Text = value;
-            lblDtcStatus.Text = dTCValue;
+            if(dTCValue == null)
+            {
+                lblLastStatusTime.Text = DateTime.Now.ToString("G");
+                lblWriteStatus.Text = value;
+            }
+            else
+            {
+                lblDtcStatus.Text = dTCValue;
+                lblLastDtcTime.Text = DateTime.Now.ToString("G");
+            }
+            
+                
+            
         }
 
         /// <summary>

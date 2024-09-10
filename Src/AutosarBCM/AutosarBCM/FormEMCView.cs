@@ -346,14 +346,8 @@ namespace AutosarBCM
                     if (payloadValueList[payload.PayloadInfo.Name] != payload.FormattedValue)
                     {
                         tabControl1.Invoke(new Action(() => {
-                            if (tabControl1.SelectedIndex == 0)
-                            {
-                                AddDataCardView(payload.PayloadInfo.Name, payload.FormattedValue, null);
-                            }
-                            else
-                            {
-                                AddDataRow(readService.ControlInfo, payload.PayloadInfo, payload.FormattedValue, "");
-                            }
+                            AddDataCardView(payload.PayloadInfo.Name, payload.FormattedValue, null);
+                            AddDataRow(readService.ControlInfo, payload.PayloadInfo, payload.FormattedValue, "");
                         }));
                         
                         payloadValueList[payload.PayloadInfo.Name] = payload.FormattedValue;
@@ -383,15 +377,8 @@ namespace AutosarBCM
                     {
                         if (dtcValue.Mask == 0x0B)
                         {
-                            if (tabControl1.SelectedIndex == 0)
-                            {
                                 AddDataCardView(payload.Name, "", dtcValue.Description);
-                            }
-                            else
-                            {
                                 AddDataRow(control, payload, "", dtcValue.Description);
-
-                            }
                         }
                     }
                     catch (Exception ex)

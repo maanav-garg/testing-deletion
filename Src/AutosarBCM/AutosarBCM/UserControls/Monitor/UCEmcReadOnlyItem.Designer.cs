@@ -36,6 +36,10 @@
             this.lblParent = new System.Windows.Forms.Label();
             this.lblLoadFeature = new System.Windows.Forms.Label();
             this.lblFunctionFeature = new System.Windows.Forms.Label();
+            this.lblLastDtcTimeText = new System.Windows.Forms.Label();
+            this.lblLastDtcTime = new System.Windows.Forms.Label();
+            this.lblLastStatusTimeText = new System.Windows.Forms.Label();
+            this.lblLastStatusTime = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblName
@@ -71,7 +75,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(150, 51);
+            this.label4.Location = new System.Drawing.Point(151, 51);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(40, 13);
             this.label4.TabIndex = 17;
@@ -101,7 +105,7 @@
             // 
             this.lblLoadFeature.AutoSize = true;
             this.lblLoadFeature.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblLoadFeature.Location = new System.Drawing.Point(188, 1);
+            this.lblLoadFeature.Location = new System.Drawing.Point(265, 1);
             this.lblLoadFeature.Name = "lblLoadFeature";
             this.lblLoadFeature.Size = new System.Drawing.Size(19, 17);
             this.lblLoadFeature.TabIndex = 19;
@@ -111,17 +115,59 @@
             // 
             this.lblFunctionFeature.AutoSize = true;
             this.lblFunctionFeature.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblFunctionFeature.Location = new System.Drawing.Point(228, 1);
+            this.lblFunctionFeature.Location = new System.Drawing.Point(291, 1);
             this.lblFunctionFeature.Name = "lblFunctionFeature";
             this.lblFunctionFeature.Size = new System.Drawing.Size(19, 17);
             this.lblFunctionFeature.TabIndex = 20;
             this.lblFunctionFeature.Text = " -";
+            // 
+            // lblLastDtcTimeText
+            // 
+            this.lblLastDtcTimeText.AutoSize = true;
+            this.lblLastDtcTimeText.Location = new System.Drawing.Point(3, 75);
+            this.lblLastDtcTimeText.Name = "lblLastDtcTimeText";
+            this.lblLastDtcTimeText.Size = new System.Drawing.Size(81, 13);
+            this.lblLastDtcTimeText.TabIndex = 21;
+            this.lblLastDtcTimeText.Text = "Last DTC Time:";
+            // 
+            // lblLastDtcTime
+            // 
+            this.lblLastDtcTime.AutoSize = true;
+            this.lblLastDtcTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblLastDtcTime.Location = new System.Drawing.Point(90, 75);
+            this.lblLastDtcTime.Name = "lblLastDtcTime";
+            this.lblLastDtcTime.Size = new System.Drawing.Size(10, 13);
+            this.lblLastDtcTime.TabIndex = 22;
+            this.lblLastDtcTime.Text = "-";
+            // 
+            // lblLastStatusTimeText
+            // 
+            this.lblLastStatusTimeText.AutoSize = true;
+            this.lblLastStatusTimeText.Location = new System.Drawing.Point(150, 75);
+            this.lblLastStatusTimeText.Name = "lblLastStatusTimeText";
+            this.lblLastStatusTimeText.Size = new System.Drawing.Size(89, 13);
+            this.lblLastStatusTimeText.TabIndex = 23;
+            this.lblLastStatusTimeText.Text = "Last Status Time:";
+            // 
+            // lblLastStatusTime
+            // 
+            this.lblLastStatusTime.AutoSize = true;
+            this.lblLastStatusTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblLastStatusTime.Location = new System.Drawing.Point(245, 73);
+            this.lblLastStatusTime.Name = "lblLastStatusTime";
+            this.lblLastStatusTime.Size = new System.Drawing.Size(11, 15);
+            this.lblLastStatusTime.TabIndex = 24;
+            this.lblLastStatusTime.Text = "-";
             // 
             // UCEmcReadOnlyItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.lblLastStatusTime);
+            this.Controls.Add(this.lblLastStatusTimeText);
+            this.Controls.Add(this.lblLastDtcTime);
+            this.Controls.Add(this.lblLastDtcTimeText);
             this.Controls.Add(this.lblFunctionFeature);
             this.Controls.Add(this.lblLoadFeature);
             this.Controls.Add(this.lblParent);
@@ -131,7 +177,7 @@
             this.Controls.Add(this.lblDtcStatus);
             this.Controls.Add(this.lblName);
             this.Name = "UCEmcReadOnlyItem";
-            this.Size = new System.Drawing.Size(250, 67);
+            this.Size = new System.Drawing.Size(313, 100);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -147,5 +193,9 @@
         private System.Windows.Forms.Label lblParent;
         private System.Windows.Forms.Label lblLoadFeature;
         private System.Windows.Forms.Label lblFunctionFeature;
+        private System.Windows.Forms.Label lblLastDtcTimeText;
+        private System.Windows.Forms.Label lblLastDtcTime;
+        private System.Windows.Forms.Label lblLastStatusTimeText;
+        private System.Windows.Forms.Label lblLastStatusTime;
     }
 }
