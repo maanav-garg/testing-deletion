@@ -320,7 +320,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 77);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1331, 661);
+            this.tabControl1.Size = new System.Drawing.Size(1306, 572);
             this.tabControl1.TabIndex = 14;
             this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
@@ -330,7 +330,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1323, 635);
+            this.tabPage2.Size = new System.Drawing.Size(1298, 546);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Card View";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -344,7 +344,7 @@
             this.pnlCardLayout.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlCardLayout.Location = new System.Drawing.Point(3, 3);
             this.pnlCardLayout.Name = "pnlCardLayout";
-            this.pnlCardLayout.Size = new System.Drawing.Size(1317, 629);
+            this.pnlCardLayout.Size = new System.Drawing.Size(1292, 540);
             this.pnlCardLayout.TabIndex = 0;
             this.pnlCardLayout.WrapContents = false;
             // 

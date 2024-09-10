@@ -209,8 +209,6 @@ namespace AutosarBCM.Forms.Monitor
                 Task.Run(async () =>
                 {
                     Helper.SendExtendedDiagSession();
-                    mainForm.UpdateSessionLabel();
-
                     await Task.Delay(1000);
                 });
                 StartTest(cancellationTokenSource.Token);

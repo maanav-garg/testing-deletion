@@ -124,7 +124,7 @@
             // lblLastDtcTimeText
             // 
             this.lblLastDtcTimeText.AutoSize = true;
-            this.lblLastDtcTimeText.Location = new System.Drawing.Point(104, 77);
+            this.lblLastDtcTimeText.Location = new System.Drawing.Point(3, 99);
             this.lblLastDtcTimeText.Name = "lblLastDtcTimeText";
             this.lblLastDtcTimeText.Size = new System.Drawing.Size(81, 13);
             this.lblLastDtcTimeText.TabIndex = 21;
@@ -134,7 +134,7 @@
             // 
             this.lblLastDtcTime.AutoSize = true;
             this.lblLastDtcTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblLastDtcTime.Location = new System.Drawing.Point(184, 77);
+            this.lblLastDtcTime.Location = new System.Drawing.Point(83, 99);
             this.lblLastDtcTime.Name = "lblLastDtcTime";
             this.lblLastDtcTime.Size = new System.Drawing.Size(10, 13);
             this.lblLastDtcTime.TabIndex = 22;
@@ -177,7 +177,7 @@
             this.Controls.Add(this.lblDtcStatus);
             this.Controls.Add(this.lblName);
             this.Name = "UCEmcReadOnlyItem";
-            this.Size = new System.Drawing.Size(313, 100);
+            this.Size = new System.Drawing.Size(313, 130);
             this.ResumeLayout(false);
             this.PerformLayout();
 

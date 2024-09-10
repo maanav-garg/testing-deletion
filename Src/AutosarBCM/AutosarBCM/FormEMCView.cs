@@ -258,9 +258,7 @@ namespace AutosarBCM
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
             Task.Run(async () =>
             {
-                Helper.SendDefaultSession();
-                mainForm.UpdateSessionLabel();
-
+                Helper.SendDefaultSession(); 
                 await Task.Delay(1000);
             });
 

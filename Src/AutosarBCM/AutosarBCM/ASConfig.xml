@@ -229,59 +229,88 @@
     <Group>
       <Name>12V Switch</Name>
       <bgColor color="White"></bgColor>
-      <textColor color="Blue"></textColor>
+      <textColor color="SlateBlue"></textColor>
       <Layout>
-          <item parent="Input_Switches" functionFeature="▼" loadFeature="">C4.9_CabinTiltSwitch</item>
-		  <item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.32_0 FrontSetRightSwitch</item>
-		  <item parent="PTO_Switches" functionFeature="˅" loadFeature="">C6.20_PTO1AcknowledgementSwitch</item>		  
-		  <item parent="Input_Switches" functionFeature="▼" loadFeature="">C6.42_DamperConnectionSwitch</item>
-		  <Item parent="Spare_Switch" functionFeature="˅ ()" loadFeature=""> C4.21_Spare Switch 15</Item>
-		  <!--> PWM INPUTS???-->
-		  <item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.33_6 Door Ajar Switch - Passenger</item>
-		  <item parent="Input_Switches" functionFeature="˄" loadFeature="">C6.21_SpareSwitch2</item>
-		  <item parent="Input_Switches" functionFeature="▼" loadFeature="">C5.4_TrailerDetectionSwitch</item>
-		  <item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.36_3 FrontResetLeftSwitch</item>
-		  <item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.22_Spare Switch 21</item>
-
-		  <item parent="Power_Window_Direction_Hall_Sensor" functionFeature="" loadFeature="">C4.18_PowerWindowDirectionLeftHallSensor</item>
-
-		  <Item parent="Hazard_Warning_Switch" functionFeature="˅ ()" loadFeature=""> C5.10_Hazar Warning Switch</Item>
-		  <item parent="Input_Switches" functionFeature="˅" loadFeature=""> C5.47_LowLinerSwitch</item>
-		  <Item parent="Start_Stop_Switches" functionFeature="▲ ()" loadFeature="">C6.24_Start Stop Switch 2</Item>
-		  
-		  <item parent="Power_Window_Direction_Hall_Sensor" functionFeature="" loadFeature="">C4.34_PowerWindowDirectionRightHallSensor</item>
-		  
-		  <item parent="Differential_Control_Input" functionFeature="˅" loadFeature="">C5.12_DiffLock1DriverRequestSwitch</item>
-		  <item parent="Blower_Switch" functionFeature="˄" loadFeature="">C5.54_Blower Switch</item>
-		  <item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.28_Spare Switch 24</item>
-		  <item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.13_1 FrontSetLeftSwitch</item>
-		  <item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.1_Spare Switch 14</item>
-		  <item parent="Power_Window_Switch_Input" functionFeature="˅" loadFeature=""> C6.29_PowerWindowPASSDownSwitch</item>
-
-		  <item parent="Door_Cap_Sensor" functionFeature="()" loadFeature="">C5.41_DoorCapSensor2</item>
-
-		  <Item parent="Start_Stop_Switches" functionFeature="▼ ()" loadFeature="">C5.14_Start Stop Switch 3</Item>
-		  <item parent="Input_Switches" functionFeature="˅" loadFeature="">C6.2_AxleLifting1Switch</item>
-		  <item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.30_Spare Switch 25</item>
-
-		  <item parent="Door_Cap_Sensor" functionFeature="()" loadFeature="">C4.17_DoorCapSensor1</item>
-
-		  <Item parent="Spare_Switch" functionFeature="˅ ()" loadFeature="">C5.17_Spare Switch 3</Item>
-		  <item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C6.3_2 FrontResetRightSwitch</item>
-		  <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅ ()" loadFeature="">C6.31_5 Cabin Lock</Item>
-		  <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅ ()" loadFeature="">C5.28_7 Door Ajar Switch - Driver</Item>
-		  <item parent="WiperParkPositionSwitch" functionFeature="˅" loadFeature="">C6.10_WiperParkPositionSwitch</item>
-		  <Item parent="Start_Stop_Switches" functionFeature="▼ ()" loadFeature="">C6.32_Start Stop Switch 1</Item>
-		  <item parent="Spare_Switch" functionFeature="˅" loadFeature="">C5.29_Spare Switch 5</item>
-		  <item parent="Power_Window_Switch_Input" functionFeature="˅" loadFeature="">C6.11_PowerWindowPASSUpSwitch</item>
-		  <item parent="Input_Switches" functionFeature="˅" loadFeature="">C6.38_SpareSwitch23</item>
-		  <item parent="Spare_Switch" functionFeature="˅" loadFeature="">C5.30_Spare Switch 6</item>
-		  <item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.12_Spare Switch 18</item>
-		  <item parent="Differential_Control_Input" functionFeature="˅" loadFeature="">C6.39_DiffLock1FeedbackSwitch</item>
-		  <item parent="PTO_Switches" functionFeature="˅" loadFeature="">C5.31_PTO2AcknowledgementSwitch</item>
-		  <Item parent="Spare_Switch" functionFeature="˅ ()" loadFeature="">C6.13_Spare Switch 19</Item>
-		  <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅ ()" loadFeature="">C6.41_4 Cabin Unlock</Item>
-	  </Layout>
+        <Item parent="Input_Switches" functionFeature="▼" loadFeature="">C4.9_CabinTiltSwitch</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.32_0 FrontSetRightSwitch</Item>
+        <Item parent="PTO_Switches" functionFeature="˅" loadFeature="">C6.20_PTO1AcknowledgementSwitch</Item>
+        <Item parent="Input_Switches" functionFeature="▼" loadFeature="">C6.42_DamperConnectionSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅ ()" loadFeature="">C4.21_Spare Switch 15</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.33_6 Door Ajar Switch - Passenger</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C6.21_SpareSwitch2</Item>
+        <Item parent="Input_Switches" functionFeature="▼" loadFeature="">C5.4_TrailerDetectionSwitch</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.36_3 FrontResetLeftSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.22_Spare Switch 21</Item>
+        <Item parent="Power_Window_Direction_Hall_Sensor" functionFeature="" loadFeature="">C4.18_PowerWindowDirectionLeftHallSensor</Item>
+        <Item parent="Hazard_Warning_Switch" functionFeature="˅ ()" loadFeature="">C5.10_Hazar Warning Switch</Item>
+        <Item parent="Input_Switches" functionFeature="˅" loadFeature="">C5.47_LowLinerSwitch</Item>
+        <Item parent="Start_Stop_Switches" functionFeature="▲ ()" loadFeature="">C6.24_Start Stop Switch 2</Item>
+        <Item parent="Power_Window_Direction_Hall_Sensor" functionFeature="" loadFeature="">C4.34_PowerWindowDirectionRightHallSensor</Item>
+        <Item parent="Differential_Control_Input" functionFeature="˅" loadFeature="">C5.12_DiffLock1DriverRequestSwitch</Item>
+        <Item parent="Blower_Switch" functionFeature="˄" loadFeature="">C5.54_Blower Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.28_Spare Switch 24</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.13_1 FrontSetLeftSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.1_Spare Switch 14</Item>
+        <Item parent="Power_Window_Switch_Input" functionFeature="˅" loadFeature="">C6.29_PowerWindowPASSDownSwitch</Item>
+        <Item parent="Door_Cap_Sensor" functionFeature="()" loadFeature="">C5.41_DoorCapSensor2</Item>
+        <Item parent="Start_Stop_Switches" functionFeature="▼ ()" loadFeature="">C5.14_Start Stop Switch 3</Item>
+        <Item parent="Input_Switches" functionFeature="˅" loadFeature="">C6.2_AxleLifting1Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.30_Spare Switch 25</Item>
+        <Item parent="Door_Cap_Sensor" functionFeature="()" loadFeature="">C4.17_DoorCapSensor1</Item>
+        <Item parent="Spare_Switch" functionFeature="˅ ()" loadFeature="">C5.17_Spare Switch 3</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C6.3_2 FrontResetRightSwitch</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅ ()" loadFeature="">C6.31_5 Cabin Lock</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅ ()" loadFeature="">C5.28_7 Door Ajar Switch - Driver</Item>
+        <Item parent="WiperParkPositionSwitch" functionFeature="˅" loadFeature="">C6.10_WiperParkPositionSwitch</Item>
+        <Item parent="Start_Stop_Switches" functionFeature="▼ ()" loadFeature="">C6.32_Start Stop Switch 1</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C5.29_Spare Switch 5</Item>
+        <Item parent="Power_Window_Switch_Input" functionFeature="˅" loadFeature="">C6.11_PowerWindowPASSUpSwitch</Item>
+        <Item parent="Input_Switches" functionFeature="˅" loadFeature="">C6.38_SpareSwitch23</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C5.30_Spare Switch 6</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.12_Spare Switch 18</Item>
+        <Item parent="Differential_Control_Input" functionFeature="˅" loadFeature="">C6.39_DiffLock1FeedbackSwitch</Item>
+        <Item parent="PTO_Switches" functionFeature="˅" loadFeature="">C5.31_PTO2AcknowledgementSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅ ()" loadFeature="">C6.13_Spare Switch 19</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅ ()" loadFeature="">C6.41_4 Cabin Unlock</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>Analog Inputs</Name>
+      <bgColor color="White"></bgColor>
+      <textColor color="Brown"></textColor>
+      <Layout>
+        <Item parent="Ambient_Light_Sensor" functionFeature="" loadFeature="">C5.20_Ambient Light Sensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.22_ClockSpring2RHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.23_ClockSpring2LHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.25_ClockSpring3LHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.42_ClockSpring1LHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.26_ClockSpring3RHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.43_ClockSpring1RHSensor</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>Power Supply 12V</Name>
+      <bgColor color="DarkBlue"></bgColor>
+      <textColor color="White"></textColor>
+      <Layout>
+        <Item parent="Vehicle_Battery_Voltage">C1.3_VehicleConverter12VSupply</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.6_VehicleConverter12VRKESupply</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>Power Supply 24V</Name>
+      <bgColor color="Red"></bgColor>
+      <textColor color="White"></textColor>
+      <Layout>
+        <Item parent="Vehicle_Battery_Voltage">C1.16_Vbat24VSupply#1_1</Item>
+        <Item parent="Vehicle_Battery_Voltage">C1.17_Vbat24VSupply#1_2</Item>
+        <Item parent="Vehicle_Battery_Voltage">C2.10_Vbat24VSupply#2_1</Item>
+        <Item parent="Vehicle_Battery_Voltage">C2.11_Vbat24VSupply#2_2</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.19_Vbat24VSupply#3_1</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.20_Vbat24VSupply#3_2</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.2_Vbat24VSupply#4_1</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.3_Vbat24VSupply#4_2</Item>
+      </Layout>
     </Group>
   </EMCLayout>
   <Controls>
@@ -2033,7 +2062,7 @@
       <Services>22</Services>
       <Responses>
         <Response serviceId="62">
-          <Payload name="C1.3_Vehicle Battery Voltage" typeName="Unsigned_1Byte"></Payload>
+          <Payload name="C1.3_VehicleConverter12VSupply" typeName="Unsigned_1Byte"></Payload>
           <Payload name="C3.6_VehicleConverter12VRKESupply" typeName="Unsigned_1Byte"></Payload>
           <Payload name="C1.16_Vbat24VSupply#1_1" typeName="Unsigned_1Byte"></Payload>
           <Payload name="C1.17_Vbat24VSupply#1_2" typeName="Unsigned_1Byte"></Payload>

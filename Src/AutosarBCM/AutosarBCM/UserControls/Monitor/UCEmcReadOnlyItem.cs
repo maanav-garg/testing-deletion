@@ -97,7 +97,10 @@ namespace AutosarBCM.UserControls.Monitor
                 this.BackColor = Color.FromName("LightSteelBlue");
             else
                 this.BackColor = Color.FromName(bgColor);
-            SetLabelsColor(Color.FromName(txColor));
+            if (payloadInfo.Name.Contains("C4.18_") || payloadInfo.Name.Contains("C4.34_") || payloadInfo.Name.Contains("C5.41_") || payloadInfo.Name.Contains("C4.17_"))
+                SetLabelsColor(Color.FromName("Green"));
+            else
+                SetLabelsColor(Color.FromName(txColor));
             lblFunctionFeature.Text = layout.FunctionFeature;
             lblLoadFeature.Text = layout.LoadFeature;
 
@@ -121,16 +124,20 @@ namespace AutosarBCM.UserControls.Monitor
 
         internal void ChangeStatus(string value, string dTCValue)
         {
-            if (dTCValue == null)
+            this.Invoke(new Action(() =>
             {
-                lblLastStatusTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                lblWriteStatus.Text = value;
-            }
-            else
-            {
-                lblDtcStatus.Text = dTCValue;
-                lblLastDtcTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            }
+                if (dTCValue == null)
+                {
+                    lblLastStatusTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    lblWriteStatus.Text = value;
+                }
+                else
+                {
+                    lblDtcStatus.Text = dTCValue;
+                    lblLastDtcTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+
+            }));
 
 
 
