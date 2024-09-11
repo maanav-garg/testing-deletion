@@ -578,5 +578,11 @@ namespace AutosarBCM
         {
             tabControl1.SelectedIndex = 0;
         }
+
+        private void btnClearValues_Click(object sender, EventArgs e)
+        {
+            FlowLayoutPanel flowPanel = tabPage2.Controls.OfType<FlowLayoutPanel>().FirstOrDefault();
+            flowPanel?.Controls.OfType<UCEmcReadOnlyItem>().ToList().ForEach(item => item.SetDefaultValue());
+        }
     }
 }
