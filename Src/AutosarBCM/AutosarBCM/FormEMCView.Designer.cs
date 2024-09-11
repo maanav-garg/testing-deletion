@@ -84,7 +84,6 @@
             this.dgvData.Name = "dgvData";
             this.dgvData.ReadOnly = true;
             this.dgvData.RowHeadersVisible = false;
-            this.dgvData.RowHeadersWidth = 51;
             this.dgvData.Size = new System.Drawing.Size(1292, 540);
             this.dgvData.TabIndex = 0;
             // 
@@ -370,10 +369,9 @@
             // 
             this.btnClearValues.Image = global::AutosarBCM.Properties.Resources.delete_icon_12_795858790;
             this.btnClearValues.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearValues.Location = new System.Drawing.Point(834, 24);
-            this.btnClearValues.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClearValues.Location = new System.Drawing.Point(839, 27);
             this.btnClearValues.Name = "btnClearValues";
-            this.btnClearValues.Size = new System.Drawing.Size(90, 30);
+            this.btnClearValues.Size = new System.Drawing.Size(98, 23);
             this.btnClearValues.TabIndex = 15;
             this.btnClearValues.Text = "Clear Values";
             this.btnClearValues.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -385,7 +383,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.GhostWhite;
-            this.ClientSize = new System.Drawing.Size(1155, 661);
+            this.ClientSize = new System.Drawing.Size(1330, 661);
             this.Controls.Add(this.btnClearValues);
             this.Controls.Add(this.emcControlToolStrip);
             this.Controls.Add(this.lblElapsedTime);

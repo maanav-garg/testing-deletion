@@ -569,6 +569,7 @@ namespace AutosarBCM
 
         #endregion
 
+        #region Form Events
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
             tabControl1.SelectedIndex = e.TabPageIndex;
@@ -581,8 +582,8 @@ namespace AutosarBCM
 
         private void btnClearValues_Click(object sender, EventArgs e)
         {
-            FlowLayoutPanel flowPanel = tabPage2.Controls.OfType<FlowLayoutPanel>().FirstOrDefault();
-            flowPanel?.Controls.OfType<UCEmcReadOnlyItem>().ToList().ForEach(item => item.SetDefaultValue());
+            ucItems.ForEach(item => item.SetDefaultValue());
         }
+        #endregion
     }
 }

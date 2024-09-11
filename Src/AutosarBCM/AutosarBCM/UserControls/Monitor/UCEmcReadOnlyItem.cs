@@ -112,9 +112,9 @@ namespace AutosarBCM.UserControls.Monitor
 
         public void SetDefaultValue()
         {
-            this.Invoke(new Action(() => { 
+
             lblWriteStatus.Text = lblDtcStatus.Text = lblLastStatusTime.Text = lblLastDtcTime.Text = "-";
-            }));
+            
         }
         public void SetLabelsColor(Color color)
         {
