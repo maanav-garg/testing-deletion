@@ -56,7 +56,7 @@ namespace AutosarBCM
             InitializeComponent();
             rdoOrder_CheckedChanged(null, null);
             rdoControl_CheckedChanged(null, null);
-            EnvironmentalTest.CurrentEnvironment = ASContext.Configuration.EnvironmentalTest.Environments.First().Name;
+            EnvironmentalTest.CurrentEnvironment = ASContext.Configuration?.EnvironmentalTest.Environments.First().Name;
         }
 
         #endregion

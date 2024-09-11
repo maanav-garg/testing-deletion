@@ -1,9 +1,12 @@
-﻿using Connection.Hardware;
+﻿using AutosarBCM.Properties;
+using AutosarBCM.UserControls.Monitor;
+using Connection.Hardware;
 using Connection.Hardware.Can;
 using Connection.Hardware.SP;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace AutosarBCM.Common
@@ -19,6 +22,9 @@ namespace AutosarBCM.Common
         /// Gets the index of the selected item.
         /// </summary>
         public int SelectedIndex { get; private set; }
+        private string SelectedItem { get; set; }
+        public SortedDictionary<string, Tuple<int, string>> AdditionalHardware { get; private set; }
+
 
         #endregion
 
@@ -37,10 +43,45 @@ namespace AutosarBCM.Common
             cmbDevices.DisplayMember = "Name";
             cmbDevices.DataSource = list;
             cmbSerialPortType.DataSource = Enum.GetValues(typeof(SerialPortType));
-            cmbDevices_SelectedIndexChanged(null, null);
+            AdditionalHardware = new SortedDictionary<string, Tuple<int, string>>();
 
+            cmbDevices_SelectedIndexChanged(null, null);
             this.KeyDown += new KeyEventHandler(PopupForm_KeyDown);
             this.KeyPreview = true;
+        }
+
+        private void chkMultiChannelList_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            var item = chkMultiChannelList.Items[e.Index].ToString();
+
+            if (e.NewValue == CheckState.Checked)
+            {
+                txtTransmitAdress.Visible = grpIntrepidCanMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = txtMultiChannelSelectedName.Visible = label7.Visible = true;
+                if (AdditionalHardware != null && AdditionalHardware.TryGetValue(item, out var tuple))
+                {
+                    if (!string.IsNullOrEmpty(tuple.Item2))
+                        txtTransmitAdress.Text = tuple.Item2;
+                    else
+                        txtTransmitAdress.Text = String.Empty;
+
+                    if (tuple.Item1 > 0)
+                        grpIntrepidCanMultiChannel_cmbBitRate.SelectedValue = tuple.Item1;
+                    else
+                        grpIntrepidCanMultiChannel_cmbBitRate.SelectedIndex = 0;
+                }
+                else
+                {
+                    grpIntrepidCanMultiChannel_cmbBitRate.SelectedValue = Settings.Default.IntrepidDevice.BitRate;
+                    txtTransmitAdress.Text = Settings.Default.TransmitAdress.Substring(2);
+                    AddChannelToDictionary(null, null);
+                }
+            }
+            else
+            {
+                if (AdditionalHardware.ContainsKey(item))
+                    AdditionalHardware.Remove(item);
+                txtTransmitAdress.Visible = grpIntrepidCanMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = false;
+            }
         }
 
         #endregion
@@ -140,5 +181,63 @@ namespace AutosarBCM.Common
         }
 
         #endregion
+
+        private bool isProgrammaticCheck = false;
+        private void chkIntrepidMultiChanel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isProgrammaticCheck)
+                return;
+
+            if (grpIntrepidCanProperties_cmbNetworkId.SelectedItem == null)
+            {
+                isProgrammaticCheck = true;
+                Helper.ShowWarningMessageBox("Please select a network first.");
+                chkIntrepidMultiChanel.Checked = false;
+                isProgrammaticCheck = false;
+                return;
+            }
+
+            if (chkIntrepidMultiChanel.Checked)
+            {
+                object[] itemsArray = new object[grpIntrepidCanProperties_cmbNetworkId.Items.Count];
+                grpIntrepidCanProperties_cmbNetworkId.Items.CopyTo(itemsArray, 0);
+                chkMultiChannelList.Items.AddRange(itemsArray);
+                chkMultiChannelList.Items.Remove(grpIntrepidCanProperties_cmbNetworkId.SelectedItem);
+            }
+
+            grpIntrepidCanMultiChannel.Visible = chkIntrepidMultiChanel.Checked;
+        }
+
+        private void chkMultiChannelList_MouseClick(object sender, MouseEventArgs e)
+        {
+            CheckedListBox listBox = sender as CheckedListBox;
+
+            if (listBox != null && listBox.SelectedIndex != ListBox.NoMatches)
+            {
+                if (listBox.GetItemChecked(listBox.SelectedIndex))
+                    txtTransmitAdress.Visible = grpIntrepidCanMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = true;
+                else
+                    txtTransmitAdress.Visible = grpIntrepidCanMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = false;
+
+                txtMultiChannelSelectedName.Visible = label7.Visible = true;
+                SelectedItem = (string)listBox.SelectedItem;
+                txtMultiChannelSelectedName.Text = SelectedItem;
+            }
+        }
+
+        private void AddChannelToDictionary(object sender, EventArgs e)
+        {
+            if (int.TryParse(grpIntrepidCanMultiChannel_cmbBitRate.SelectedItem?.ToString(), out int bitRate) && !string.IsNullOrEmpty(txtTransmitAdress.Text))
+                AdditionalHardware[SelectedItem] = new Tuple<int, string>(bitRate, txtTransmitAdress.Text);
+        }
+
+
+        private void txtTransmitAdress_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Uri.IsHexDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

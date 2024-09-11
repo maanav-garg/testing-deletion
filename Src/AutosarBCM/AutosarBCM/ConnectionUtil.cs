@@ -48,6 +48,8 @@ namespace AutosarBCM
         private ushort address;
         private byte session;
         private Dictionary<ushort, string> controlDict = new Dictionary<ushort, string>();
+        private static SortedDictionary<string, Tuple<int, string>> AdditionalChanels { get; set; }
+
         private static byte channelId = 0;
 
         #endregion
@@ -73,6 +75,7 @@ namespace AutosarBCM
 
             try
             {
+
                 InitHardware(hardware);
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
 
@@ -85,11 +88,14 @@ namespace AutosarBCM
                 formMain.lblConnection.ForeColor = Color.Green;
                 if (hardware is CanHardware canHardware)
                 {
-
                     if (canHardware is IntrepidCsCan && (canHardware.BitRate > 0))
                     {
                         canHardware.SetBitRate((int)canHardware.BitRate, (int)canHardware.NetworkID);
                         channelId = (byte)canHardware.NetworkID;
+                        foreach (var chanel in AdditionalChanels)
+                        {
+                            canHardware.SetBitRate(chanel.Value.Item1, Convert.ToInt32(Enum.Parse(typeof(CSnet.eNETWORK_ID), chanel.Key)));
+                        }
                     }
                     else if (canHardware is KvaserCan && canHardware.BitRate > 0)
                     {
@@ -107,9 +113,6 @@ namespace AutosarBCM
                     transportProtocol.MessageReceived += TransportProtocol_MessageReceived;
                     transportProtocol.MessageSent += TransportProtocol_MessageSent;
                     transportProtocol.ReceiveError += TransportProtocol_ReceiveError;
-
-
-
                 }
                 else if (hardware is SerialPortHardware serialHardware)
                 {
@@ -386,12 +389,20 @@ namespace AutosarBCM
                 try
                 {
                     if (canId != null)
+                    {
                         transportProtocol.Config.PhysicalAddr.TxId = (uint)canId;
+                        var key = AdditionalChanels.FirstOrDefault(x =>{if (canId.HasValue){return x.Value?.Item2 == canId.Value.ToString("X");}return false;}).Key;
+                        if (key != null)
+                            transportProtocol.SendBytes(dataBytes, Convert.ToByte((CSnet.eNETWORK_ID)Enum.Parse(typeof(CSnet.eNETWORK_ID), key)));
+                    }
                     else
+                    {
                         transportProtocol.Config.PhysicalAddr.TxId = Convert.ToUInt32(Settings.Default.TransmitAdress, 16);
+                        transportProtocol.SendBytes(dataBytes, channelId);
+                    }
+
                     if (Settings.Default.DebugLogging)
                         formMain.AppendTrace($"Message Sent: {BitConverter.ToString(dataBytes)}");
-                    transportProtocol.SendBytes(dataBytes, channelId);
                 }
                 catch (Exception ex)
                 {
@@ -504,7 +515,10 @@ namespace AutosarBCM
         {
             using (var form = new FormHardwareList(list))
                 if (form.ShowDialog() == DialogResult.OK)
+                {
+                    AdditionalChanels = form.AdditionalHardware;
                     return (IHardware)list[form.SelectedIndex];
+                }
             return null;
         }
 

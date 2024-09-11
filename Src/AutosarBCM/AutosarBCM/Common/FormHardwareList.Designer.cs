@@ -38,9 +38,19 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.grpIntrepidCanProperties = new System.Windows.Forms.GroupBox();
+            this.chkIntrepidMultiChanel = new System.Windows.Forms.CheckBox();
             this.grpIntrepidCanProperties_cmbNetworkId = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.grpIntrepidCanProperties_cmbBitRate = new System.Windows.Forms.ComboBox();
+            this.grpIntrepidCanMultiChannel = new System.Windows.Forms.GroupBox();
+            this.txtMultiChannelSelectedName = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtTransmitAdress = new System.Windows.Forms.TextBox();
+            this.chkMultiChannelList = new System.Windows.Forms.CheckedListBox();
+            this.grpIntrepidCanMultiChannel_cmbBitRate = new System.Windows.Forms.ComboBox();
             this.grpSerialProperties = new System.Windows.Forms.GroupBox();
             this.lblSerialPortType = new System.Windows.Forms.Label();
             this.cmbSerialPortType = new System.Windows.Forms.ComboBox();
@@ -68,6 +78,7 @@
             this.pnlButtonGroup = new System.Windows.Forms.Panel();
             this.gbHardware.SuspendLayout();
             this.grpIntrepidCanProperties.SuspendLayout();
+            this.grpIntrepidCanMultiChannel.SuspendLayout();
             this.grpSerialProperties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWriteTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numReadTimeout)).BeginInit();
@@ -158,24 +169,39 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 22);
+            this.label4.Location = new System.Drawing.Point(6, 137);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(45, 13);
             this.label4.TabIndex = 2;
             this.label4.Text = "Bit Rate";
+            this.label4.Visible = false;
             // 
             // grpIntrepidCanProperties
             // 
+            this.grpIntrepidCanProperties.Controls.Add(this.chkIntrepidMultiChanel);
             this.grpIntrepidCanProperties.Controls.Add(this.grpIntrepidCanProperties_cmbNetworkId);
-            this.grpIntrepidCanProperties.Controls.Add(this.label7);
+            this.grpIntrepidCanProperties.Controls.Add(this.label8);
+            this.grpIntrepidCanProperties.Controls.Add(this.label9);
+            this.grpIntrepidCanProperties.Controls.Add(this.label10);
             this.grpIntrepidCanProperties.Controls.Add(this.grpIntrepidCanProperties_cmbBitRate);
-            this.grpIntrepidCanProperties.Controls.Add(this.label4);
             this.grpIntrepidCanProperties.Location = new System.Drawing.Point(3, 3);
             this.grpIntrepidCanProperties.Name = "grpIntrepidCanProperties";
-            this.grpIntrepidCanProperties.Size = new System.Drawing.Size(291, 78);
+            this.grpIntrepidCanProperties.Size = new System.Drawing.Size(291, 102);
             this.grpIntrepidCanProperties.TabIndex = 5;
             this.grpIntrepidCanProperties.TabStop = false;
             this.grpIntrepidCanProperties.Text = "Intrepid Can Device Properties";
+            // 
+            // chkIntrepidMultiChanel
+            // 
+            this.chkIntrepidMultiChanel.AutoSize = true;
+            this.chkIntrepidMultiChanel.Location = new System.Drawing.Point(69, 75);
+            this.chkIntrepidMultiChanel.Name = "chkIntrepidMultiChanel";
+            this.chkIntrepidMultiChanel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkIntrepidMultiChanel.Size = new System.Drawing.Size(15, 14);
+            this.chkIntrepidMultiChanel.TabIndex = 8;
+            this.chkIntrepidMultiChanel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkIntrepidMultiChanel.UseVisualStyleBackColor = true;
+            this.chkIntrepidMultiChanel.CheckedChanged += new System.EventHandler(this.chkIntrepidMultiChanel_CheckedChanged);
             // 
             // grpIntrepidCanProperties_cmbNetworkId
             // 
@@ -204,11 +230,38 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 48);
+            this.label7.Location = new System.Drawing.Point(6, 112);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(59, 13);
             this.label7.TabIndex = 6;
             this.label7.Text = "Network Id";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 48);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(59, 13);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Network Id";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 22);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(45, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Bit Rate";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(3, 75);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(65, 13);
+            this.label10.TabIndex = 6;
+            this.label10.Text = "Multi Chanel";
             // 
             // grpIntrepidCanProperties_cmbBitRate
             // 
@@ -233,6 +286,91 @@
             this.grpIntrepidCanProperties_cmbBitRate.Size = new System.Drawing.Size(153, 21);
             this.grpIntrepidCanProperties_cmbBitRate.TabIndex = 3;
             // 
+            // grpIntrepidCanMultiChannel
+            // 
+            this.grpIntrepidCanMultiChannel.AutoSize = true;
+            this.grpIntrepidCanMultiChannel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grpIntrepidCanMultiChannel.Controls.Add(this.txtMultiChannelSelectedName);
+            this.grpIntrepidCanMultiChannel.Controls.Add(this.label11);
+            this.grpIntrepidCanMultiChannel.Controls.Add(this.label7);
+            this.grpIntrepidCanMultiChannel.Controls.Add(this.txtTransmitAdress);
+            this.grpIntrepidCanMultiChannel.Controls.Add(this.chkMultiChannelList);
+            this.grpIntrepidCanMultiChannel.Controls.Add(this.grpIntrepidCanMultiChannel_cmbBitRate);
+            this.grpIntrepidCanMultiChannel.Controls.Add(this.label4);
+            this.grpIntrepidCanMultiChannel.Location = new System.Drawing.Point(3, 111);
+            this.grpIntrepidCanMultiChannel.Name = "grpIntrepidCanMultiChannel";
+            this.grpIntrepidCanMultiChannel.Size = new System.Drawing.Size(279, 199);
+            this.grpIntrepidCanMultiChannel.TabIndex = 5;
+            this.grpIntrepidCanMultiChannel.TabStop = false;
+            this.grpIntrepidCanMultiChannel.Text = "Intrepid Can Multi Channel Properties";
+            this.grpIntrepidCanMultiChannel.Visible = false;
+            // 
+            // txtMultiChannelSelectedName
+            // 
+            this.txtMultiChannelSelectedName.Location = new System.Drawing.Point(81, 109);
+            this.txtMultiChannelSelectedName.Name = "txtMultiChannelSelectedName";
+            this.txtMultiChannelSelectedName.ReadOnly = true;
+            this.txtMultiChannelSelectedName.Size = new System.Drawing.Size(99, 20);
+            this.txtMultiChannelSelectedName.TabIndex = 13;
+            this.txtMultiChannelSelectedName.Visible = false;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 166);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(58, 13);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "Arb. Id (0x)";
+            this.label11.Visible = false;
+            // 
+            // txtTransmitAdress
+            // 
+            this.txtTransmitAdress.Location = new System.Drawing.Point(81, 160);
+            this.txtTransmitAdress.MaxLength = 3;
+            this.txtTransmitAdress.Name = "txtTransmitAdress";
+            this.txtTransmitAdress.Size = new System.Drawing.Size(99, 20);
+            this.txtTransmitAdress.TabIndex = 9;
+            this.txtTransmitAdress.Visible = false;
+            this.txtTransmitAdress.TextChanged += new System.EventHandler(this.AddChannelToDictionary);
+            this.txtTransmitAdress.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTransmitAdress_KeyPress);
+            // 
+            // chkMultiChannelList
+            // 
+            this.chkMultiChannelList.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.chkMultiChannelList.FormattingEnabled = true;
+            this.chkMultiChannelList.Location = new System.Drawing.Point(9, 19);
+            this.chkMultiChannelList.Name = "chkMultiChannelList";
+            this.chkMultiChannelList.Size = new System.Drawing.Size(264, 79);
+            this.chkMultiChannelList.TabIndex = 8;
+            this.chkMultiChannelList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.chkMultiChannelList_ItemCheck);
+            this.chkMultiChannelList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.chkMultiChannelList_MouseClick);
+            // 
+            // grpIntrepidCanMultiChannel_cmbBitRate
+            // 
+            this.grpIntrepidCanMultiChannel_cmbBitRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.grpIntrepidCanMultiChannel_cmbBitRate.FormattingEnabled = true;
+            this.grpIntrepidCanMultiChannel_cmbBitRate.Items.AddRange(new object[] {
+            "0",
+            "2000",
+            "33333",
+            "50000",
+            "62500",
+            "83333",
+            "100000",
+            "125000",
+            "250000",
+            "500000",
+            "800000",
+            "1000000"});
+            this.grpIntrepidCanMultiChannel_cmbBitRate.Location = new System.Drawing.Point(81, 134);
+            this.grpIntrepidCanMultiChannel_cmbBitRate.Margin = new System.Windows.Forms.Padding(2);
+            this.grpIntrepidCanMultiChannel_cmbBitRate.Name = "grpIntrepidCanMultiChannel_cmbBitRate";
+            this.grpIntrepidCanMultiChannel_cmbBitRate.Size = new System.Drawing.Size(99, 21);
+            this.grpIntrepidCanMultiChannel_cmbBitRate.TabIndex = 3;
+            this.grpIntrepidCanMultiChannel_cmbBitRate.Visible = false;
+            this.grpIntrepidCanMultiChannel_cmbBitRate.SelectedIndexChanged += new System.EventHandler(this.AddChannelToDictionary);
+            // 
             // grpSerialProperties
             // 
             this.grpSerialProperties.Controls.Add(this.lblSerialPortType);
@@ -251,7 +389,7 @@
             this.grpSerialProperties.Controls.Add(this.lblBaudRate);
             this.grpSerialProperties.Controls.Add(this.txtPort);
             this.grpSerialProperties.Controls.Add(this.lblPort);
-            this.grpSerialProperties.Location = new System.Drawing.Point(3, 200);
+            this.grpSerialProperties.Location = new System.Drawing.Point(3, 429);
             this.grpSerialProperties.Name = "grpSerialProperties";
             this.grpSerialProperties.Size = new System.Drawing.Size(291, 239);
             this.grpSerialProperties.TabIndex = 6;
@@ -441,6 +579,7 @@
             this.pnlProperties.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnlProperties.BackColor = System.Drawing.SystemColors.Control;
             this.pnlProperties.Controls.Add(this.grpIntrepidCanProperties);
+            this.pnlProperties.Controls.Add(this.grpIntrepidCanMultiChannel);
             this.pnlProperties.Controls.Add(this.grpVectorCanProperties);
             this.pnlProperties.Controls.Add(this.grpKvaserCanProperties);
             this.pnlProperties.Controls.Add(this.grpSerialProperties);
@@ -448,7 +587,7 @@
             this.pnlProperties.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlProperties.Location = new System.Drawing.Point(15, 111);
             this.pnlProperties.Name = "pnlProperties";
-            this.pnlProperties.Size = new System.Drawing.Size(297, 478);
+            this.pnlProperties.Size = new System.Drawing.Size(297, 707);
             this.pnlProperties.TabIndex = 7;
             // 
             // grpVectorCanProperties
@@ -456,7 +595,7 @@
             this.grpVectorCanProperties.Controls.Add(this.textBox1);
             this.grpVectorCanProperties.Controls.Add(this.label5);
             this.grpVectorCanProperties.Enabled = false;
-            this.grpVectorCanProperties.Location = new System.Drawing.Point(3, 87);
+            this.grpVectorCanProperties.Location = new System.Drawing.Point(3, 316);
             this.grpVectorCanProperties.Name = "grpVectorCanProperties";
             this.grpVectorCanProperties.Size = new System.Drawing.Size(291, 49);
             this.grpVectorCanProperties.TabIndex = 8;
@@ -484,7 +623,7 @@
             // 
             this.grpKvaserCanProperties.Controls.Add(this.label6);
             this.grpKvaserCanProperties.Controls.Add(this.grpKvaserCanProperties_cmbBitRate);
-            this.grpKvaserCanProperties.Location = new System.Drawing.Point(3, 142);
+            this.grpKvaserCanProperties.Location = new System.Drawing.Point(3, 371);
             this.grpKvaserCanProperties.Name = "grpKvaserCanProperties";
             this.grpKvaserCanProperties.Size = new System.Drawing.Size(291, 52);
             this.grpKvaserCanProperties.TabIndex = 9;
@@ -521,7 +660,7 @@
             // pnlButtonGroup
             // 
             this.pnlButtonGroup.Controls.Add(this.btnConnect);
-            this.pnlButtonGroup.Location = new System.Drawing.Point(3, 445);
+            this.pnlButtonGroup.Location = new System.Drawing.Point(3, 674);
             this.pnlButtonGroup.Name = "pnlButtonGroup";
             this.pnlButtonGroup.Size = new System.Drawing.Size(291, 30);
             this.pnlButtonGroup.TabIndex = 7;
@@ -530,7 +669,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 594);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(319, 823);
             this.Controls.Add(this.pnlProperties);
             this.Controls.Add(this.gbHardware);
             this.Controls.Add(this.label1);
@@ -543,6 +684,8 @@
             this.gbHardware.PerformLayout();
             this.grpIntrepidCanProperties.ResumeLayout(false);
             this.grpIntrepidCanProperties.PerformLayout();
+            this.grpIntrepidCanMultiChannel.ResumeLayout(false);
+            this.grpIntrepidCanMultiChannel.PerformLayout();
             this.grpSerialProperties.ResumeLayout(false);
             this.grpSerialProperties.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWriteTimeout)).EndInit();
@@ -550,6 +693,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numDataBits)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBaudRate)).EndInit();
             this.pnlProperties.ResumeLayout(false);
+            this.pnlProperties.PerformLayout();
             this.grpVectorCanProperties.ResumeLayout(false);
             this.grpVectorCanProperties.PerformLayout();
             this.grpKvaserCanProperties.ResumeLayout(false);
@@ -572,6 +716,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox grpIntrepidCanProperties;
+        private System.Windows.Forms.GroupBox grpIntrepidCanMultiChannel;
         private System.Windows.Forms.GroupBox grpSerialProperties;
         private System.Windows.Forms.ComboBox cmbStopBits;
         private System.Windows.Forms.ComboBox cmbParity;
@@ -600,5 +745,14 @@
         private System.Windows.Forms.ComboBox cmbSerialPortType;
         private System.Windows.Forms.ComboBox grpIntrepidCanProperties_cmbNetworkId;
         private System.Windows.Forms.ComboBox grpKvaserCanProperties_cmbBitRate;
+        private System.Windows.Forms.ComboBox grpIntrepidCanMultiChannel_cmbBitRate;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckedListBox chkMultiChannelList;
+        private System.Windows.Forms.CheckBox chkIntrepidMultiChanel;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txtTransmitAdress;
+        private System.Windows.Forms.TextBox txtMultiChannelSelectedName;
     }
 }
