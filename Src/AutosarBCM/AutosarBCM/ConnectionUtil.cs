@@ -207,7 +207,7 @@ namespace AutosarBCM
             }
             else
                 address = 0;
-            string enumName = service.ServiceInfo != null ? service.ServiceInfo.Name : Enum.GetName(typeof(SIDDescription), (byte)(e.Data[0] - 0x40));
+            string enumName = "";// service.ServiceInfo != null ? service.ServiceInfo.Name : Enum.GetName(typeof(SIDDescription), (byte)(e.Data[0] - 0x40));
             controlDict.TryGetValue(address, out string cName);
             var value = cName != null ? cName : sName != null ? sName : "";
             var rxRead = "";
@@ -220,7 +220,7 @@ namespace AutosarBCM
                 rxRead = $"Rx {rxId} {BitConverter.ToString(e.Data)}";
             }
             var time = new DateTime((long)e.Timestamp);
-            if (service.ServiceInfo != null)
+            if (service?.ServiceInfo != null)
             {
                 if (service?.ServiceInfo == ServiceInfo.TesterPresent)
                     return;

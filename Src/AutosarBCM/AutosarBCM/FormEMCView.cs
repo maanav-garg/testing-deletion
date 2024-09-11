@@ -33,6 +33,8 @@ namespace AutosarBCM
         private Dictionary<string, string> payloadValueList = new Dictionary<string, string>();
 
         List<DataGridViewRow> excelData = new List<DataGridViewRow>();
+        private List<UCEmcReadOnlyItem> ucItems = new List<UCEmcReadOnlyItem>();
+        private Dictionary<string, List<UCEmcReadOnlyItem>> groups = new Dictionary<string, List<UCEmcReadOnlyItem>>();
 
         private int emcDataLimit;
 
@@ -53,11 +55,84 @@ namespace AutosarBCM
                 return;
             }
             InitializeLists();
+            InitializeCards();
         }
+
+
 
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// Create cards
+        /// </summary>
+        private void InitializeCards()
+        {
+            pnlCardLayout.Controls.Clear();
+            //TODO XML EMC layouttan çekilecek
+            foreach (var group in ASContext.Configuration.Layouts)
+            {
+                foreach (var item in group.Layouts)
+                {
+                    var ctrl = ASContext.Configuration.Controls.First(x => x.Name == item.Control);
+
+                    if (ctrl == null)
+                        continue;
+                    var payload = ctrl.Responses[0].Payloads.First(x => x.Name == item.Name);
+                    if (payload == null)
+                        continue;
+
+                    var ucItem = new UCEmcReadOnlyItem(ctrl, payload, item, group.BackgroundColor, group.TextColor);
+                    ucItems.Add(ucItem);
+                    if (!string.IsNullOrEmpty(payload.DTCCode))
+                        dtcList[payload.DTCCode] = ctrl;
+
+                    //if (!groups.ContainsKey("Other"))
+                    //{
+                    //    groups["Other"] = new List<UCEmcReadOnlyItem>();
+                    //}
+                    if (!string.IsNullOrEmpty(group.Name))
+                    {
+                        if (!groups.ContainsKey(group.Name))
+                        {
+                            groups.Add(group.Name, new List<UCEmcReadOnlyItem>());
+                        }
+                        groups[group.Name].Add(ucItem);
+                    }
+                    else
+                    {
+                        groups["Other"].Add(ucItem);
+                    }
+                }
+
+            }
+            foreach (var group in groups)
+            {
+                var flowPanelGroup = new FlowLayoutPanel { AutoSize = true, Margin = Padding = new Padding(3, 3, 3, 40) };
+                var label = new Label { Text = group.Key, AutoSize = true, Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold) };
+                pnlCardLayout.Controls.Add(label);
+
+                flowPanelGroup.Paint += pnlMonitorInput_Paint;
+
+                foreach (var ucItem in group.Value)
+                {
+                    flowPanelGroup.Controls.Add(ucItem);
+                }
+
+                pnlCardLayout.Controls.Add(flowPanelGroup);
+            }
+        }
+
+        /// <summary>
+        /// Changing border color of the flowpanel groups
+        /// </summary>
+        /// <param name="sender">Flowlayoutpanel to be painted.</param>
+        /// <param name="e">PaintEventArgs of the sender.</param>
+        private void pnlMonitorInput_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, ((FlowLayoutPanel)sender).ClientRectangle, Color.LightGray, ButtonBorderStyle.Solid);
+        }
 
         /// <summary>
         /// Initializes the data structures
@@ -97,8 +172,74 @@ namespace AutosarBCM
         /// <param name="e">A reference to the event's arguments.</param>
         private void txtFilter_TextChanged(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in dgvData.Rows.OfType<DataGridViewRow>())
-                row.Visible = string.IsNullOrEmpty(txtFilter.Text) || row.Cells.OfType<DataGridViewCell>().Any(x => x.Value?.ToString().ToLower().Contains(txtFilter.Text.ToLower()) ?? false);
+            if (tabControl1.SelectedIndex == 0)
+                FilterUCEMCItems(txtFilter.Text);
+            else
+            {
+                foreach (DataGridViewRow row in dgvData.Rows.OfType<DataGridViewRow>())
+                    row.Visible = string.IsNullOrEmpty(txtFilter.Text) || row.Cells.OfType<DataGridViewCell>().Any(x => x.Value?.ToString().ToLower().Contains(txtFilter.Text.ToLower()) ?? false);
+            }
+            pnlCardLayout.Refresh();
+        }
+        private void FilterUCEMCItems(string filter)
+        {
+            pnlCardLayout.SuspendLayout();
+            foreach (FlowLayoutPanel flowPanel in pnlCardLayout.Controls.OfType<FlowLayoutPanel>())
+            {
+                flowPanel.SuspendLayout();
+                var labelIndex = pnlCardLayout.Controls.IndexOf(flowPanel) - 1;
+                if (labelIndex >= 0 && pnlCardLayout.Controls[labelIndex] is Label flowLabel)
+                {
+                    bool isLabelMatched = flowLabel.Text.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                    if (isLabelMatched)
+                    {
+                        flowLabel.Visible = true;
+                        foreach (var uc in flowPanel.Controls)
+                        {
+                            if (uc is UCEmcReadOnlyItem ucItem)
+                            {
+                                ucItem.Visible = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        bool anyUcItemVisible = false;
+                        foreach (var uc in flowPanel.Controls)
+                        {
+                            if (uc is UCEmcReadOnlyItem ucItem)
+                            {
+                                bool titleMatch = ucItem.PayloadInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0
+                            || ucItem.ControlInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
+                                ucItem.Visible = titleMatch;
+                                anyUcItemVisible |= ucItem.Visible;
+                            }
+                        }
+                        flowLabel.Visible = anyUcItemVisible;
+
+                    }
+                    flowPanel.ResumeLayout();
+                }
+                pnlCardLayout.ResumeLayout();
+            }
+            //pnlCardLayout.SuspendLayout();
+            //foreach (FlowLayoutPanel flowPanel in pnlCardLayout.Controls.OfType<FlowLayoutPanel>())
+            //{
+            //    flowPanel.SuspendLayout();
+            //    foreach (var uc in flowPanel.Controls)
+            //    {
+            //        if (uc is UCEmcReadOnlyItem ucItem)
+            //        {
+            //            bool titleMatch = ucItem.PayloadInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0
+            //                || ucItem.ControlInfo.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
+            //            ucItem.Visible = titleMatch;
+
+            //        }
+            //    }
+            //    flowPanel.ResumeLayout();
+            //}
+            //pnlCardLayout.ResumeLayout();
         }
 
         /// <summary>
@@ -111,9 +252,7 @@ namespace AutosarBCM
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
             Task.Run(async () =>
             {
-                Helper.SendDefaultSession();
-                mainForm.UpdateSessionLabel();
-
+                Helper.SendDefaultSession(); 
                 await Task.Delay(1000);
             });
 
@@ -217,6 +356,11 @@ namespace AutosarBCM
             return true;
         }
 
+        private void AddDataCardView(string name, string value, string dTCValue)
+        {
+            ucItems.Where(a => a.PayloadInfo.Name == name).FirstOrDefault()?.ChangeStatus(value, dTCValue);
+        }
+
         /// <summary>
         /// Handles the FormClosing event of the FormEMCView control.
         /// </summary>
@@ -245,7 +389,12 @@ namespace AutosarBCM
                     //Check for changed data
                     if (payloadValueList[payload.PayloadInfo.Name] != payload.FormattedValue)
                     {
-                        AddDataRow(readService.ControlInfo, payload.PayloadInfo, payload.FormattedValue, "");
+                        tabControl1.Invoke(new Action(() =>
+                        {
+                            AddDataCardView(payload.PayloadInfo.Name, payload.FormattedValue, null);
+                            AddDataRow(readService.ControlInfo, payload.PayloadInfo, payload.FormattedValue, "");
+                        }));
+
                         payloadValueList[payload.PayloadInfo.Name] = payload.FormattedValue;
                     }
                 }
@@ -273,6 +422,7 @@ namespace AutosarBCM
                     {
                         if (dtcValue.Mask == 0x0B)
                         {
+                            AddDataCardView(payload.Name, "", dtcValue.Description);
                             AddDataRow(control, payload, "", dtcValue.Description);
                         }
                     }
@@ -388,11 +538,11 @@ namespace AutosarBCM
             var emcItem = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == controlName);
             if (emcItem == null)
                 return false;
-            else 
-            { 
+            else
+            {
                 emcItem.Transmit(ServiceInfo.WriteDataByIdentifier, new byte[] { isActive ? (byte)1 : (byte)0 });
                 return true;
-            } 
+            }
         }
 
 
@@ -409,11 +559,23 @@ namespace AutosarBCM
             if (!(service is ReadDataByIdenService || service is ReadDTCInformationService))
                 return;
 
+
             HandleDidReadResponse(service);
             HandleDtcResponse(service);
+
+
         }
 
         #endregion
 
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            tabControl1.SelectedIndex = e.TabPageIndex;
+        }
+
+        private void FormEMCView_Load(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
     }
 }

@@ -42,6 +42,7 @@ namespace AutosarBCM
         /// </summary>
         private static string unopenedPayloadLogFile = DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss_");
 
+
         #endregion
 
         #region Public Methods
@@ -417,8 +418,8 @@ namespace AutosarBCM
             var distinctUnopenedControls = unOpenedControlList.GroupBy(item => item.itemType).Select(group => group.First());
 
             lines.Add($"{System.Environment.NewLine}Group {groupStartCount}&{groupEndCount} Started at ({groupStartTime}) -  (Range: {cycleRange}){System.Environment.NewLine}");
-            
-            foreach(var unOpenControl in distinctUnopenedControls)
+
+            foreach (var unOpenControl in distinctUnopenedControls)
             {
                 lines.Add($"Control: {unOpenControl.itemName} -- Payload: {unOpenControl.itemType}");
             }
@@ -569,31 +570,29 @@ namespace AutosarBCM
 
         public static void SendExtendedDiagSession()
         {
+            FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
 
+            if (!ConnectionUtil.CheckConnection())
+                return;
+            if (ASContext.Configuration == null)
+                return;
+            var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session" || x.Name == "extendedDiagnosticSession");
+            ASContext.CurrentSession = sessionInfo;
+            new DiagnosticSessionControl().Transmit(sessionInfo);
+            mainForm.UpdateSessionLabel();
+
+        }
+        public static void SendDefaultSession()
+        {
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
             if (!ConnectionUtil.CheckConnection())
                 return;
-            if (ASContext.Configuration != null)
-            {
-                var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.Name == "Extended Diagnostic Session" || x.Name == "extendedDiagnosticSession");
-                ASContext.CurrentSession = sessionInfo;
-                new DiagnosticSessionControl().Transmit(sessionInfo);
-                mainForm.UpdateSessionLabel();
-            }
-
-            else
-            {
-                return;
-            }
-            }
-        
-        public static void SendDefaultSession()
-        {
-            if (!ConnectionUtil.CheckConnection())
+            if (ASContext.Configuration == null)
                 return;
             var sessionInfo = (SessionInfo)ASContext.Configuration.Sessions.FirstOrDefault(x => x.ID == 0x01);
             ASContext.CurrentSession = sessionInfo;
             new DiagnosticSessionControl().Transmit(sessionInfo);
+            mainForm.UpdateSessionLabel();
         }
 
         #endregion
