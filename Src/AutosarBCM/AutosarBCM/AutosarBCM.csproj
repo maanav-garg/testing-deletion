@@ -228,42 +228,6 @@
     <Compile Include="UserControls\Monitor\UCCycleBar.Designer.cs">
       <DependentUpon>UCCycleBar.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Monitor\UCDigitalOutputItem.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCDigitalOutputItem.Designer.cs">
-      <DependentUpon>UCDigitalOutputItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCDoorControls.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCDoorControls.Designer.cs">
-      <DependentUpon>UCDoorControls.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCEEProm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCEEProm.Designer.cs">
-      <DependentUpon>UCEEProm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCOpenCloseController.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCOpenCloseController.Designer.cs">
-      <DependentUpon>UCOpenCloseController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCPowerMirror.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCPowerMirror.Designer.cs">
-      <DependentUpon>UCPowerMirror.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCLoopback.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCLoopback.Designer.cs">
-      <DependentUpon>UCLoopback.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\Monitor\UCEmcReadOnlyItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -356,24 +320,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCCycleBar.resx">
       <DependentUpon>UCCycleBar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCDigitalOutputItem.resx">
-      <DependentUpon>UCDigitalOutputItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCDoorControls.resx">
-      <DependentUpon>UCDoorControls.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCEEProm.resx">
-      <DependentUpon>UCEEProm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCOpenCloseController.resx">
-      <DependentUpon>UCOpenCloseController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCPowerMirror.resx">
-      <DependentUpon>UCPowerMirror.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCLoopback.resx">
-      <DependentUpon>UCLoopback.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCEmcReadOnlyItem.resx">
       <DependentUpon>UCEmcReadOnlyItem.cs</DependentUpon>
