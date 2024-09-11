@@ -532,11 +532,43 @@ namespace AutosarBCM
         }
 
         /// <summary>
+        /// Show status the EMC wake or sleep.
+        /// </summary>
+        private void showStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!SendEmcControl("EMC_SleepWakeStatus", true, true))
+                return;
+        }
+
+        /// <summary>
+        /// Enables EMC wake state.
+        /// </summary>
+        private void wakeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!SendEmcControl("EMC_WakeSleep", true))
+                return;
+            sleepToolStripMenuItem.Checked = !(wakeToolStripMenuItem.Checked = true);
+            sleepWaketionDropDownButton.Image = Resources.pass;
+        }
+
+        /// <summary>
+        /// Enables EMC sleep state.
+        /// </summary>
+        private void sleepToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!SendEmcControl("EMC_WakeSleep", false))
+                return;
+
+            sleepToolStripMenuItem.Checked = !(wakeToolStripMenuItem.Checked = false);
+            sleepWaketionDropDownButton.Image = Resources.reset;
+        }
+
+        /// <summary>
         /// Sends control data to the EMC.
         /// </summary>
         /// <param name="controlName">The name of the control to be transmitted.</param>
         /// <param name="isActive">A boolean value indicating whether the control should be active or not.</param>
-        private bool SendEmcControl(string controlName, bool isActive)
+        private bool SendEmcControl(string controlName, bool isActive, bool readControl = false)
         {
             if (!ConnectionUtil.CheckConnection() || !ConnectionUtil.CheckSession())
                 return false;
@@ -544,9 +576,14 @@ namespace AutosarBCM
             var emcItem = ASContext.Configuration.Controls.FirstOrDefault(c => c.Name == controlName);
             if (emcItem == null)
                 return false;
-            else
+            if(!readControl)
             {
                 emcItem.Transmit(ServiceInfo.WriteDataByIdentifier, new byte[] { isActive ? (byte)1 : (byte)0 });
+                return true;
+            }
+            else
+            {
+                emcItem.Transmit(ServiceInfo.ReadDataByIdentifier);
                 return true;
             }
         }
@@ -572,6 +609,11 @@ namespace AutosarBCM
 
         }
 
+        internal void SetSleepAndWakeStatus(byte[] array)
+        {
+            lblSleepWakeStatus.Text = "Status: " + string.Join(".", array.Select(b => Convert.ToInt32(b).ToString()));
+        }
+
         #endregion
 
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
@@ -583,5 +625,7 @@ namespace AutosarBCM
         {
             tabControl1.SelectedIndex = 0;
         }
+
+        
     }
 }

@@ -787,6 +787,17 @@ namespace AutosarBCM
                         formMain.Invoke(new MethodInvoker(() => formMain.SetEmbeddedSoftwareVersion(embeddedSwVersion)));
                     else
                         formMain.SetEmbeddedSoftwareVersion(embeddedSwVersion);
+                }
+                else if (readService.ControlInfo.Name == "EMC_SleepWakeStatus")
+                {
+                    //TODO will be tested on generic monitor
+                    var sleepWakeStatus = readService.Payloads.First().Value;
+                    FormEMCView formEMC = (FormEMCView)Application.OpenForms["FormEMCView"];
+
+                    if (formEMC.InvokeRequired)
+                        formEMC.Invoke(new MethodInvoker(() => formEMC.SetSleepAndWakeStatus(sleepWakeStatus)));
+                    else
+                        formEMC.SetSleepAndWakeStatus(sleepWakeStatus);
 
                 }
             }

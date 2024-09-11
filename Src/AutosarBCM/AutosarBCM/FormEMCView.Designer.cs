@@ -52,6 +52,11 @@
             this.lowBatteryProtectionDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.activeLowBatteryVoltage = new System.Windows.Forms.ToolStripMenuItem();
             this.inactiveLowBatteryVoltage = new System.Windows.Forms.ToolStripMenuItem();
+            this.sleepWaketionDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.wakeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sleepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblSleepWakeStatus = new System.Windows.Forms.ToolStripLabel();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -262,7 +267,9 @@
             this.toolStripSeparator5,
             this.pepsFunctionControlDropDownButton,
             this.toolStripSeparator1,
-            this.lowBatteryProtectionDropDownButton});
+            this.lowBatteryProtectionDropDownButton,
+            this.sleepWaketionDropDownButton,
+            this.lblSleepWakeStatus});
             this.emcControlToolStrip.Location = new System.Drawing.Point(338, 25);
             this.emcControlToolStrip.Name = "emcControlToolStrip";
             this.emcControlToolStrip.Size = new System.Drawing.Size(489, 27);
@@ -295,6 +302,44 @@
             this.inactiveLowBatteryVoltage.Size = new System.Drawing.Size(115, 22);
             this.inactiveLowBatteryVoltage.Text = "Inactive";
             this.inactiveLowBatteryVoltage.Click += new System.EventHandler(this.inactiveLowBatteryVoltage_Click);
+            // 
+            // sleepWaketionDropDownButton
+            // 
+            this.sleepWaketionDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.wakeToolStripMenuItem,
+            this.sleepToolStripMenuItem,
+            this.showStatusToolStripMenuItem});
+            this.sleepWaketionDropDownButton.Image = global::AutosarBCM.Properties.Resources.reset;
+            this.sleepWaketionDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.sleepWaketionDropDownButton.Name = "sleepWaketionDropDownButton";
+            this.sleepWaketionDropDownButton.Size = new System.Drawing.Size(102, 24);
+            this.sleepWaketionDropDownButton.Text = "Sleep/Wake";
+            // 
+            // wakeToolStripMenuItem
+            // 
+            this.wakeToolStripMenuItem.Name = "wakeToolStripMenuItem";
+            this.wakeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.wakeToolStripMenuItem.Text = "Wake";
+            this.wakeToolStripMenuItem.Click += new System.EventHandler(this.wakeToolStripMenuItem_Click);
+            // 
+            // sleepToolStripMenuItem
+            // 
+            this.sleepToolStripMenuItem.Name = "sleepToolStripMenuItem";
+            this.sleepToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sleepToolStripMenuItem.Text = "Sleep";
+            this.sleepToolStripMenuItem.Click += new System.EventHandler(this.sleepToolStripMenuItem_Click);
+            // 
+            // showStatusToolStripMenuItem
+            // 
+            this.showStatusToolStripMenuItem.Name = "showStatusToolStripMenuItem";
+            this.showStatusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showStatusToolStripMenuItem.Text = "Show Status";
+            this.showStatusToolStripMenuItem.Click += new System.EventHandler(this.showStatusToolStripMenuItem_Click);
+            // 
+            // lblSleepWakeStatus
+            // 
+            this.lblSleepWakeStatus.Name = "lblSleepWakeStatus";
+            this.lblSleepWakeStatus.Size = new System.Drawing.Size(0, 24);
             // 
             // toolStripMenuItem3
             // 
@@ -422,5 +467,10 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.FlowLayoutPanel pnlCardLayout;
         private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.ToolStripDropDownButton sleepWaketionDropDownButton;
+        public System.Windows.Forms.ToolStripMenuItem wakeToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem sleepToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showStatusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripLabel lblSleepWakeStatus;
     }
 }
