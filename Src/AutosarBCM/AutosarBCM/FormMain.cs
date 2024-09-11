@@ -10,13 +10,11 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using AutosarBCM.Common;
-using AutosarBCM.Config;
 using AutosarBCM.Forms.Monitor;
 using AutosarBCM.Properties;
 using AutosarBCM.UserControls.Monitor;
 using WeifenLuo.WinFormsUI.Docking;
 using AutosarBCM.Forms;
-using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 
 namespace AutosarBCM
@@ -46,7 +44,7 @@ namespace AutosarBCM
         /// <summary>
         /// Clone of the selected test type
         /// </summary>
-        public static MonitorTestType MonitorTestTypeClone;
+        public static MonitorTestType MonitorTestType;
 
         /// <summary>
         /// A concurrent queue for storing error log messages.
@@ -62,13 +60,6 @@ namespace AutosarBCM
         /// An instance of the 'UCCycleBar' control.
         /// </summary>
         private UCCycleBar ucCycleBar;
-
-        /// <summary>
-        /// Determines how many output test clicked.
-        /// </summary>
-        public static int TestClickCounter { get { return testClickCounter; } set { testClickCounter = value < 0 ? 0 : value; } }
-        public static int testClickCounter = 0;
-
         /// <summary>
         /// A CancellationTokenSource for managing cancellation of asynchronous operations.
         /// </summary>
@@ -88,21 +79,6 @@ namespace AutosarBCM
         /// An instance of the 'FormMonitorGenericInput' control.
         /// </summary>
         private FormMonitorGenericInput formMonitorGenericInput = new FormMonitorGenericInput();
-
-        /// <summary>
-        /// An instance of the 'FormMonitorGenericOutput' control.
-        /// </summary>
-        private FormMonitorGenericOutput formMonitorGenericOutput = new FormMonitorGenericOutput();
-
-        /// <summary>
-        /// An instance of the 'FormMonitorEnvInput' control.
-        /// </summary>
-        private FormMonitorEnvInput formMonitorEnvInput = new FormMonitorEnvInput();
-
-        /// <summary>
-        /// An instance of the 'FormMonitorEnvOutput' control.
-        /// </summary>
-        private FormMonitorEnvOutput formMonitorEnvOutput = new FormMonitorEnvOutput();
 
         private FormDTCPanel formDTCPanel = new FormDTCPanel();
 
@@ -133,11 +109,6 @@ namespace AutosarBCM
         /// A timer for periodically processing cycle log messages.
         /// </summary>
         private System.Timers.Timer cycleLogMessageTimer = new System.Timers.Timer();
-
-        /// <summary>
-        /// Configuration settings for the monitor.
-        /// </summary>
-        internal static AutosarBcmConfiguration Configuration;
 
         /// <summary>
         /// The total number of messages received.
@@ -184,17 +155,6 @@ namespace AutosarBCM
         internal static bool IsMdxFile;
 
         /// <summary>
-        /// Gets the selected test type
-        /// </summary>
-        public MonitorTestType MonitorTestType
-        {
-            get
-            {
-                return (MonitorTestType)Enum.Parse(typeof(MonitorTestType), cmbTestType.SelectedItem.ToString());
-            }
-        }
-
-        /// <summary>
         /// Overrides the creation parameters of the control to improve rendering performance.
         /// </summary>
         protected override CreateParams CreateParams
@@ -221,8 +181,6 @@ namespace AutosarBCM
             Text = Helper.AppVersionText;
             SetCounter(0, 0);
             AppendTrace(Text);
-
-            cmbTestType.Items.AddRange(Enum.GetValues(typeof(MonitorTestType)).Cast<object>().ToArray());
 
             ucCycleBar = new UCCycleBar();
             toolStrip3.Items.Add(new ToolStripControlHost(ucCycleBar));
@@ -251,34 +209,6 @@ namespace AutosarBCM
         #region Public Methods
 
         /// <summary>
-        /// Updates input monitor controls based on received data.
-        /// </summary>
-        /// <param name="receivedData">The received data to process.</param>
-        /// <returns>True if the status was changed; otherwise, false.</returns>
-        public bool UpdateInputMonitorControls(byte[] receivedData, MessageDirection messageDirection)
-        {
-            if (dockMonitor.Documents.ElementAt(0) is IPeriodicTest periodicTest && (FormMain.IsTestRunning || FormMain.TestClickCounter > 0))
-            {
-                return periodicTest.ChangeStatus(receivedData, messageDirection);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Updates output monitor controls based on received data.
-        /// </summary>
-        /// <param name="receivedData">The received data to process.</param>
-        /// <returns>True if the status was changed; otherwise, false.</returns>
-        public bool UpdateOutputMonitorControls(byte[] receivedData, MessageDirection messageDirection)
-        {
-            if (dockMonitor.Documents.ElementAt(1) is IClickTest clickTest && (FormMain.IsTestRunning || FormMain.TestClickCounter > 0))
-            {
-                return clickTest.ChangeStatus(receivedData, messageDirection);
-            }
-            return false;
-        }
-
-        /// <summary>
         /// Appends given text to trace box with timestamp.
         /// </summary>
         /// <param name="text">text to append</param>
@@ -293,30 +223,6 @@ namespace AutosarBCM
                     txtTrace.Invoke(new Action(() => FlushLog()));
                 else FlushLog();
             }
-        }
-
-        /// <summary>
-        /// Sets double buffering for a Windows Forms control.
-        /// </summary>
-        /// <param name="c">The control for which to enable double buffering.</param>
-        public static void SetDoubleBuffered(System.Windows.Forms.Control c)
-        {
-            if (System.Windows.Forms.SystemInformation.TerminalServerSession)
-                return;
-            System.Reflection.PropertyInfo aProp = typeof(System.Windows.Forms.Control).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            aProp.SetValue(c, true, null);
-        }
-
-        /// <summary>
-        /// Sets enable status of tabControl control.
-        /// </summary>
-        /// <param name="status">Status of tabControl.</param>
-        public void ChangeTabControlStatus(bool status)
-        {
-            if (this.InvokeRequired)
-                Invoke(new Action(() => { tabControl1.Enabled = status; }));
-            else
-                tabControl1.Enabled = status;
         }
 
         /// <summary>
@@ -340,6 +246,7 @@ namespace AutosarBCM
             else
                 SetCounterValues(transmitted, received);
         }
+
         public void StartTesterPresent()
         {
             activeToolStripMenuItem.Checked = true;
@@ -351,8 +258,6 @@ namespace AutosarBCM
 
             ExtDiagSesTimer.Start();
         }
-
-        
 
         #endregion
 
@@ -424,12 +329,6 @@ namespace AutosarBCM
                     {
                         genericInput.SessionFiltering();
                     }
-                    //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
-                }
-                else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
-                {
-                    envInput.LoadConfiguration(Configuration);
-                    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
                 }
             }
         }
@@ -583,18 +482,6 @@ namespace AutosarBCM
         }
 
         /// <summary>
-        /// Exports the defined messages
-        /// </summary>
-        /// <param name="fileName">File path</param>
-        private void ExportMessages(string fileName)
-        {
-            //var serialization = new SerializationService();
-            //serialization.CanMessages = ((FormTransmit)dockTransmit.Documents.ElementAt(0)).Messages;
-            //serialization.UdsMessages = ((FormUds)dockTransmit.Documents.ElementAt(1)).Messages;
-            //serialization.Serialize(fileName);
-        }
-
-        /// <summary>
         /// Import messages from config file
         /// </summary>
         /// <param name="fileName">File path</param>
@@ -613,23 +500,17 @@ namespace AutosarBCM
         {
             if (IsTestRunning)
             {
-                //Test
                 Helper.ShowWarningMessageBox("There is an already running test. Please stop it first");
                 return;
             }
             foreach (DockContent doc in dockMonitor.Documents.ToList())
                 doc.Hide();
-            //doc.Dispose();
 
             switch (testType)
             {
                 case MonitorTestType.Generic:
                     formMonitorGenericInput.Show(dockMonitor, DockState.Document);
                     formDTCPanel.Show(dockMonitor, DockState.Document);
-                    break;
-                case MonitorTestType.Environmental:
-                    formMonitorEnvInput.Show(dockMonitor, DockState.Document);
-                    formMonitorEnvOutput.Show(dockMonitor, DockState.Document);
                     break;
             }
 
@@ -643,28 +524,6 @@ namespace AutosarBCM
                 ((DockContent)dockMonitor.Documents.ElementAt(0)).Activate();
 
             ucCycleBar.Visible = testType == MonitorTestType.Environmental;
-        }
-
-        /// <summary>
-        /// Handles the event when the "Set Ground" button is clicked. It sets the default status for a generic test.
-        /// </summary>
-        /// <param name="sender">The sender object.</param>
-        /// <param name="e">The event arguments.</param>
-        private void btnSetGround_Click(object sender, EventArgs e)
-        {
-            if (IsTestRunning)
-            {
-                Helper.ShowWarningMessageBox("There is an already running test. Please stop it first");
-                return;
-            }
-            if (cmbTestType.SelectedIndex == 1)
-            {
-                Helper.ShowWarningMessageBox("Please select the generic test first");
-                return;
-            }
-
-            //if (dockMonitor.Documents.ElementAt(0) is FormMonitorGenericInput input)
-            //    input.SetDefaultStatus(((ToolStripMenuItem)sender).Text == "Ground" ? (byte)0 : (byte)1);
         }
 
         /// <summary>
@@ -748,9 +607,9 @@ namespace AutosarBCM
             };
             recentToolFileHelper.Init(Properties.Settings.Default.RecentToolFiles);
             this.WindowState = FormWindowState.Maximized;
-            #endregion
 
-            cmbTestType.SelectedIndex = 0;
+            ShowMonitorPanel(MonitorTestType.Generic);
+            #endregion
         }
 
         /// <summary>
@@ -888,17 +747,6 @@ namespace AutosarBCM
         }
 
         /// <summary>
-        /// An event handler to the cmbTestType's SelectedIndexChanged event.
-        /// </summary>
-        /// <param name="sender">A reference to the cmbTestType instance.</param>
-        /// <param name="e">A reference to the SelectedIndexChanged event's arguments.</param>
-        private void cmbTestType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (Enum.TryParse(cmbTestType.Text, false, out MonitorTestType result))
-                ShowMonitorPanel(result);
-        }
-
-        /// <summary>
         /// An event handler to the btnStart's Click event.
         /// </summary>
         /// <param name="sender">A reference to the btnStart instance.</param>
@@ -912,8 +760,6 @@ namespace AutosarBCM
                 cancellationTokenSource.Cancel();
 
                 File.AppendAllText(logFileName + Settings.Default.TraceFilePath, txtTrace.Text);
-
-                TestClickCounter = 0;
             }
             else
             {
@@ -924,7 +770,7 @@ namespace AutosarBCM
                         Helper.ShowWarningMessageBox("Please, load the configuration file first.");
                         return;
                     }
-                    MonitorTestTypeClone = MonitorTestType;
+                    MonitorTestType = MonitorTestType;
                     if (MonitorTestType == MonitorTestType.Environmental)
                         logFileName = DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss_");
                     cancellationTokenSource = new CancellationTokenSource();
@@ -947,29 +793,11 @@ namespace AutosarBCM
         }
 
         /// <summary>
-        /// Diagnostic mode and security authentication messages is handled 
-        /// </summary>
-        /// <param name="sender">Activate Button</param>
-        /// <param name="e">Params</param>
-        private void tsbActivateDiagSession_Click(object sender, EventArgs e)
-        {
-            if (!ConnectionUtil.CheckConnection())
-                return;
-
-            //new CanMessage("07E0", "0210610000000000").Transmit();
-            //Thread.Sleep(10);
-            //new CanMessage("07E0", "0427010000000000").Transmit();
-            //Thread.Sleep(10);
-            //new CanMessage("07E0", "0427020000000000").Transmit();
-        }
-
-        /// <summary>
         /// Transmit an ECUReset Uds message
         /// </summary>
         /// <param name="sender">A reference to the tsbECUReset instance.</param>
         /// <param name="e">A reference to the Click event's arguments.</param>
         private void tsbECUReset_Click(object sender, EventArgs e)
-
         {
             if (!ConnectionUtil.CheckConnection())
                 return;
@@ -999,14 +827,7 @@ namespace AutosarBCM
                     genericInput.SessionFiltering();
                     tspFilterTxb.Text = "";
                 }
-                //((FormMonitorGenericOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
             }
-            //else if (dockMonitor.Documents.ElementAt(0) is FormMonitorEnvInput envInput)
-            //{
-            //    envInput.LoadConfiguration(Configuration);
-            //    ((FormMonitorEnvOutput)dockMonitor.Documents.ElementAt(1)).LoadConfiguration(Configuration);
-            //    ucCycleBar.Clear();
-            //}
 
             SetCounter(-MessagesTransmitted, -MessagesReceived);
         }
@@ -1068,11 +889,6 @@ namespace AutosarBCM
 
             if (document is IPeriodicTest formInput)
             {
-                //if (!formInput.CanBeRun())
-                //{
-                //    return;
-                //}
-
                 formInput.FilterUCItems(tspFilterTxb.Text);
             }
             else if (document is IClickTest formOutput)
@@ -1101,22 +917,10 @@ namespace AutosarBCM
                 tspFilterTxb_TextChanged(sender, e);
         }
 
-
-
         #endregion
 
         #region File menu events
 
-        /// <summary>
-        /// Opens a new non-modal form.
-        /// </summary>
-        /// <param name="sender">button</param>
-        /// <param name="e">argument</param>
-        private void newTsmi_Click(object sender, EventArgs e)
-        {
-            var f = new Form() { MdiParent = this };
-            f.Show();
-        }
         private void tsmiTransmit_Click(object sender, EventArgs e)
         {
             var f = new FormTransmit();
@@ -1130,24 +934,6 @@ namespace AutosarBCM
         /// <param name="e">argument</param>
         private void openTsmi_Click(object sender, EventArgs e)
         {
-            //#region File selection
-
-            //var openFileDialog = new OpenFileDialog()
-            //{
-            //    Title = "Open any file",
-            //    Filter = "Xml files(*.xml)| *.xml",
-            //    Multiselect = false
-            //};
-
-            //if (openFileDialog.ShowDialog() != DialogResult.OK)
-            //    return;
-            //var fileName = openFileDialog.FileName;
-            //#endregion
-
-            //ParseMessages(fileName);
-
-            //// add to recent file list
-            //recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
             IsMdxFile = false;
             LoadXMLDoc();
             ConnectionUtil.LoadControlDictionary();
@@ -1162,86 +948,6 @@ namespace AutosarBCM
             ImportMessages(filePath);
 
             fileName = Path.GetFileName(filePath);
-            LoadFile(fileName);
-        }
-
-        /// <summary>
-        /// Not used.
-        /// </summary>
-        /// <param name="sender">button</param>
-        /// <param name="e">argument</param>
-        /// 
-        //private void saveTsmi_Click(object sender, EventArgs e)
-        //{
-        //    var mostRecentFilePath = recentToolFileHelper.GetMostRecentFile();
-
-        //    if (mostRecentFilePath != null)
-        //    {
-        //        ExportMessages(mostRecentFilePath);
-        //    }
-        //    else
-        //    {
-        //        #region File selection
-        //        var saveFileDialog = new SaveFileDialog()
-        //        {
-        //            Filter = "XML file save|.xml",
-        //        };
-        //        if (saveFileDialog.ShowDialog() != DialogResult.OK)
-        //            return;
-
-        //        var fileName = saveFileDialog.FileName;
-        //        #endregion
-
-        //        ExportMessages(fileName);
-
-        //        // add to recent file list
-        //        recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
-        //    }
-
-        //}
-
-        /// <summary>
-        /// Displays file selection form and adds selected form to recent file list.
-        /// </summary>
-        /// <param name="sender">button</param>
-        /// <param name="e">argument</param>
-        //private void saveAsTsmi_Click(object sender, EventArgs e)
-        //{
-        //    #region File selection
-        //    var saveFileDialog = new SaveFileDialog()
-        //    {
-        //        Filter = "XML file save|.xml",
-        //    };
-        //    if (saveFileDialog.ShowDialog() != DialogResult.OK)
-        //        return;
-
-        //    var fileName = saveFileDialog.FileName;
-        //    #endregion
-
-        //    ExportMessages(fileName);
-
-        //    // add to recent file list
-        //    recentToolFileHelper.AddToRecentFiles(fileName);    // menu will be updated
-        //}
-
-        /// <summary>
-        /// Displays file selection form and loads selected file.
-        /// </summary>
-        /// <param name="sender">button</param>
-        /// <param name="e">argument</param>
-        private void loadFileTsmi_Click(object sender, EventArgs e)
-        {
-            #region File selection
-            var openFileDialog = new OpenFileDialog()
-            {
-                Filter = "All files (*.*)|*.*",
-                Multiselect = false
-            };
-            if (openFileDialog.ShowDialog() != DialogResult.OK)
-                return;
-            var fileName = openFileDialog.FileName;
-            #endregion
-
             LoadFile(fileName);
         }
 
