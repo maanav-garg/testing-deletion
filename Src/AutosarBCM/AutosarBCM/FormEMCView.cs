@@ -8,6 +8,7 @@ using AutosarBCM.Core.Config;
 using AutosarBCM.Core;
 using System.Threading;
 using AutosarBCM.Properties;
+using AutosarBCM.UserControls.Monitor;
 
 namespace AutosarBCM
 {
