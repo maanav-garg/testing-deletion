@@ -56,7 +56,7 @@ namespace AutosarBCM
             InitializeComponent();
             rdoOrder_CheckedChanged(null, null);
             rdoControl_CheckedChanged(null, null);
-            EnvironmentalTest.CurrentEnvironment = ASContext.Configuration.EnvironmentalTest.Environments.First().Name;
+            ASContext.Configuration.EnvironmentalTest.CurrentEnvironment = ASContext.Configuration.EnvironmentalTest.Environments.First();
         }
 
         #endregion
@@ -200,11 +200,11 @@ namespace AutosarBCM
 
                         if (item.Address == 0xC151) //(hasDIDBitsOnOff || isDoorLock)
                         {
-                            item.SwitchForBits(ciDictBits.Keys.ToList(), true);
+                            item.Switch(ciDictBits.Keys.ToList(), true);
                             await Task.Delay(txIntervalCC);
                             Thread.Sleep(100);
                             ciDict[item] = (ciDict[item].Item1, true);
-                            item.SwitchForBits(ciDictBits.Keys.ToList(), false);
+                            item.Switch(ciDictBits.Keys.ToList(), false);
                             await Task.Delay(txIntervalCC);
                         }
                         else

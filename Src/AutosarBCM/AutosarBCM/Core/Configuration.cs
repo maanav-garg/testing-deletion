@@ -55,6 +55,7 @@ namespace AutosarBCM.Core
         public string Name { get; set; }
         public string Type { get; set; }
         public string Group { get; set; }
+        public bool BitBased { get; set; }
         public List<byte> Services { get; set; }
         public List<byte> SessionActiveException { get; set; }
         public List<byte> SessionInactiveException { get; set; }
@@ -71,13 +72,20 @@ namespace AutosarBCM.Core
 
         }
 
-
-        public void SwitchForBits(List<string> payloads, bool isOpen)
+        public void Switch(List<string> payloads, bool isOpen)
         {
-            SwitchForBits(payloads.ToDictionary(x => x, x => isOpen));
+            Switch(payloads.ToDictionary(x => x, x => isOpen));
         }
 
-        public void SwitchForBits(Dictionary<string, bool> payloads)
+        public void Switch(Dictionary<string, bool> payloads)
+        {
+            if (BitBased)
+                SwitchForBitsInternal(payloads);
+            else
+                SwitchInternal(payloads);
+        }
+
+        private void SwitchForBitsInternal(Dictionary<string, bool> payloads)
         {
             var bitIndex = 0;
             byte bits = 0x0;
@@ -121,12 +129,7 @@ namespace AutosarBCM.Core
 
         }
 
-        public void Switch(List<string> payloads, bool isOpen)
-        {
-            Switch(payloads.ToDictionary(x => x, x => isOpen));
-        }
-
-        public void Switch(Dictionary<string, bool> payloads)
+        private void SwitchInternal(Dictionary<string, bool> payloads)
         {
             byte controlByte = 0x0;
             var bitIndex = 0;
@@ -181,9 +184,9 @@ namespace AutosarBCM.Core
                         {
                             byte[] pwmBytes;
                             if (isOpen)
-                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue).Reverse().ToArray();
+                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.EnvironmentalConfig.PWMDutyOpenValue).Reverse().ToArray();
                             else
-                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyCloseValue).Reverse().ToArray();
+                                pwmBytes = BitConverter.GetBytes((ushort)ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.EnvironmentalConfig.PWMDutyCloseValue).Reverse().ToArray();
 
                             bytes.AddRange(pwmBytes);
                         }
@@ -269,21 +272,22 @@ namespace AutosarBCM.Core
             }
             else
             {
-                return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.{payloadInfo.TypeName}"))).Parse(payloadInfo, value, index);
+                return ((Payload)Activator.CreateInstance(Payload.GetConcreteType(payloadInfo))).Parse(payloadInfo, value, index);
             }
         }
     }
 
-    public class PayloadInfo
-    {
-        public string Name { get; set; }
-        public string NamePadded { get => IsBit ? $"    {Name}" : Name; }
-        public string TypeName { get; set; }
-        public int Length { get; set; }
-        public bool IsBit { get; internal set; }
-        public string DTCCode { get; set; }
-        public List<PayloadValue> Values { get; set; }
-        public List<PayloadInfo> Bits { get; set; }
+        public class PayloadInfo
+        {
+            public string Name { get; set; }
+            public string NamePadded { get => IsBit ? $"    {Name}" : Name; }
+            public string TypeName { get; set; }
+            public int Length { get; set; }
+            public bool IsBit { get; internal set; }
+            public string DTCCode { get; set; }
+            public string Format { get; set; }
+            public List<PayloadValue> Values { get; set; }
+            public List<PayloadInfo> Bits { get; set; }
 
         internal PayloadValue GetPayloadValue(byte[] value)
         {
@@ -516,8 +520,6 @@ namespace AutosarBCM.Core
 
                     }).ToList();
 
-                //Console.Write("test");
-
                 var dtcFailureTypes = doc.Descendants("ECU_DATA").Descendants("DIAGNOSTIC_TROUBLE_CODES").Descendants("DTC_FAILURE_TYPES_SUPPORTED").Descendants("DTC_FAILURE_TYPE")
                     .Select(t => new DTCFailure
                     {
@@ -534,7 +536,6 @@ namespace AutosarBCM.Core
                     Payloads = payloads,
                     DTCFailureTypes = dtcFailureTypes
                 };
-
             }
             else
             {
@@ -563,52 +564,56 @@ namespace AutosarBCM.Core
                     })
                     .ToList();
 
-                var controls = doc.Descendants("Control")
-            .Select(c => new ControlInfo
-            {
-                Address = Convert.ToUInt16(c.Element("Address").Value, 16),
-                Name = c.Element("Name").Value,
-                Type = c.Element("Type").Value,
-                Group = c.Element("Group")?.Value,
-                Services = c.Element("Services").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList(),
-                SessionActiveException = c.Element("SessionActiveException") != null && c.Element("SessionActiveException").Value != "" ? c.Element("SessionActiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
-                SessionInactiveException = c.Element("SessionInactiveException") != null && c.Element("SessionInactiveException").Value != "" ? c.Element("SessionInactiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
-
-                Responses = c.Element("Responses") != null ?
-                c.Element("Responses").Elements("Response").Select(x =>
-                new ResponseInfo
-                {
-                    ServiceID = Convert.ToByte(x.Attribute("serviceId").Value, 16),
-                    Payloads = x.Elements("Payload") != null ? x.Elements("Payload").Select((y, i) => new PayloadInfo
-                    {
-                        Name = y.Attribute("name").Value,
-                        TypeName = y.Attribute("typeName").Value,
-                        DTCCode = y.Attribute("dtcCode")?.Value,
-                        Bits = y.Elements("Payload").Select(z => new PayloadInfo
+                    var controls = doc.Descendants("Control")
+                        .Select(c => new ControlInfo
                         {
-                            Name = z.Attribute("name").Value,
-                            TypeName = z.Attribute("typeName").Value,
-                            IsBit = true,
-                        }).ToList()
-                    }).ToList() : new List<PayloadInfo>(),
-                }).ToList() : new List<ResponseInfo>(),
-            }).ToList();
-                var payloads = doc.Descendants("Payloads").Descendants("Payload")
-                    .Select(s => new PayloadInfo
-                    {
-                        Length = int.Parse(s.Attribute("length").Value),
-                        TypeName = s.Attribute("typeName").Value,
-                        Values = s.Elements("Value")
-                            .Select(x => new PayloadValue
-                            {
-                                ValueString = x.Attribute("value").Value,
-                                Color = x.Attribute("color")?.Value ?? null,
-                                FormattedValue = x.Value,
-                                IsClose = x.Attribute("isClose")?.Value == "true",
-                                IsOpen = x.Attribute("isOpen")?.Value == "true",
-                            }).ToList(),
-                    })
-                    .ToList();
+                            Address = Convert.ToUInt16(c.Element("Address").Value, 16),
+                            Name = c.Element("Name").Value,
+                            Type = c.Element("Type").Value,
+                            Group = c.Element("Group")?.Value,
+                            BitBased = c.Element("Responses")?.Elements("Response")?.Elements("Payload")?.Elements("Payload")?.Count() > 0,
+                            Services = c.Element("Services").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList(),
+                            SessionActiveException = c.Element("SessionActiveException") != null && c.Element("SessionActiveException").Value != "" ? c.Element("SessionActiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+                            SessionInactiveException = c.Element("SessionInactiveException") != null && c.Element("SessionInactiveException").Value != "" ? c.Element("SessionInactiveException").Value.Split(';').Select(x => byte.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList() : new List<byte>(),
+
+                            Responses = c.Element("Responses") != null ?
+                                c.Element("Responses").Elements("Response").Select(x =>
+                                    new ResponseInfo
+                                    {
+                                        ServiceID = Convert.ToByte(x.Attribute("serviceId").Value, 16),
+                                        Payloads = x.Elements("Payload") != null ? x.Elements("Payload").Select((y, i) => new PayloadInfo
+                                        {
+                                            Name = y.Attribute("name").Value,
+                                            TypeName = y.Attribute("typeName").Value,
+                                            DTCCode = y.Attribute("dtcCode")?.Value,
+                                            Bits = y.Elements("Payload").Select(z => new PayloadInfo
+                                            {
+                                                Name = z.Attribute("name").Value,
+                                                TypeName = z.Attribute("typeName").Value,
+                                                IsBit = true,
+                                            }).ToList()
+                                        }).ToList() : new List<PayloadInfo>(),
+                                    }).ToList() : new List<ResponseInfo>(),
+                        }).ToList();
+
+                    var payloads = doc.Descendants("Payloads").Descendants("Payload")
+                        .Select(s => new PayloadInfo
+                        {
+                            Length = int.Parse(s.Attribute("length").Value),
+                            TypeName = s.Attribute("typeName").Value,
+                            Format = s.Attribute("format")?.Value,
+                            Values = s.Elements("Value")
+                                .Select(x => new PayloadValue
+                                {
+                                    ValueString = x.Attribute("value").Value,
+                                    Color = x.Attribute("color")?.Value ?? null,
+                                    FormattedValue = x.Value,
+                                    IsClose = x.Attribute("isClose")?.Value == "true",
+                                    IsOpen = x.Attribute("isOpen")?.Value == "true",
+                                }).ToList(),
+                        })
+                        .ToList();
+
                 var EMCLayout = doc.Descendants("EMCLayout").Descendants("Group").Select(e => new EMCLayout
                 {
                     Name = e.Element("Name").Value,
@@ -757,18 +762,18 @@ namespace AutosarBCM.Core
         public static SessionInfo CurrentSession { get; set; }
         public static ConfigurationInfo Configuration { get; set; }
 
-        public ASContext(string configFile, bool isMdxFile)
-        {
-            if (configFile != null)
-                Configuration = ConfigurationInfo.Parse(configFile, isMdxFile);
+            public ASContext(string configFile, bool isMdxFile)
+            {
+                if (configFile != null)
+                    Configuration = ConfigurationInfo.Parse(configFile, isMdxFile);
+            }
         }
-    }
-    public class EnvironmentalTest
-    {
-        /// <summary>
-        /// Name of current selected environment
-        /// </summary>
-        public static string CurrentEnvironment { get; set; }
+        public class EnvironmentalTest
+        {
+            /// <summary>
+            /// Name of current selected environment
+            /// </summary>
+            public Environment CurrentEnvironment { get; set; }
 
         /// <summary>
         /// Gets or sets a list of connection mappings.
