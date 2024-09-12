@@ -68,6 +68,251 @@
 			<AvailableServices>22</AvailableServices>
 		</Session>
 	</Sessions>
+  <EMCLayout>
+    <Group>
+      <Name>24V High Side - 1</Name>
+      <bgColor color="Red" />
+      <textColor color="Black" />
+      <Layout>
+        <Item parent="Horn_Output_Control" functionFeature="" loadFeature="∞">C1.11_Horn Output Control</Item>
+        <Item parent="Daytime_Running_Light_Output" functionFeature="" loadFeature="¤">C2.9_DDRLSupplyLeft</Item>
+        <Item parent="Headlamp_High_Beam_Output_Control" functionFeature="" loadFeature="¤">C3.16_High Beam Right</Item>
+        <Item parent="Spare_PWM_Inputs" functionFeature="" loadFeature="¤">C4.8_SpareDigitalOutput4</Item>
+        <Item parent="Rear_Park_Lamps_Output" functionFeature="" loadFeature="∞">C1.13_RearParkingLightTrailerSupply</Item>
+        <Item parent="Right_Rear_Turn_Lamp_LED_Outage_Feedback" functionFeature="" loadFeature="¤">C2.12_Right Rear Turn Lamp/LED Outage Feedback</Item>
+        <Item parent="InteriorLightDimmingSupply" functionFeature="≈" loadFeature="¤">C3.17_InteriorLightDimmingSupply</Item>
+        <Item parent="AirHornActivateSupply" functionFeature="" loadFeature="∞">C4.16_AirHornActivateSupply</Item>
+        <Item parent="Left_Front_Low_Beam_Output_Control" functionFeature="≈" loadFeature="☼">C1.14_Left Front Low Beam Output Control</Item>
+        <Item parent="Left_Rear_Turn_Lamp_LED_Outage_Feedback" functionFeature="≈" loadFeature="☼">C2.15_Left Rear Turn Lamp/LED Outage Feedback</Item>
+        <Item parent="WaterPumpSupply" functionFeature="" loadFeature="●">C3.18_WaterPumpSupply</Item>
+        <Item parent="StepLightsSupply" functionFeature="" loadFeature="¤">C4.19_StepLightsSupply</Item>
+        <Item parent="Washer_Pump_Front_Relay" functionFeature="" loadFeature="¤">C1.15_Washer Pump Front Relay</Item>
+        <Item parent="DifferentialLockValve1Supply" functionFeature="" loadFeature="±">C3.1_DifferentialLockValve1Supply</Item>
+        <Item parent="Right_Front_Turn_Lamp_Outage_Feedback" functionFeature="" loadFeature="¤">C3.21_Right Front Turn Lamp Outage Feedback</Item>
+        <Item parent="PTO_Valve_Supply" functionFeature="" loadFeature="±">C4.37_PTO2ValveSupply</Item>
+        <Item parent="Right_Front_Fog_Lamps_Output" functionFeature="" loadFeature="¤">C2.1_Right Front Fog Lamps Output</Item>
+        <Item parent="FrontParkingLightSupply" functionFeature="" loadFeature="¤">C3.4_FrontParkingLightSupply</Item>
+        <Item parent="HeatedMirrorSupply" functionFeature="" loadFeature="●">C4.1_HeatedMirrorSupply</Item>
+        <Item parent="Cabin_Tilt_Valve_Supply" functionFeature="" loadFeature="±">C4.38_CabinTiltValveSupply</Item>
+        <Item parent="Dome_Light_Supply" functionFeature="≈" loadFeature="¤">C2.2_DomeLightSupply</Item>
+        <Item parent="ACCutOffSupply" functionFeature="" loadFeature="∞">C3.5_ACCutOffSupply</Item>
+        <Item parent="HeatedWindshieldSupply" functionFeature="" loadFeature="●">C4.2_HeatedWindshieldSupply</Item>
+        <Item parent="TrailerTagAxleLifting1Supply" functionFeature="" loadFeature="¤">C4.39_TrailerTagAxleLifting1Supply</Item>
+        <Item parent="Daytime_Running_Light_Output" functionFeature="" loadFeature="¤">C2.3_DDRLSupplyRight</Item>
+        <Item parent="Headlamp_High_Beam_Output_Control" functionFeature="" loadFeature="¤">C3.7_High Beam Left</Item>
+        <Item parent="Rear_Park_Lamps_Output" functionFeature="" loadFeature="¤">C4.3_RearParkingLightLeftSupply</Item>
+        <Item parent="BedAreaLightingSupply" functionFeature="≈" loadFeature="¤">C4.40_BedAreaLightingSupply</Item>
+        <Item parent="Rear_Fog_Lamps_Output" functionFeature="" loadFeature="¤">C2.4_Rear Fog Lamps Output</Item>
+        <Item parent="Left_Front_Turn_Lamp_Outage_Feedback" functionFeature="" loadFeature="¤">C3.8_Left Front Turn Lamp Outage Feedback</Item>
+        <Item parent="Rear_Park_Lamps_Output" functionFeature="" loadFeature="¤">C4.4_RearParkingLightRightSupply</Item>
+        <Item parent="Map_Lamp_PWM_Supply" functionFeature="≈" loadFeature="¤">C4.41_MapLampDriverPWMSupply</Item>
+        <Item parent="EngineBrakeSupply" functionFeature="" loadFeature="●">C2.6_EngineBrakeSupply</Item>
+        <Item parent="Right_Rear_Turn_Signal_Lamp_Control" functionFeature="" loadFeature="¤">C3.13_Right Rear Turn Signal Lamp Control</Item>
+        <Item parent="Spare_Digital_Outputs" functionFeature="" loadFeature="¤">C4.5_SpareDigitalOutput2</Item>
+        <Item parent="Ambient_Light_LED_Power_Supply" functionFeature="≈" loadFeature="¤">C4.42_Ambient Light LED Power Supply</Item>
+        <Item parent="Left_Rear_Turn_Signal_Lamp_Control" functionFeature="≈" loadFeature="☼">C2.7_Left Rear Turn Signal Lamp Control</Item>
+        <Item parent="Right_Front_Low_Beam_Output_Control" functionFeature="" loadFeature="∞">C3.14_Right Front Low Beam Output Control</Item>
+        <Item parent="BrakeLightRelaySupply" functionFeature="" loadFeature="¤">C4.6_BrakeLightRelaySupply</Item>
+        <Item parent="Inter_Lock_Valve_Supply" functionFeature="" loadFeature="±">C4.44_InterLockValveSupply</Item>
+        <Item parent="Left_Front_Fog_Lamps_Output" functionFeature="" loadFeature="¤">C2.8_Left Front Fog Lamps Output</Item>
+        <Item parent="ReverseGearSupply" functionFeature="" loadFeature="¤">C3.15_ReverseGearSupply</Item>
+        <Item parent="Test_Data" functionFeature="≈" loadFeature="¤">C4.7_SparePWM4</Item>
+        <Item parent="Map_Lamp_PWM_Supply" functionFeature="≈" loadFeature="¤">C4.45_MapLampPassengerPWMSupply</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>24V High Side - 2</Name>
+      <bgColor color="Red"></bgColor>
+      <textColor color="Black"></textColor>
+      <Layout>
+        <Item parent="Spare_Digital_Outputs" functionFeature="" loadFeature="¤">C4.48_SpareDigitalOutput3</Item>
+        <Item parent="LED_Outputs" functionFeature="" loadFeature="¤">C4.49_LDWSFuncIlluminationLED</Item>
+        <Item parent="LED_Outputs" functionFeature="" loadFeature="¤">C4.50_ESPOffOutputLED</Item>
+        <Item parent="LED_Outputs" functionFeature="" loadFeature="¤">C4.51_BlendingFuncIlluminationLED</Item>
+        <Item parent="TCCM_Input" functionFeature="" loadFeature="∞">C5.2_KL15Relay2</Item>
+        <Item parent="TCCM_Input" functionFeature="" loadFeature="∞">C5.3_KL50Output</Item>
+        <Item parent="TCCM_Input" functionFeature="" loadFeature="∞">C5.5_KL15Relay1</Item>
+        <Item parent="TCCM_Input" functionFeature="" loadFeature="∞">C5.6_KL75Relay1</Item>
+        <Item parent="PTO_Valve_Supply" functionFeature="" loadFeature="±">C5.7_PTO1ValveSupply</Item>
+        <Item parent="LowLinerFrontSideLiftedValveSupply" functionFeature="" loadFeature="±">C5.8_LowLinerFrontSideLiftedValveSupply</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>12V HIGH SIDE</Name>
+      <bgColor color="Cyan"></bgColor>
+      <textColor color="Black"></textColor>
+      <Layout>
+        <Item parent="Hall_Sensor_Supply" functionFeature="" loadFeature="●">C4.28_HallSensorLeftSupply</Item>
+        <Item parent="Hall_Sensor_Supply" functionFeature="" loadFeature="●">C4.46_HallSensorRightSupply</Item>
+        <Item parent="WCInhibit" functionFeature="" loadFeature="¤">C4.47_WCInhibit</Item>
+        <Item parent="Interior12VLightDimmingSupply" functionFeature="≈" loadFeature="¤">C5.1_Interior12VLightDimmingSupply</Item>
+        <Item parent="SteeringColumnSwitchIlluminationSupply" functionFeature="≈" loadFeature="¤">C5.9_SteeringColumnSwitchIlluminationSupply</Item>
+        <Item parent="PWM_StartStopIllimunation12VLED" functionFeature="≈" loadFeature="¤">C5.19_PWM_StartStopIllimunation12VLED</Item>
+        <Item parent="DoorLockIndicatorSupply" functionFeature="≈" loadFeature="¤">C5.37_DoorLockIndicatorSupply</Item>
+        <Item parent="Test_Data" functionFeature="" loadFeature="●">C4.10_O_5V_DCDC_1.2A</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>LOW SIDE</Name>
+      <bgColor color="Black"></bgColor>
+      <textColor color="White"></textColor>
+      <Layout>
+        <Item parent="Blower_Control_Relay_Supply" functionFeature="" loadFeature="∞">C3.9_Blower Control Relay Supply</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.52_Battery Saver Reset Control</Item>
+        <Item parent="Battery_Saver_System_Output_Signals" functionFeature="" loadFeature="∞">C4.54_Battery Saver Set Control</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>Full Bridge | Half Bridge</Name>
+      <bgColor color="Pink"></bgColor>
+      <textColor color="Black"></textColor>
+      <Layout>
+        <Item parent="Passenger_Power_Window_Motor" functionFeature="≈" loadFeature="☼">C1.2_Passenger Power Window Motor Up</Item>
+        <Item parent="Windscreen_Wipers_System_Output_Signal" functionFeature="" loadFeature="∞">C1.9_Wiper High Relay</Item>
+        <Item parent="Passenger_Power_Window_Motor" functionFeature="≈" loadFeature="☼">C1.3_Passenger Power Window Motor Down</Item>
+        <Item parent="Windscreen_Wipers_System_Output_Signal" functionFeature="" loadFeature="∞">C1.18_Wiper Low Relay</Item>
+        <Item parent="Driver_Power_Window_Motor" functionFeature="≈" loadFeature="☼">C2.13_Driver Power Window Motor Down</Item>
+        <Item parent="Driver_Power_Window_Motor" functionFeature="≈" loadFeature="☼">C2.14_Driver Power Window Motor Up</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.22_MainLeftMirrorDownLeftCtrl</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Output_Signal" functionFeature="" loadFeature="☼">C1.1_Door Unlock Relay - Passenger's Side</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.23_MainLeftMirrorUpCtrl</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Output_Signal" functionFeature="" loadFeature="☼">C1.4_Passanger Door Lock Relay</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.24_MainRightMirrorUpCtrl</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Output_Signal" functionFeature="" loadFeature="☼">C1.7_Door Unlock Relay - Driver's Side</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.25_MainLeftMirrorRightCtrl</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Output_Signal" functionFeature="" loadFeature="☼">C1.10_Driver Door Lock Relay</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.26_MainRightMirrorRightCtrl</Item>
+        <Item parent="Sunroof_Motor" functionFeature="" loadFeature="¤">C1.6_MOT-B</Item>
+        <Item parent="Power_Mirror_Control" functionFeature="" loadFeature="●">C4.27_MainRightMirrorDownLeftCtrl</Item>
+        <Item parent="Sunroof_Motor" functionFeature="" loadFeature="¤">C1.8_MOT-A</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>24V Switch</Name>
+      <bgColor color="White"></bgColor>
+      <textColor color="Red"></textColor>
+      <Layout>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C5.11_Spare Switch 1</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C5.50_Spare Switch 10</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C6.43_TrailerTagAxleLifting</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C5.15_InteriorLampOffSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C5.51_Spare Switch 11</Item>
+        <Item parent="Key_Switch_System_Input_Signal" functionFeature="▲ ()" loadFeature="">C6.44_IgnitionON</Item>
+        <Item parent="Stowage_Box_Reminder" functionFeature="˅ ()" loadFeature="">C5.16_Left Side Stowage Box</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C5.52_Spare Switch 12</Item>
+        <Item parent="Cruise_Control_Switches" functionFeature="˄" loadFeature="">C6.45_Cruise Set + Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C5.18_Spare Switch 4</Item>
+        <Item parent="Horn_Switch" functionFeature="˅ ()" loadFeature="">C5.53_Horn Switch</Item>
+        <Item parent="Cruise_Control_Switches" functionFeature="˄" loadFeature="">C6.46_Cruise Off Switch</Item>
+        <Item parent="Sunroof_Switch" functionFeature="˅ ()" loadFeature="">C5.27_Sunroof Open Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C6.8_Spare Switch 17</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.47_Spare Switch 28</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C5.34_Spare Switch 7</Item>
+        <Item parent="Cruise_Control_Switches" functionFeature="˄" loadFeature="">C6.9_Cruise Resume Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C6.48_Spare Switch 29</Item>
+        <Item parent="Stowage_Box_Reminder" functionFeature="˅ ()" loadFeature="">C5.35_Right Side Stowage Box</Item>
+        <Item parent="PTO_Switches" functionFeature="˄" loadFeature="">C6.19_MainPTOAckSwitch</Item>
+        <Item parent="Ajar_On_Off_Control" functionFeature="˄ ()" loadFeature="">C6.49_Ajar On Off Control</Item>
+        <Item parent="Key_Switch_System_Input_Signal" functionFeature="▲ ()" loadFeature="">C5.44_IgnitionON2</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C6.23_Spare Switch 22</Item>
+        <Item parent="Ajar_On_Off_Control" functionFeature="˄ ()" loadFeature="">C6.49_Ajar On Off Control</Item>
+        <Item parent="Sunroof_Switch" functionFeature="˅ ()" loadFeature="">C5.45_Sunroof Close Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄ ()" loadFeature="">C6.25_Spare1 Config Switch</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C5.46_SpareSwitch30</Item>
+        <Item parent="Input_Switches" functionFeature="˅" loadFeature="">C6.26_EraglonassGlobalMute</Item>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C5.48_Spare Switch 9</Item>
+        <Item parent="Cruise_Control_Switches" functionFeature="˄" loadFeature="">C6.27_Cruise Time Gap minus Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˄" loadFeature="">C5.49_Spare Switch 16</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C6.37_AlternatorChargingStatus</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>12V Switch</Name>
+      <bgColor color="White"></bgColor>
+      <textColor color="SlateBlue"></textColor>
+      <Layout>
+        <Item parent="Input_Switches" functionFeature="▼" loadFeature="">C4.9_CabinTiltSwitch</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.32_0 FrontSetRightSwitch</Item>
+        <Item parent="PTO_Switches" functionFeature="˅" loadFeature="">C6.20_PTO1AcknowledgementSwitch</Item>
+        <Item parent="Input_Switches" functionFeature="▼" loadFeature="">C6.42_DamperConnectionSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅ ()" loadFeature="">C4.21_Spare Switch 15</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.33_6 Door Ajar Switch - Passenger</Item>
+        <Item parent="Input_Switches" functionFeature="˄" loadFeature="">C6.21_SpareSwitch2</Item>
+        <Item parent="Input_Switches" functionFeature="▼" loadFeature="">C5.4_TrailerDetectionSwitch</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.36_3 FrontResetLeftSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.22_Spare Switch 21</Item>
+        <Item parent="Power_Window_Direction_Hall_Sensor" functionFeature="" loadFeature="">C4.18_PowerWindowDirectionLeftHallSensor</Item>
+        <Item parent="Hazard_Warning_Switch" functionFeature="˅ ()" loadFeature="">C5.10_Hazar Warning Switch</Item>
+        <Item parent="Input_Switches" functionFeature="˅" loadFeature="">C5.47_LowLinerSwitch</Item>
+        <Item parent="Start_Stop_Switches" functionFeature="▲ ()" loadFeature="">C6.24_Start Stop Switch 2</Item>
+        <Item parent="Power_Window_Direction_Hall_Sensor" functionFeature="" loadFeature="">C4.34_PowerWindowDirectionRightHallSensor</Item>
+        <Item parent="Differential_Control_Input" functionFeature="˅" loadFeature="">C5.12_DiffLock1DriverRequestSwitch</Item>
+        <Item parent="Blower_Switch" functionFeature="˄" loadFeature="">C5.54_Blower Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.28_Spare Switch 24</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C5.13_1 FrontSetLeftSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.1_Spare Switch 14</Item>
+        <Item parent="Power_Window_Switch_Input" functionFeature="˅" loadFeature="">C6.29_PowerWindowPASSDownSwitch</Item>
+        <Item parent="Door_Cap_Sensor" functionFeature="()" loadFeature="">C5.41_DoorCapSensor2</Item>
+        <Item parent="Start_Stop_Switches" functionFeature="▼ ()" loadFeature="">C5.14_Start Stop Switch 3</Item>
+        <Item parent="Input_Switches" functionFeature="˅" loadFeature="">C6.2_AxleLifting1Switch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.30_Spare Switch 25</Item>
+        <Item parent="Door_Cap_Sensor" functionFeature="()" loadFeature="">C4.17_DoorCapSensor1</Item>
+        <Item parent="Spare_Switch" functionFeature="˅ ()" loadFeature="">C5.17_Spare Switch 3</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅" loadFeature="">C6.3_2 FrontResetRightSwitch</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅ ()" loadFeature="">C6.31_5 Cabin Lock</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅ ()" loadFeature="">C5.28_7 Door Ajar Switch - Driver</Item>
+        <Item parent="WiperParkPositionSwitch" functionFeature="˅" loadFeature="">C6.10_WiperParkPositionSwitch</Item>
+        <Item parent="Start_Stop_Switches" functionFeature="▼ ()" loadFeature="">C6.32_Start Stop Switch 1</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C5.29_Spare Switch 5</Item>
+        <Item parent="Power_Window_Switch_Input" functionFeature="˅" loadFeature="">C6.11_PowerWindowPASSUpSwitch</Item>
+        <Item parent="Input_Switches" functionFeature="˅" loadFeature="">C6.38_SpareSwitch23</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C5.30_Spare Switch 6</Item>
+        <Item parent="Spare_Switch" functionFeature="˅" loadFeature="">C6.12_Spare Switch 18</Item>
+        <Item parent="Differential_Control_Input" functionFeature="˅" loadFeature="">C6.39_DiffLock1FeedbackSwitch</Item>
+        <Item parent="PTO_Switches" functionFeature="˅" loadFeature="">C5.31_PTO2AcknowledgementSwitch</Item>
+        <Item parent="Spare_Switch" functionFeature="˅ ()" loadFeature="">C6.13_Spare Switch 19</Item>
+        <Item parent="All_Doors_Lock_and_Ajar_Input_Signal" functionFeature="˅ ()" loadFeature="">C6.41_4 Cabin Unlock</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>Analog Inputs</Name>
+      <bgColor color="White"></bgColor>
+      <textColor color="Brown"></textColor>
+      <Layout>
+        <Item parent="Ambient_Light_Sensor" functionFeature="" loadFeature="">C5.20_Ambient Light Sensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.22_ClockSpring2RHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.23_ClockSpring2LHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.25_ClockSpring3LHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.42_ClockSpring1LHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.26_ClockSpring3RHSensor</Item>
+        <Item parent="Clock_Spring_Sensor" functionFeature="" loadFeature="">C5.43_ClockSpring1RHSensor</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>Power Supply 12V</Name>
+      <bgColor color="DarkBlue"></bgColor>
+      <textColor color="White"></textColor>
+      <Layout>
+        <Item parent="Vehicle_Battery_Voltage">C1.3_VehicleConverter12VSupply</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.6_VehicleConverter12VRKESupply</Item>
+      </Layout>
+    </Group>
+    <Group>
+      <Name>Power Supply 24V</Name>
+      <bgColor color="Red"></bgColor>
+      <textColor color="White"></textColor>
+      <Layout>
+        <Item parent="Vehicle_Battery_Voltage">C1.16_Vbat24VSupply#1_1</Item>
+        <Item parent="Vehicle_Battery_Voltage">C1.17_Vbat24VSupply#1_2</Item>
+        <Item parent="Vehicle_Battery_Voltage">C2.10_Vbat24VSupply#2_1</Item>
+        <Item parent="Vehicle_Battery_Voltage">C2.11_Vbat24VSupply#2_2</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.19_Vbat24VSupply#3_1</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.20_Vbat24VSupply#3_2</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.2_Vbat24VSupply#4_1</Item>
+        <Item parent="Vehicle_Battery_Voltage">C3.3_Vbat24VSupply#4_2</Item>
+      </Layout>
+    </Group>
+  </EMCLayout>
 	<Controls>
 		<Control>
 			<Address>DE00</Address>
