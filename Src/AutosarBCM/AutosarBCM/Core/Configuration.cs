@@ -248,32 +248,28 @@ namespace AutosarBCM.Core
 
                 if (address == 0xC151 && pDef.TypeName != "HexDump_1Byte")
                 {
-                    payloads.Add(InitializeType(pInfo, new byte[] { bitArray[counter] }));
+                    payloads.Add(InitializeType(pInfo, pDef.Format, new byte[] { bitArray[counter] }));
                     responseIndex += pDef?.Length ?? 0;
                     counter++;
-                    if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+                    if (pInfo.Bits.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, ASContext.Configuration.GetPayloadInfoByType(a.TypeName).Format, value, i)));
                 }
                 else
                 {
-                    payloads.Add(InitializeType(pInfo, value));
+                    payloads.Add(InitializeType(pInfo, pDef.Format, value));
                     responseIndex += pDef?.Length ?? 0;
 
-                    if (pInfo.Bits?.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, value, i)));
+                    if (pInfo.Bits?.Count > 0) payloads.AddRange(pInfo.Bits.Select((a, i) => InitializeType(a, ASContext.Configuration.GetPayloadInfoByType(a.TypeName).Format, value, i)));
                 }
             }
             return payloads.ToList();
         }
-        private static Payload InitializeType(PayloadInfo payloadInfo, byte[] value, int? index = null)
+
+        private static Payload InitializeType(PayloadInfo payloadInfo, string format, byte[] value, int? index = null)
         {
-            var typeName = FormMain.IsMdxFile ? ((payloadInfo.TypeName == "DID_PWM") ? payloadInfo.TypeName : "MDX_Payload") : "";
-            if (typeName != "")
-            {
-                return ((Payload)Activator.CreateInstance(System.Type.GetType($"AutosarBCM.Core.Config.{typeName}"))).Parse(payloadInfo, value, index);
-            }
-            else
-            {
-                return ((Payload)Activator.CreateInstance(Payload.GetConcreteType(payloadInfo))).Parse(payloadInfo, value, index);
-            }
+            if (FormMain.IsMdxFile && payloadInfo.TypeName != "DID_PWM")
+                format = null;
+            
+            return ((Payload)Activator.CreateInstance(Payload.GetConcreteType(format))).Parse(payloadInfo, value, index);
         }
     }
 

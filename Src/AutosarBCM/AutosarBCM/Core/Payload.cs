@@ -33,11 +33,11 @@ namespace AutosarBCM.Core.Config
             return this;
         }
 
-        internal static Type GetConcreteType(PayloadInfo payloadInfo)
+        internal static Type GetConcreteType(string format)
         {
-            if (payloadInfo.Format == "hex") return typeof(HexPayload);
-            else if (payloadInfo.Format == "uint16") return typeof(UInt16Payload);
-            else if (payloadInfo.Format == "uint16-hex") return typeof(UInt16HexPayload);
+            if (format == "hex") return typeof(HexPayload);
+            else if (format == "uint16") return typeof(UInt16Payload);
+            else if (format == "uint16-hex") return typeof(UInt16HexPayload);
             return typeof(DefaultPayload);
         }
 
