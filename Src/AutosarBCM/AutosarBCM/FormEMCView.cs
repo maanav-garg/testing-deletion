@@ -569,6 +569,7 @@ namespace AutosarBCM
 
         #endregion
 
+        #region Form Events
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
             tabControl1.SelectedIndex = e.TabPageIndex;
@@ -578,5 +579,11 @@ namespace AutosarBCM
         {
             tabControl1.SelectedIndex = 0;
         }
+
+        private void btnClearValues_Click(object sender, EventArgs e)
+        {
+            ucItems.ForEach(item => item.SetDefaultValue());
+        }
+        #endregion
     }
 }
