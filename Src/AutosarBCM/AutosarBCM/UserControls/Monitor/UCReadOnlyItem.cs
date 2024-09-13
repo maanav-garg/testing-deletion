@@ -85,7 +85,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(IOControlByIdentifierService service)
         {
-            HandleMapping(service);
+            HandleMapping(service.Payloads);
 
             if (Program.FormEnvironmentalTest.chkDisableUi.Checked)
                 return;
@@ -160,8 +160,7 @@ namespace AutosarBCM.UserControls.Monitor
         /// <param name="inputResponse">Data comes from device</param>
         public void ChangeStatus(WriteDataByIdentifierService service)
         {
-            //TODO Fix HandleMapping for WriteDataByIdentifierService
-            //HandleMapping(service);
+            HandleMapping(service.Payloads);
 
             if (Program.FormEnvironmentalTest.chkDisableUi.Checked)
                 return;
@@ -227,18 +226,18 @@ namespace AutosarBCM.UserControls.Monitor
 
         }
 
-        private void HandleMapping(IOControlByIdentifierService service)
+        private void HandleMapping(List<Payload> payloads)
         {
             var mappingResponse = MappingResponse.OutputError;
-            var payload = service.Payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
+            var payload = payloads.FirstOrDefault(x => x.PayloadInfo.Name == PayloadInfo.Name);
 
             if (payload.PayloadInfo.TypeName == "DID_PWM")
             {
                 int value = Convert.ToInt32(payload.FormattedValue.Replace("-", ""), 16);
 
-                if (value == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue)
+                if (value == ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.EnvironmentalConfig.PWMDutyOpenValue)
                     mappingResponse = MappingResponse.OutputOpen;
-                else if (value == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyCloseValue)
+                else if (value == ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.EnvironmentalConfig.PWMDutyCloseValue)
                     mappingResponse = MappingResponse.OutputClose;
             }
             else

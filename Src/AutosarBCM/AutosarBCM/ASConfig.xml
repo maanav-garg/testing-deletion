@@ -2497,22 +2497,22 @@
       <Value value="32">50 kmph</Value>
       <Value value="FF">Not Used</Value>
     </Payload>
-    <Payload length="1" typeName="Unsigned_1Byte" />
-    <Payload length="1" typeName="Decimal_1Byte" />
-    <Payload length="4" typeName="DID_F166_0" />
-    <Payload length="4" typeName="Internal_Version" />
-    <Payload length="2" typeName="DID_PWM" />
-    <Payload length="1" typeName="HexDump_1Byte" />
-    <Payload length="2" typeName="HexDump_2Bytes" />
-    <Payload length="3" typeName="HexDump_3Bytes" />
-    <Payload length="4" typeName="HexDump_4Bytes" />
-    <Payload length="16" typeName="HexDump_16Bytes" />
-    <Payload length="16" typeName="DID_DE26" />
-    <Payload length="1" typeName="DID_DE04_7" />
-    <Payload length="1" typeName="DID_DE06_1" />
-    <Payload length="1" typeName="DID_DE06_3" />
-    <Payload length="1" typeName="DID_DE0B_1" />
-    <Payload length="2" typeName="Unsigned_2Bytes" />
+    <Payload length="1" typeName="Unsigned_1Byte" format="hex" />
+		<Payload length="1" typeName="Decimal_1Byte" format="uint16-hex" />
+		<Payload length="4" typeName="DID_F166_0" format="hex" />
+		<Payload length="4" typeName="Internal_Version" format="hex" />
+		<Payload length="2" typeName="DID_PWM" format="uint16" />
+		<Payload length="1" typeName="HexDump_1Byte" format="hex" />
+		<Payload length="2" typeName="HexDump_2Bytes" format="hex" />
+		<Payload length="3" typeName="HexDump_3Bytes" format="hex" />
+		<Payload length="4" typeName="HexDump_4Bytes" format="hex" />
+		<Payload length="16" typeName="HexDump_16Bytes" format="hex" />
+		<Payload length="16" typeName="DID_DE26" format="hex" />
+		<Payload length="1" typeName="DID_DE04_7" format="hex" />
+		<Payload length="1" typeName="DID_DE06_1" format="hex" />
+		<Payload length="1" typeName="DID_DE06_3" format="hex" />
+		<Payload length="1" typeName="DID_DE0B_1" format="hex" />
+		<Payload length="2" typeName="Unsigned_2Bytes" format="uint16" />
   </Payloads>
   <DTCFailureTypes>
     <Type value="11">Circuit Short To Ground</Type>

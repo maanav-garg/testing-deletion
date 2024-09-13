@@ -33,7 +33,20 @@ namespace AutosarBCM.Core.Config
             return this;
         }
 
-        protected virtual void SetFormattedValue()
+        internal static Type GetConcreteType(string format)
+        {
+            if (format == "hex") return typeof(HexPayload);
+            else if (format == "uint16") return typeof(UInt16Payload);
+            else if (format == "uint16-hex") return typeof(UInt16HexPayload);
+            return typeof(DefaultPayload);
+        }
+
+        protected abstract void SetFormattedValue();
+    }
+
+    public class DefaultPayload : Payload
+    {
+        protected override void SetFormattedValue()
         {
             var payloadValue = ASContext.Configuration.GetPayloadInfoByType(PayloadInfo.TypeName).GetPayloadValue(Value);
             FormattedValue = payloadValue?.FormattedValue;
@@ -41,102 +54,18 @@ namespace AutosarBCM.Core.Config
         }
     }
 
-    public class MDX_Payload : Payload { }
-    public class DID_Byte_Enable_Disable : Payload { }
-    public class DID_Byte_Activate_Inactivate : Payload { }
-    public class DID_Bytes_High_Low : Payload { }
-    public class DID_DE00_0 : Payload { }
-    public class DID_DE00_4 : Payload { }
-    public class DID_Byte_Present_notPresent : Payload { }
-    public class OnOffState : Payload { }
-    public class DID_Lamp_Status : Payload { }
-    public class DID_Byte_Lamp_Control : Payload { }
-    public class DID_4253_0 : Payload { }
-    public class DID_42A0_0 : Payload { }
-    public class DID_40E8_0 : Payload { }
-    public class DID_40E7_0 : Payload { }
-    public class DID_4255_Daytime_Running_Light : Payload { }
-    public class DID_41EF_0 : Payload { }
-    public class DID_41F1_0 : Payload { }
-    public class DID_41EC_0 : Payload { }
-    public class DID_41F3_0 : Payload { }
-    public class DID_DE02_7 : Payload { }
-    public class DID_DE03_0 : Payload { }
-    public class DID_DE01_3 : Payload { }
-    public class DID_DE01_4 : Payload { }
-    public class DID_DE08_7 : Payload { }
-    public class DID_Byte_Kmph : Payload { }
-    public class DID_C257_0 : Payload { }
-    public class DID_Byte_On_Off : Payload { }
-    public class DID_Bits_On_Off : Payload { }
-
-    public class HexDump_1Byte : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-    public class HexDump_2Bytes : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-    public class HexDump_3Bytes : Payload
+    public class HexPayload : Payload
     {
         protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
     }
 
-    public class HexDump_4Bytes : Payload
+    public class UInt16Payload : Payload
     {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-    public class HexDump_16Bytes : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
+        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToUInt16(Value.Reverse().ToArray(), 0).ToString();
     }
 
-    public class Unsigned_1Byte : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-    public class Decimal_1Byte : Payload
+    public class UInt16HexPayload : Payload
     {
         protected override void SetFormattedValue() => FormattedValue = Convert.ToUInt32(Value.FirstOrDefault().ToString("X2"), 16).ToString();
-    }
-
-    public class DID_F166_0 : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-
-    public class Internal_Version : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-
-    public class DID_PWM : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToUInt16(Value.Reverse().ToArray(), 0).ToString();
-    }
-    public class DID_DE26 : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-    public class DID_DE04_7 : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-    public class DID_DE06_1 : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-    public class DID_DE06_3 : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-    public class DID_DE0B_1 : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToString(Value);
-    }
-    public class Unsigned_2Bytes : Payload
-    {
-        protected override void SetFormattedValue() => FormattedValue = BitConverter.ToUInt16(Value.Reverse().ToArray(), 0).ToString();
     }
 }
