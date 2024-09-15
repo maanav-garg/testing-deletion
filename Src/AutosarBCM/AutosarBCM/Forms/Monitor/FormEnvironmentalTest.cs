@@ -13,6 +13,7 @@ namespace AutosarBCM.Forms.Monitor
     public partial class FormEnvironmentalTest : Form, IPeriodicTest, IWriteByIdenReceiver, IIOControlByIdenReceiver, IDTCReceiver, IReadDataByIdenReceiver
     {
         #region Variables
+
         private SortedDictionary<string, List<UCReadOnlyItem>> groups = new SortedDictionary<string, List<UCReadOnlyItem>>();
         internal List<UCReadOnlyItem> ucItems = new List<UCReadOnlyItem>();
         private Dictionary<string, ControlInfo> dtcList = new Dictionary<string, ControlInfo>();
@@ -37,6 +38,7 @@ namespace AutosarBCM.Forms.Monitor
 
         int timeSec, timeMin, timeHour;
         bool isActive;
+        public static string configName;
         #endregion
 
         #region Constructor
@@ -65,13 +67,13 @@ namespace AutosarBCM.Forms.Monitor
 
             ResetTime();
 
-            scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
-            cycleRange = (int)ASContext.Configuration.EnvironmentalTest.Environments.First(e => e.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.CycleRange;
-            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Cycles);
-            scenarios = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).Scenarios;
+            scenarios = ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.Scenarios;
+            cycleRange = (int)ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.EnvironmentalConfig.CycleRange;
+            cycles = MonitorUtil.GetCycleDict(ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.Cycles);
+            scenarios = ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.Scenarios;
             mappingData = new List<Mapping>(ASContext.Configuration.EnvironmentalTest.ConnectionMappings);
-            continuousReadData = (ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).ContinousReadList);
-            endCycleIndex = ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.EndCycleIndex;
+            continuousReadData = (ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.ContinousReadList);
+            endCycleIndex = ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.EnvironmentalConfig.EndCycleIndex;
 
             var payloadNamesInCycle = cycles.Values.SelectMany(x => x.OpenItems.SelectMany(a => a.Payloads).Concat(x.CloseItems.SelectMany(a => a.Payloads))).Distinct();
 
@@ -185,7 +187,7 @@ namespace AutosarBCM.Forms.Monitor
         private void btnStart_Click(object sender, EventArgs e)
         {
             FormMain mainForm = Application.OpenForms.OfType<FormMain>().FirstOrDefault();
-
+            configName = tsbConfigurationSelection.Text;
             if (mainForm.tsbSession.Text != "Session: Extended Diagnostic Session")
             {
                 Helper.ShowWarningMessageBox("Must be in Extended Diagnostic Session.");
@@ -204,7 +206,7 @@ namespace AutosarBCM.Forms.Monitor
             }
             else //Start Test
             {
-                FormMain.MonitorTestTypeClone = MonitorTestType.Environmental;
+                FormMain.MonitorTestType = MonitorTestType.Environmental;
                 cancellationTokenSource = new CancellationTokenSource();
                 Task.Run(async () =>
                 {
@@ -450,8 +452,8 @@ namespace AutosarBCM.Forms.Monitor
         public bool CheckValueIsOpened(Payload payload)
         {
             if (payload.FormattedValue == ASContext.Configuration.GetPayloadInfoByType(payload.PayloadInfo.TypeName).Values.FirstOrDefault(x => x.IsOpen == true)?.FormattedValue
-                || (payload.PayloadInfo.TypeName == "DID_PWM" && payload.FormattedValue == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.PWMDutyOpenValue.ToString()) 
-                || (payload.PayloadInfo.TypeName == "HexDump_1Byte" && payload.FormattedValue == ASContext.Configuration.EnvironmentalTest.Environments.First(x => x.Name == EnvironmentalTest.CurrentEnvironment).EnvironmentalConfig.HexDump1ByteOpenValue))
+                || (payload.PayloadInfo.TypeName == "DID_PWM" && payload.FormattedValue == ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.EnvironmentalConfig.PWMDutyOpenValue.ToString()) 
+                || (payload.PayloadInfo.TypeName == "HexDump_1Byte" && payload.FormattedValue == ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.EnvironmentalConfig.HexDump1ByteOpenValue))
             {
                 return true;
             }
@@ -467,7 +469,7 @@ namespace AutosarBCM.Forms.Monitor
             var currentTime = DateTime.Now;
             var timeout = TimeSpan.FromSeconds(2);
 
-            var messagesToRemove = new List<Config.SentMessage>(); // Collect keys to remove
+            var messagesToRemove = new List<Config.SentMessage>();
 
             foreach (var message in sentMessagesList.ToList())
             {
@@ -662,28 +664,27 @@ namespace AutosarBCM.Forms.Monitor
         {
             if (ASContext.Configuration == null)
                 return;
-            if (EnvironmentalTest.CurrentEnvironment == null)
+            if (ASContext.Configuration.EnvironmentalTest.CurrentEnvironment == null)
             {
-                var defaultEnvironment = ASContext.Configuration.EnvironmentalTest.Environments.First().Name;
-                EnvironmentalTest.CurrentEnvironment = defaultEnvironment;
-                tsbConfigurationSelection.Text = $"Configuration: {defaultEnvironment}";
+                ASContext.Configuration.EnvironmentalTest.CurrentEnvironment = ASContext.Configuration.EnvironmentalTest.Environments.First();
+                tsbConfigurationSelection.Text = $"Configuration: {ASContext.Configuration.EnvironmentalTest.CurrentEnvironment.Name}";
             }
 
             tsbConfigurationSelection.DropDownItems.Clear();
             foreach (var environment in ASContext.Configuration.EnvironmentalTest.Environments)
-                tsbConfigurationSelection.DropDownItems.Add(new ToolStripMenuItem(environment.Name, null, new EventHandler(tsbConfigurationSelection_Click)) { Tag = environment.Name });
+                tsbConfigurationSelection.DropDownItems.Add(new ToolStripMenuItem(environment.Name, null, new EventHandler(tsbConfigurationSelection_Click)) { Tag = environment });
         }
         private void tsbConfigurationSelection_Click(object sender, EventArgs e)
         {
-            var environmentInfo = (sender as ToolStripMenuItem).Tag as string;
-            if (EnvironmentalTest.CurrentEnvironment == environmentInfo)
+            var environmentInfo = (sender as ToolStripMenuItem).Tag as Core.Environment;
+            if (ASContext.Configuration.EnvironmentalTest.CurrentEnvironment == environmentInfo)
             {
                 Helper.ShowWarningMessageBox(environmentInfo + " configuration is already loaded.");
                 return;
             }
 
-            EnvironmentalTest.CurrentEnvironment = environmentInfo;
-            tsbConfigurationSelection.Text = $"Configuration: {environmentInfo}";
+            ASContext.Configuration.EnvironmentalTest.CurrentEnvironment = environmentInfo;
+            tsbConfigurationSelection.Text = $"Configuration: {environmentInfo.Name}";
             SuspendLayout();
             ReloadControls();
             ResumeLayout();
@@ -708,7 +709,5 @@ namespace AutosarBCM.Forms.Monitor
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

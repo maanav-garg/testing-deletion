@@ -63,6 +63,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pnlCardLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnClearValues = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             this.emcControlToolStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -88,12 +89,13 @@
             this.dgvData.Name = "dgvData";
             this.dgvData.ReadOnly = true;
             this.dgvData.RowHeadersVisible = false;
-            this.dgvData.Size = new System.Drawing.Size(1317, 629);
+            this.dgvData.Size = new System.Drawing.Size(1292, 540);
             this.dgvData.TabIndex = 0;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "Time";
+            this.Column6.MinimumWidth = 6;
             this.Column6.Name = "Column6";
             this.Column6.ReadOnly = true;
             this.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -101,6 +103,7 @@
             // Column5
             // 
             this.Column5.HeaderText = "DID Name";
+            this.Column5.MinimumWidth = 6;
             this.Column5.Name = "Column5";
             this.Column5.ReadOnly = true;
             this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -108,6 +111,7 @@
             // Column2
             // 
             this.Column2.HeaderText = "Payload";
+            this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -115,6 +119,7 @@
             // Column3
             // 
             this.Column3.HeaderText = "Value";
+            this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
             this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -122,6 +127,7 @@
             // Column4
             // 
             this.Column4.HeaderText = "DTC Status";
+            this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
             this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -130,7 +136,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1030, 32);
+            this.label1.Location = new System.Drawing.Point(981, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 5;
@@ -139,7 +145,7 @@
             // txtFilter
             // 
             this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFilter.Location = new System.Drawing.Point(1068, 29);
+            this.txtFilter.Location = new System.Drawing.Point(1019, 26);
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(250, 20);
             this.txtFilter.TabIndex = 6;
@@ -399,10 +405,23 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1323, 635);
+            this.tabPage1.Size = new System.Drawing.Size(1298, 546);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Table View";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnClearValues
+            // 
+            this.btnClearValues.Image = global::AutosarBCM.Properties.Resources.delete_icon_12_795858790;
+            this.btnClearValues.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClearValues.Location = new System.Drawing.Point(839, 27);
+            this.btnClearValues.Name = "btnClearValues";
+            this.btnClearValues.Size = new System.Drawing.Size(98, 23);
+            this.btnClearValues.TabIndex = 15;
+            this.btnClearValues.Text = "Clear Values";
+            this.btnClearValues.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClearValues.UseVisualStyleBackColor = true;
+            this.btnClearValues.Click += new System.EventHandler(this.btnClearValues_Click);
             // 
             // FormEMCView
             // 
@@ -410,6 +429,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.GhostWhite;
             this.ClientSize = new System.Drawing.Size(1330, 661);
+            this.Controls.Add(this.btnClearValues);
             this.Controls.Add(this.emcControlToolStrip);
             this.Controls.Add(this.lblElapsedTime);
             this.Controls.Add(this.label2);
@@ -418,7 +438,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtFilter);
             this.Controls.Add(this.tabControl1);
-            this.MinimumSize = new System.Drawing.Size(900, 500);
+            this.MinimumSize = new System.Drawing.Size(900, 499);
             this.Name = "FormEMCView";
             this.Text = "EMC Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormEMCView_FormClosing);
@@ -467,6 +487,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.FlowLayoutPanel pnlCardLayout;
         private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Button btnClearValues;
         private System.Windows.Forms.ToolStripDropDownButton sleepWaketionDropDownButton;
         public System.Windows.Forms.ToolStripMenuItem wakeToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem sleepToolStripMenuItem;

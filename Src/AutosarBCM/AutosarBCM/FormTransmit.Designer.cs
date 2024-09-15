@@ -83,7 +83,7 @@
             this.tsbStopPeriodicMessage});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1408, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1056, 27);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -91,7 +91,7 @@
             // 
             this.tsbNewMsg.Image = global::AutosarBCM.Properties.Resources.add_icon_2688193755;
             this.tsbNewMsg.Name = "tsbNewMsg";
-            this.tsbNewMsg.Size = new System.Drawing.Size(125, 24);
+            this.tsbNewMsg.Size = new System.Drawing.Size(104, 24);
             this.tsbNewMsg.Text = "New Message";
             this.tsbNewMsg.Click += new System.EventHandler(this.tsbNewMsg_Click);
             // 
@@ -100,7 +100,7 @@
             this.tsbTransmit.Image = ((System.Drawing.Image)(resources.GetObject("tsbTransmit.Image")));
             this.tsbTransmit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbTransmit.Name = "tsbTransmit";
-            this.tsbTransmit.Size = new System.Drawing.Size(89, 24);
+            this.tsbTransmit.Size = new System.Drawing.Size(76, 24);
             this.tsbTransmit.Text = "Transmit";
             this.tsbTransmit.Click += new System.EventHandler(this.tsbTransmit_Click);
             // 
@@ -109,7 +109,7 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(125, 24);
+            this.toolStripButton1.Size = new System.Drawing.Size(105, 24);
             this.toolStripButton1.Text = "Reset Counter";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
@@ -123,7 +123,7 @@
             // 
             this.openFile.ForeColor = System.Drawing.Color.DarkGray;
             this.openFile.Name = "openFile";
-            this.openFile.Size = new System.Drawing.Size(116, 24);
+            this.openFile.Size = new System.Drawing.Size(92, 24);
             this.openFile.Text = "Open File Name";
             this.openFile.Visible = false;
             // 
@@ -132,21 +132,22 @@
             this.tsbMultiTransmit.Image = global::AutosarBCM.Properties.Resources.msg_28364812;
             this.tsbMultiTransmit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbMultiTransmit.Name = "tsbMultiTransmit";
-            this.tsbMultiTransmit.Size = new System.Drawing.Size(135, 24);
+            this.tsbMultiTransmit.Size = new System.Drawing.Size(113, 24);
             this.tsbMultiTransmit.Text = "Multi Messages";
             this.tsbMultiTransmit.Click += new System.EventHandler(this.tsbMultiTransmit_Click);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(69, 24);
+            this.toolStripLabel1.Size = new System.Drawing.Size(55, 24);
             this.toolStripLabel1.Text = "Filter by: ";
             // 
             // txtFilter
             // 
             this.txtFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.txtFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(232, 27);
+            this.txtFilter.Size = new System.Drawing.Size(175, 27);
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
             // 
             // tsbImportData
@@ -154,7 +155,7 @@
             this.tsbImportData.Image = global::AutosarBCM.Properties.Resources.ImportOrLoad_8600_24;
             this.tsbImportData.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImportData.Name = "tsbImportData";
-            this.tsbImportData.Size = new System.Drawing.Size(114, 24);
+            this.tsbImportData.Size = new System.Drawing.Size(94, 24);
             this.tsbImportData.Text = "Import Data";
             this.tsbImportData.Click += new System.EventHandler(this.tsbImportData_Click);
             // 
@@ -163,7 +164,7 @@
             this.tsbSaveData.Image = global::AutosarBCM.Properties.Resources.save_16xLG;
             this.tsbSaveData.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSaveData.Name = "tsbSaveData";
-            this.tsbSaveData.Size = new System.Drawing.Size(100, 24);
+            this.tsbSaveData.Size = new System.Drawing.Size(82, 24);
             this.tsbSaveData.Text = "Save Data";
             this.tsbSaveData.Click += new System.EventHandler(this.tsbCsvTemplate_Click);
             // 
@@ -197,14 +198,14 @@
             this.trigger});
             this.dgvMessages.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMessages.Location = new System.Drawing.Point(39, 27);
-            this.dgvMessages.Margin = new System.Windows.Forms.Padding(9, 7, 9, 7);
+            this.dgvMessages.Location = new System.Drawing.Point(29, 27);
+            this.dgvMessages.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.dgvMessages.MultiSelect = false;
             this.dgvMessages.Name = "dgvMessages";
             this.dgvMessages.RowHeadersVisible = false;
             this.dgvMessages.RowHeadersWidth = 51;
             this.dgvMessages.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMessages.Size = new System.Drawing.Size(1369, 332);
+            this.dgvMessages.Size = new System.Drawing.Size(1027, 265);
             this.dgvMessages.TabIndex = 54;
             this.dgvMessages.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMessages_CellDoubleClick);
             this.dgvMessages.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvMessages_CellMouseDown);
@@ -290,27 +291,27 @@
             this.tsmiDelete,
             this.tsmiEdit});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(123, 76);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(108, 70);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // tsmiCopy
             // 
             this.tsmiCopy.Name = "tsmiCopy";
-            this.tsmiCopy.Size = new System.Drawing.Size(122, 24);
+            this.tsmiCopy.Size = new System.Drawing.Size(107, 22);
             this.tsmiCopy.Text = "Copy";
             this.tsmiCopy.Click += new System.EventHandler(this.tsmiCopy_Click);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.Name = "tsmiDelete";
-            this.tsmiDelete.Size = new System.Drawing.Size(122, 24);
+            this.tsmiDelete.Size = new System.Drawing.Size(107, 22);
             this.tsmiDelete.Text = "Delete";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
             // tsmiEdit
             // 
             this.tsmiEdit.Name = "tsmiEdit";
-            this.tsmiEdit.Size = new System.Drawing.Size(122, 24);
+            this.tsmiEdit.Size = new System.Drawing.Size(107, 22);
             this.tsmiEdit.Text = "Edit";
             this.tsmiEdit.Click += new System.EventHandler(this.tsmiEdit_Click);
             // 
@@ -326,19 +327,17 @@
             this.pnlMovementBtn.Controls.Add(this.btnDown);
             this.pnlMovementBtn.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlMovementBtn.Location = new System.Drawing.Point(0, 27);
-            this.pnlMovementBtn.Margin = new System.Windows.Forms.Padding(4);
             this.pnlMovementBtn.Name = "pnlMovementBtn";
-            this.pnlMovementBtn.Size = new System.Drawing.Size(39, 332);
+            this.pnlMovementBtn.Size = new System.Drawing.Size(29, 265);
             this.pnlMovementBtn.TabIndex = 59;
             // 
             // btnUp
             // 
             this.btnUp.BackColor = System.Drawing.Color.White;
             this.btnUp.Image = global::AutosarBCM.Properties.Resources.ArrowUpEnd;
-            this.btnUp.Location = new System.Drawing.Point(4, 27);
-            this.btnUp.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUp.Location = new System.Drawing.Point(3, 22);
             this.btnUp.Name = "btnUp";
-            this.btnUp.Size = new System.Drawing.Size(29, 42);
+            this.btnUp.Size = new System.Drawing.Size(22, 34);
             this.btnUp.TabIndex = 56;
             this.btnUp.UseVisualStyleBackColor = false;
             this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
@@ -347,24 +346,22 @@
             // 
             this.btnDown.BackColor = System.Drawing.Color.White;
             this.btnDown.Image = global::AutosarBCM.Properties.Resources.ArrowDownEnd;
-            this.btnDown.Location = new System.Drawing.Point(4, 76);
-            this.btnDown.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDown.Location = new System.Drawing.Point(3, 62);
             this.btnDown.Name = "btnDown";
-            this.btnDown.Size = new System.Drawing.Size(29, 42);
+            this.btnDown.Size = new System.Drawing.Size(22, 34);
             this.btnDown.TabIndex = 57;
             this.btnDown.UseVisualStyleBackColor = false;
             this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
             // 
             // FormTransmit
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1408, 359);
+            this.ClientSize = new System.Drawing.Size(1056, 292);
             this.Controls.Add(this.dgvMessages);
             this.Controls.Add(this.pnlMovementBtn);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormTransmit";
             this.Text = "Transmit";
             this.Load += new System.EventHandler(this.FormTransmit_Load);

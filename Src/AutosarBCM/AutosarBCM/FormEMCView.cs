@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AutosarBCM.Core.Config;
-using AutosarBCM.UserControls.Monitor;
-using AutosarBCM;
 using AutosarBCM.Core;
 using System.Threading;
-using System.Web.UI;
 using AutosarBCM.Properties;
+using AutosarBCM.UserControls.Monitor;
 
 namespace AutosarBCM
 {
@@ -616,6 +611,7 @@ namespace AutosarBCM
 
         #endregion
 
+        #region Form Events
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
             tabControl1.SelectedIndex = e.TabPageIndex;
@@ -626,6 +622,10 @@ namespace AutosarBCM
             tabControl1.SelectedIndex = 0;
         }
 
-        
+        private void btnClearValues_Click(object sender, EventArgs e)
+        {
+            ucItems.ForEach(item => item.SetDefaultValue());
+        }
+        #endregion
     }
 }

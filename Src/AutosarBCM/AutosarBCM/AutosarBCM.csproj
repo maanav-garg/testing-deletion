@@ -59,7 +59,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Connection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Connection, Version=1.0.1.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dlls\Connection.dll</HintPath>
     </Reference>
@@ -97,12 +97,6 @@
     <Compile Include="Core\Payload.cs" />
     <Compile Include="Core\Service.cs" />
     <Compile Include="Core\Communication.cs" />
-    <Compile Include="Common\FormAdd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Common\FormAdd.Designer.cs">
-      <DependentUpon>FormAdd.cs</DependentUpon>
-    </Compile>
     <Compile Include="Common\FormHardwareList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,12 +108,6 @@
     </Compile>
     <Compile Include="Common\FormProgress.designer.cs">
       <DependentUpon>FormProgress.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Common\FormText.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Common\FormText.Designer.cs">
-      <DependentUpon>FormText.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfigManager.cs" />
     <Compile Include="Core\Configuration.cs" />
@@ -180,29 +168,11 @@
     <Compile Include="Forms\Monitor\FormEnvironmentalTest.Designer.cs">
       <DependentUpon>FormEnvironmentalTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Monitor\FormMonitorEnvInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Monitor\FormMonitorEnvInput.Designer.cs">
-      <DependentUpon>FormMonitorEnvInput.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Monitor\FormMonitorEnvOutput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Monitor\FormMonitorEnvOutput.Designer.cs">
-      <DependentUpon>FormMonitorEnvOutput.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Monitor\FormMonitorGenericInput.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Monitor\FormMonitorGenericInput.Designer.cs">
       <DependentUpon>FormMonitorGenericInput.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Monitor\FormMonitorGenericOutput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Monitor\FormMonitorGenericOutput.Designer.cs">
-      <DependentUpon>FormMonitorGenericOutput.cs</DependentUpon>
     </Compile>
     <Compile Include="FormTracePopup.cs">
       <SubType>Form</SubType>
@@ -225,7 +195,6 @@
     <Compile Include="MMTimer.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="Models\SetupModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
@@ -253,50 +222,11 @@
     <Compile Include="UserControls\Monitor\UCDTCCard.Designer.cs">
       <DependentUpon>UCDTCCard.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Monitor\UCOutput.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="UserControls\Monitor\UCCycleBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserControls\Monitor\UCCycleBar.Designer.cs">
       <DependentUpon>UCCycleBar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCDigitalOutputItem.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCDigitalOutputItem.Designer.cs">
-      <DependentUpon>UCDigitalOutputItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCDoorControls.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCDoorControls.Designer.cs">
-      <DependentUpon>UCDoorControls.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCEEProm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCEEProm.Designer.cs">
-      <DependentUpon>UCEEProm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCOpenCloseController.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCOpenCloseController.Designer.cs">
-      <DependentUpon>UCOpenCloseController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCPowerMirror.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCPowerMirror.Designer.cs">
-      <DependentUpon>UCPowerMirror.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCLoopback.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCLoopback.Designer.cs">
-      <DependentUpon>UCLoopback.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Monitor\UCEmcReadOnlyItem.cs">
       <SubType>UserControl</SubType>
@@ -316,30 +246,11 @@
     <Compile Include="UserControls\Monitor\UCItem.Designer.cs">
       <DependentUpon>UCItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Monitor\UCPEPSOutput.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCPEPSOutput.Designer.cs">
-      <DependentUpon>UCPEPSOutput.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCWiper.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\Monitor\UCWiper.Designer.cs">
-      <DependentUpon>UCWiper.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Common\FormAdd.resx">
-      <DependentUpon>FormAdd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Common\FormHardwareList.resx">
       <DependentUpon>FormHardwareList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Common\FormProgress.resx">
       <DependentUpon>FormProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Common\FormText.resx">
-      <DependentUpon>FormText.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAbout.resx">
       <DependentUpon>FormAbout.cs</DependentUpon>
@@ -372,18 +283,9 @@
       <DependentUpon>FormEnvironmentalTest.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Monitor\FormMonitorEnvInput.resx">
-      <DependentUpon>FormMonitorEnvInput.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Monitor\FormMonitorEnvOutput.resx">
-      <DependentUpon>FormMonitorEnvOutput.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Monitor\FormMonitorGenericInput.resx">
       <DependentUpon>FormMonitorGenericInput.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Monitor\FormMonitorGenericOutput.resx">
-      <DependentUpon>FormMonitorGenericOutput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTracePopup.resx">
       <DependentUpon>FormTracePopup.cs</DependentUpon>
@@ -416,29 +318,8 @@
     <EmbeddedResource Include="UserControls\Monitor\UCDTCCard.resx">
       <DependentUpon>UCDTCCard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCOutput.resx">
-      <DependentUpon>UCOutput.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCCycleBar.resx">
       <DependentUpon>UCCycleBar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCDigitalOutputItem.resx">
-      <DependentUpon>UCDigitalOutputItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCDoorControls.resx">
-      <DependentUpon>UCDoorControls.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCEEProm.resx">
-      <DependentUpon>UCEEProm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCOpenCloseController.resx">
-      <DependentUpon>UCOpenCloseController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCPowerMirror.resx">
-      <DependentUpon>UCPowerMirror.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCLoopback.resx">
-      <DependentUpon>UCLoopback.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCEmcReadOnlyItem.resx">
       <DependentUpon>UCEmcReadOnlyItem.cs</DependentUpon>
@@ -448,12 +329,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Monitor\UCItem.resx">
       <DependentUpon>UCItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCPEPSOutput.resx">
-      <DependentUpon>UCPEPSOutput.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Monitor\UCWiper.resx">
-      <DependentUpon>UCWiper.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -523,6 +398,9 @@
     <None Include="Resources\UnLcok.png" />
     <None Include="Resources\testerPresent.png" />
     <Content Include="tool1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
