@@ -136,7 +136,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(981, 29);
+            this.label1.Location = new System.Drawing.Point(1068, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 5;
@@ -145,9 +145,9 @@
             // txtFilter
             // 
             this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFilter.Location = new System.Drawing.Point(1019, 26);
+            this.txtFilter.Location = new System.Drawing.Point(1106, 26);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(250, 20);
+            this.txtFilter.Size = new System.Drawing.Size(163, 20);
             this.txtFilter.TabIndex = 6;
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
             // 
@@ -155,12 +155,13 @@
             // 
             this.btnSave.Image = global::AutosarBCM.Properties.Resources.save_16xLG;
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(114, 21);
+            this.btnSave.Location = new System.Drawing.Point(90, 21);
             this.btnSave.Name = "btnSave";
             this.btnSave.Padding = new System.Windows.Forms.Padding(5);
-            this.btnSave.Size = new System.Drawing.Size(89, 34);
+            this.btnSave.Size = new System.Drawing.Size(73, 34);
             this.btnSave.TabIndex = 8;
             this.btnSave.Text = "Export";
+            this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
@@ -171,16 +172,17 @@
             this.btnStart.Location = new System.Drawing.Point(12, 21);
             this.btnStart.Name = "btnStart";
             this.btnStart.Padding = new System.Windows.Forms.Padding(5);
-            this.btnStart.Size = new System.Drawing.Size(96, 34);
+            this.btnStart.Size = new System.Drawing.Size(72, 34);
             this.btnStart.TabIndex = 7;
             this.btnStart.Text = "Start";
+            this.btnStart.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(209, 32);
+            this.label2.Location = new System.Drawing.Point(236, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 13);
             this.label2.TabIndex = 10;
@@ -189,7 +191,7 @@
             // lblElapsedTime
             // 
             this.lblElapsedTime.AutoSize = true;
-            this.lblElapsedTime.Location = new System.Drawing.Point(289, 32);
+            this.lblElapsedTime.Location = new System.Drawing.Point(316, 32);
             this.lblElapsedTime.Name = "lblElapsedTime";
             this.lblElapsedTime.Size = new System.Drawing.Size(34, 13);
             this.lblElapsedTime.TabIndex = 11;
@@ -276,9 +278,9 @@
             this.lowBatteryProtectionDropDownButton,
             this.sleepWaketionDropDownButton,
             this.lblSleepWakeStatus});
-            this.emcControlToolStrip.Location = new System.Drawing.Point(338, 25);
+            this.emcControlToolStrip.Location = new System.Drawing.Point(365, 25);
             this.emcControlToolStrip.Name = "emcControlToolStrip";
-            this.emcControlToolStrip.Size = new System.Drawing.Size(489, 27);
+            this.emcControlToolStrip.Size = new System.Drawing.Size(591, 27);
             this.emcControlToolStrip.TabIndex = 13;
             this.emcControlToolStrip.Text = "toolStrip3";
             // 
@@ -324,21 +326,21 @@
             // wakeToolStripMenuItem
             // 
             this.wakeToolStripMenuItem.Name = "wakeToolStripMenuItem";
-            this.wakeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.wakeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.wakeToolStripMenuItem.Text = "Wake";
             this.wakeToolStripMenuItem.Click += new System.EventHandler(this.wakeToolStripMenuItem_Click);
             // 
             // sleepToolStripMenuItem
             // 
             this.sleepToolStripMenuItem.Name = "sleepToolStripMenuItem";
-            this.sleepToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sleepToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.sleepToolStripMenuItem.Text = "Sleep";
             this.sleepToolStripMenuItem.Click += new System.EventHandler(this.sleepToolStripMenuItem_Click);
             // 
             // showStatusToolStripMenuItem
             // 
             this.showStatusToolStripMenuItem.Name = "showStatusToolStripMenuItem";
-            this.showStatusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showStatusToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.showStatusToolStripMenuItem.Text = "Show Status";
             this.showStatusToolStripMenuItem.Click += new System.EventHandler(this.showStatusToolStripMenuItem_Click);
             // 
@@ -414,11 +416,11 @@
             // 
             this.btnClearValues.Image = global::AutosarBCM.Properties.Resources.delete_icon_12_795858790;
             this.btnClearValues.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearValues.Location = new System.Drawing.Point(839, 27);
+            this.btnClearValues.Location = new System.Drawing.Point(169, 21);
             this.btnClearValues.Name = "btnClearValues";
-            this.btnClearValues.Size = new System.Drawing.Size(98, 23);
+            this.btnClearValues.Size = new System.Drawing.Size(61, 34);
             this.btnClearValues.TabIndex = 15;
-            this.btnClearValues.Text = "Clear Values";
+            this.btnClearValues.Text = "Clear";
             this.btnClearValues.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClearValues.UseVisualStyleBackColor = true;
             this.btnClearValues.Click += new System.EventHandler(this.btnClearValues_Click);
