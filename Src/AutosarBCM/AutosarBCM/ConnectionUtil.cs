@@ -48,7 +48,10 @@ namespace AutosarBCM
         private ushort address;
         private byte session;
         private Dictionary<ushort, string> controlDict = new Dictionary<ushort, string>();
-        private static SortedDictionary<string, Tuple<int, string>> AdditionalChanels { get; set; }
+        /// <summary>
+        /// Stores additional hardware information, with the hardware name as the key and a tuple containing the hardware index and description as the value.
+        /// </summary>
+        public SortedDictionary<string, Tuple<int, string>> AdditionalHardware { get; set; }
 
         private static byte channelId = 0;
 
@@ -75,7 +78,6 @@ namespace AutosarBCM
 
             try
             {
-
                 InitHardware(hardware);
                 FormMain formMain = (FormMain)Application.OpenForms[Constants.Form_Main];
 
@@ -92,9 +94,19 @@ namespace AutosarBCM
                     {
                         canHardware.SetBitRate((int)canHardware.BitRate, (int)canHardware.NetworkID);
                         channelId = (byte)canHardware.NetworkID;
-                        foreach (var chanel in AdditionalChanels)
+                        foreach (var channel in AdditionalChannels)
                         {
-                            canHardware.SetBitRate(chanel.Value.Item1, Convert.ToInt32(Enum.Parse(typeof(CSnet.eNETWORK_ID), chanel.Key)));
+                            canHardware.SetBitRate(channel.Value.Item1, Convert.ToInt32(Enum.Parse(typeof(CSnet.eNETWORK_ID), channel.Key)));
+                        }
+                    }
+                    else if (canHardware is VectorCan vectorCan && (canHardware.BitRate > 0))
+                    {
+                        canHardware.SetBitRate((int)canHardware.BitRate, (int)canHardware.NetworkID);
+                        channelId = (byte)canHardware.NetworkID;
+                        foreach (var channel in AdditionalChannels)
+                        {
+                            var matchingChannel = vectorCan.hardwareChannels.FirstOrDefault(y => y.Value == channel.Key);
+                            canHardware.SetBitRate(channel.Value.Item1, Convert.ToInt32(matchingChannel.Key));
                         }
                     }
                     else if (canHardware is KvaserCan && canHardware.BitRate > 0)
@@ -391,9 +403,18 @@ namespace AutosarBCM
                     if (canId != null)
                     {
                         transportProtocol.Config.PhysicalAddr.TxId = (uint)canId;
-                        var key = AdditionalChanels.FirstOrDefault(x =>{if (canId.HasValue){return x.Value?.Item2 == canId.Value.ToString("X");}return false;}).Key;
-                        if (key != null)
-                            transportProtocol.SendBytes(dataBytes, Convert.ToByte((CSnet.eNETWORK_ID)Enum.Parse(typeof(CSnet.eNETWORK_ID), key)));
+                        byte networkId;
+                        var key = AdditionalChannels.FirstOrDefault(x => { if (canId.HasValue) { return x.Value?.Item2 == canId.Value.ToString("X"); } return false; }).Key;
+
+                        if (transportProtocol.Hardware is IntrepidCsCan)
+                            networkId = Convert.ToByte((CSnet.eNETWORK_ID)Enum.Parse(typeof(CSnet.eNETWORK_ID), key));
+                        else if (transportProtocol.Hardware is VectorCan vectorCan)
+                            networkId = Convert.ToByte(vectorCan.hardwareChannels.FirstOrDefault(hc => AdditionalChannels.Any(ac => ac.Value.Item2 == canId.Value.ToString("X") && hc.Value == ac.Key)).Key);
+                        else
+                            networkId = channelId;
+
+                        if (networkId != null)
+                            transportProtocol.SendBytes(dataBytes, networkId);
                     }
                     else
                     {
@@ -403,6 +424,11 @@ namespace AutosarBCM
 
                     if (Settings.Default.DebugLogging)
                         formMain.AppendTrace($"Message Sent: {BitConverter.ToString(dataBytes)}");
+                }
+                catch (Iso15765Exception isoEx)
+                {
+                    if (isoEx.Iso15765Error == Iso15765Error.N_TIMEOUT_A)
+                        formMain.AppendTrace("The connected channel has no destination to send data to.", Color.Red);
                 }
                 catch (Exception ex)
                 {
@@ -419,7 +445,6 @@ namespace AutosarBCM
             try
             {
                 transportProtocol?.Hardware?.Disconnect();
-                //hardware?.Disconnect();
 
                 if (transportProtocol != null)
                     transportProtocol.Hardware = null;
@@ -516,7 +541,7 @@ namespace AutosarBCM
             using (var form = new FormHardwareList(list))
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    AdditionalChanels = form.AdditionalHardware;
+                    AdditionalChannels = form.AdditionalHardware;
                     return (IHardware)list[form.SelectedIndex];
                 }
             return null;

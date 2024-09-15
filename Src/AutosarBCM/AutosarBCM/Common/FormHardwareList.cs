@@ -56,7 +56,7 @@ namespace AutosarBCM.Common
 
             if (e.NewValue == CheckState.Checked)
             {
-                txtTransmitAdress.Visible = grpIntrepidCanMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = txtMultiChannelSelectedName.Visible = label7.Visible = true;
+                txtTransmitAdress.Visible = grpCanDeviceMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = txtMultiChannelSelectedName.Visible = label7.Visible = true;
                 if (AdditionalHardware != null && AdditionalHardware.TryGetValue(item, out var tuple))
                 {
                     if (!string.IsNullOrEmpty(tuple.Item2))
@@ -65,14 +65,14 @@ namespace AutosarBCM.Common
                         txtTransmitAdress.Text = String.Empty;
 
                     if (tuple.Item1 > 0)
-                        grpIntrepidCanMultiChannel_cmbBitRate.SelectedValue = tuple.Item1;
+                        grpCanDeviceMultiChannel_cmbBitRate.SelectedValue = tuple.Item1;
                     else
-                        grpIntrepidCanMultiChannel_cmbBitRate.SelectedIndex = 0;
+                        grpCanDeviceMultiChannel_cmbBitRate.SelectedIndex = 0;
                 }
                 else
                 {
-                    grpIntrepidCanMultiChannel_cmbBitRate.SelectedValue = Settings.Default.IntrepidDevice.BitRate;
-                    txtTransmitAdress.Text = Settings.Default.TransmitAdress.Substring(2);
+                    grpCanDeviceMultiChannel_cmbBitRate.SelectedValue = Settings.Default.IntrepidDevice.BitRate;
+                    txtTransmitAdress.Text = string.Empty;
                     AddChannelToDictionary(null, null);
                 }
             }
@@ -80,7 +80,7 @@ namespace AutosarBCM.Common
             {
                 if (AdditionalHardware.ContainsKey(item))
                     AdditionalHardware.Remove(item);
-                txtTransmitAdress.Visible = grpIntrepidCanMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = false;
+                txtTransmitAdress.Visible = grpCanDeviceMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = false;
             }
         }
 
@@ -129,12 +129,23 @@ namespace AutosarBCM.Common
                 }
                 else if (cmbDevices.SelectedItem is IntrepidCsCan intrepidCsCan)
                 {
+                    if (grpIntrepidCanProperties_cmbBitRate.SelectedIndex != -1 || grpIntrepidCanProperties_cmbNetworkId.SelectedIndex != -1)
+                        return;
                     intrepidCsCan.BitRate = Convert.ToUInt32(string.IsNullOrWhiteSpace(grpIntrepidCanProperties_cmbBitRate.Text) ? "0" : grpIntrepidCanProperties_cmbBitRate.Text);
                     intrepidCsCan.NetworkID = string.IsNullOrWhiteSpace(grpIntrepidCanProperties_cmbNetworkId.Text) ? (uint)CSnet.eNETWORK_ID.NETID_DEVICE : Convert.ToByte(Enum.Parse(typeof(CSnet.eNETWORK_ID), grpIntrepidCanProperties_cmbNetworkId.Text));
                 }
                 else if (cmbDevices.SelectedItem is KvaserCan kvaserCan)
                 {
                     kvaserCan.BitRate = Convert.ToUInt32(grpKvaserCanProperties_cmbBitRate.SelectedItem);
+                }
+                else if (cmbDevices.SelectedItem is VectorCan vectorCan)
+                {
+                    if ((grpVectorCanProperties_cmbBitRate.SelectedIndex == -1 || grpVectorCanProperties_cmbNetworkId.SelectedIndex == -1))
+                        return;
+                    vectorCan.BitRate = Convert.ToUInt32(grpVectorCanProperties_cmbBitRate.SelectedItem);
+                    if (grpVectorCanProperties_cmbNetworkId.SelectedItem is KeyValuePair<int, string> selectedItem)
+                        vectorCan.NetworkID = (uint)selectedItem.Key;
+                    vectorCan.AdditionalHardware = AdditionalHardware;
                 }
                 DialogResult = DialogResult.OK;
             }
@@ -152,16 +163,25 @@ namespace AutosarBCM.Common
             txtDescription.Text = hardware.HardwareDetails;
 
             grpIntrepidCanProperties.Visible = grpKvaserCanProperties.Visible = grpVectorCanProperties.Visible = grpSerialProperties.Visible = false;
+            chkMultiChannelList.Items.Clear();
+
             if (hardware is IntrepidCsCan intepidHardware)
             {
                 grpIntrepidCanProperties.Visible = true;
                 grpIntrepidCanProperties_cmbBitRate.SelectedItem = intepidHardware.BitRate.ToString();
                 grpIntrepidCanProperties_cmbNetworkId.SelectedItem = ((CSnet.eNETWORK_ID)intepidHardware.NetworkID).ToString();
             }
-            else if(hardware is VectorCan vectorHardware) {
+            else if(hardware is VectorCan vectorHardware) 
+            {
+                grpVectorCanProperties_cmbNetworkId.Items.Clear();
+                grpVectorCanProperties_cmbNetworkId.Items.AddRange(vectorHardware.hardwareChannels
+                              .Select(kvp => new KeyValuePair<int, string>((int)kvp.Key, kvp.Value))
+                              .Cast<object>()
+                              .ToArray());
                 grpVectorCanProperties.Visible = true;
             }
-            else if(hardware is KvaserCan kvaserHardware) {
+            else if(hardware is KvaserCan kvaserHardware) 
+            {
                 grpKvaserCanProperties.Visible = true;
                 grpKvaserCanProperties_cmbBitRate.SelectedItem = kvaserHardware.BitRate.ToString();
             }
@@ -183,21 +203,24 @@ namespace AutosarBCM.Common
         #endregion
 
         private bool isProgrammaticCheck = false;
-        private void chkIntrepidMultiChanel_CheckedChanged(object sender, EventArgs e)
+        private void chkIntrepidMultiChannel_CheckedChanged(object sender, EventArgs e)
         {
             if (isProgrammaticCheck)
                 return;
+
+            AdditionalHardware.Clear();
+            chkMultiChannelList.Items.Clear();
 
             if (grpIntrepidCanProperties_cmbNetworkId.SelectedItem == null)
             {
                 isProgrammaticCheck = true;
                 Helper.ShowWarningMessageBox("Please select a network first.");
-                chkIntrepidMultiChanel.Checked = false;
+                chkIntrepidMultiChannel.Checked = false;
                 isProgrammaticCheck = false;
                 return;
             }
 
-            if (chkIntrepidMultiChanel.Checked)
+            if (chkIntrepidMultiChannel.Checked)
             {
                 object[] itemsArray = new object[grpIntrepidCanProperties_cmbNetworkId.Items.Count];
                 grpIntrepidCanProperties_cmbNetworkId.Items.CopyTo(itemsArray, 0);
@@ -205,7 +228,33 @@ namespace AutosarBCM.Common
                 chkMultiChannelList.Items.Remove(grpIntrepidCanProperties_cmbNetworkId.SelectedItem);
             }
 
-            grpIntrepidCanMultiChannel.Visible = chkIntrepidMultiChanel.Checked;
+            grpCanDeviceMultiChannel.Visible = chkIntrepidMultiChannel.Checked;
+        }
+        private void chkVectorMultiChannel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isProgrammaticCheck)
+                return;
+
+            AdditionalHardware.Clear();
+            chkMultiChannelList.Items.Clear();
+
+            if (grpVectorCanProperties_cmbNetworkId.SelectedItem == null)
+            {
+                isProgrammaticCheck = true;
+                Helper.ShowWarningMessageBox("Please select a network first.");
+                chkVectorMultiChannel.Checked = false;
+                isProgrammaticCheck = false;
+                return;
+            }
+
+            if (chkVectorMultiChannel.Checked)
+            {
+                chkMultiChannelList.Items.AddRange(grpVectorCanProperties_cmbNetworkId.Items.Cast<KeyValuePair<int, string>>()
+            .Where(item => item.Key != ((KeyValuePair<int, string>)grpVectorCanProperties_cmbNetworkId.SelectedItem).Key)
+            .Select(item => item.Value).ToArray());
+            }
+
+            grpCanDeviceMultiChannel.Visible = chkVectorMultiChannel.Checked;
         }
 
         private void chkMultiChannelList_MouseClick(object sender, MouseEventArgs e)
@@ -215,9 +264,9 @@ namespace AutosarBCM.Common
             if (listBox != null && listBox.SelectedIndex != ListBox.NoMatches)
             {
                 if (listBox.GetItemChecked(listBox.SelectedIndex))
-                    txtTransmitAdress.Visible = grpIntrepidCanMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = true;
+                    txtTransmitAdress.Visible = grpCanDeviceMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = true;
                 else
-                    txtTransmitAdress.Visible = grpIntrepidCanMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = false;
+                    txtTransmitAdress.Visible = grpCanDeviceMultiChannel_cmbBitRate.Visible = label11.Visible = label4.Visible = false;
 
                 txtMultiChannelSelectedName.Visible = label7.Visible = true;
                 SelectedItem = (string)listBox.SelectedItem;
@@ -227,8 +276,17 @@ namespace AutosarBCM.Common
 
         private void AddChannelToDictionary(object sender, EventArgs e)
         {
-            if (int.TryParse(grpIntrepidCanMultiChannel_cmbBitRate.SelectedItem?.ToString(), out int bitRate) && !string.IsNullOrEmpty(txtTransmitAdress.Text))
+          if (int.TryParse(grpCanDeviceMultiChannel_cmbBitRate.SelectedItem?.ToString(), out int bitRate) && !string.IsNullOrEmpty(txtTransmitAdress.Text))
+            {
+                if (Convert.ToUInt32(Settings.Default.TransmitAdress, 16).ToString("X") == txtTransmitAdress.Text)
+                {
+                    Helper.ShowWarningMessageBox("The same value as Default Transmit Address cannot be selected.");
+                    txtTransmitAdress.Text = string.Empty;
+                    return;
+                }
                 AdditionalHardware[SelectedItem] = new Tuple<int, string>(bitRate, txtTransmitAdress.Text);
+            }
+                
         }
 
 
