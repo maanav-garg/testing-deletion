@@ -51,7 +51,7 @@ namespace AutosarBCM
         /// <summary>
         /// Stores additional hardware information, with the hardware name as the key and a tuple containing the hardware index and description as the value.
         /// </summary>
-        public SortedDictionary<string, Tuple<int, string>> AdditionalHardware { get; set; }
+        private static SortedDictionary<string, Tuple<int, string>> AdditionalChannels { get; set; }
 
         private static byte channelId = 0;
 
