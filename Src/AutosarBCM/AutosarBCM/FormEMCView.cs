@@ -531,7 +531,7 @@ namespace AutosarBCM
         /// </summary>
         private void showStatusToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!SendEmcControl("EMC_SleepWakeStatus", true, true))
+            if (!SendEmcControl("EMC_SleepRequest", true, true))
                 return;
         }
 
@@ -540,7 +540,7 @@ namespace AutosarBCM
         /// </summary>
         private void wakeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!SendEmcControl("EMC_WakeSleep", true))
+            if (!SendEmcControl("EMC_SleepRequest", true))
                 return;
             sleepToolStripMenuItem.Checked = !(wakeToolStripMenuItem.Checked = true);
             sleepWaketionDropDownButton.Image = Resources.pass;
@@ -551,7 +551,7 @@ namespace AutosarBCM
         /// </summary>
         private void sleepToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!SendEmcControl("EMC_WakeSleep", false))
+            if (!SendEmcControl("EMC_SleepRequest", false))
                 return;
 
             sleepToolStripMenuItem.Checked = !(wakeToolStripMenuItem.Checked = false);

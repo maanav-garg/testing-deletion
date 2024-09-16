@@ -2039,18 +2039,17 @@
       </Responses>
     </Control>
 	<Control>
-			<Address>099C</Address>
-			<Name>EMC_SleepAndWakeDummyControl</Name>
-			<Type></Type>
-			<Group>EMC</Group>
-			<Services>22;2E</Services>
-			<Responses>
-				<Response serviceId="62">
-					<Payload name="EMC_FunctionEnable" typeName="HexDump_1Byte"></Payload>
-					<Payload name="Vestel Internal Software Version" typeName="Internal_Version"></Payload>
-				</Response>
-			</Responses>
-		</Control>
+		<Address>099F</Address>
+		<Name>EMC_SleepRequest</Name>
+		<Type></Type>
+		<Group>EMC</Group>
+		<Services>22;2E</Services>
+		<Responses>
+			<Response serviceId="62">
+				<Payload name="EMC_SleepRequest" typeName="SleepState"></Payload>
+			</Response>
+		</Responses>
+	</Control>
     <Control>
       <Address>DFFF</Address>
       <Name>Test_Data</Name>
@@ -2474,6 +2473,10 @@
     <Payload length="1" typeName="DID_DE01_3">
       <Value value="00">9 Liter</Value>
       <Value value="01">13 Liter</Value>
+    </Payload>
+	<Payload length="1" typeName="SleepState">
+      <Value value="00">Wake Up</Value>
+      <Value value="01">Sleep</Value>
     </Payload>
     <Payload length="1" typeName="DID_DE01_4">
       <Value value="00">Disable</Value>

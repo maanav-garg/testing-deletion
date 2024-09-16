@@ -622,7 +622,6 @@ namespace AutosarBCM
                 }
                 else if (readService.ControlInfo.Name == "EMC_SleepWakeStatus")
                 {
-                    //TODO will be tested on generic monitor
                     var sleepWakeStatus = readService.Payloads.First().Value;
                     FormEMCView formEMC = (FormEMCView)Application.OpenForms["FormEMCView"];
 
@@ -630,7 +629,6 @@ namespace AutosarBCM
                         formEMC.Invoke(new MethodInvoker(() => formEMC.SetSleepAndWakeStatus(sleepWakeStatus)));
                     else
                         formEMC.SetSleepAndWakeStatus(sleepWakeStatus);
-
                 }
             }
         }

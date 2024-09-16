@@ -55,7 +55,6 @@
             this.sleepWaketionDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.wakeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sleepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblSleepWakeStatus = new System.Windows.Forms.ToolStripLabel();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +63,7 @@
             this.pnlCardLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.btnClearValues = new System.Windows.Forms.Button();
+            this.tsbShowStatus = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             this.emcControlToolStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -136,7 +136,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1068, 32);
+            this.label1.Location = new System.Drawing.Point(1299, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 5;
@@ -145,7 +145,7 @@
             // txtFilter
             // 
             this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFilter.Location = new System.Drawing.Point(1106, 26);
+            this.txtFilter.Location = new System.Drawing.Point(1337, 26);
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(163, 20);
             this.txtFilter.TabIndex = 6;
@@ -211,7 +211,7 @@
             // activeFunctionEnable
             // 
             this.activeFunctionEnable.Name = "activeFunctionEnable";
-            this.activeFunctionEnable.Size = new System.Drawing.Size(115, 22);
+            this.activeFunctionEnable.Size = new System.Drawing.Size(180, 22);
             this.activeFunctionEnable.Text = "Active";
             this.activeFunctionEnable.Click += new System.EventHandler(this.activeFunctionEnable_Click);
             // 
@@ -220,7 +220,7 @@
             this.inactiveFunctionEnable.Checked = true;
             this.inactiveFunctionEnable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.inactiveFunctionEnable.Name = "inactiveFunctionEnable";
-            this.inactiveFunctionEnable.Size = new System.Drawing.Size(115, 22);
+            this.inactiveFunctionEnable.Size = new System.Drawing.Size(180, 22);
             this.inactiveFunctionEnable.Text = "Inactive";
             this.inactiveFunctionEnable.Click += new System.EventHandler(this.inactiveFunctionEnable_Click);
             // 
@@ -277,10 +277,11 @@
             this.toolStripSeparator1,
             this.lowBatteryProtectionDropDownButton,
             this.sleepWaketionDropDownButton,
+            this.tsbShowStatus,
             this.lblSleepWakeStatus});
             this.emcControlToolStrip.Location = new System.Drawing.Point(365, 25);
             this.emcControlToolStrip.Name = "emcControlToolStrip";
-            this.emcControlToolStrip.Size = new System.Drawing.Size(591, 27);
+            this.emcControlToolStrip.Size = new System.Drawing.Size(719, 27);
             this.emcControlToolStrip.TabIndex = 13;
             this.emcControlToolStrip.Text = "toolStrip3";
             // 
@@ -298,7 +299,7 @@
             // activeLowBatteryVoltage
             // 
             this.activeLowBatteryVoltage.Name = "activeLowBatteryVoltage";
-            this.activeLowBatteryVoltage.Size = new System.Drawing.Size(115, 22);
+            this.activeLowBatteryVoltage.Size = new System.Drawing.Size(180, 22);
             this.activeLowBatteryVoltage.Text = "Active";
             this.activeLowBatteryVoltage.Click += new System.EventHandler(this.activeLowBatteryVoltage_Click);
             // 
@@ -307,7 +308,7 @@
             this.inactiveLowBatteryVoltage.Checked = true;
             this.inactiveLowBatteryVoltage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.inactiveLowBatteryVoltage.Name = "inactiveLowBatteryVoltage";
-            this.inactiveLowBatteryVoltage.Size = new System.Drawing.Size(115, 22);
+            this.inactiveLowBatteryVoltage.Size = new System.Drawing.Size(180, 22);
             this.inactiveLowBatteryVoltage.Text = "Inactive";
             this.inactiveLowBatteryVoltage.Click += new System.EventHandler(this.inactiveLowBatteryVoltage_Click);
             // 
@@ -315,8 +316,7 @@
             // 
             this.sleepWaketionDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.wakeToolStripMenuItem,
-            this.sleepToolStripMenuItem,
-            this.showStatusToolStripMenuItem});
+            this.sleepToolStripMenuItem});
             this.sleepWaketionDropDownButton.Image = global::AutosarBCM.Properties.Resources.reset;
             this.sleepWaketionDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sleepWaketionDropDownButton.Name = "sleepWaketionDropDownButton";
@@ -326,23 +326,18 @@
             // wakeToolStripMenuItem
             // 
             this.wakeToolStripMenuItem.Name = "wakeToolStripMenuItem";
-            this.wakeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.wakeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.wakeToolStripMenuItem.Text = "Wake";
             this.wakeToolStripMenuItem.Click += new System.EventHandler(this.wakeToolStripMenuItem_Click);
             // 
             // sleepToolStripMenuItem
             // 
+            this.sleepToolStripMenuItem.Checked = true;
+            this.sleepToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.sleepToolStripMenuItem.Name = "sleepToolStripMenuItem";
-            this.sleepToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.sleepToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sleepToolStripMenuItem.Text = "Sleep";
             this.sleepToolStripMenuItem.Click += new System.EventHandler(this.sleepToolStripMenuItem_Click);
-            // 
-            // showStatusToolStripMenuItem
-            // 
-            this.showStatusToolStripMenuItem.Name = "showStatusToolStripMenuItem";
-            this.showStatusToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.showStatusToolStripMenuItem.Text = "Show Status";
-            this.showStatusToolStripMenuItem.Click += new System.EventHandler(this.showStatusToolStripMenuItem_Click);
             // 
             // lblSleepWakeStatus
             // 
@@ -373,7 +368,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 77);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1306, 572);
+            this.tabControl1.Size = new System.Drawing.Size(1537, 673);
             this.tabControl1.TabIndex = 14;
             this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
@@ -383,7 +378,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1298, 546);
+            this.tabPage2.Size = new System.Drawing.Size(1529, 647);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Card View";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -397,7 +392,7 @@
             this.pnlCardLayout.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlCardLayout.Location = new System.Drawing.Point(3, 3);
             this.pnlCardLayout.Name = "pnlCardLayout";
-            this.pnlCardLayout.Size = new System.Drawing.Size(1292, 540);
+            this.pnlCardLayout.Size = new System.Drawing.Size(1523, 641);
             this.pnlCardLayout.TabIndex = 0;
             this.pnlCardLayout.WrapContents = false;
             // 
@@ -425,12 +420,22 @@
             this.btnClearValues.UseVisualStyleBackColor = true;
             this.btnClearValues.Click += new System.EventHandler(this.btnClearValues_Click);
             // 
+            // tsbShowStatus
+            // 
+            this.tsbShowStatus.Image = global::AutosarBCM.Properties.Resources.reset;
+            this.tsbShowStatus.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbShowStatus.Name = "tsbShowStatus";
+            this.tsbShowStatus.Size = new System.Drawing.Size(128, 24);
+            this.tsbShowStatus.Text = "Sleep/Wake Status";
+            this.tsbShowStatus.ToolTipText = "Show Sleep/Wake Status";
+            this.tsbShowStatus.Click += new System.EventHandler(this.showStatusToolStripMenuItem_Click);
+            // 
             // FormEMCView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.GhostWhite;
-            this.ClientSize = new System.Drawing.Size(1330, 661);
+            this.ClientSize = new System.Drawing.Size(1561, 762);
             this.Controls.Add(this.btnClearValues);
             this.Controls.Add(this.emcControlToolStrip);
             this.Controls.Add(this.lblElapsedTime);
@@ -493,7 +498,7 @@
         private System.Windows.Forms.ToolStripDropDownButton sleepWaketionDropDownButton;
         public System.Windows.Forms.ToolStripMenuItem wakeToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem sleepToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showStatusToolStripMenuItem;
         private System.Windows.Forms.ToolStripLabel lblSleepWakeStatus;
+        private System.Windows.Forms.ToolStripButton tsbShowStatus;
     }
 }
